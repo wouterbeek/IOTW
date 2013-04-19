@@ -1,0 +1,221 @@
+\documentclass[11pt,a4paper,notitlepage,onecolumn,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{formula}{Formula}
+\newtheorem{problem}{Problem}
+
+\title{Identity on the Web \\ Notes}
+\author{Wouter Beek \and Stefan Schlobach}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Identity is a problem on the Web. It is a very strong notion when used in an
+open world. Using non-identity relations to assert similarity relations
+hampers reasoning and often does not explain the aspects with respect to
+which similarity is asserted.\footnote{Concepts can be similar in several
+ways and dissimilar in other ways.}
+
+\section{Identity}
+
+According to the standard definition, $a$ and $b$ are identical
+iff they co-designate [REF]. Co-designation is often cyclicly defined
+in terms of indiscernability. The principle of the indiscernability of
+identicals \ref{eq:leibniz_law} (also known as Leibniz's Law) 
+
+\begin{formula}[Leibniz' Law]
+\label{eq:leibniz_law}
+$\forall a,b: a = b \rightarrow \forall \phi: \phi(a) \leftrightarrow \phi(b)$
+\end{formula}
+
+The converse of the principle of the indiscernability of identicals,
+the principle of the identity of indiscernables
+\ref{eq:principle_of_the_identity_of_indiscernables}, is vacuously true.
+
+\begin{formula}[Principle of the identity of indiscernables]
+\label{eq:principle_of_the_identity_of_indiscernables}
+$\forall a,b: \forall \phi: \phi(a) \leftrightarrow \phi(b) \rightarrow a = b$
+\end{formula}
+
+The substitutivity of identicals \ref{eq:substitutivity_principle}
+does not hold for intensionalilies (example \ref{eq:hespherus_phosphorus})
+or modal contexts (example \ref{eq:substitution_modality}).
+
+\begin{formula}[Substitutivity principle]
+\label{eq:substitutivity_principle}
+$a = b \rightarrow \phi \rightarrow [a \\ b]\phi$
+\end{formula}
+
+\begin{example}[Substitution of intensions]
+\begin{subequations}
+\label{eq:hespherus_phosphorus}
+\begin{align}
+\text{Hesperus contains eight letters.}\\
+\text{Phosphorus contains eight letters.\footnote{Hespherus is the Evening Star; Phosphorus is the Morning Star.}}
+\end{align}
+\end{subequations}
+\end{example}
+
+\begin{example}[Substitution under modality]
+\begin{subequations}
+\label{eq:substitution_modality}
+\begin{align}
+\text{It is a necessary truth that 9 is larger than 7.}\\
+\text{It is a necessary truth that 9 is the number of planets.\footnote{Pluto, anyone?}}
+\end{align}
+\end{subequations}
+\end{example}
+
+The relevance of the substitutivity principle to the identity relation
+is unclear to me, since it only seems to restrict the number of deductions
+involving identity, but not the validity of the identity relation itself.
+
+\section{Identity on the Web}
+
+Existing literature:
+(1) A replacement of identity with similarity.
+(2) A 
+
+\begin{problem}
+Some properties express propositions (e.g., $birth-year(wouter-beek, 1983)$),
+but others express aspects of formulations of propositions
+(e.g., $birth-year(wouter-beek, 1983)$ was asserted in 2013)
+or labels/literal that are not identical but that do not necessarily
+conflict (e.g. two descriptions formulated in different natural languages).
+
+The indiscernability that comes with an identity relation is restricted to
+properties that express propositions.
+\end{problem}
+
+\begin{problem}
+In practice we come accross notational differences,
+e.g. $Length(c_1, "8cm"^^xsd:string)$ and
+$\exists x: Length(c_2,x) \land Value(x, 80^^xsd:int) \land Scale(x, "mm"^^xsd:string)$
+\end{problem}
+
+\section{Approach I}
+
+We define the shared properties of two individuals.
+
+\begin{definition}
+\begin{equation}
+\mathbb{P}(x,y) = \{ P \vert \exists P (xPz \land yPz) \}
+\end{equation}
+\end{definition}
+
+Then we define the upper and lower boundary for the \emph{sameAs} relation.
+
+\begin{definition}
+\begin{align}
+\overline{sameAs}(x,y) \  \iff \  sameAs(x,y) \land
+    \forall u,v (\mathbb{P}(u,v) \subseteq \mathbb{P}(x,y) \rightarrow sameAs(u,v)) \\
+\underline{sameAs}(x,y) \  \iff \  sameAs(x,y) \land
+    \forall u,v (\mathbb{P}(u,v) \superseteq \mathbb{P}(x,y) \rightarrow sameAs(u,v))
+\end{align}
+\end{definition}
+
+\section{Approach II}
+
+How to handle:
+\begin{itemize}
+\item \textbf{Properties of arbitrary depth.} Properties can have arbitrary
+      depth. For instance I am living in a city that is located in a country
+      that is part of the European Union. Deep properties traverse
+      (non-linked) resources or blank nodes.
+\item \textbf{Property hierarchy} Should subproperties be treated
+      as separate properties, not at all, or in a special way?
+\item \textbf{Graphyness} An RDF graph is assumed to be a `real' graph,
+      i.e., RDF properties cannot be RDF nodes.
+\end{itemize}
+
+We are given an equivalence relation $\approx$ which is induced
+from the given set of triples. The properties that are used to construct
+the quivalence relation can be freely chosen, although obvious choices
+involve \emph{owl:sameAs}, \emph{skos:somewhatKindaSimila}.
+
+The universe of discourse $\mathbb{U}$ consists of the RDF nodes that appear
+in the given triples.
+
+We define a mapping from partition members onto $\mathcal{P}(\mathbb{P})$,
+where $\mathbb{P}$ are the properties that occur in the given set of triples.
+\footnote{Here we assume that no property is an RDF node.}
+
+\begin{definition}[Predicates]
+\begin{eqnarray}
+f_{\mathbb{P}}([x]_{\approx}) = \{ P &\vert&
+    \exists y_1 \in [x]_{\approx}, \exists z_1 (y_1Pz_1 \land \\
+    & & \  \forall y_2 \in [x]_{\approx} \setminus \{ y_1 \}
+    (\exists z_2 (y_2Pz_2 \rightarrow z_1 = z_2))) \} \nonumber
+\end{eqnarray}
+\end{definition}
+
+Partition members are grouped based on a similarity metric.
+We choose the Jaccard index for this, but the choise for the combination
+of metrics and boundary values is arbitrary.
+
+\begin{definition}[Groups]
+\begin{equation}
+[y]_{\approx} \in G_{[x]_{\approx}} \  \text{iff} \ 
+\frac{\vert f_{\mathbb{P}}([x]_{\approx}) \cap f_{\mathbb{P}}([y]_{\approx}) \vert}
+     {\vert f_{\mathbb{P}}([x]_{\approx}) \cup f_{\mathbb{P}}([y]_{\approx}) \vert}
+     > c
+\end{equation}
+\end{definition}
+
+Based on the definition of groups we can identify the indiscernability
+properties that characterize a collection of similar partition members.
+
+\begin{definition}[Indiscernability]
+\begin{equation}
+\text{The members of} \  G_{[x]_{\approx}} \  \text{are} \ 
+\underset{\substack{x' \in [x]_{\approx}}}{\operatorname{\bigcap}} f_{\mathbb{P}}([x']_{\approx})
+\text{-indiscernable}.
+\end{equation}
+\end{definition}
+
+We define the indiscernability set for a partition member as follows:
+
+\begin{definition}[Indiscernability]
+\begin{equation}
+f_{\mathbb{I}}([x]_{\approx}) = \bigcap_{y \in G_{[x]_{\approx}}} f_{\mathbb{P}}(y)
+\end{equation}
+\end{definition}
+
+\begin{definition}
+\begin{equation}
+G_{\approx} = \{ G_{[x]_{\approx}} \  \vert \  x \in \mathbb{U} \}
+\end{equation}
+\end{definition}
+
+What is special about this approach is that we define (in)discernability on
+the level of equivalence sets over individuals,
+where normally this is defined on the level of individuals.
+
+Observe that we are not talking about sets of indiscernable instances
+(as in traditional approaches towards identity),
+but about \emph{indiscernability descriptions}
+(in terms of domain properties).
+This means that $[x]_f([x]_{\approx}) = [x]_{\approx}$ is not true in the
+general case. So for each group there can be instances in $[x]_{\approx}$
+but not in $G_{[x]_{\approx}}$
+(depending on the similarity strictures chosen).
+But there can also be instances in $G_{[x]_{\approx}}$ that are not in
+$[x]_{\approx}$.
+
+\begin{definition}
+\begin{equation}
+\approx' = \{ \langle x, y \rangle \in \mathbb{U}^2 \  \vert \ 
+    \forall P \in f_{\mathbb{I}}([x]_{\approx}), \exists z (xPz \leftrightarrow yPz) \}
+\end{equation}
+\end{definition}
+
+\end{document}
+
