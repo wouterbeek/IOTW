@@ -22,6 +22,7 @@ My first publication with Stephan!
 :- use_module(owl(owl_read)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_namespace)).
+:- use_module(server(wallace)).
 :- use_module(sparql(sparql_ext)).
 
 
