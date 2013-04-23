@@ -85,9 +85,9 @@ Existing literature:
 (2) A 
 
 \begin{problem}
-Some properties express propositions (e.g., $birth-year(wouter-beek, 1983)$),
-but others express aspects of formulations of propositions
-(e.g., $birth-year(wouter-beek, 1983)$ was asserted in 2013)
+Some properties express propositions $\phi$
+while others express aspects of formulations of propositions
+(e.g. ``this encoding of $\phi$ was asserted by $A$'')
 or labels/literal that are not identical but that do not necessarily
 conflict (e.g. two descriptions formulated in different natural languages).
 
@@ -97,8 +97,8 @@ properties that express propositions.
 
 \begin{problem}
 In practice we come accross notational differences,
-e.g. $Length(c_1, "8cm"^^xsd:string)$ and
-$\exists x: Length(c_2,x) \land Value(x, 80^^xsd:int) \land Scale(x, "mm"^^xsd:string)$
+e.g. $Length(c_1, ``8cm''^^xsd:string)$ and
+$\exists x: Length(c_2,x) \land Value(x, 80^^xsd:int) \land Scale(x, ``mm''^^xsd:string)$
 \end{problem}
 
 \section{Approach I}
@@ -115,10 +115,10 @@ Then we define the upper and lower boundary for the \emph{sameAs} relation.
 
 \begin{definition}
 \begin{align}
-\overline{sameAs}(x,y) \  \iff \  sameAs(x,y) \land
-    \forall u,v (\mathbb{P}(u,v) \subseteq \mathbb{P}(x,y) \rightarrow sameAs(u,v)) \\
-\underline{sameAs}(x,y) \  \iff \  sameAs(x,y) \land
-    \forall u,v (\mathbb{P}(u,v) \superseteq \mathbb{P}(x,y) \rightarrow sameAs(u,v))
+\overline{sameAs}(x,y) \  \iff \  \exists u,v (sameAs(u,v) \land
+    \mathbb{P}(u,v) \subseteq \mathbb{P}(x,y)) \\
+\underline{sameAs}(x,y) \  \iff \  \forall u,v (sameAs(u,v) \land
+    \mathbb{P}(u,v) \subseteq \mathbb{P}(x,y))
 \end{align}
 \end{definition}
 

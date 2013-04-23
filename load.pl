@@ -13,10 +13,16 @@ load_iotw:-
   
   % Load the PGC.
   assert(user:file_search_path(pgc, project('PGC'))),
-  ensure_loaded(pgc(load)),
+  (
+    predicate_property(debug, visible)
+  ->
+    ensure_loaded(pgc(debug))
+  ;
+    ensure_loaded(pgc(load))
+  ),
   
   % Identity on the Web.
-  ensure_loaded(project(identity)).
+  ensure_loaded(project(iotw)).
 
 :- load_iotw.
 
