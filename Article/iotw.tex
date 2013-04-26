@@ -10,7 +10,7 @@
 \newtheorem{problem}{Problem}
 
 \title{Identity on the Web \\ Notes}
-\author{Wouter Beek \and Stefan Schlobach}
+\author{Wouter Beek \and Stefan Schlobach \and Frank van Harmelen}
 
 \begin{document}
 
@@ -107,7 +107,7 @@ We define the shared properties of two individuals.
 
 \begin{definition}
 \begin{equation}
-\mathbb{P}(x,y) = \{ P \vert \exists P (xPz \land yPz) \}
+f^{+}_{\mathbb{P}}(x,y) = \{ P \in \mathbb{P} \  \vert \  \exists z (xPz \land yPz) \}
 \end{equation}
 \end{definition}
 
@@ -116,9 +116,9 @@ Then we define the upper and lower boundary for the \emph{sameAs} relation.
 \begin{definition}
 \begin{align}
 \overline{sameAs}(x,y) \  \iff \  \exists u,v (sameAs(u,v) \land
-    \mathbb{P}(u,v) \subseteq \mathbb{P}(x,y)) \\
+    f^{+}_{\mathbb{P}}(u,v) \subseteq f^{+}_{\mathbb{P}}(x,y)) \\
 \underline{sameAs}(x,y) \  \iff \  \forall u,v (sameAs(u,v) \land
-    \mathbb{P}(u,v) \subseteq \mathbb{P}(x,y))
+    f^{+}_{\mathbb{P}}(u,v) \subseteq f^{+}_{\mathbb{P}}(x,y))
 \end{align}
 \end{definition}
 
@@ -150,10 +150,10 @@ where $\mathbb{P}$ are the properties that occur in the given set of triples.
 
 \begin{definition}[Predicates]
 \begin{eqnarray}
-f_{\mathbb{P}}([x]_{\approx}) = \{ P &\vert&
+f^{+}_{\mathbb{P}}([x]_{\approx}) = \{ P &\vert&
     \exists y_1 \in [x]_{\approx}, \exists z_1 (y_1Pz_1 \land \\
-    & & \  \forall y_2 \in [x]_{\approx} \setminus \{ y_1 \}
-    (\exists z_2 (y_2Pz_2 \rightarrow z_1 = z_2))) \} \nonumber
+    & & \  \forall y_2 \in [x]_{\approx} \setminus \{ y_1 \},
+    \exists z_2 (y_2Pz_2 \rightarrow z_1 = z_2))) \} \nonumber
 \end{eqnarray}
 \end{definition}
 
@@ -170,14 +170,39 @@ of metrics and boundary values is arbitrary.
 \end{equation}
 \end{definition}
 
+\begin{align}
+Jacc(S, T) = \frac{\vert S \cap T) \vert}{\vert S \cup T \vert} \\
+Jacc_{\delta}(S, T) = 1 - Jacc(S, T)
+\end{align}
+
+\begin{definition}[Groups]
+\begin{equation}
+G_{[x]_{\approx}} = \{ [y]_{\approx} \  \vert \ 
+  Jacc(f^{+}_{\mathbb{P}}([x]_{\approx}), f^{+}_{\mathbb{P}}([y]_{\approx})) > c_1
+  \  \land \ 
+  Jacc_{\delta}(f^{+}_{\mathbb{P}}([x]_{\approx}), f^{+}_{\mathbb{P}}([y]_{\approx})) < c_2
+\end{equation}
+\end{definition}
+
+\begin{definition}
+\begin{equation}
+G_{\approx} = \{ G_{[x]_{\approx}} \  \vert \  x \in \mathbb{U} \}
+\end{equation}
+\end{definition}
+
 Based on the definition of groups we can identify the indiscernability
 properties that characterize a collection of similar partition members.
 
 \begin{definition}[Indiscernability]
 \begin{equation}
 \text{The members of} \  G_{[x]_{\approx}} \  \text{are} \ 
-\underset{\substack{x' \in [x]_{\approx}}}{\operatorname{\bigcap}} f_{\mathbb{P}}([x']_{\approx})
-\text{-indiscernable}.
+  \underset{
+    \substack{x' \in [x]_{\approx}}
+  }{
+    \operatorname{\bigcap}
+  }
+  f^{+}_{\mathbb{P}}([x']_{\approx})
+  \text{-indiscernable}.
 \end{equation}
 \end{definition}
 
@@ -185,13 +210,11 @@ We define the indiscernability set for a partition member as follows:
 
 \begin{definition}[Indiscernability]
 \begin{equation}
-f_{\mathbb{I}}([x]_{\approx}) = \bigcap_{y \in G_{[x]_{\approx}}} f_{\mathbb{P}}(y)
-\end{equation}
-\end{definition}
-
-\begin{definition}
-\begin{equation}
-G_{\approx} = \{ G_{[x]_{\approx}} \  \vert \  x \in \mathbb{U} \}
+f_{\mathbb{I}}([x]_{\approx}) =
+  \langle
+    \bigcap_{y \in G_{[x]_{\approx}}} f^{+}_{\mathbb{P}}(y),
+    \bigcap_{y \in G_{[x]_{\approx}}} f^{-}_{\mathbb{P}}(y)
+  \rangle
 \end{equation}
 \end{definition}
 
@@ -213,7 +236,7 @@ $[x]_{\approx}$.
 \begin{definition}
 \begin{equation}
 \approx' = \{ \langle x, y \rangle \in \mathbb{U}^2 \  \vert \ 
-    \forall P \in f_{\mathbb{I}}([x]_{\approx}), \exists z (xPz \leftrightarrow yPz) \}
+    \forall P \in i_1(f_{\mathbb{I}}([x]_{\approx})), \exists z (xPz \leftrightarrow yPz) \}
 \end{equation}
 \end{definition}
 

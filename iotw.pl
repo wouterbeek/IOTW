@@ -27,50 +27,10 @@ My first publication with Stephan!
 :- use_module(rdf(rdf_read)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(server(wallace)).
+:- use_module(standards(oaei)).
 :- use_module(sparql(sparql_ext)).
 
-:- rdf_register_prefix(align, 'http://knowledgeweb.semanticweb.org/heterogeneity/alignment').
-:- rdf_register_namespaces.
 
-
-go:-
-  % Reference pairs.
-  absolute_file_name(
-    data(reference),
-    ReferenceFile,
-    [access(read), file_type(turtle)]
-  ),
-  load_alignments(ReferenceFile, ReferencePairs),
-  
-  % Alignment attempts.
-  absolute_file_name(
-    data(alignments),
-    AlignmentDir,
-    [access(read), file_type(directory)]
-  ),
-  format(atom(RE), '~w/*.ttl', [AlignmentDir]),
-  expand_file_name(RE, AlignmentFiles),
-  maplist(go(ReferencePairs), AlignmentFiles, TestResults),
-  print_list(user_output, TestResults).
-
-go(ReferencePairs, AlignmentFile, Atom):-
-  % File name.
-  file_name(AlignmentFile, _AlignmentDirectory, AlignmentName, _Extension),
-  
-  % One alignment pairs.
-  load_alignments(AlignmentFile, AlignmentPairs),
-  
-  % Statistics
-  t1_error(ReferencePairs, AlignmentPairs, FalsePositives),
-  t2_error(ReferencePairs, AlignmentPairs, FalseNegatives),
-  ord_intersect(ReferencePairs, AlignmentPairs, X),
-  length(X, TruePositives),
-
-  atomic_list_concat(
-    [AlignmentName, TruePositives, FalsePositives, FalseNegatives],
-    '\t',
-    Atom
-  ).
 
 translate_non_uri_datatypes:-
   forall(
@@ -84,19 +44,6 @@ translate_non_uri_datatypes:-
       rdf_retractall(S, P, literal(type(NonURI, O)), G),
       flag(counter, ID, ID + 1)
     )
-  ).
-
-load_alignments(File, Pairs):-
-  file_name(File, _Directory, Graph, _Extension),
-  rdf_load2(File, 'Turtle', Graph),
-  findall(
-    From/To,
-    (
-      rdf(BNode, align:entity1, From, Graph),
-      rdf(BNode, align:entity2, To, Graph),
-      rdf_datatype(BNode, align:measure, float, _Measure, Graph)
-    ),
-    Pairs
   ).
 
 
@@ -212,4 +159,6 @@ assert_person(row(Person)):-
   thread_self(SelfId),
   assert_resource(Person, SelfId),
   thread_success(SelfId).
+
+:- oaei:test. %DEB
 
