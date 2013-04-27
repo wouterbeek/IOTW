@@ -1,13 +1,14 @@
 module(
   iotw,
   [
-    load_data/1
+    check_anatomy/0,
+    load_anatomy/0
   ]
 ).
 
 /** <module> IDENTITY ON THE WEB
 
-My first publication with Stephan!
+My first publication with Stephan and Frank!
 
 @author Wouter Beek
 @version 2013/04
@@ -23,6 +24,7 @@ My first publication with Stephan!
 :- use_module(library(semweb/rdf_db)).
 :- use_module(math(statistics)).
 :- use_module(owl(owl_read)).
+:- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_namespace)).
 :- use_module(rdf(rdf_read)).
 :- use_module(rdf(rdf_serial)).
@@ -32,34 +34,66 @@ My first publication with Stephan!
 
 
 
-translate_non_uri_datatypes:-
+check_anatomy:-
+  oaei_graph_to_alignments(reference, ReferenceAlignments),
+  
+  % Write the header of the table to user output.
+  format(user_output, 'Graph\tOverlap\tFalsePositives\tFalseNegatives\n', []),
+  flush_output(user_output),
+  
   forall(
+    oaei_graph(AlignmentGraph),
     (
-      rdf(S, P, literal(type(NonURI, O)), G),
-      \+ is_uri(NonURI)
-    ),
-    (
-      rdf_global_id(NonURI, URI),
-      rdf_assert(S, O, literal(type(URI, O)), G),
-      rdf_retractall(S, P, literal(type(NonURI, O)), G),
-      flag(counter, ID, ID + 1)
+      oaei_graph_to_alignments(AlignmentGraph, RawAlignments),
+      oaei_check_alignment(ReferenceAlignments, AlignmentGraph, RawAlignments)
     )
   ).
 
+load_anatomy:-
+  % From
+  absolute_file_name(
+    anatomy(mouse),
+    FromFile,
+    [access(read), file_type(owl)]
+  ),
+  rdf_load(FromFile, [graph(from)]),
 
+  % To
+  absolute_file_name(
+    anatomy(human),
+    ToFile,
+    [access(read), file_type(owl)]
+  ),
+  rdf_load(ToFile, [graph(to)]),
 
-% DATA %
+  % Reference
+  absolute_file_name(
+    anatomy(reference),
+    ReferenceFile,
+    [access(read), file_type(rdf)]
+  ),
+  rdf_load2(ReferenceFile),
+  
+  % Raw alignments
+  absolute_file_name(
+    anatomy_raw(.),
+    RawDirectory,
+    [access(read), file_type(directory)]
+  ),
+  rdf_load2(RawDirectory),
+  
+  % Many data files have invalid namespace notation!
+  rdf_expand_namespace(_, _, _, _).
 
-load_data(FileName):-
-  absolute_file_name(data(File), FileName, [access(read), file_type(turtle)]),
-  rdf_load2(File, iotw).
-
-save_data:-
+save_data:- %DEB
+  % Make sure we have all namespaces asserted when we save triples to file.
   rdf_register_namespaces,
-  forall(
-    rdf_graph(Graph),
-    rdf_save2(Graph, 'Turtle', _File)
-  ).
+  absolute_file_name(
+    auto(.),
+    Directory,
+    [access(read), file_type(directory)]
+  ),
+  rdf_save2(Directory).
 
 
 
@@ -109,14 +143,38 @@ shared_property_paths(X, Y, Shared):-
 
 
 
-% PROPERTIES %
+% UPPER %
+
+/* TODO
+upper(Graph):-
+  nonvar(Graph),
+  % Make sure this is an alignment graph.
+  oaei_graph(Graph),
+  setoff(
+    % Take a pair that is not in the alignment graph.
+    rdf_subject(From, Subject1),
+    rdf_subject(To, Subject2),
+    shared_properties(Subject1, Subject2, Properties),
+    % There is a pair in the alignment graph with the same properties.
+    shared_properties(
+*/
+
+
+% SHARED PROPERTIES %
+
+shared_properties(X, Y, Properties):-
+  setoff(
+    Property,
+    shared_property(X, Y, Property),
+    Properties
+  ).
 
 % Discernability
-shared_property(X, Y, [Property, [ValueX, ValueY]]):-
-  rdf(X, Property, ValueX),
-  \+ (rdf(X, Property, ValueXX), ValueXX \== ValueX),
-  rdf(Y, Property, ValueY),
-  ValueX \== ValueY.
+shared_property(X, Y, Property-Value1):-
+  rdf(X, Property, Value1),
+  % Exclude properties that occur multiple times for the same subject.
+  \+ (rdf(X, Property, Value2), Value2 \== Value1),
+  rdf(Y, Property, Value1).
 
 % Indiscernability
 shared_property_value(X, Y, [Property, [Value]]):-
@@ -159,6 +217,4 @@ assert_person(row(Person)):-
   thread_self(SelfId),
   assert_resource(Person, SelfId),
   thread_success(SelfId).
-
-:- oaei:test. %DEB
 
