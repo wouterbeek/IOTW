@@ -21,9 +21,9 @@ My first publication with Stephan and Frank!
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_namespace)).
 :- use_module(rdf(rdf_serial)).
-:- use_module(rdfs(rdfs_test)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
+:- use_module(tests(semweb_tests)).
 
 :- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
 :- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
