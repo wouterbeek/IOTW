@@ -14,38 +14,41 @@ My first publication with Stephan and Frank!
 @version 2013/04
 */
 
-:- use_module(datasets(dbpedia)).
-:- use_module(generics(file_ext)).
+:- use_module(generics(assoc_multi)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(print_ext)).
-:- use_module(generics(thread_ext)).
-:- use_module(generics(type_checking)).
-:- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(math(statistics)).
-:- use_module(owl(owl_read)).
+:- use_module(owl(owl_entailment)).
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_namespace)).
-:- use_module(rdf(rdf_read)).
 :- use_module(rdf(rdf_serial)).
+:- use_module(rdfs(rdfs_test)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
-:- use_module(sparql(sparql_ext)).
+
+:- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
+:- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
 
 
 
 check_anatomy:-
   oaei_graph_to_alignments(reference, ReferenceAlignments),
-  
+
   % Write the header of the table to user output.
-  format(user_output, 'Graph\tOverlap\tFalsePositives\tFalseNegatives\n', []),
+  format(user_output, '\tOverlap\tFalsePositives\tFalseNegatives\n', []),
   flush_output(user_output),
-  
+
   forall(
     oaei_graph(AlignmentGraph),
     (
+      format(user_output, '[~w]\n', [AlignmentGraph]),
+
+      % The given alignment relative to the reference alignment.
       oaei_graph_to_alignments(AlignmentGraph, RawAlignments),
-      oaei_check_alignment(ReferenceAlignments, AlignmentGraph, RawAlignments)
+      oaei_check_alignment(ReferenceAlignments, RawAlignments),
+      
+      % The upper alignment relative to the reference alignment.
+      upper(from, to, AlignmentGraph, UpperAlignments),
+      oaei_check_alignment(ReferenceAlignments, UpperAlignments)
     )
   ).
 
@@ -54,7 +57,7 @@ load_anatomy:-
   absolute_file_name(
     anatomy(mouse),
     FromFile,
-    [access(read), file_type(owl)]
+    [access(read), file_type(owl), register_namespaces(true)]
   ),
   rdf_load(FromFile, [graph(from)]),
 
@@ -62,7 +65,7 @@ load_anatomy:-
   absolute_file_name(
     anatomy(human),
     ToFile,
-    [access(read), file_type(owl)]
+    [access(read), file_type(owl), register_namespaces(true)]
   ),
   rdf_load(ToFile, [graph(to)]),
 
@@ -73,7 +76,7 @@ load_anatomy:-
     [access(read), file_type(rdf)]
   ),
   rdf_load2(ReferenceFile),
-  
+
   % Raw alignments
   absolute_file_name(
     anatomy_raw(.),
@@ -81,7 +84,7 @@ load_anatomy:-
     [access(read), file_type(directory)]
   ),
   rdf_load2(RawDirectory),
-  
+
   % Many data files have invalid namespace notation!
   rdf_expand_namespace(_, _, _, _).
 
@@ -97,6 +100,7 @@ save_data:- %DEB
 
 
 
+/*
 % PROPERTY PATHS %
 
 compare_property_paths(X, OnlyX, Y, OnlyY, Shared):-
@@ -140,50 +144,103 @@ property_path(Subject, [Property-Object]):-
 
 shared_property_paths(X, Y, Shared):-
   compare_property_paths(X, _OnlyX, Y, _OnlyY, Shared).
+*/
 
 
 
 % UPPER %
 
-/* TODO
-upper(Graph):-
-  nonvar(Graph),
+upper(FromGraph, ToGraph, AlignmentGraph, UpperAlignments):-
   % Make sure this is an alignment graph.
-  oaei_graph(Graph),
-  setoff(
-    % Take a pair that is not in the alignment graph.
-    rdf_subject(From, Subject1),
-    rdf_subject(To, Subject2),
-    shared_properties(Subject1, Subject2, Properties),
-    % There is a pair in the alignment graph with the same properties.
-    shared_properties(
-*/
+  oaei_graph(AlignmentGraph),
+  oaei_graph_to_alignments(AlignmentGraph, Alignments),
+  empty_assoc(EmptyAssoc),
+  put_alignments(Alignments, EmptyAssoc, Assoc),
+  assoc_to_keys(Assoc, Propertiess),
+  findall(
+    UpperAlignment,
+    (
+      member(Properties, Propertiess),
+      shared_properties(FromGraph, ToGraph, Properties, UpperAlignment)
+    ),
+    UpperAlignments
+  ).
+
+%% put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
+
+put_alignments([], Assoc, Assoc):-
+  !.
+put_alignments([[From, To] | Alignments], OldAssoc, FinalAssoc):-
+  shared_properties([From, To], Shared),
+  put_assoc(Shared, OldAssoc, From-To, NewAssoc),
+  put_alignments(Alignments, NewAssoc, FinalAssoc).
+
 
 
 % SHARED PROPERTIES %
 
-shared_properties(X, Y, Properties):-
+%% shared_properties(+Pair:list, -Properties:list(list)) is det.
+
+shared_properties([X, Y], Properties):-
+  var(Properties),
+  !,
   setoff(
-    Property,
-    shared_property(X, Y, Property),
+    Property-Value1,
+    (
+      rdf(X, Property, Value1),
+      %%%%% Exclude properties that occur multiple times for the same subject.
+      %%%%\+ (rdf(X, Property, Value2), Value2 \== Value1),
+      rdf(Y, Property, Value1)
+    ),
     Properties
   ).
 
-% Discernability
-shared_property(X, Y, Property-Value1):-
-  rdf(X, Property, Value1),
-  % Exclude properties that occur multiple times for the same subject.
-  \+ (rdf(X, Property, Value2), Value2 \== Value1),
-  rdf(Y, Property, Value1).
+%% shared_properties(
+%%   +FromGraph:atom,
+%%   +ToGraph:atom,
+%%   +Properties:ord_set(list),
+%%   -Pair:list
+%% ) is nondet.
 
-% Indiscernability
-shared_property_value(X, Y, [Property, [Value]]):-
-  rdf(X, Property, Value),
-  rdf(Y, Property, Value).
+shared_properties(
+  FromGraph,
+  ToGraph,
+  [FirstProperty-FirstValue | Properties],
+  [X, Y]
+):-
+  nonvar(Properties),
+  !,
+  % Find an X that has all the properties.
+  rdf(X, FirstProperty, FirstValue, FromGraph),
+  forall(
+    member(Property-Value, Properties),
+    rdf(X, Property, Value)
+  ),
+  % Find another Y that has all the properties as well.
+  rdf(Y, FirstProperty, FirstValue, ToGraph),
+  X \== Y,
+  forall(
+    member(Property-Value, Properties),
+    rdf(Y, Property, Value)
+  ).
 
 
 
-% SCRIPTS %
+/* TMP
+  setoff(
+    [FromResourceUpper, ToResourceUpper],
+    (
+      % Take a pair that is not in the alignment graph.
+      rdf_subject(FromGraph, FromResourceUpper),
+      rdf_subject(ToGraph, ToResourceUpper),
+      \+ member([FromResourceUpper, ToResourceUpper], Alignments),
+      shared_properties(FromResourceUpper, ToResourceUpper, SharedProperties),
+      % There is a pair in the alignment graph with the same properties.
+      member([FromResource, ToResource], Alignments),
+      shared_properties(FromResource, ToResource, SharedProperties)
+    ),
+    UpperAlignment
+  ).
 
 test1:-
   rdf_global_id(dbpedia:'Izaak_H._Reijnders', X),
@@ -217,4 +274,5 @@ assert_person(row(Person)):-
   thread_self(SelfId),
   assert_resource(Person, SelfId),
   thread_success(SelfId).
+*/
 
