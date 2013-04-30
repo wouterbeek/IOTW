@@ -7,7 +7,6 @@
 <xml>yes</xml>
 <level>0</level>
 <type>??</type>
-
 <map>
 	<Cell>
 		<entity1 rdf:resource="http://mouse.owl#MA_0002401"/>

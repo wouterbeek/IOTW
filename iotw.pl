@@ -15,22 +15,27 @@ My first publication with Stephan and Frank!
 */
 
 :- use_module(generics(assoc_multi)).
+:- use_module(generics(atom_ext)).
+:- use_module(generics(db_ext)).
+:- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
+:- use_module(generics(print_ext)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(owl(owl_entailment)).
 :- use_module(rdf(rdf_clean)).
-:- use_module(rdf(rdf_namespace)).
 :- use_module(rdf(rdf_serial)).
+:- use_module(rdf(rdf_statistics)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
-:- use_module(tests(semweb_tests)).
 
 :- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
 :- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
 
 
 
-check_anatomy:-
+% Assumption 1: Reference alignment loaded in graph =reference=.
+% Assumption 2: A linked dataset is loaded in graph =from=.
+% Assumption 3: Another linked dataset is loaded in graph =to=.
+check:-
   oaei_graph_to_alignments(reference, ReferenceAlignments),
 
   % Write the header of the table to user output.
@@ -45,7 +50,7 @@ check_anatomy:-
       % The given alignment relative to the reference alignment.
       oaei_graph_to_alignments(AlignmentGraph, RawAlignments),
       oaei_check_alignment(ReferenceAlignments, RawAlignments),
-      
+
       % The upper alignment relative to the reference alignment.
       upper(from, to, AlignmentGraph, UpperAlignments),
       oaei_check_alignment(ReferenceAlignments, UpperAlignments)
@@ -53,21 +58,19 @@ check_anatomy:-
   ).
 
 load_anatomy:-
+  assert_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))),
+
   % From
   absolute_file_name(
     anatomy(mouse),
     FromFile,
-    [access(read), file_type(owl), register_namespaces(true)]
+    [access(read), file_type(owl)]
   ),
-  rdf_load(FromFile, [graph(from)]),
+  rdf_load2(FromFile, [graph(from), register_namespaces(true)]),
 
   % To
-  absolute_file_name(
-    anatomy(human),
-    ToFile,
-    [access(read), file_type(owl), register_namespaces(true)]
-  ),
-  rdf_load(ToFile, [graph(to)]),
+  absolute_file_name(anatomy(human), ToFile, [access(read), file_type(owl)]),
+  rdf_load2(ToFile, to, [register_namespaces(true)]),
 
   % Reference
   absolute_file_name(
@@ -75,76 +78,159 @@ load_anatomy:-
     ReferenceFile,
     [access(read), file_type(rdf)]
   ),
-  rdf_load2(ReferenceFile),
+  rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
 
   % Raw alignments
   absolute_file_name(
-    anatomy_raw(.),
+    anatomy('Raw results'),
     RawDirectory,
     [access(read), file_type(directory)]
   ),
   rdf_load2(RawDirectory),
 
-  % Many data files have invalid namespace notation!
-  rdf_expand_namespace(_, _, _, _).
+  % Many data files have invalid namespace notation! Method from RDF_CLEAN.
+  rdf_expand_namespace(_, _, _, _),
 
-save_data:- %DEB
-  % Make sure we have all namespaces asserted when we save triples to file.
-  rdf_register_namespaces,
-  absolute_file_name(
-    auto(.),
-    Directory,
-    [access(read), file_type(directory)]
+  % Bring statistics into view.
+  check.
+
+load_instance_matching:-
+  rdf_register_prefix(
+    'IIMBTBOX',
+    'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
   ),
-  rdf_save2(Directory).
-
-
-
-/*
-% PROPERTY PATHS %
-
-compare_property_paths(X, OnlyX, Y, OnlyY, Shared):-
-  setoff(
-    PropertyPathX,
-    property_path(X, PropertyPathX),
-    PropertyPathsX
+  assert_novel(
+    user:file_search_path(instance_matching, oaei2012('Instance matching'))
   ),
-  setoff(
-    PropertyPathY,
-    property_path(Y, PropertyPathY),
-    PropertyPathsY
-  ),
-  ord_intersect(PropertyPathsX, PropertyPathsY, Shared),
-  ord_subtract(PropertyPathsX, Shared, OnlyX),
-  ord_subtract(PropertyPathsY, Shared, OnlyY).
+  assert_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
 
-% Leibniz' Law.
-% The principle of the indiscernability of identicals.
-leibniz_law(X, Y):-
-  owl_resource_identity(X, Y),
+  % From
+  absolute_file_name(iimb(onto), FromFile, [access(read), file_type(owl)]),
+  rdf_load(FromFile, [graph(from), register_namespaces(true)]),
+
+  % An ontology is linked against another ontology from one of the
+  % subdirectories.
   forall(
-    property_path(X, PropertyPath),
-    property_path(Y, PropertyPath)
-  ),
-  forall(
-    property_path(Y, PropertyPath),
-    property_path(X, PropertyPath)
+    (
+      between(1, 80, Index),
+      format_integer(Index, 3, SubdirectoryName)
+    ),
+    (
+      maplist(rdf_unload_graph, [reference,to]),
+      X =.. [iimb, SubdirectoryName],
+      absolute_file_name(X, Subdirectory, [file_type(directory)]),
+      % To
+      absolute_file_name(
+        onto,
+        ToFile,
+        [access(read), file_type(owl), relative_to(Subdirectory)]
+      ),
+      rdf_load(ToFile, [graph(to), register_namespaces(true)]),
+      % Reference
+      absolute_file_name(
+        refalign,
+        ReferenceFile,
+        [access(read), file_type(rdf), relative_to(Subdirectory)]
+      ),
+      rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
+      % Bring statistics into view.
+      check
+    )
   ).
 
-property_path(Subject, [Property | Properties]):-
-  rdf(Subject, Property, Object),
-  rdf_is_bnode(Object),
-  property_path(Object, Properties).
-property_path(Subject, [Property-Object]):-
-  rdf(Subject, Property, Object),
-  rdf_is_literal(Object).
-property_path(Subject, [Property-Object]):-
-  rdf(Subject, Property, Object),
-  rdf_is_resource(Object).
 
-shared_property_paths(X, Y, Shared):-
-  compare_property_paths(X, _OnlyX, Y, _OnlyY, Shared).
-*/
+
+% SHARED PROPERTIES %
+
+%% shared_properties(+Pair:list, -Properties:list(list)) is det.
+
+shared_properties([X, Y], Properties):-
+  var(Properties),
+  !,
+  setoff(
+    Property-Value,
+    (
+      rdf(X, Property, Value),
+      %%%%% Exclude properties that occur multiple times for the same subject.
+      %%%%\+ (rdf(X, Property, OtherValue), OtherValue \== Value),
+      rdf(Y, Property, Value)
+    ),
+    Properties
+  ).
+
+%% shared_properties(
+%%   +FromGraph:atom,
+%%   +ToGraph:atom,
+%%   +ReferenceGraph:atom, %DEB
+%%   +Properties:ord_set(list),
+%%   -Pair:list
+%% ) is nondet.
+
+shared_properties(
+  FromGraph,
+  ToGraph,
+  ReferenceGraph, %DEB
+  PredicateObjectPairs,
+  [X, Y]
+):-
+  nonvar(PredicateObjectPairs),
+  !,
+  first(PredicateObjectPairs, FirstPredicate-FirstObject),
+  % Find an X that has all the properties.
+  rdf(X, FirstPredicate, FirstObject, FromGraph),
+  forall(
+    member(Predicate-Object, PredicateObjectPairs),
+    rdf(X, Predicate, Object)
+  ),
+  % Find another Y that has all the properties as well.
+  rdf(Y, FirstPredicate, FirstObject, ToGraph),
+  X \== Y,
+  forall(
+    member(Predicate-Object, PredicateObjectPairs),
+    rdf(Y, Predicate, Object)
+  ),
+  %DEB
+  (
+    \+ oaei_alignment(ReferenceGraph, X, Y)
+  ->
+    format(user_output, 'NEW PAIR:\n\t~w\n\t~w\n', [X, Y]),
+gtrace,
+    maplist(
+      print_property(FromGraph, ToGraph),
+     [FirstPredicate-FirstObject | PredicateObjectPairs]
+    ),
+    count_subjects(PredicateObjectPairs, [FromGraph, ToGraph], These),
+    count_subjects(_AnyPredicate, _AnyObject, [FromGraph, ToGraph], Any),
+    format(user_output, '[~w/~w] COMBINED\n\n', [These, Any])
+  ;
+    true
+  ).
+
+print_property(Graph1, Graph2, Predicate-Object):-
+  abbreviate(Predicate, PredicateAbbr),
+  abbreviate(Object, ObjectAbbr),
+  count_subjects(Predicate, Object, [Graph1, Graph2], These),
+  count_subjects(_AnyPredicate1, _AnyObject1, [Graph1, Graph2], Any),
+  format(
+    user_output,
+    '[~w/~w] ~w---~w\n',
+    [These, Any, PredicateAbbr, ObjectAbbr]
+  ).
+
+abbreviate(literal(lang(Lang, Value)), Abbr):-
+  !,
+  format(atom(Abbr), '~w^^~w', [Value, Lang]).
+abbreviate(literal(type(Type, Value)), Abbr):-
+  !,
+  abbreviate(Type, TypeAbbr),
+  format(atom(Abbr), '~w^^~w', [Value, TypeAbbr]).
+abbreviate(literal(Abbr), Abbr):-
+  !.
+abbreviate(URI, Abbr):-
+  rdf_global_id(Namespace:Local, URI),
+  !,
+  format(atom(Abbr), '~w:~w', [Namespace, Local]).
+abbreviate(Abbr, Abbr).
 
 
 
@@ -157,11 +243,19 @@ upper(FromGraph, ToGraph, AlignmentGraph, UpperAlignments):-
   empty_assoc(EmptyAssoc),
   put_alignments(Alignments, EmptyAssoc, Assoc),
   assoc_to_keys(Assoc, Propertiess),
+%gtrace, %DEB
+%print_list(user_output, Propertiess),
   findall(
     UpperAlignment,
     (
       member(Properties, Propertiess),
-      shared_properties(FromGraph, ToGraph, Properties, UpperAlignment)
+      shared_properties(
+        FromGraph,
+        ToGraph,
+        AlignmentGraph,
+        Properties,
+        UpperAlignment
+      )
     ),
     UpperAlignments
   ).
@@ -174,105 +268,4 @@ put_alignments([[From, To] | Alignments], OldAssoc, FinalAssoc):-
   shared_properties([From, To], Shared),
   put_assoc(Shared, OldAssoc, From-To, NewAssoc),
   put_alignments(Alignments, NewAssoc, FinalAssoc).
-
-
-
-% SHARED PROPERTIES %
-
-%% shared_properties(+Pair:list, -Properties:list(list)) is det.
-
-shared_properties([X, Y], Properties):-
-  var(Properties),
-  !,
-  setoff(
-    Property-Value1,
-    (
-      rdf(X, Property, Value1),
-      %%%%% Exclude properties that occur multiple times for the same subject.
-      %%%%\+ (rdf(X, Property, Value2), Value2 \== Value1),
-      rdf(Y, Property, Value1)
-    ),
-    Properties
-  ).
-
-%% shared_properties(
-%%   +FromGraph:atom,
-%%   +ToGraph:atom,
-%%   +Properties:ord_set(list),
-%%   -Pair:list
-%% ) is nondet.
-
-shared_properties(
-  FromGraph,
-  ToGraph,
-  [FirstProperty-FirstValue | Properties],
-  [X, Y]
-):-
-  nonvar(Properties),
-  !,
-  % Find an X that has all the properties.
-  rdf(X, FirstProperty, FirstValue, FromGraph),
-  forall(
-    member(Property-Value, Properties),
-    rdf(X, Property, Value)
-  ),
-  % Find another Y that has all the properties as well.
-  rdf(Y, FirstProperty, FirstValue, ToGraph),
-  X \== Y,
-  forall(
-    member(Property-Value, Properties),
-    rdf(Y, Property, Value)
-  ).
-
-
-
-/* TMP
-  setoff(
-    [FromResourceUpper, ToResourceUpper],
-    (
-      % Take a pair that is not in the alignment graph.
-      rdf_subject(FromGraph, FromResourceUpper),
-      rdf_subject(ToGraph, ToResourceUpper),
-      \+ member([FromResourceUpper, ToResourceUpper], Alignments),
-      shared_properties(FromResourceUpper, ToResourceUpper, SharedProperties),
-      % There is a pair in the alignment graph with the same properties.
-      member([FromResource, ToResource], Alignments),
-      shared_properties(FromResource, ToResource, SharedProperties)
-    ),
-    UpperAlignment
-  ).
-
-test1:-
-  rdf_global_id(dbpedia:'Izaak_H._Reijnders', X),
-  assert_resource(X, iotw),
-  rdf_global_id(dbpedia:'Didier_Reynders', Y),
-  assert_resource(Y, iotw),
-
-  format(user, 'SHARED PROPERTIES\n', []),
-  setoff(P, shared_property(X, Y, P), Ps),
-  print_list(user, Ps),
-
-  format(user, 'SHARED PROPERTY VALUES\n', []),
-  setoff(PV, shared_property_value(X, Y, PV), PVs),
-  print_list(user, PVs).
-
-test2:-
-  formulate_sparql(
-    [],
-    'SELECT DISTINCT ?s',
-    ['  ?s a foaf:Person .'],
-    0,
-    Query
-  ),
-  enqueue_sparql(dbpedia, Query, _VarNames, Rows),
-  run_on_sublists(Rows, identity:assert_persons).
-
-assert_persons(List):-
-  maplist(assert_person, List).
-
-assert_person(row(Person)):-
-  thread_self(SelfId),
-  assert_resource(Person, SelfId),
-  thread_success(SelfId).
-*/
 

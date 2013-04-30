@@ -11,8 +11,6 @@ load_iotw:-
   % Use a subdirectory for data files.
   assert(user:file_search_path(data, project('Data'))),
   assert(user:file_search_path(oaei2012, data('OAEI 2012'))),
-  assert(user:file_search_path(anatomy, oaei2012('Anatomy'))),
-  assert(user:file_search_path(anatomy_raw, anatomy('Raw results'))),
   
   % Load the PGC.
   assert(user:file_search_path(pgc, project('PGC'))),
