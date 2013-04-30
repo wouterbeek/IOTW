@@ -1,0 +1,1434 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment#" xmlns:align="http://knowledgeweb.semanticweb.org/heterogeneity/alignment#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+    <Alignment>
+        <xml>yes</xml>
+        <level>0</level>
+        <type>**</type>
+        <onto1>http://www.instancematching.org/IIMB2012/</onto1>
+        <onto2>http://www.instancematching.org/IIMB2012/068</onto2>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/russian"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4575371472931910927"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/kenneth_colley"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4825151319330514247"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/maseru"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4456672064155863924"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/douglas_isle_of_man"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4686850678678682831"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/james_earl_jones"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5813702071639701898"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/dominica"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3022397032222936729"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/banjul"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3812638903318723448"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/wayne_pygram"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3299283471375854298"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvd47l"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item8799729305653947358"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/keira_knightley"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7314767930669542363"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/hamilton_bermuda"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8227402264545986226"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/pittsburgh"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2338163226502558083"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/minsk"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7052939430514965552"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/st_georges"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item164719715656465975"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/john_ratzenberger"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9211181753799886430"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/cootamundra"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1580387138475275032"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/crieff"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4893372452195724486"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/rwanda"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item245797373622736909"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgl_j"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item2246153224614897635"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/cockburn_town"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item683385848928903276"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/star_wars_gangsta_rap"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2293274565167060322"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/hereford"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6263475142657666740"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/solomon_islands"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5005212779140339499"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0k3r5j"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item8263997809609323938"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/glasgow"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1054116798002831491"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/vancouver_british_columbia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item634413215563010757"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/greenville_mississippi"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item118342004620014509"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvd49t"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item5429053230639800825"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/yoda"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5814885392261428489"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jango_fett"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2222223835133570871"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/united_states"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2736037831701271005"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/bail_organa"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item198818084047360557"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/teddington"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6645272245505677395"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/port_vila"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4977848104521848262"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/obi-wan_kenobi"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3765677425167316061"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/bishkek"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item190876620133277714"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvglzq"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item6326132765798076318"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/laos"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2136381676234461516"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/eddie_byrne"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6672167892065877207"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/manly_new_south_wales"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4373545035316499321"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgl_4"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item7510207306019625286"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/birmingham"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item965632666105812288"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/malta"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4687536334216799362"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/holt"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9066890931823805192"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/united_states_virgin_islands"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item782997854735208262"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/hugh_quarshie"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item113312100693813302"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/zambia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5695969557123302069"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/federated_states_of_micronesia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3912876382563461802"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgm4r"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item5093006265232302410"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvglyx"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item8400016734563527316"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/sebastian_shaw_1905"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item873544256208065366"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/san_juan_puerto_rico"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6785186642564104647"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/montserrat"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7737343240723345121"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/san_fernando_valley"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1196007372829838191"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jim_henson"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4254129456080317318"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgm4c"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item6176952334884164840"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/new_york"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4095156371516786484"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvglz8"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item9053676285336534242"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvglxv"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item8263272794461000746"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/arkabutla"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8492510176638463456"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/brooklyn"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5386514511162478187"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/grytviken"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2408340704188981316"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/guyana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8322124791854073969"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/leytonstone"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3973558673561465094"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/market_harborough"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3512636126706136560"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/kiev"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9016396032198801487"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/kampala"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5077509181688146438"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/liam_neeson"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7515273941261966928"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/ian_abercrombie"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3768783358605651115"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgm5l"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item6969709519158842750"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/stepney"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4654173516901818949"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/alex_mccrindle"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item572751925078564910"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/port_louis"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3639610923850872312"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/saint_kitts_and_nevis"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7315593224981613817"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/territory_of_papua_and_new_guinea"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3783543622566139385"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/lando_calrissian"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4659169871367590408"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/stockholm"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4076862454442625103"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0k3r31"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item9026019906899305732"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/trinidad_and_tobago"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6928050584385562474"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/corey_burton"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7515752169418468177"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/clive_revill"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1620736262769265724"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/yaounde"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2380437410392835958"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvgm3x"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item1775628370318970408"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jake_lloyd"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1915601492541694920"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/ghana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3458818793682125356"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/boba_fett"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item606219318128578809"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/richard_leparmentier"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9160580733143238903"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/bristol"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3642806153534601086"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/ahsoka_tano"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5463106573440043351"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/kenya"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7718381736464014555"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/the_valley_anguilla"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2292560173277765268"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/harrison_ford"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1857509904061351915"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/billy_dee_williams"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2849699950234553147"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvhs57"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item3000950551201005710"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvhs3v"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item1322242935511191198"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/stuart_freeborn"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7786795683795886266"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/roseau"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1090949235419310149"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/richard_marquand"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1389962253311201058"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/antigua_and_barbuda"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1105019839364518743"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/ballymena"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2409164372406490924"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/tbilisi"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2280782986887432853"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0k3q_v"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item4867670184626085045"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/tuvalu"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8436631099907062989"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/han_solo"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item314557448827813929"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/rotorua"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4317495228488536174"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/burbank"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9128563112372499668"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/accra"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7574221357504308237"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/ethiopia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3868542185769577035"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jerusalem"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6338232348148584689"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/r2-d2"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6894695874792065224"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/louisville"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7288042640557214448"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/mas_amedda"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6599964786186110932"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/star_wars_episode_vi_return_of_the_jedi"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item186314030401003650"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jar_jar_binks"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9050557538788470711"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/brian_blessed"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8913786743194462704"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/star_wars_episode_v_the_empire_strikes_back"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6558454074680815368"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/manchester_united_kingdom"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7528789511782583644"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/addis_ababa"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4878226339656259205"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/finis_valorum"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6045838324978303098"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/astana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6305513473680757973"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/indiana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7574726109354481146"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/gibraltar"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4010141468889579949"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvd4c2"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item975779352357770519"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jason_wingreen"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4266980885961641022"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/christopher_lee"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2860449176962549930"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/castries"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7436909643377660999"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/australia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3189878875534886671"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/abuja"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item271357698374961200"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/south_tarawa"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4041267712560776537"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/apia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6281951035452592180"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/malaysia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6096839465045252585"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/princess_leia_organa"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5873152783537378260"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/barbados"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3533191278135936653"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/authority/iso/3166-1/numeric/268"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/authority/iso/3166-1/numeric/item5988958374189366613"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/belgravia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2405404795338976706"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/star_wars_revelations"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7423798626539334618"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/0bvd6qh"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item6853085902417127233"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/anthony_daniels"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6317938189338484482"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/bruce_spence"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7504098491013677890"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/sydney"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8995367330623256633"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/south_africa"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4817580059115236313"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/plymouth"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7315842761617083440"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/australian_capital_territory"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3539027722675090928"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/namibia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7388708834659281787"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/peter_cushing"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2706701830749506673"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/dee_bradley_baker"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3914543977488242321"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/lusaka"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3375141677913961195"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/suva"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5007578688602534109"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/nigeria"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2090041853353776106"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/frank_oz"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6802912412962522868"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/washington_united_states"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5060036731668313578"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/qui-gon_jinn"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3870077254368569815"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/david_prowse"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8250735555172325287"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/modesto"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item5814933688325535913"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/asajj_ventress"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4662337412532452850"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/singapore"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2992313326704433930"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/bandar_seri_begawan"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6232838238684941095"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/botswana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2421321659752586811"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/new_york_state"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4244377612306622368"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/monrovia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8901782458087120720"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/belmopan"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item1722284247777438490"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/lesotho"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7022283229687409497"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/second_polish_republic"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8263182116996994767"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/south_georgia_and_the_south_sandwich_islands"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8306204579177716763"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/vanuatu"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7105554869055829557"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/pernilla_august"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item9175681816583295401"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/russia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2075621456373619237"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/jersey"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4643546778533288416"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/donnybrook_australia"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6221858835791261813"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/samuel_l_jackson"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item6774087710132596751"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/vatican_city"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item3419398832308923702"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/georgetown_guyana"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item2766077908458307661"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/kingston_jamaica"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8119251714173618602"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/01xpnvx"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/m/item5666339090110364516"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/valletta"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item7927888148153087676"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/adamstown_pitcairn_island"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item8035167811857933522"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/english"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item306046010814822672"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+        <map>
+            <Cell>
+                <entity1 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/lesotho"/>
+                <entity2 rdf:resource="http://oaei.ontologymatching.org/2012/IIMBDATA/en/item4319477667149989531"/>
+                <relation>=</relation>
+                <measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+            </Cell>
+        </map>
+    </Alignment>
+</rdf:RDF>

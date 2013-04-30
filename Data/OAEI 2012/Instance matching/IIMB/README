@@ -1,0 +1,23 @@
+README
+
+The sandbox testcase is conceived for testing matching algorithms by working on 80 matching tasks.
+
+The reference ontology can be found in:
+
+iimb/onto.owl
+
+Participants are required to match iimb/onto.owl against iimb/[testcasenumber]/onto.owl, with [testcasenumber] ranging from 000 to 080.
+
+Format required for results:
+
+Resulting alignment should be provided in the RDFAlignment format in a directory containing:
+
+[testcasenumber]/[toolname].owl
+
+exemple:
+001/mytool.rdf
+002/mytool.rdf
+...
+080/mytool.rdf
+
+Details about transformations applied for each test case are provided in the file description.txt
