@@ -1,5 +1,6 @@
 *~
-Data/old/
+Data/*.dot
+Data/*.xdot
 *.aux
 *.log
 *.pdf
