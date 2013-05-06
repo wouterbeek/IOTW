@@ -31,8 +31,8 @@ My first publication with Stephan and Frank!
 %:- use_module(rdfs(rdfs_entailment)).
 %:- rdf_assert(rdf:zzz, rdfs:subPropertyOf, rdf:type).
 %:- rdf_assert(rdf:a, rdf:zzz, rdf:b).
-
-:- use_module(logic(rdf_model_theory)).
+%:- use_module(logic(rdf_model_theory)).
+:- use_module(rdf(rdf_tms)).
 
 :- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
 :- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
