@@ -26,6 +26,7 @@ My first publication with Stephan and Frank!
 :- use_module(rdf(rdf_statistics)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
+:- use_module(xml(xml_namespace)).
 
 %:- use_module(rdf(rdf_entailment)).
 %:- use_module(rdfs(rdfs_entailment)).
@@ -34,8 +35,8 @@ My first publication with Stephan and Frank!
 %:- use_module(logic(rdf_model_theory)).
 :- use_module(rdf(rdf_tms)).
 
-:- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
-:- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
+:- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
+:- xml_register_namespace(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
 
 
 
@@ -65,7 +66,7 @@ check:-
   ).
 
 load_anatomy:-
-  assert_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))),
+  db_add_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))),
 
   % From
   absolute_file_name(
@@ -106,10 +107,10 @@ load_instance_matching:-
     'IIMBTBOX',
     'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
   ),
-  assert_novel(
+  db_add_novel(
     user:file_search_path(instance_matching, oaei2012('Instance matching'))
   ),
-  assert_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
+  db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
 
   % From
   absolute_file_name(iimb(onto), FromFile, [access(read), file_type(owl)]),
@@ -275,4 +276,3 @@ put_alignments([[From, To] | Alignments], OldAssoc, FinalAssoc):-
   shared_properties([From, To], Shared),
   put_assoc(Shared, OldAssoc, From-To, NewAssoc),
   put_alignments(Alignments, NewAssoc, FinalAssoc).
-
