@@ -144,7 +144,29 @@ load_instance_matching:-
 
 % SHARED PROPERTIES %
 
-%% shared_properties(+Pair:list, -Properties:list(list)) is det.
+shared_properties(Graph):-
+  AssocName = shared_properties,
+  register_assoc(AssocName),
+  forall(
+    (
+      rdf_subject(Graph, Subject1),
+      rdf_subject(Graph, Subject2),
+      Subject1 \== Subject2
+    ),
+    (
+      setoff(
+        Property,
+        (
+          rdf(Subject1, Property, Object, Graph),
+          rdf(Subject2, Property, Object, Graph)
+        ),
+        Properties
+      ),
+      put_assoc(Properties, AssocName, [Subject1, Subject2])
+    )
+  ).
+
+%! shared_properties(+Pair:list, -Properties:list(list)) is det.
 
 shared_properties([X, Y], Properties):-
   var(Properties),
@@ -153,20 +175,20 @@ shared_properties([X, Y], Properties):-
     Property-Value,
     (
       rdf(X, Property, Value),
-      %%%%% Exclude properties that occur multiple times for the same subject.
+      %%%%! Exclude properties that occur multiple times for the same subject.
       %%%%\+ (rdf(X, Property, OtherValue), OtherValue \== Value),
       rdf(Y, Property, Value)
     ),
     Properties
   ).
 
-%% shared_properties(
-%%   +FromGraph:atom,
-%%   +ToGraph:atom,
-%%   +ReferenceGraph:atom, %DEB
-%%   +Properties:ord_set(list),
-%%   -Pair:list
-%% ) is nondet.
+%! shared_properties(
+%!   +FromGraph:atom,
+%!   +ToGraph:atom,
+%!   +ReferenceGraph:atom, %DEB
+%!   +Properties:ord_set(list),
+%!   -Pair:list
+%! ) is nondet.
 
 shared_properties(
   FromGraph,
@@ -261,7 +283,7 @@ upper(FromGraph, ToGraph, AlignmentGraph, UpperAlignments):-
     UpperAlignments
   ).
 
-%% put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
+%! put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
 
 put_alignments([], Assoc, Assoc):-
   !.
