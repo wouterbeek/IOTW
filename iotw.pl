@@ -19,7 +19,6 @@ My first publication with Stephan and Frank!
 :- use_module(generics(db_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(print_ext)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_serial)).
@@ -69,11 +68,11 @@ load_anatomy:-
     FromFile,
     [access(read), file_type(owl)]
   ),
-  rdf_load2(FromFile, 'RDF/XML', from, [register_namespaces(true)]),
+  rdf_load2(FromFile, [format(xml), graph(from), register_namespaces(true)]),
 
   % To
   absolute_file_name(anatomy(human), ToFile, [access(read), file_type(owl)]),
-  rdf_load2(ToFile, 'RDF/XML', to, [register_namespaces(true)]),
+  rdf_load2(ToFile, [format(xml), graph(to), register_namespaces(true)]),
 
   % Reference
   absolute_file_name(
@@ -81,7 +80,7 @@ load_anatomy:-
     ReferenceFile,
     [access(read), file_type(rdf)]
   ),
-  rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
+  rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
 
   % Raw alignments
   absolute_file_name(
@@ -135,7 +134,7 @@ load_instance_matching:-
         ReferenceFile,
         [access(read), file_type(rdf), relative_to(Subdirectory)]
       ),
-      rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
+      rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
       % Bring statistics into view.
       check
     )
