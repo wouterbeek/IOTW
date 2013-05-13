@@ -11,7 +11,7 @@ module(
 My first publication with Stephan and Frank!
 
 @author Wouter Beek
-@version 2013/04
+@version 2013/04-2013/05
 */
 
 :- use_module(generics(assoc_multi)).
@@ -24,19 +24,14 @@ My first publication with Stephan and Frank!
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_statistics)).
+:- use_module(rdf(rdf_tms)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).
 
-%:- use_module(rdf(rdf_entailment)).
-%:- use_module(rdfs(rdfs_entailment)).
-%:- rdf_assert(rdf:zzz, rdfs:subPropertyOf, rdf:type).
-%:- rdf_assert(rdf:a, rdf:zzz, rdf:b).
-%:- use_module(logic(rdf_model_theory)).
-:- use_module(rdf(rdf_tms)).
-
 :- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
-:- xml_register_namespace(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
+:- xml_register_namespace(oboInOwl,
+                          'http://www.geneontology.org/formats/oboInOwl#').
 
 
 
@@ -74,11 +69,11 @@ load_anatomy:-
     FromFile,
     [access(read), file_type(owl)]
   ),
-  rdf_load2(FromFile, [graph(from), register_namespaces(true)]),
+  rdf_load2(FromFile, 'RDF/XML', from, [register_namespaces(true)]),
 
   % To
   absolute_file_name(anatomy(human), ToFile, [access(read), file_type(owl)]),
-  rdf_load2(ToFile, to, [register_namespaces(true)]),
+  rdf_load2(ToFile, 'RDF/XML', to, [register_namespaces(true)]),
 
   % Reference
   absolute_file_name(
@@ -202,7 +197,6 @@ shared_properties(
     \+ oaei_alignment(ReferenceGraph, X, Y)
   ->
     format(user_output, 'NEW PAIR:\n\t~w\n\t~w\n', [X, Y]),
-gtrace,
     maplist(
       print_property(FromGraph, ToGraph),
      [FirstPredicate-FirstObject | PredicateObjectPairs]
@@ -276,3 +270,4 @@ put_alignments([[From, To] | Alignments], OldAssoc, FinalAssoc):-
   shared_properties([From, To], Shared),
   put_assoc(Shared, OldAssoc, From-To, NewAssoc),
   put_alignments(Alignments, NewAssoc, FinalAssoc).
+
