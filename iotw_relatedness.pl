@@ -23,7 +23,7 @@ digraph onto_126 {
     0 [shape="plaintext"];
     node_n0 [color="black", label="{} (65%)", shape="rectangle", style="solid"];
   }
-  
+
   {
     rank=same;
     1 [shape="plaintext"];
@@ -45,7 +45,7 @@ digraph onto_126 {
     node_n22 [color="blue", label="< IIMBTBOX:mainly_spoken_in, rdf:type > (0%)", shape="rectangle", style="solid"];
     node_n23 [color="blue", label="< IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
   }
-  
+
   {
     rank=same;
     3 [shape="plaintext"];
@@ -69,12 +69,12 @@ digraph onto_126 {
     node_n10 [color="blue", label="< IIMBTBOX:featured_by, IIMBTBOX:featuring, IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
     node_n14 [color="blue", label="< IIMBTBOX:featuring, IIMBTBOX:filmed_in, IIMBTBOX:shot_in, rdf:type > (0%)", shape="rectangle", style="solid"];
   }
-  
+
   0 -> 1;
   1 -> 2;
   2 -> 3;
   3 -> 4;
-  
+
   node_n5 -> node_n3 [color="black", style="solid"];
   node_n5 -> node_n4 [color="black", style="solid"];
   node_n7 -> node_n6 [color="black", style="solid"];
@@ -203,7 +203,7 @@ export_shared_properties(Stream, Graph, Assoc):-
     (
       member(Key, Keys),
       assoc:get_assoc(Key, Assoc, Values),
-      cardinality(Values, 1)
+      cardinality(Values, 1),
       nth1(I, Keys, Key),
       format(atom(ToNode), 'n~w', [I])
     ),
@@ -283,9 +283,28 @@ rdf_shared_properties(Graph):-
 % <{P},{<S1,S2>,<S3,S4>}>
 % ==
 
+rdf_shared2([], _BottomLayer, Assoc, Assoc):-
+  !.
+rdf_shared2([PSet | PSets], SingletonPSets, OldAssoc, SolAssoc):-
+  member(SingletonPSet, SingletonPSets),
+  \+ ord_subset(SingletonPSet, PSet),
+  assoc:get_assoc(PSet, OldAssoc, PSetPairs),
+  assoc:get_assoc(SingletonPSet, OldAssoc, SingletonPSetPairs),
+  ord_intersection(PSetPairs, SingletonPSetPairs, NewPSetPairs),
+  (
+    empty_assoc(NewPSetPairs)
+  ->
+    NewPSets = PSets
+  ;
+    ord_union(PSet, SingletonPSet, NewPSet),
+    assoc:put_assoc(NewPSet, OldAssoc, NewPSetPairs, NewAssoc),
+    append(PSets, [NewPSet], NewPSets)
+  ),
+  rdf_shared2(NewPSet, SingletonPSets, NewAssoc, SolAssoc).
+
 rdf_shared_properties(Graph, AssocN):-
   empty_assoc(Assoc0),
-  rdf_subjects(Graph, Subjects),
+  rdf_predicates(Graph, Predicates),
   findall(
     Subject1-Subject2,
     (
