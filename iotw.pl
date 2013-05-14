@@ -20,6 +20,7 @@ My first publication with Stephan and Frank!
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(project(iotw_relatedness)).
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_statistics)).
@@ -31,6 +32,9 @@ My first publication with Stephan and Frank!
 :- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
 :- xml_register_namespace(oboInOwl,
                           'http://www.geneontology.org/formats/oboInOwl#').
+
+% Root
+http:location(root, '/prasem/', []).
 
 
 
@@ -140,31 +144,18 @@ load_instance_matching:-
     )
   ).
 
+%! load_shared_properties is det.
+% Produces statistics for the shared properties in various datasets.
+
+load_shared_properties:-
+  absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
+  path_walk_tree(DataDir, '.*.owl$', DataFiles),
+  forall(member(DataFile, DataFiles), rdf_load2(DataFile, [])),
+  forall(rdf_graph(Graph), rdf_shared_properties(Graph)).
+
 
 
 % SHARED PROPERTIES %
-
-shared_properties(Graph):-
-  AssocName = shared_properties,
-  register_assoc(AssocName),
-  forall(
-    (
-      rdf_subject(Graph, Subject1),
-      rdf_subject(Graph, Subject2),
-      Subject1 \== Subject2
-    ),
-    (
-      setoff(
-        Property,
-        (
-          rdf(Subject1, Property, Object, Graph),
-          rdf(Subject2, Property, Object, Graph)
-        ),
-        Properties
-      ),
-      put_assoc(Properties, AssocName, [Subject1, Subject2])
-    )
-  ).
 
 %! shared_properties(+Pair:list, -Properties:list(list)) is det.
 
