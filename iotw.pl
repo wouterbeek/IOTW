@@ -17,6 +17,7 @@ My first publication with Stephan and Frank!
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
+:- use_module(generics(file_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(library(semweb/rdf_db)).
@@ -28,6 +29,8 @@ My first publication with Stephan and Frank!
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).
+
+:- db_add_novel(user:prolog_file_type(assoc, assoc)).
 
 :- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
 :- xml_register_namespace(oboInOwl,
@@ -144,14 +147,39 @@ load_instance_matching:-
     )
   ).
 
-%! load_shared_properties is det.
-% Produces statistics for the shared properties in various datasets.
+load_shared_properties1:-
+  Graph = test1,
+  \+ rdf_graph(Graph),
+  rdf_assert(rdf:a, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:b, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
+  rdf_shared_properties(Graph),
+  rdf_unload_graph(Graph).
 
-load_shared_properties:-
+load_shared_properties2:-
+  Graph = test2,
+  \+ rdf_graph(Graph),
+  absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
+  rdf_load2(File, [graph(Graph)]),
+  rdf_shared_properties(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties3:-
   absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
   path_walk_tree(DataDir, '.*.owl$', DataFiles),
   forall(member(DataFile, DataFiles), rdf_load2(DataFile, [])),
-  forall(rdf_graph(Graph), rdf_shared_properties(Graph)).
+  forall(
+    rdf_graph(Graph),
+    (
+      rdf_statistics(triples_by_graph(Graph, NumberOfTriples)),
+      format(user_output, '~w\t~w\n', [Graph, NumberOfTriples])
+    )
+  ).
+
+load_shared_properties(Graph):-
+  thread_create(rdf_shared_properties(Graph), _ThreadId, [detached(true)]).
 
 
 
