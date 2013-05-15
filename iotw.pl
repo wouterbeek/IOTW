@@ -1,8 +1,8 @@
 module(
   iotw,
   [
-    check_anatomy/0,
-    load_anatomy/0
+    load_iimb_web/2 % +Integer:integer
+                    % -SVG:dom
   ]
 ).
 
@@ -89,7 +89,8 @@ load_anatomy:-
   ),
   rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
 
-  % Raw alignments
+  % Raw alignments.
+  % These graphs can be found using oaei_graph/1.
   absolute_file_name(
     anatomy('Raw results'),
     RawDirectory,
@@ -100,8 +101,10 @@ load_anatomy:-
   % Many data files have invalid namespace notation! Method from RDF_CLEAN.
   rdf_expand_namespace(_, _, _, _),
 
-  % Bring statistics into view.
-  check.
+  rdf_graph_merge([from, to], from_and_to),
+  % Set global stack to 2GB. This requires a 64-bit machine and OS.
+  set_prolog_stack(global, limit(2*10**9)),
+  rdf_shared(from_and_to).
 
 load_instance_matching:-
   rdf_register_prefix(
@@ -155,7 +158,7 @@ load_shared_properties1:-
   rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
   rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
   rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
-  rdf_shared_properties(Graph),
+  rdf_shared(Graph),
   rdf_unload_graph(Graph).
 
 load_shared_properties2:-
@@ -163,23 +166,49 @@ load_shared_properties2:-
   \+ rdf_graph(Graph),
   absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
   rdf_load2(File, [graph(Graph)]),
-  rdf_shared_properties(Graph),
+  rdf_shared(Graph),
   rdf_unload_graph(Graph).
 
-load_shared_properties3:-
+load_iimb(Integer, SVG):-
+  between(0, 80, Integer),
+  xml_register_namespace(
+    'IIMBTBOX',
+    'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
+  ),
+  db_add_novel(
+    user:file_search_path(instance_matching, oaei2012('Instance matching'))
+  ),
+  db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
+  absolute_file_name(iimb(onto), BaseFile, [access(read), file_type(owl)]),
+  rdf_load2(BaseFile, [graph(iotw_part1)]),
+  format_integer(Integer, 3, SubDirName),
+  absolute_file_name(
+    iimb(SubDirName),
+    SubDir,
+    [access(read), file_type(directory)]
+  ),
+  absolute_file_name(
+    onto,
+    OWL_File,
+    [access(read), file_type(owl), relative_to(SubDir)]
+  ),
+  absolute_file_name(
+    refalign,
+    RDF_File,
+    [access(read), file_type(rdf), relative_to(SubDir)]
+  ),
+  rdf_load2(OWL_File, [graph(iotw_part2)]),
+  rdf_graph_merge([iotw_part1,iotw_part2], iotw_data),
+  oaei_file_to_alignments(RDF_File, Alignments),
+  rdf_shared(iotw_data, Alignments, SVG).
+
+load_shared_properties4:-
   absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
   path_walk_tree(DataDir, '.*.owl$', DataFiles),
   forall(member(DataFile, DataFiles), rdf_load2(DataFile, [])),
-  forall(
-    rdf_graph(Graph),
-    (
-      rdf_statistics(triples_by_graph(Graph, NumberOfTriples)),
-      format(user_output, '~w\t~w\n', [Graph, NumberOfTriples])
-    )
-  ).
-
-load_shared_properties(Graph):-
-  thread_create(rdf_shared_properties(Graph), _ThreadId, [detached(true)]).
+  % Set global stack to 2GB. This requires a 64-bit machine and OS.
+  set_prolog_stack(global, limit(2*10**9)),
+  forall(rdf_graph(Graph), rdf_shared(Graph)).
 
 
 

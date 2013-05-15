@@ -1,122 +1,16 @@
 :- module(
   iotw_relatedness,
   [
-    export_shared_properties/2, % +Graph:atom
-                                % +Assoc
-    export_shared_properties/3, % +Out:oneof([atom,stream])
-                                % +Graph:atom
-                                % +Assoc
-    rdf_shared_properties/1, % +Graph:atom
-    rdf_shared_properties/2 % +Graph:atom
-                            % -Assoc
+    rdf_shared/1, % +Graph:atom
+    rdf_shared/2, % +Graph:atom
+                  % +Alignments:list(pair)
+    rdf_shared/3 % +Graph:atom
+                 % +Alignments:list(pair)
+                 % -SVG:dom
   ]
 ).
 
 /** <module>
-
-@tbd Ranked output:
-
-==
-digraph onto_126 {
-  {
-    rank=same;
-    0 [shape="plaintext"];
-    node_n0 [color="black", label="{} (65%)", shape="rectangle", style="solid"];
-  }
-
-  {
-    rank=same;
-    1 [shape="plaintext"];
-    node_n24 [color="blue", label="< rdf:type > (92%)", shape="rectangle", style="solid"];
-  }
-
-  {
-    rank=same;
-    2 [shape="plaintext"];
-    node_n5 [color="blue", label="< IIMBTBOX:calling_code, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n25 [color="blue", label="< rdf:type, rdfs:subClassOf > (0%)", shape="rectangle", style="solid"];
-    node_n26 [color="blue", label="< rdf:type, rdfs:subPropertyOf > (0%)", shape="rectangle", style="solid"];
-    node_n9 [color="blue", label="< IIMBTBOX:currency, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n13 [color="blue", label="< IIMBTBOX:featured_by, rdf:type > (1%)", shape="rectangle", style="solid"];
-    node_n16 [color="blue", label="< IIMBTBOX:featuring, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n18 [color="blue", label="< IIMBTBOX:filmed_in, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n19 [color="blue", label="< IIMBTBOX:form_of_government, rdf:type > (1%)", shape="rectangle", style="solid"];
-    node_n21 [color="blue", label="< IIMBTBOX:gender, rdf:type > (5%)", shape="rectangle", style="solid"];
-    node_n22 [color="blue", label="< IIMBTBOX:mainly_spoken_in, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n23 [color="blue", label="< IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
-  }
-
-  {
-    rank=same;
-    3 [shape="plaintext"];
-    node_n2 [color="blue", label="< IIMBTBOX:born_in, IIMBTBOX:gender, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n3 [color="blue", label="< IIMBTBOX:calling_code, IIMBTBOX:currency, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n4 [color="blue", label="< IIMBTBOX:calling_code, IIMBTBOX:form_of_government, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n7 [color="blue", label="< IIMBTBOX:created_by, IIMBTBOX:gender, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n8 [color="blue", label="< IIMBTBOX:currency, IIMBTBOX:form_of_government, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n11 [color="blue", label="< IIMBTBOX:featured_by, IIMBTBOX:gender, rdf:type > (1%)", shape="rectangle", style="solid"];
-    node_n12 [color="blue", label="< IIMBTBOX:featured_by, IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n15 [color="blue", label="< IIMBTBOX:featuring, IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n17 [color="blue", label="< IIMBTBOX:filmed_in, IIMBTBOX:shot_in, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n20 [color="blue", label="< IIMBTBOX:gender, IIMBTBOX:religion, rdf:type > (0%)", shape="rectangle", style="solid"];
-  }
-
-  {
-    rank=same;
-    4 [shape="plaintext"];
-    node_n1 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n6 [color="blue", label="< IIMBTBOX:created_by, IIMBTBOX:featured_by, IIMBTBOX:gender, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n10 [color="blue", label="< IIMBTBOX:featured_by, IIMBTBOX:featuring, IIMBTBOX:name, rdf:type > (0%)", shape="rectangle", style="solid"];
-    node_n14 [color="blue", label="< IIMBTBOX:featuring, IIMBTBOX:filmed_in, IIMBTBOX:shot_in, rdf:type > (0%)", shape="rectangle", style="solid"];
-  }
-
-  0 -> 1;
-  1 -> 2;
-  2 -> 3;
-  3 -> 4;
-
-  node_n5 -> node_n3 [color="black", style="solid"];
-  node_n5 -> node_n4 [color="black", style="solid"];
-  node_n7 -> node_n6 [color="black", style="solid"];
-  node_n9 -> node_n3 [color="black", style="solid"];
-  node_n9 -> node_n8 [color="black", style="solid"];
-  node_n11 -> node_n6 [color="black", style="solid"];
-  node_n12 -> node_n10 [color="black", style="solid"];
-  node_n13 -> node_n11 [color="black", style="solid"];
-  node_n13 -> node_n12 [color="black", style="solid"];
-  node_n15 -> node_n10 [color="black", style="solid"];
-  node_n16 -> node_n14 [color="black", style="solid"];
-  node_n16 -> node_n15 [color="black", style="solid"];
-  node_n17 -> node_n14 [color="black", style="solid"];
-  node_n18 -> node_n17 [color="black", style="solid"];
-  node_n19 -> node_n1 [color="black", style="solid"];
-  node_n19 -> node_n4 [color="black", style="solid"];
-  node_n19 -> node_n8 [color="black", style="solid"];
-  node_n21 -> node_n2 [color="black", style="solid"];
-  node_n21 -> node_n7 [color="black", style="solid"];
-  node_n21 -> node_n11 [color="black", style="solid"];
-  node_n21 -> node_n20 [color="black", style="solid"];
-  node_n23 -> node_n1 [color="black", style="solid"];
-  node_n23 -> node_n12 [color="black", style="solid"];
-  node_n23 -> node_n15 [color="black", style="solid"];
-  node_n24 -> node_n5 [color="black", style="solid"];
-  node_n24 -> node_n9 [color="black", style="solid"];
-  node_n24 -> node_n13 [color="black", style="solid"];
-  node_n24 -> node_n16 [color="black", style="solid"];
-  node_n24 -> node_n18 [color="black", style="solid"];
-  node_n24 -> node_n19 [color="black", style="solid"];
-  node_n24 -> node_n21 [color="black", style="solid"];
-  node_n24 -> node_n22 [color="black", style="solid"];
-  node_n24 -> node_n23 [color="black", style="solid"];
-  node_n24 -> node_n25 [color="black", style="solid"];
-  node_n24 -> node_n26 [color="black", style="solid"];
-
-  charset="UTF-8"
-  fontsize="11.0"
-  label="onto_126"
-  overlap="false"
-}
-==
 
 @author Wouter Beek
 @version 2013/05
@@ -124,7 +18,6 @@ digraph onto_126 {
 
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(os_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(library(apply)).
 :- use_module(library(ordsets)).
@@ -135,64 +28,84 @@ digraph onto_126 {
 
 
 
-export_shared_properties(Graph, Assoc):-
-  absolute_file_name(data(Graph), File, [access(write), file_type(graphviz)]),
-  export_shared_properties(File, Graph, Assoc).
+%! export_rdf_shared(
+%!   +Graph:atom,
+%!   +Alignments:list(pair),
+%!   +Stash:list(tuple)
+%! ) is det.
 
-export_shared_properties(Stream, Graph, Assoc):-
+export_rdf_shared(Graph, Alignments, Stash):-
+  absolute_file_name(data(Graph), File, [access(write), file_type(graphviz)]),
+  export_rdf_shared(File, Graph, Alignments, Stash).
+
+%! export_rdf_shared(
+%!   +In:oneof([file,stream]),
+%!   +Graph:atom,
+%!   +Alignments:list(pair),
+%!   +Stash:list(tuple)
+%! ) is det.
+
+export_rdf_shared(Stream, Graph, Alignments, Stash):-
   is_stream(Stream),
   !,
 
-  % All pairs
   rdf_subjects(Graph, Subjects),
   cardinality(Subjects, NumberOfSubjects),
-  NumberOfPairs is NumberOfSubjects ** 2,
-
-  % 1. The number of reflexive pairs is the number of subjects.
-
-  % 2. The number of non-nil and non-reflexive pairs is derived from
-  %    the association list.
-  assoc_to_values(Assoc, Sets),
-  maplist(cardinality, Sets, Cardinalities),
-  sum_list(Cardinalities, NumberOfUsefulPairs),
-
-  % 3. The number of nil pairs is the number of pairs, minus the number
-  %    of reflexive pairs, minus the number of useful pairs.
-  NumberOfNilPairs is NumberOfPairs - NumberOfSubjects - NumberOfUsefulPairs,
+  NumberOfAllPairs is NumberOfSubjects ** 2,
 
   % Nodes: Nil node
-  NilPercentage is NumberOfNilPairs / NumberOfPairs * 100,
+  % @tbd Establish the number of nil pairs (and the percentage).
+  NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
+  NilRankNodeAttributes = [label(0), shape(plaintext)],
   NilNode = node(n0, NilNodeAttributes),
   format(
     atom(NilNodeLabel),
-    '{} (~0f%) (~w)',
-    [NilPercentage, NumberOfNilPairs]
+    '{} (100%) (~d/~d)',
+    [NumberOfAllPairs, NumberOfAllPairs]
   ),
   NilNodeAttributes =
     [color(black), label(NilNodeLabel), shape(rectangle), style(solid)],
 
   % Nodes: Non-nil nodes
-  assoc_to_keys(Assoc, Keys),
+  % We put these in ranks, based on the cardinality of the predicate set.
+  setoff(
+    RankNumber,
+    member(_-RankNumber-_-_, Stash),
+    RankNumbers
+  ),
   findall(
-    node(NodeID, NodeAttributes),
+    rank(node(RankNodeID, RankNodeAttributes), ContentNodes),
     (
-      nth1(I, Keys, Key),
-      rdf_resource_naming(Key, KeyLabel),
-      % Retrieve the ordered set, not on of its members!
-      assoc:get_assoc(Key, Assoc, Values),
-      cardinality(Values, NumberOfValues),
-      Percentage is NumberOfValues / NumberOfUsefulPairs * 100,
-      format(atom(NodeID), 'n~w', [I]),
-      format(
-        atom(NodeLabel),
-        '~w (~0f%) (~w)',
-        [KeyLabel, Percentage, NumberOfValues]
-      ),
-      NodeAttributes =
-        [color(blue), label(NodeLabel), shape(rectangle), style(solid)],
-      parse_attributes_graphviz(node, NodeAttributes)
+      member(RankNumber, RankNumbers),
+      format(atom(RankNodeID), 'r~w', [RankNumber]),
+      atom_number(RankLabel, RankNumber),
+      RankNodeAttributes = [label(RankLabel), shape(plaintext)],
+      findall(
+        node(NodeID, NodeAttributes),
+        (
+          nth1(I, Stash, PSet-RankNumber-NumberOfThesePairs-ThesePairs),
+          linked_percentage(
+            NumberOfThesePairs-ThesePairs,
+            Alignments,
+            LinkedPercentage
+          ),
+          rdf_resource_naming(PSet, PSetLabel),
+          % Retrieve the ordered set, not on of its members!
+          Percentage is NumberOfThesePairs / NumberOfAllPairs * 100,
+          format(atom(NodeID), 'n~w', [I]),
+          format(
+            atom(NodeLabel),
+            '~w (~2f%) (~d/~d) [~2f]',
+            [PSetLabel, Percentage, NumberOfThesePairs, NumberOfAllPairs, LinkedPercentage]
+          ),
+          NodeAttributes =
+            [color(blue), label(NodeLabel), shape(rectangle), style(solid)],
+          parse_attributes_graphviz(node, NodeAttributes)
+        ),
+        ContentNodes
+      )
     ),
-    NonNilNodes
+    Ranks
   ),
 
   % Edges: Nil-edges
@@ -201,10 +114,8 @@ export_shared_properties(Stream, Graph, Assoc):-
   findall(
     edge(n0, ToNode, EdgeAttributes),
     (
-      member(Key, Keys),
-      assoc:get_assoc(Key, Assoc, Values),
-      cardinality(Values, 1),
-      nth1(I, Keys, Key),
+      member(PSet-1-NumberOfThesePairs-ThesePairs, Stash),
+      once(nth1(I, Stash, PSet-1-NumberOfThesePairs-ThesePairs)),
       format(atom(ToNode), 'n~w', [I])
     ),
     NilEdges
@@ -214,27 +125,17 @@ export_shared_properties(Stream, Graph, Assoc):-
   findall(
     edge(FromNode, ToNode, EdgeAttributes),
     (
-      member(Key1, Key2, Keys),
-      % Only strict subsets.
-      Key1 \== Key2,
-      ord_subset(Key1, Key2),
-      % Only direct subset links (the transitive closure is not drawn).
-      \+ ((
-        member(Key3, Keys),
-        Key3 \== Key1,
-        Key3 \== Key2,
-        ord_subset(Key1, Key3),
-        ord_subset(Key3, Key2)
-      )),
-      nth1(I, Keys, Key1),
+      member(PSet1-NumberOfPs1-NumberOfPairs1-Pairs1, Stash),
+      succ(NumberOfPs1, NumberOfPs2),
+      member(PSet2-NumberOfPs2-NumberOfPairs2-Pairs2, Stash),
+      ord_subset(PSet1, PSet2),
+      once(nth1(I, Stash, PSet1-NumberOfPs1-NumberOfPairs1-Pairs1)),
       format(atom(FromNode), 'n~w', [I]),
-      nth1(J, Keys, Key2),
+      once(nth1(J, Stash, PSet2-NumberOfPs2-NumberOfPairs2-Pairs2)),
       format(atom(ToNode), 'n~w', [J])
     ),
     NonNilEdges
   ),
-
-  append(NilEdges, NonNilEdges, Edges),
 
   % Graph properties
   GraphAttributes =
@@ -246,27 +147,60 @@ export_shared_properties(Stream, Graph, Assoc):-
     ],
   parse_attributes_graphviz(graph, GraphAttributes),
 
+  append(NilEdges, NonNilEdges, Edges),
   stream_graphviz(
     Stream,
-    graph([NilNode | NonNilNodes], Edges, GraphAttributes)
+    graph([], [NilRank | Ranks], Edges, GraphAttributes)
   ).
-export_shared_properties(File, Graph, Assoc):-
+% If a file is given, then the export is first streamed to it and
+% then converted to a displayable format.
+export_rdf_shared(File, Graph, Alignments, In):-
   access_file(File, write),
   !,
   open(File, write, Stream),
-  export_shared_properties(Stream, Graph, Assoc),
+  export_rdf_shared(Stream, Graph, Alignments, In),
   close(Stream),
   once(file_type_alternative(File, pdf, PDF_File)),
-  convert_graphviz(File, dot, pdf, PDF_File),
-  open_pdf(PDF_File).
+  convert_graphviz(File, dot, pdf, PDF_File).
 
-rdf_shared_properties(Graph):-
-  rdf_shared_properties(Graph, Assoc),
-  export_shared_properties(Graph, Assoc).
+linked_percentage(NumberOfAllPairs-AllPairs, Alignments, Percentage):-
+  setoff(
+    X-Y,
+    (
+      member(X-Y, Alignments),
+      once((
+        member(X-Y, AllPairs)
+      ;
+        member(Y-X, AllPairs)
+      ))
+    ),
+    LinkedPairs
+  ),
+  cardinality(LinkedPairs, NumberOfLinkedPairs),
+  Percentage is NumberOfLinkedPairs / NumberOfAllPairs.
 
-%! rdf_shared_properties(+Graph:atom, -Assoc) is det.
-% Loads the pairs that share the same properties into an association list
-% with ordsets.
+rdf_shared(Graph):-
+  rdf_shared(Graph, []).
+
+rdf_shared(Graph, Alignments):-
+  rdf_shared_pairs(Graph, Tuples),
+  export_rdf_shared(Graph, Alignments, Tuples).
+
+rdf_shared(Graph, Alignments, SVG):-
+  rdf_shared_pairs(Graph, Tuples),
+  absolute_file_name(
+    personal(temp),
+    File,
+    [access(write), file_type(graphviz)]
+  ),
+  open(File, write, Stream, []),
+  export_rdf_shared(File, Graph, Alignments, Tuples),
+  graphviz_to_svg(File, dot, SVG),
+  close(Stream),
+  delete_file(File).
+
+%! rdf_shared_pairs(+Graph:atom, -Tuples:list) is det.
+% Loads the pairs that share the same properties.
 %
 % # Example
 %
@@ -278,55 +212,73 @@ rdf_shared_properties(Graph):-
 % <S4, P, O34>
 % ==
 %
-% The association list would be:
+% The triples would be:
 % ==
 % <{P},{<S1,S2>,<S3,S4>}>
 % ==
 
-rdf_shared2([], _BottomLayer, Assoc, Assoc):-
-  !.
-rdf_shared2([PSet | PSets], SingletonPSets, OldAssoc, SolAssoc):-
-  member(SingletonPSet, SingletonPSets),
-  \+ ord_subset(SingletonPSet, PSet),
-  assoc:get_assoc(PSet, OldAssoc, PSetPairs),
-  assoc:get_assoc(SingletonPSet, OldAssoc, SingletonPSetPairs),
-  ord_intersection(PSetPairs, SingletonPSetPairs, NewPSetPairs),
-  (
-    empty_assoc(NewPSetPairs)
-  ->
-    NewPSets = PSets
-  ;
-    ord_union(PSet, SingletonPSet, NewPSet),
-    assoc:put_assoc(NewPSet, OldAssoc, NewPSetPairs, NewAssoc),
-    append(PSets, [NewPSet], NewPSets)
-  ),
-  rdf_shared2(NewPSet, SingletonPSets, NewAssoc, SolAssoc).
+%! rdf_shared(+Graph:atom, -Stash:tuple) is det.
+% @arg Stash A tuple of the following form:
+%      =|Predicates-NumberOfPredicates-NumberOfPairs-Pairs|=
 
-rdf_shared_properties(Graph, AssocN):-
-  empty_assoc(Assoc0),
+rdf_shared_pairs(Graph, Stash):-
   rdf_predicates(Graph, Predicates),
   findall(
-    Subject1-Subject2,
+    [Predicate]-1-Size-SingletonPairs,
     (
-      member(Subject1, Subject2, Subjects),
-      Subject1 @< Subject2
+      member(Predicate, Predicates),
+      findall(
+        Subject1-Subject2,
+        (
+          % We assume a fully materialized graph.
+          rdf(Subject1, Predicate, Object, Graph),
+          rdf(Subject2, Predicate, Object, Graph),
+          Subject1 @< Subject2
+        ),
+        SingletonPairs
+      ),
+      cardinality(SingletonPairs, Size),
+      % Sometimes predicates have no extension. Exclude these early on.
+      Size > 0
     ),
-    Pairs
+    SingletonTuples
   ),
-  foldl(put_shared_properties0(Graph), Pairs, Assoc0, AssocN).
+  rdf_shared_pairs(SingletonTuples, SingletonTuples, [], Stash).
 
-put_shared_properties0(Graph, Subject1-Subject2, OldAssoc, NewAssoc):-
-  setoff(
-    Property,
+rdf_shared_pairs([], SingletonTuples, TempStash, SolStash):-
+  !,
+  append(SingletonTuples, TempStash, SolStash).
+rdf_shared_pairs(
+  [PSet-NumberOfPs-_NumberOfPairs-Pairs | Tuples],
+  SingletonTuples,
+  TempStash,
+  SolStash
+):-
+  findall(
+    NewEntry,
     (
-      rdf(Subject1, Property, Object, Graph),
-      rdf(Subject2, Property, Object, Graph)
+      % Find a single predicate that we can add to an existing set of predicates.
+      member(SingletonPSet-1-_-SingletonPairs, SingletonTuples),
+      \+ ord_subset(SingletonPSet, PSet),
+      ord_union(PSet, SingletonPSet, NewPSet),
+      % Since a bigger set can be obtained as a result of the union of
+      % multiple smaller sets, we make sure that we do not include any
+      % duplicates.
+      \+ member(NewPSet-_-_-_, TempStash),
+
+      % If the intersection is not empty, then we have found a new stash.
+      ord_intersection(Pairs, SingletonPairs, NewPairs),
+      \+ ord_empty(NewPairs),
+
+      % The extended set of predicates may be further extensible.
+      NewNumberOfPs is NumberOfPs + 1,
+      cardinality(NewPairs, NewNumberOfPairs),
+      NewEntry = NewPSet-NewNumberOfPs-NewNumberOfPairs-NewPairs
     ),
-    Properties
+    NewEntries
   ),
-  if_then_else(
-    ord_empty(Properties),
-    NewAssoc = OldAssoc,
-    put_assoc(Properties, OldAssoc, [Subject1, Subject2], NewAssoc)
-  ).
+
+  append(Tuples, NewEntries, NewTuples),
+  append(TempStash, NewEntries, NewTempStash),
+  rdf_shared_pairs(NewTuples, SingletonTuples, NewTempStash, SolStash).
 
