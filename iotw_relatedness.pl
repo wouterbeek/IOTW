@@ -283,9 +283,28 @@ rdf_shared_properties(Graph):-
 % <{P},{<S1,S2>,<S3,S4>}>
 % ==
 
+rdf_shared2([], _BottomLayer, Assoc, Assoc):-
+  !.
+rdf_shared2([PSet | PSets], SingletonPSets, OldAssoc, SolAssoc):-
+  member(SingletonPSet, SingletonPSets),
+  \+ ord_subset(SingletonPSet, PSet),
+  assoc:get_assoc(PSet, OldAssoc, PSetPairs),
+  assoc:get_assoc(SingletonPSet, OldAssoc, SingletonPSetPairs),
+  ord_intersection(PSetPairs, SingletonPSetPairs, NewPSetPairs),
+  (
+    empty_assoc(NewPSetPairs)
+  ->
+    NewPSets = PSets
+  ;
+    ord_union(PSet, SingletonPSet, NewPSet),
+    assoc:put_assoc(NewPSet, OldAssoc, NewPSetPairs, NewAssoc),
+    append(PSets, [NewPSet], NewPSets)
+  ),
+  rdf_shared2(NewPSet, SingletonPSets, NewAssoc, SolAssoc).
+
 rdf_shared_properties(Graph, AssocN):-
   empty_assoc(Assoc0),
-  rdf_subjects(Graph, Subjects),
+  rdf_predicates(Graph, Predicates),
   findall(
     Subject1-Subject2,
     (
