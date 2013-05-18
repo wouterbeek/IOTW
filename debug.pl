@@ -3,4 +3,3 @@
 :- assert(user:debug).
 
 :- [load].
-

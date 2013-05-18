@@ -1,9 +1,6 @@
 project_name('Identity on the Web').
 
 load_iotw:-
-  % Do not write module loads to the standard output stream.
-  set_prolog_flag(verbose_load, silent),
-  
   source_file(load_iotw, ThisFile),
   file_directory_name(ThisFile, ThisDirectory),
   assert(user:file_search_path(project, ThisDirectory)),
@@ -24,6 +21,5 @@ load_iotw:-
   
   % Identity on the Web.
   ensure_loaded(project(iotw)).
-
 :- load_iotw.
 
