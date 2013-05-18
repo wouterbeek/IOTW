@@ -1,8 +1,8 @@
 module(
   iotw,
   [
-    check_anatomy/0,
-    load_anatomy/0
+    load_iimb_web/2 % +Integer:integer
+                    % -SVG:dom
   ]
 ).
 
@@ -11,32 +11,33 @@ module(
 My first publication with Stephan and Frank!
 
 @author Wouter Beek
-@version 2013/04
+@version 2013/04-2013/05
 */
 
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
+:- use_module(generics(file_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(print_ext)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(project(iotw_relatedness)).
 :- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_statistics)).
+:- use_module(rdf(rdf_tms)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).
 
-%:- use_module(rdf(rdf_entailment)).
-%:- use_module(rdfs(rdfs_entailment)).
-%:- rdf_assert(rdf:zzz, rdfs:subPropertyOf, rdf:type).
-%:- rdf_assert(rdf:a, rdf:zzz, rdf:b).
-%:- use_module(logic(rdf_model_theory)).
-:- use_module(rdf(rdf_tms)).
+:- db_add_novel(user:prolog_file_type(assoc, assoc)).
 
 :- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
-:- xml_register_namespace(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
+:- xml_register_namespace(oboInOwl,
+                          'http://www.geneontology.org/formats/oboInOwl#').
+
+% Root
+http:location(root, '/prasem/', []).
 
 
 
@@ -74,11 +75,11 @@ load_anatomy:-
     FromFile,
     [access(read), file_type(owl)]
   ),
-  rdf_load2(FromFile, [graph(from), register_namespaces(true)]),
+  rdf_load2(FromFile, [format(xml), graph(from), register_namespaces(true)]),
 
   % To
   absolute_file_name(anatomy(human), ToFile, [access(read), file_type(owl)]),
-  rdf_load2(ToFile, to, [register_namespaces(true)]),
+  rdf_load2(ToFile, [format(xml), graph(to), register_namespaces(true)]),
 
   % Reference
   absolute_file_name(
@@ -86,9 +87,10 @@ load_anatomy:-
     ReferenceFile,
     [access(read), file_type(rdf)]
   ),
-  rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
+  rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
 
-  % Raw alignments
+  % Raw alignments.
+  % These graphs can be found using oaei_graph/1.
   absolute_file_name(
     anatomy('Raw results'),
     RawDirectory,
@@ -99,8 +101,10 @@ load_anatomy:-
   % Many data files have invalid namespace notation! Method from RDF_CLEAN.
   rdf_expand_namespace(_, _, _, _),
 
-  % Bring statistics into view.
-  check.
+  rdf_graph_merge([from, to], from_and_to),
+  % Set global stack to 2GB. This requires a 64-bit machine and OS.
+  set_prolog_stack(global, limit(2*10**9)),
+  rdf_shared(from_and_to).
 
 load_instance_matching:-
   rdf_register_prefix(
@@ -140,17 +144,77 @@ load_instance_matching:-
         ReferenceFile,
         [access(read), file_type(rdf), relative_to(Subdirectory)]
       ),
-      rdf_load2(ReferenceFile, reference, [register_namespaces(true)]),
+      rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
       % Bring statistics into view.
       check
     )
   ).
 
+load_shared_properties1:-
+  Graph = test1,
+  \+ rdf_graph(Graph),
+  rdf_assert(rdf:a, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:b, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties2:-
+  Graph = test2,
+  \+ rdf_graph(Graph),
+  absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
+  rdf_load2(File, [graph(Graph)]),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_iimb(Integer, SVG):-
+  between(0, 80, Integer),
+  xml_register_namespace(
+    'IIMBTBOX',
+    'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
+  ),
+  db_add_novel(
+    user:file_search_path(instance_matching, oaei2012('Instance matching'))
+  ),
+  db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
+  absolute_file_name(iimb(onto), BaseFile, [access(read), file_type(owl)]),
+  rdf_load2(BaseFile, [graph(iotw_part1)]),
+  format_integer(Integer, 3, SubDirName),
+  absolute_file_name(
+    iimb(SubDirName),
+    SubDir,
+    [access(read), file_type(directory)]
+  ),
+  absolute_file_name(
+    onto,
+    OWL_File,
+    [access(read), file_type(owl), relative_to(SubDir)]
+  ),
+  absolute_file_name(
+    refalign,
+    RDF_File,
+    [access(read), file_type(rdf), relative_to(SubDir)]
+  ),
+  rdf_load2(OWL_File, [graph(iotw_part2)]),
+  rdf_graph_merge([iotw_part1,iotw_part2], iotw_data),
+  oaei_file_to_alignments(RDF_File, Alignments),
+  rdf_shared(iotw_data, Alignments, SVG).
+
+load_shared_properties4:-
+  absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
+  path_walk_tree(DataDir, '.*.owl$', DataFiles),
+  forall(member(DataFile, DataFiles), rdf_load2(DataFile, [])),
+  % Set global stack to 2GB. This requires a 64-bit machine and OS.
+  set_prolog_stack(global, limit(2*10**9)),
+  forall(rdf_graph(Graph), rdf_shared(Graph)).
+
 
 
 % SHARED PROPERTIES %
 
-%% shared_properties(+Pair:list, -Properties:list(list)) is det.
+%! shared_properties(+Pair:list, -Properties:list(list)) is det.
 
 shared_properties([X, Y], Properties):-
   var(Properties),
@@ -159,20 +223,20 @@ shared_properties([X, Y], Properties):-
     Property-Value,
     (
       rdf(X, Property, Value),
-      %%%%% Exclude properties that occur multiple times for the same subject.
+      %%%%! Exclude properties that occur multiple times for the same subject.
       %%%%\+ (rdf(X, Property, OtherValue), OtherValue \== Value),
       rdf(Y, Property, Value)
     ),
     Properties
   ).
 
-%% shared_properties(
-%%   +FromGraph:atom,
-%%   +ToGraph:atom,
-%%   +ReferenceGraph:atom, %DEB
-%%   +Properties:ord_set(list),
-%%   -Pair:list
-%% ) is nondet.
+%! shared_properties(
+%!   +FromGraph:atom,
+%!   +ToGraph:atom,
+%!   +ReferenceGraph:atom, %DEB
+%!   +Properties:ord_set(list),
+%!   -Pair:list
+%! ) is nondet.
 
 shared_properties(
   FromGraph,
@@ -202,7 +266,6 @@ shared_properties(
     \+ oaei_alignment(ReferenceGraph, X, Y)
   ->
     format(user_output, 'NEW PAIR:\n\t~w\n\t~w\n', [X, Y]),
-gtrace,
     maplist(
       print_property(FromGraph, ToGraph),
      [FirstPredicate-FirstObject | PredicateObjectPairs]
@@ -268,7 +331,7 @@ upper(FromGraph, ToGraph, AlignmentGraph, UpperAlignments):-
     UpperAlignments
   ).
 
-%% put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
+%! put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
 
 put_alignments([], Assoc, Assoc):-
   !.
