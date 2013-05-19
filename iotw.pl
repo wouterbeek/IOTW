@@ -1,8 +1,8 @@
 module(
   iotw,
   [
-    load_iimb_web/2 % +Integer:integer
-                    % -SVG:dom
+    load_shared_iimb/2 % +Integer:integer
+                       % -SVG:dom
   ]
 ).
 
@@ -41,135 +41,15 @@ http:location(root, '/prasem/', []).
 
 
 
-% Assumption 1: Reference alignment loaded in graph =reference=.
-% Assumption 2: A linked dataset is loaded in graph =from=.
-% Assumption 3: Another linked dataset is loaded in graph =to=.
-check:-
-  oaei_graph_to_alignments(reference, ReferenceAlignments),
-
-  % Write the header of the table to user output.
-  format(user_output, '\tOverlap\tFalsePositives\tFalseNegatives\n', []),
-  flush_output(user_output),
-
-  forall(
-    oaei_graph(AlignmentGraph),
-    (
-      format(user_output, '[~w]\n', [AlignmentGraph]),
-
-      % The given alignment relative to the reference alignment.
-      oaei_graph_to_alignments(AlignmentGraph, RawAlignments),
-      oaei_check_alignment(ReferenceAlignments, RawAlignments),
-
-      % The upper alignment relative to the reference alignment.
-      upper(from, to, AlignmentGraph, UpperAlignments),
-      oaei_check_alignment(ReferenceAlignments, UpperAlignments)
-    )
-  ).
-
-load_anatomy:-
-  db_add_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))),
-
-  % From
-  absolute_file_name(
-    anatomy(mouse),
-    FromFile,
-    [access(read), file_type(owl)]
-  ),
-  rdf_load2(FromFile, [format(xml), graph(from), register_namespaces(true)]),
-
-  % To
-  absolute_file_name(anatomy(human), ToFile, [access(read), file_type(owl)]),
-  rdf_load2(ToFile, [format(xml), graph(to), register_namespaces(true)]),
-
-  % Reference
-  absolute_file_name(
-    anatomy(reference),
-    ReferenceFile,
-    [access(read), file_type(rdf)]
-  ),
-  rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
-
-  % Raw alignments.
-  % These graphs can be found using oaei_graph/1.
-  absolute_file_name(
-    anatomy('Raw results'),
-    RawDirectory,
-    [access(read), file_type(directory)]
-  ),
-  rdf_load2(RawDirectory),
-
-  % Many data files have invalid namespace notation! Method from RDF_CLEAN.
-  rdf_expand_namespace(_, _, _, _),
-
-  rdf_graph_merge([from, to], from_and_to),
+load_shared_iimb(Integer, SVG):-
+  load_shared_iimb(Integer, Graph, Alignments),
   % Set global stack to 2GB. This requires a 64-bit machine and OS.
   set_prolog_stack(global, limit(2*10**9)),
-  rdf_shared(from_and_to).
+  set_prolog_stack(local, limit(2*10**9)),
+  rdf_shared(Graph, Alignments, SVG).
 
-load_instance_matching:-
-  rdf_register_prefix(
-    'IIMBTBOX',
-    'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
-  ),
-  db_add_novel(
-    user:file_search_path(instance_matching, oaei2012('Instance matching'))
-  ),
-  db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
-
-  % From
-  absolute_file_name(iimb(onto), FromFile, [access(read), file_type(owl)]),
-  rdf_load(FromFile, [graph(from), register_namespaces(true)]),
-
-  % An ontology is linked against another ontology from one of the
-  % subdirectories.
-  forall(
-    (
-      between(1, 80, Index),
-      format_integer(Index, 3, SubdirectoryName)
-    ),
-    (
-      maplist(rdf_unload_graph, [reference,to]),
-      X =.. [iimb, SubdirectoryName],
-      absolute_file_name(X, Subdirectory, [file_type(directory)]),
-      % To
-      absolute_file_name(
-        onto,
-        ToFile,
-        [access(read), file_type(owl), relative_to(Subdirectory)]
-      ),
-      rdf_load(ToFile, [graph(to), register_namespaces(true)]),
-      % Reference
-      absolute_file_name(
-        refalign,
-        ReferenceFile,
-        [access(read), file_type(rdf), relative_to(Subdirectory)]
-      ),
-      rdf_load2(ReferenceFile, [graph(reference), register_namespaces(true)]),
-      % Bring statistics into view.
-      check
-    )
-  ).
-
-load_shared_properties1:-
-  Graph = test1,
-  \+ rdf_graph(Graph),
-  rdf_assert(rdf:a, rdf:p, rdf:z1, Graph),
-  rdf_assert(rdf:b, rdf:p, rdf:z1, Graph),
-  rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
-  rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
-  rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
-  rdf_shared(Graph),
-  rdf_unload_graph(Graph).
-
-load_shared_properties2:-
-  Graph = test2,
-  \+ rdf_graph(Graph),
-  absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
-  rdf_load2(File, [graph(Graph)]),
-  rdf_shared(Graph),
-  rdf_unload_graph(Graph).
-
-load_iimb(Integer, SVG):-
+load_shared_iimb(Integer, Graph, Alignments):-
+  Graph = iotw_data,
   between(0, 80, Integer),
   xml_register_namespace(
     'IIMBTBOX',
@@ -198,11 +78,29 @@ load_iimb(Integer, SVG):-
     [access(read), file_type(rdf), relative_to(SubDir)]
   ),
   rdf_load2(OWL_File, [graph(iotw_part2)]),
-  rdf_graph_merge([iotw_part1,iotw_part2], iotw_data),
-  oaei_file_to_alignments(RDF_File, Alignments),
-  rdf_shared(iotw_data, Alignments, SVG).
+  rdf_graph_merge([iotw_part1,iotw_part2], Graph),
+  oaei_file_to_alignments(RDF_File, Alignments).
 
-load_shared_properties4:-
+load_shared_properties1:-
+  Graph = test1,
+  \+ rdf_graph(Graph),
+  rdf_assert(rdf:a, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:b, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties2:-
+  Graph = test2,
+  \+ rdf_graph(Graph),
+  absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
+  rdf_load2(File, [graph(Graph)]),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties3:-
   absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
   path_walk_tree(DataDir, '.*.owl$', DataFiles),
   forall(member(DataFile, DataFiles), rdf_load2(DataFile, [])),
@@ -210,132 +108,10 @@ load_shared_properties4:-
   set_prolog_stack(global, limit(2*10**9)),
   forall(rdf_graph(Graph), rdf_shared(Graph)).
 
+load_alignment_iimb(Integer):-
+  load_shared_iimb(Integer, Graph, Alignments),
+  set_prolog_stack(global, limit(2*10**9)),
+  set_prolog_stack(local, limit(2*10**9)),
+  rdf_alignment_share(Graph, Alignments, Predicates),
+  export_rdf_alignments(Graph, Alignments, Predicates).
 
-
-% SHARED PROPERTIES %
-
-%! shared_properties(+Pair:list, -Properties:list(list)) is det.
-
-shared_properties([X, Y], Properties):-
-  var(Properties),
-  !,
-  setoff(
-    Property-Value,
-    (
-      rdf(X, Property, Value),
-      %%%%! Exclude properties that occur multiple times for the same subject.
-      %%%%\+ (rdf(X, Property, OtherValue), OtherValue \== Value),
-      rdf(Y, Property, Value)
-    ),
-    Properties
-  ).
-
-%! shared_properties(
-%!   +FromGraph:atom,
-%!   +ToGraph:atom,
-%!   +ReferenceGraph:atom, %DEB
-%!   +Properties:ord_set(list),
-%!   -Pair:list
-%! ) is nondet.
-
-shared_properties(
-  FromGraph,
-  ToGraph,
-  ReferenceGraph, %DEB
-  PredicateObjectPairs,
-  [X, Y]
-):-
-  nonvar(PredicateObjectPairs),
-  !,
-  first(PredicateObjectPairs, FirstPredicate-FirstObject),
-  % Find an X that has all the properties.
-  rdf(X, FirstPredicate, FirstObject, FromGraph),
-  forall(
-    member(Predicate-Object, PredicateObjectPairs),
-    rdf(X, Predicate, Object)
-  ),
-  % Find another Y that has all the properties as well.
-  rdf(Y, FirstPredicate, FirstObject, ToGraph),
-  X \== Y,
-  forall(
-    member(Predicate-Object, PredicateObjectPairs),
-    rdf(Y, Predicate, Object)
-  ),
-  %DEB
-  (
-    \+ oaei_alignment(ReferenceGraph, X, Y)
-  ->
-    format(user_output, 'NEW PAIR:\n\t~w\n\t~w\n', [X, Y]),
-    maplist(
-      print_property(FromGraph, ToGraph),
-     [FirstPredicate-FirstObject | PredicateObjectPairs]
-    ),
-    count_subjects(PredicateObjectPairs, [FromGraph, ToGraph], These),
-    count_subjects(_AnyPredicate, _AnyObject, [FromGraph, ToGraph], Any),
-    format(user_output, '[~w/~w] COMBINED\n\n', [These, Any])
-  ;
-    true
-  ).
-
-print_property(Graph1, Graph2, Predicate-Object):-
-  abbreviate(Predicate, PredicateAbbr),
-  abbreviate(Object, ObjectAbbr),
-  count_subjects(Predicate, Object, [Graph1, Graph2], These),
-  count_subjects(_AnyPredicate1, _AnyObject1, [Graph1, Graph2], Any),
-  format(
-    user_output,
-    '[~w/~w] ~w---~w\n',
-    [These, Any, PredicateAbbr, ObjectAbbr]
-  ).
-
-abbreviate(literal(lang(Lang, Value)), Abbr):-
-  !,
-  format(atom(Abbr), '~w^^~w', [Value, Lang]).
-abbreviate(literal(type(Type, Value)), Abbr):-
-  !,
-  abbreviate(Type, TypeAbbr),
-  format(atom(Abbr), '~w^^~w', [Value, TypeAbbr]).
-abbreviate(literal(Abbr), Abbr):-
-  !.
-abbreviate(URI, Abbr):-
-  rdf_global_id(Namespace:Local, URI),
-  !,
-  format(atom(Abbr), '~w:~w', [Namespace, Local]).
-abbreviate(Abbr, Abbr).
-
-
-
-% UPPER %
-
-upper(FromGraph, ToGraph, AlignmentGraph, UpperAlignments):-
-  % Make sure this is an alignment graph.
-  oaei_graph(AlignmentGraph),
-  oaei_graph_to_alignments(AlignmentGraph, Alignments),
-  empty_assoc(EmptyAssoc),
-  put_alignments(Alignments, EmptyAssoc, Assoc),
-  assoc_to_keys(Assoc, Propertiess),
-%gtrace, %DEB
-%print_list(user_output, Propertiess),
-  findall(
-    UpperAlignment,
-    (
-      member(Properties, Propertiess),
-      shared_properties(
-        FromGraph,
-        ToGraph,
-        AlignmentGraph,
-        Properties,
-        UpperAlignment
-      )
-    ),
-    UpperAlignments
-  ).
-
-%! put_alignments(+Alignments:list(list), +OldAssoc, -NewAssoc) is det.
-
-put_alignments([], Assoc, Assoc):-
-  !.
-put_alignments([[From, To] | Alignments], OldAssoc, FinalAssoc):-
-  shared_properties([From, To], Shared),
-  put_assoc(Shared, OldAssoc, From-To, NewAssoc),
-  put_alignments(Alignments, NewAssoc, FinalAssoc).
