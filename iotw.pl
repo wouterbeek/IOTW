@@ -18,15 +18,12 @@ My first publication with Stephan and Frank!
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
 :- use_module(generics(file_ext)).
-:- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(library(debug)).
+:- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(project(iotw_relatedness)).
-:- use_module(rdf(rdf_clean)).
 :- use_module(rdf(rdf_serial)).
-:- use_module(rdf(rdf_statistics)).
-:- use_module(rdf(rdf_tms)).
 :- use_module(server(wallace)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).
@@ -44,6 +41,8 @@ My first publication with Stephan and Frank!
 
 % Root
 http:location(root, '/prasem/', []).
+
+:- http_handler(root(node), node, []).
 
 :- debug(iotw).
 
@@ -127,4 +126,33 @@ load_alignment_iimb(Integer, SVG):-
   debug(iotw, '  Alignments established for graph ~w.', [Graph]),
   export_rdf_alignments(Graph, Alignments, Predicates, SVG),
   debug(iotw, '  Exported alignments for graph ~w.', [Graph]).
+
+%! node(+Request:list(nvpair)) is det.
+% Callback HTTP handler reaction on a click action.
+
+node(Request):-
+  member(search(SearchParameters), Request),
+  if_then(
+    member(id=Id, SearchParameters),
+    node0(Id)
+  ).
+
+node0(Id1):-
+  sub_atom(Id1, 6, _Length, 0, Id2),
+  indexed_sha_hash(Key, Id2),
+  iotw_relatedness:current_assoc(Assoc),
+  assoc:get_assoc(Key, Assoc, TheseIdentityPairs),
+  iotw_relatedness:current_graph(Graph),
+  iotw_relatedness:predicates_to_pairs(Graph, Key, ThesePairs),
+  ord_subtract(ThesePairs, TheseIdentityPairs, TheseNonIdentityPairs),
+  findall(
+    DOM,
+    (
+      member(TheseNonIdentityPair, TheseNonIdentityPairs),
+      iotw_relatedness:pair_to_dom(TheseNonIdentityPair, DOM)
+    ),
+    DOMs
+  ),
+  append(DOMs, DOM),
+  push(console_output, DOM).
 

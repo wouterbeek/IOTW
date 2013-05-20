@@ -6,8 +6,7 @@
                              % +Alignments:list(pair)
                              % +Assoc:assoc
                              % -SVG:dom
-    pair_to_dom/3, % +Graph:atom
-                   % +Pair:pair(uri)
+    pair_to_dom/2, % +Pair:pair(uri)
                    % -DOM:list
     rdf_alignment_share/3, % +Graph:atom
                            % +Alignments:list(pair)
@@ -334,68 +333,63 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
     graph([], [NilRank | NonNilRanks], Edges, GraphAttributes)
   ).
 
-pair_to_dom(Graph, X-Y, Markup):-
-  % The table of shared properties.
-  setoff(
-    [PX, OX],
-    (
-      rdf(X, PX, OX, Graph),
-      rdf(Y, PY, OY, Graph),
-      same_predicate(PX, PY),
-      same_object(OX, OY)
-    ),
-    Same
-  ),
-  list_to_table([header(true)], [['Predicate', 'Object'] | Same], SameTable),
+%! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
 
-  % The table of discrepant properties.
-  setoff(
-    [[PX, OX], ['', OY]],
-    (
-      rdf(X, PX, OX, Graph),
-      rdf(Y, PY, OY, Graph),
-      same_predicate(PX, PY),
-      \+ same_object(OX, OY)
-    ),
-    Differents
+pair_to_dom(X-Y, Markup):-
+  rdf_pairs(X, X_Pairs1),
+  rdf_pairs(Y, Y_Pairs1),
+
+  % The table of shared properties.
+  select_shared_properties(
+    X_Pairs1,
+    Y_Pairs1,
+    SharedPropertyPairs,
+    X_Pairs2,
+    Y_Pairs2
   ),
-  append(Differents, Different),
   list_to_table(
-    [header(true)],
-    [['Predicate', 'Object'] | Different],
-    DifferentTable
+    [caption('Table showing the shared properties.'), header(true)],
+    [['Predicate', 'Object'] | SharedPropertyPairs],
+    SharedPropertyTable
+  ),
+
+  % The table of shared predicates.
+  select_shared_predicates(
+    X_Pairs2,
+    Y_Pairs2,
+    SharedPredicateTriples,
+    X_Pairs3,
+    Y_Pairs3
+  ),
+  list_to_table(
+    [caption('Table showing the shared predicates.'), header(true)],
+    [['Predicate', 'X-Object', 'Y-Object'] | SharedPredicateTriples],
+    SharedPredicateTable
   ),
 
   % The table of exclusive X-properties.
-  setoff(
-    [PX, OX],
-    (
-      rdf(X, PX, OX, Graph),
-      \+ ((
-        rdf(Y, PY, OY, Graph),
-        same_predicate(PX, PY)
-      ))
-    ),
-    OnlyX
+  list_to_table(
+    [caption('Table showing the exclusive X predicates.'), header(true)],
+    [['X-Predicate', 'X-Object'] | X_Pairs3],
+    X_Table
   ),
-  list_to_table([header(true)], [['Predicate', 'Object'] | OnlyX], XTable),
 
   % The table of exclusive Y-properties.
-  setoff(
-    [PY, OY],
-    (
-      rdf(Y, PY, OY, Graph),
-      \+ ((
-        rdf(X, PX, OX, Graph),
-        same_predicate(PX, PY)
-      ))
-    ),
-    OnlyY
+  list_to_table(
+    [caption('Table showing the exclusive Y predicates.'), header(true)],
+    [['Y-Predicate', 'Y-Object'] | Y_Pairs3],
+    Y_Table
   ),
-  list_to_table([header(true)], [['Predicate', 'Object'] | OnlyY], YTable),
-  Markup = [SameTable, DifferentTable, XTable, YTable].
 
-
+  Markup =
+      [
+        element(h1, [], ['X: ', X]),
+        element(h1, [], ['Y: ', Y]),
+        SharedPropertyTable,
+        SharedPredicateTable,
+        X_Table,
+        Y_Table
+      ].
 
 
 
