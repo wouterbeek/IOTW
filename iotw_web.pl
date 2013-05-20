@@ -16,7 +16,7 @@
 
 
 load_iimb_web(Integer, SVG):-
-  load_shared_iimb(Integer, SVG).
+  load_alignment_iimb(Integer, SVG).
 
 register_iotw:-
   register_module(iotw_web).

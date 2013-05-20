@@ -1,15 +1,18 @@
 :- module(
   iotw_relatedness,
   [
-    export_rdf_alignments/3, % +Graph:atom
+% ALIGNMENTS %
+    export_rdf_alignments/4, % +Graph:atom
                              % +Alignments:list(pair)
                              % +Assoc:assoc
-    export_rdf_alignments/3, % +Out:oneof([atom,stream])
-                             % +Graph:atom
-                             % +Assoc:assoc
+                             % -SVG:dom
+    pair_to_dom/3, % +Graph:atom
+                   % +Pair:pair(uri)
+                   % -DOM:list
     rdf_alignment_share/3, % +Graph:atom
                            % +Alignments:list(pair)
                            % -Predicates:assoc
+% SHARED %
     rdf_shared/1, % +Graph:atom
     rdf_shared/2, % +Graph:atom
                   % +Alignments:list(pair)
@@ -27,6 +30,7 @@
 
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(file_ext)).
+:- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(library(ordsets)).
@@ -34,47 +38,180 @@
 :- use_module(rdf(rdf_export)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(standards(graphviz)).
+:- use_module(xml(xml)).
+
+:- dynamic(current_assoc(_Assoc)).
+:- dynamic(current_graph(_Graph)).
 
 :- rdf_meta(same_object(r,r)).
 :- rdf_meta(same_predicate(r,r)).
 
 
 
-export_rdf_alignments(Graph, Alignments, Assoc):-
+% ALIGNMENTS ONLY %
+
+%! rdf_alignment_share(
+%!   +Graph:atom,
+%!   +Alignments:list(pair),
+%!   -Predicates:assoc
+%! ) is det.
+
+rdf_alignment_share(Graph, Alignments, Predicates):-
+  empty_assoc(EmptyAssoc),
+  rdf_alignment_share(Graph, EmptyAssoc, Alignments, Predicates).
+
+%! rdf_alignment_share(
+%!   +Graph:atom,
+%!   +OldPredicates:assoc,
+%!   +Alignments:list(pair),
+%!   -NewPredicates:assoc
+%! ) is det.
+
+rdf_alignment_share(_Graph, SolAssoc, [], SolAssoc):-
+  !.
+rdf_alignment_share(Graph, OldAssoc, [From-To | Alignments], SolAssoc):-
+  rdf_shared_pair(From, To, Predicates),
+  put_assoc(Predicates, OldAssoc, From-To, NewAssoc),
+  rdf_alignment_share(Graph, NewAssoc, Alignments, SolAssoc).
+
+%! rdf_shared_pair(
+%!   +Subject1:uri,
+%!   +Subject2:uri,
+%!   -Predicates:ordset(uri)
+%! ) is det.
+
+rdf_shared_pair(Subject1, Subject2, Solution):-
+  rdf_shared_pair(Subject1, Subject2, [], Solution).
+
+rdf_shared_pair(Subject1, Subject2, OldPredicates, Solution):-
+  % We assume a fully materialized graph.
+  rdf(Subject1, Predicate1, Object1, Graph),
+  % We are looking for new predicates only.
+  \+ member(Predicate1, OldPredicates),
+  same_predicate(Predicate1, Predicate2),
+  rdf(Subject2, Predicate2, Object2, Graph),
+  Subject1 @< Subject2,
+  same_object(Object1, Object2),
+  !,
+  ord_add_element(OldPredicates, Predicate1, NewPredicates),
+  rdf_shared_pair(Subject1, Subject2, NewPredicates, Solution).
+rdf_shared_pair(_Subject1, _Subject2, Predicates, Predicates).
+
+%! pair_to_predicates(
+%!   +Graph:atom,
+%!   +Pair:pair,
+%!   -Predicates:ordset(uri)
+%! ) is det.
+
+pair_to_predicates(G, Ps, X-Y):-
+  pair_to_predicates(G, [], Ps, X-Y).
+
+pair_to_predicates(G, Ps, Sol, X-Y):-
+  rdf(X, P1, O1, G),
+  % We are looking for new predicates only.
+  \+ member(P1, Ps),
+  same_predicate(P1, P2),
+  rdf(Y, P2, O2, G),
+  X @< Y,
+  same_object(O1, O2),
+  !,
+  pair_to_predicates(G, [P1 | Ps], Sol, X-Y).
+pair_to_predicates(_G, Ps, Ps, _X-_Y).
+
+%! predicates_to_pair(
+%!   +Graph:atom,
+%!   +Predicates:ordset(uri),
+%!   -Pair:pair
+%! ) is nondet.
+
+predicates_to_pair(G, [P11 | Ps], X-Y):-
+  rdf(X, P11, O11, G),
+  rdf(Y, P12, O12, G),
+  same_predicate(P11, P12),
+  X @< Y,
+  same_object(O11, O12),
+  forall(
+    member(P21, Ps),
+    (
+      rdf(X, P21, O21, G),
+      rdf(Y, P22, O22, G),
+      same_predicate(P21, P22),
+      X @< Y,
+      same_object(O21, O22)
+    )
+  ).
+
+%! predicates_to_pairs(
+%!   +Graph:atom,
+%!   +Predicates:ordset(uri),
+%!   -Pairs:list(pair)
+%! ) is det.
+
+predicates_to_pairs(G, Ps, Pairs):-
+  findall(
+    Pair,
+    predicates_to_pair(G, Ps, Pair),
+    Pairs
+  ).
+
+same_object(O, O).
+
+same_predicate(P, P).
+
+%! export_rdf_alignments(
+%!   +Graph:atom,
+%!   +Alignments:list(pair),
+%!   +Assoc:assoc,
+%!   -SVG:dom
+%! ) is det.
+
+export_rdf_alignments(Graph, Alignments, Assoc, SVG2):-
+  rdf_graph(Graph),
+  !,
+
   absolute_file_name(
     data(Graph),
     File1,
     [access(write), file_type(graphviz)]
   ),
   new_file(File1, File2),
-  export_rdf_alignments(File2, Graph, Alignments, Assoc).
 
-%! export_rdf_alignments(
-%!   +Out:oneof([atom,stream]),
+  % The export is first streamed to a file and
+  % then converted to a displayable format.
+  access_file(File2, write),
+  open(File2, write, Stream),
+  % The alignments are only passed for the number-of-identity-pairs
+  % statistic.
+  export_rdf_alignments0(Stream, Graph, Alignments, Assoc),
+  close(Stream),
+
+  graphviz_to_svg(File2, dot, SVG1),
+  db_replace_novel(current_assoc(Assoc)),
+  db_replace_novel(current_graph(Graph)),
+  xml_inject_attribute(SVG1, node, [onclick='function()'], SVG2),
+
+  % DEB: Also export the PDF version in a separate file.
+  %once(file_type_alternative(File2, pdf, PDF_File)),
+  %convert_graphviz(File2, dot, pdf, PDF_File),
+
+  delete_file(File2).
+
+%! export_rdf_alignments0(
+%!   +Stream:stream,
 %!   +Graph:atom,
 %!   +Alignments:list(pair),
 %!   +Assoc:assoc
 %! ) is det.
 
-export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
+export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
   is_stream(Stream),
   !,
 
-  % Establish the predicate sets that are part of the hierarchy.
-  assoc_to_keys(Assoc, SomeKeys),
-  setoff(
-    Key,
-    (
-      member(SomeKey, SomeKeys),
-      sublist(Key, SomeKey)
-    ),
-    Keys
-  ),
+  % Reset the indexed SHA hash map.
+  clear_indexed_sha_hash,
 
-  % The number of pairs (for statistics).
-  %rdf_subjects(Graph, Subjects),
-  %cardinality(Subjects, NumberOfSubjects),
-  %NumberOfPairs is NumberOfSubjects ** 2,
+  % Establish the predicate sets that are part of the hierarchy.
+  assoc_to_keys(Assoc, Keys),
 
   % The number of identity pairs (for statistics).
   cardinality(Alignments, NumberOfIdentityPairs),
@@ -87,7 +224,7 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
   NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
   NilRankNodeAttributes = [label(0), shape(plaintext)],
   NilNode = node(NilNodeID, NilNodeAttributes),
-  sha_hash_atom(NilKey, NilHash),
+  indexed_sha_hash(NilKey, NilHash),
   format(atom(NilNodeID), 'n~w', [NilHash]),
   assoc:get_assoc(NilKey, Assoc, NilValues),
   cardinality(NilValues, NumberOfNilIdentityPairs),
@@ -109,6 +246,7 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
     ),
     RankNumbers
   ),
+
   % Nodes: non-nil nodes.
   findall(
     rank(node(RankNodeID, RankNodeAttributes), ContentNodes),
@@ -124,7 +262,7 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
         (
           member(Key, NonNilKeys),
           % Establish the node ID.
-          sha_hash_atom(Key, Hash),
+          indexed_sha_hash(Key, Hash),
           format(atom(NodeID), 'n~w', [Hash]),
           % Include a description of the key.
           rdf_resource_naming(Key, KeyLabel),
@@ -167,19 +305,22 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
   findall(
     edge(FromNodeID, ToNodeID, EdgeAttributes),
     (
-      member(FromKey, Keys),
-      length(FromKey, FromLength),
-      ToLength is FromLength + 1,
-      length(ToKey, ToLength),
       member(ToKey, Keys),
-      ord_subset(FromKey, ToKey),
-      sha_hash_atom(FromKey, FromHash),
+      strict_sublist(FromKey, ToKey),
+      member(FromKey, Keys),
+      \+ ((
+        strict_sublist(MiddleKey, ToKey),
+        member(MiddleKey, Keys),
+        strict_sublist(FromKey, MiddleKey)
+      )),
+      indexed_sha_hash(FromKey, FromHash),
       format(atom(FromNodeID), 'n~w', [FromHash]),
-      sha_hash_atom(ToKey, ToHash),
+      indexed_sha_hash(ToKey, ToHash),
       format(atom(ToNodeID), 'n~w', [ToHash])
     ),
     Edges
   ),
+
   % Graph properties
   GraphAttributes =
     [
@@ -188,17 +329,77 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
       label(Graph),
       overlap(false)
     ],
-  stream_graphviz(Stream, graph([], [NilRank | NonNilRanks], Edges, GraphAttributes)).
-% If a file is given, then the export is first streamed to it and
-% then converted to a displayable format.
-export_rdf_alignments(File, Graph, Alignments, Assoc):-
-  access_file(File, write),
-  !,
-  open(File, write, Stream),
-  export_rdf_alignments(Stream, Graph, Alignments, Assoc),
-  close(Stream),
-  once(file_type_alternative(File, pdf, PDF_File)),
-  convert_graphviz(File, dot, pdf, PDF_File).
+  stream_graphviz(
+    Stream,
+    graph([], [NilRank | NonNilRanks], Edges, GraphAttributes)
+  ).
+
+pair_to_dom(Graph, X-Y, Markup):-
+  % The table of shared properties.
+  setoff(
+    [PX, OX],
+    (
+      rdf(X, PX, OX, Graph),
+      rdf(Y, PY, OY, Graph),
+      same_predicate(PX, PY),
+      same_object(OX, OY)
+    ),
+    Same
+  ),
+  list_to_table([header(true)], [['Predicate', 'Object'] | Same], SameTable),
+
+  % The table of discrepant properties.
+  setoff(
+    [[PX, OX], ['', OY]],
+    (
+      rdf(X, PX, OX, Graph),
+      rdf(Y, PY, OY, Graph),
+      same_predicate(PX, PY),
+      \+ same_object(OX, OY)
+    ),
+    Differents
+  ),
+  append(Differents, Different),
+  list_to_table(
+    [header(true)],
+    [['Predicate', 'Object'] | Different],
+    DifferentTable
+  ),
+
+  % The table of exclusive X-properties.
+  setoff(
+    [PX, OX],
+    (
+      rdf(X, PX, OX, Graph),
+      \+ ((
+        rdf(Y, PY, OY, Graph),
+        same_predicate(PX, PY)
+      ))
+    ),
+    OnlyX
+  ),
+  list_to_table([header(true)], [['Predicate', 'Object'] | OnlyX], XTable),
+
+  % The table of exclusive Y-properties.
+  setoff(
+    [PY, OY],
+    (
+      rdf(Y, PY, OY, Graph),
+      \+ ((
+        rdf(X, PX, OX, Graph),
+        same_predicate(PX, PY)
+      ))
+    ),
+    OnlyY
+  ),
+  list_to_table([header(true)], [['Predicate', 'Object'] | OnlyY], YTable),
+  Markup = [SameTable, DifferentTable, XTable, YTable].
+
+
+
+
+
+% ALL SHARED PREDICATES, ANNOTATED WITH ALIGNMENTS %
 
 %! export_rdf_shared(
 %!   +Graph:atom,
@@ -476,114 +677,4 @@ rdf_shared_pairs(
   append(Tuples, NewEntries, NewTuples),
   append(TempStash, NewEntries, NewTempStash),
   rdf_shared_pairs(NewTuples, SingletonTuples, NewTempStash, SolStash).
-
-%! rdf_alignment_share(
-%!   +Graph:atom,
-%!   +Alignments:list(pair),
-%!   -Predicates:assoc
-%! ) is det.
-
-rdf_alignment_share(Graph, Alignments, Predicates):-
-  empty_assoc(EmptyAssoc),
-  rdf_alignment_share(Graph, EmptyAssoc, Alignments, Predicates).
-
-%! rdf_alignment_share(
-%!   +Graph:atom,
-%!   +OldPredicates:assoc,
-%!   +Alignments:list(pair),
-%!   -NewPredicates:assoc
-%! ) is det.
-
-rdf_alignment_share(_Graph, SolAssoc, [], SolAssoc):-
-  !.
-rdf_alignment_share(Graph, OldAssoc, [From-To | Alignments], SolAssoc):-
-  rdf_shared_pair(From, To, Predicates),
-  put_assoc(Predicates, OldAssoc, From-To, NewAssoc),
-  rdf_alignment_share(Graph, NewAssoc, Alignments, SolAssoc).
-
-%! rdf_shared_pair(
-%!   +Subject1:uri,
-%!   +Subject2:uri,
-%!   -Predicates:ordset(uri)
-%! ) is det.
-
-rdf_shared_pair(Subject1, Subject2, Solution):-
-  rdf_shared_pair(Subject1, Subject2, [], Solution).
-
-rdf_shared_pair(Subject1, Subject2, OldPredicates, Solution):-
-  % We assume a fully materialized graph.
-  rdf(Subject1, Predicate1, Object1, Graph),
-  % We are looking for new predicates only.
-  \+ member(Predicate1, OldPredicates),
-  same_predicate(Predicate1, Predicate2),
-  rdf(Subject2, Predicate2, Object2, Graph),
-  Subject1 @< Subject2,
-  same_object(Object1, Object2),
-  !,
-  ord_add_element(OldPredicates, Predicate1, NewPredicates),
-  rdf_shared_pair(Subject1, Subject2, NewPredicates, Solution).
-rdf_shared_pair(_Subject1, _Subject2, Predicates, Predicates).
-
-
-
-%! pair_to_predicates(
-%!   +Graph:atom,
-%!   +Pair:pair,
-%!   -Predicates:ordset(uri)
-%! ) is det.
-
-pair_to_predicates(G, Ps, X-Y):-
-  pair_to_predicates(G, [], Ps, X-Y).
-
-pair_to_predicates(G, Ps, Sol, X-Y):-
-  rdf(X, P1, O1, G),
-  % We are looking for new predicates only.
-  \+ member(P1, Ps),
-  same_predicate(P1, P2),
-  rdf(Y, P2, O2, G),
-  X @< Y,
-  same_object(O1, O2),
-  !,
-  pair_to_predicates(G, [P1 | Ps], Sol, X-Y).
-pair_to_predicates(_G, Ps, Ps, _X-_Y).
-
-%! predicates_to_pair(
-%!   +Graph:atom,
-%!   +Predicates:ordset(uri),
-%!   -Pair:pair
-%! ) is nondet.
-
-predicates_to_pair(G, [P11 | Ps], X-Y):-
-  rdf(X, P11, O11, G),
-  rdf(Y, P12, O12, G),
-  same_predicate(P11, P12),
-  X @< Y,
-  same_object(O11, O12),
-  forall(
-    member(P21, Ps),
-    (
-      rdf(X, P21, O21, G),
-      rdf(Y, P22, O22, G),
-      same_predicate(P21, P22),
-      X @< Y,
-      same_object(O21, O22)
-    )
-  ).
-
-%! predicates_to_pairs(
-%!   +Graph:atom,
-%!   +Predicates:ordset(uri),
-%!   -Pairs:list(pair)
-%! ) is det.
-
-predicates_to_pairs(G, Ps, Pairs):-
-  findall(
-    Pair,
-    predicates_to_pair(G, Ps, Pair),
-    Pairs
-  ).
-
-same_object(O, O).
-
-same_predicate(P, P).
 

@@ -1,0 +1,29 @@
+digraph iimb_22 {
+  {
+    rank=same;
+    node_r0 [label="0", shape="plaintext"];
+    node_n97d170e1550eee4afc0af065b78cda302a97674c [color="black", label="{} [199/365=0.55]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r1 [label="1", shape="plaintext"];
+    node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 [color="blue", label="< rdf:type > [165/365=0.45] [165/1765440=0.00]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r2 [label="2", shape="plaintext"];
+    node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="blue", label="< IIMBTBOX:spoken_in, rdf:type > [1/365=0.00] [1/3=0.33]", shape="rectangle", style="solid"];
+  }
+
+
+  node_r0 -> node_r1 ;
+  node_r1 -> node_r2 ;
+
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="black", style="solid"];
+  node_n97d170e1550eee4afc0af065b78cda302a97674c -> node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 [color="black", style="solid"];
+
+  charset="UTF-8"
+  fontsize="11.0"
+  label="iimb_22"
+  overlap="false"
+}

@@ -1,4 +1,4 @@
-project_name('Identity on the Web').
+project_name('IOTW').
 
 load_iotw:-
   source_file(load_iotw, ThisFile),
@@ -18,7 +18,7 @@ load_iotw:-
   ;
     ensure_loaded(pgc(load))
   ),
-
+  
   % Identity on the Web.
   ensure_loaded(project(iotw)),
   use_module(project(iotw_web)).

@@ -1,0 +1,58 @@
+digraph iimb_8 {
+  {
+    rank=same;
+    node_r0 [label="0", shape="plaintext"];
+    node_n97d170e1550eee4afc0af065b78cda302a97674c [color="black", label="{} [199/365=0.55]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r2 [label="2", shape="plaintext"];
+    node_nee5fbcea97144d897cd3f4899a660fad4c25f14d [color="blue", label="< IIMBTBOX:amount, rdf:type > [5/365=0.01] [5/7=0.71]", shape="rectangle", style="solid"];
+    node_n80bb4dd36e016f9285a39311cf8a75356e62accd [color="blue", label="< IIMBTBOX:name, rdf:type > [29/365=0.08] [29/402=0.07]", shape="rectangle", style="solid"];
+    node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="blue", label="< IIMBTBOX:spoken_in, rdf:type > [1/365=0.00] [1/3=0.33]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r3 [label="3", shape="plaintext"];
+    node_n5771e5bfcf9fc075809e075912c0df4754cf5039 [color="blue", label="< IIMBTBOX:amount, IIMBTBOX:currency, rdf:type > [2/365=0.01] [2/2=1.00]", shape="rectangle", style="solid"];
+    node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:name, rdf:type > [56/365=0.15] [56/321=0.17]", shape="rectangle", style="solid"];
+    node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 [color="blue", label="< IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [4/365=0.01] [4/109=0.04]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r4 [label="4", shape="plaintext"];
+    node_n460bde564bcbbed07eea4ea79c4e0897568329d5 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:currency, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/5=0.20]", shape="rectangle", style="solid"];
+    node_nead05ac5eaac20106cab5f37507aad248a090d66 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > [9/365=0.02] [9/38=0.24]", shape="rectangle", style="solid"];
+    node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [45/365=0.12] [45/103=0.44]", shape="rectangle", style="solid"];
+    node_nab31e4e40555aebb5d3fe5a2fb0451f0997bd2bf [color="blue", label="< IIMBTBOX:article, IIMBTBOX:name, IIMBTBOX:size, rdf:type > [13/365=0.04] [13/33=0.39]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r5 [label="5", shape="plaintext"];
+    node_n5fe577feb76ced55770fbe862de57c8ae6b72fe5 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:dialect, IIMBTBOX:iso_639_1_code, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/1=1.00]", shape="rectangle", style="solid"];
+  }
+
+
+  node_r0 -> node_r2 ;
+  node_r2 -> node_r3 ;
+  node_r3 -> node_r4 ;
+  node_r4 -> node_r5 ;
+
+  node_nee5fbcea97144d897cd3f4899a660fad4c25f14d -> node_n5771e5bfcf9fc075809e075912c0df4754cf5039 [color="black", style="solid"];
+  node_n97d170e1550eee4afc0af065b78cda302a97674c -> node_nee5fbcea97144d897cd3f4899a660fad4c25f14d [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_n460bde564bcbbed07eea4ea79c4e0897568329d5 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_n5fe577feb76ced55770fbe862de57c8ae6b72fe5 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_nead05ac5eaac20106cab5f37507aad248a090d66 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="black", style="solid"];
+  node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 -> node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_nab31e4e40555aebb5d3fe5a2fb0451f0997bd2bf [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 [color="black", style="solid"];
+  node_n97d170e1550eee4afc0af065b78cda302a97674c -> node_n80bb4dd36e016f9285a39311cf8a75356e62accd [color="black", style="solid"];
+  node_n97d170e1550eee4afc0af065b78cda302a97674c -> node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="black", style="solid"];
+
+  charset="UTF-8"
+  fontsize="11.0"
+  label="iimb_8"
+  overlap="false"
+}

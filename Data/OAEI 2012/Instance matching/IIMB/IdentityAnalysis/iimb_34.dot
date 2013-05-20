@@ -1,0 +1,131 @@
+digraph iimb_34 {
+  {
+    rank=same;
+    node_r0 [label="0", shape="plaintext"];
+    node_n97d170e1550eee4afc0af065b78cda302a97674c [color="black", label="{} [199/365=0.55]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r1 [label="1", shape="plaintext"];
+    node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 [color="blue", label="< rdf:type > [46/365=0.13] [46/827314=0.00]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r2 [label="2", shape="plaintext"];
+    node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 [color="blue", label="< IIMBTBOX:article, rdf:type > [12/365=0.03] [12/73=0.16]", shape="rectangle", style="solid"];
+    node_n76925b9967b455dafe672dbc3e6378f92b41ff12 [color="blue", label="< IIMBTBOX:currency, rdf:type > [6/365=0.02] [6/383=0.02]", shape="rectangle", style="solid"];
+    node_ncced4fd2310948c307f4c5ae44e6ac2b6e259bad [color="blue", label="< IIMBTBOX:date_of_birth, rdf:type > [4/365=0.01] [4/40=0.10]", shape="rectangle", style="solid"];
+    node_nac14d0f446ebf05f8285b71b6a5e3a3a41bf70d9 [color="blue", label="< IIMBTBOX:dialect, rdf:type > [1/365=0.00] [1/1=1.00]", shape="rectangle", style="solid"];
+    node_n15f21d2766a7b3efdc77592d15d0c984b26f857a [color="blue", label="< IIMBTBOX:form_of_government, rdf:type > [2/365=0.01] [2/2480=0.00]", shape="rectangle", style="solid"];
+    node_n66d8b5a077431b2b6237dedbf7cdb3a75d7b2f4c [color="blue", label="< IIMBTBOX:gender, rdf:type > [13/365=0.04] [13/8915=0.00]", shape="rectangle", style="solid"];
+    node_n80bb4dd36e016f9285a39311cf8a75356e62accd [color="blue", label="< IIMBTBOX:name, rdf:type > [31/365=0.08] [31/205=0.15]", shape="rectangle", style="solid"];
+    node_nfa251487da74df95ee20250ecaf6d9f4f9cc0e81 [color="blue", label="< IIMBTBOX:size, rdf:type > [1/365=0.00] [1/6=0.17]", shape="rectangle", style="solid"];
+    node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="blue", label="< IIMBTBOX:spoken_in, rdf:type > [1/365=0.00] [1/3=0.33]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r3 [label="3", shape="plaintext"];
+    node_n5771e5bfcf9fc075809e075912c0df4754cf5039 [color="blue", label="< IIMBTBOX:amount, IIMBTBOX:currency, rdf:type > [2/365=0.01] [2/2=1.00]", shape="rectangle", style="solid"];
+    node_n11c1dd5e9a6d8206b0814410cc7ded00223933cc [color="blue", label="< IIMBTBOX:article, IIMBTBOX:currency, rdf:type > [1/365=0.00] [1/8=0.12]", shape="rectangle", style="solid"];
+    node_n58d4556bf2e115803f15f42168df2698e170f40e [color="blue", label="< IIMBTBOX:article, IIMBTBOX:form_of_government, rdf:type > [2/365=0.01] [2/14=0.14]", shape="rectangle", style="solid"];
+    node_n0cd72f9b4147a2bfd913d455a877964a980f909f [color="blue", label="< IIMBTBOX:article, IIMBTBOX:gender, rdf:type > [3/365=0.01] [3/9=0.33]", shape="rectangle", style="solid"];
+    node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:name, rdf:type > [8/365=0.02] [8/30=0.27]", shape="rectangle", style="solid"];
+    node_na903977e06dfc4f15e87cd50fe206427a11b478e [color="blue", label="< IIMBTBOX:calling_code, IIMBTBOX:form_of_government, rdf:type > [1/365=0.00] [1/8=0.12]", shape="rectangle", style="solid"];
+    node_ne011c73957338b5603cffa07ac0490c3b5cb3ac5 [color="blue", label="< IIMBTBOX:currency, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/18=0.06]", shape="rectangle", style="solid"];
+    node_n9d37a1753a5f3c0d1b0fcff0f4774db88b5f8124 [color="blue", label="< IIMBTBOX:date_of_birth, IIMBTBOX:gender, rdf:type > [3/365=0.01] [3/16=0.19]", shape="rectangle", style="solid"];
+    node_n6d997bf3f65f6b45c1669f7b901ff9408ded48b4 [color="blue", label="< IIMBTBOX:date_of_birth, IIMBTBOX:name, rdf:type > [3/365=0.01] [3/17=0.18]", shape="rectangle", style="solid"];
+    node_nbb55f02aee32bdf6f24e750b78acc7b8f71f48d7 [color="blue", label="< IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > [3/365=0.01] [3/26=0.12]", shape="rectangle", style="solid"];
+    node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 [color="blue", label="< IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [3/365=0.01] [3/21=0.14]", shape="rectangle", style="solid"];
+    node_nfbcdb6bcb4d30e70250720efde16269f004d4e01 [color="blue", label="< IIMBTBOX:name, IIMBTBOX:religion, rdf:type > [1/365=0.00] [1/2=0.50]", shape="rectangle", style="solid"];
+    node_n1452a67eae7ddfffd3e23b5b39fc0d4307216ba3 [color="blue", label="< IIMBTBOX:name, IIMBTBOX:size, rdf:type > [2/365=0.01] [2/3=0.67]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r4 [label="4", shape="plaintext"];
+    node_n38cefea00a6e88e1410357cf17b37e0ce5a498bf [color="blue", label="< IIMBTBOX:article, IIMBTBOX:currency, IIMBTBOX:form_of_government, rdf:type > [2/365=0.01] [2/7=0.29]", shape="rectangle", style="solid"];
+    node_neb9eb3948f9ce4a31e81bab1676569084a0eca29 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:date_of_birth, IIMBTBOX:gender, rdf:type > [1/365=0.00] [1/3=0.33]", shape="rectangle", style="solid"];
+    node_nadc7eafa264e3ebf81f92c542438d80e0cba187c [color="blue", label="< IIMBTBOX:article, IIMBTBOX:date_of_birth, IIMBTBOX:name, rdf:type > [2/365=0.01] [2/4=0.50]", shape="rectangle", style="solid"];
+    node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [2/365=0.01] [2/4=0.50]", shape="rectangle", style="solid"];
+    node_n28f8faafcd7cb766a92477453758733bea20a2a7 [color="blue", label="< IIMBTBOX:currency, IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > [3/365=0.01] [3/13=0.23]", shape="rectangle", style="solid"];
+    node_n9a01af8b9f9e680022fb7cacc76d2740a3dbec58 [color="blue", label="< IIMBTBOX:date_of_birth, IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [2/365=0.01] [2/6=0.33]", shape="rectangle", style="solid"];
+  }
+  {
+    rank=same;
+    node_r5 [label="5", shape="plaintext"];
+    node_n76f7e768067a0001fd291f9370b799ec2a3d5115 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:calling_code, IIMBTBOX:currency, IIMBTBOX:form_of_government, rdf:type > [1/365=0.00] [1/1=1.00]", shape="rectangle", style="solid"];
+    node_n1e4e97b0d9eedbaa39b4f90169f9f247571c93b1 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:currency, IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/2=0.50]", shape="rectangle", style="solid"];
+    node_n00be97bb3a8e74370a31433e7c14c0939bce38e3 [color="blue", label="< IIMBTBOX:article, IIMBTBOX:date_of_birth, IIMBTBOX:gender, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/1=1.00]", shape="rectangle", style="solid"];
+    node_ndedc3ef47c7c1497462c6c3cae1dc008e5fd948a [color="blue", label="< IIMBTBOX:calling_code, IIMBTBOX:currency, IIMBTBOX:form_of_government, IIMBTBOX:name, rdf:type > [1/365=0.00] [1/2=0.50]", shape="rectangle", style="solid"];
+  }
+
+
+  node_r0 -> node_r1 ;
+  node_r1 -> node_r2 ;
+  node_r2 -> node_r3 ;
+  node_r3 -> node_r4 ;
+  node_r4 -> node_r5 ;
+
+  node_n76925b9967b455dafe672dbc3e6378f92b41ff12 -> node_n5771e5bfcf9fc075809e075912c0df4754cf5039 [color="black", style="solid"];
+  node_n38cefea00a6e88e1410357cf17b37e0ce5a498bf -> node_n76f7e768067a0001fd291f9370b799ec2a3d5115 [color="black", style="solid"];
+  node_na903977e06dfc4f15e87cd50fe206427a11b478e -> node_n76f7e768067a0001fd291f9370b799ec2a3d5115 [color="black", style="solid"];
+  node_n38cefea00a6e88e1410357cf17b37e0ce5a498bf -> node_n1e4e97b0d9eedbaa39b4f90169f9f247571c93b1 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_n1e4e97b0d9eedbaa39b4f90169f9f247571c93b1 [color="black", style="solid"];
+  node_n28f8faafcd7cb766a92477453758733bea20a2a7 -> node_n1e4e97b0d9eedbaa39b4f90169f9f247571c93b1 [color="black", style="solid"];
+  node_n11c1dd5e9a6d8206b0814410cc7ded00223933cc -> node_n38cefea00a6e88e1410357cf17b37e0ce5a498bf [color="black", style="solid"];
+  node_n58d4556bf2e115803f15f42168df2698e170f40e -> node_n38cefea00a6e88e1410357cf17b37e0ce5a498bf [color="black", style="solid"];
+  node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 -> node_n11c1dd5e9a6d8206b0814410cc7ded00223933cc [color="black", style="solid"];
+  node_n76925b9967b455dafe672dbc3e6378f92b41ff12 -> node_n11c1dd5e9a6d8206b0814410cc7ded00223933cc [color="black", style="solid"];
+  node_neb9eb3948f9ce4a31e81bab1676569084a0eca29 -> node_n00be97bb3a8e74370a31433e7c14c0939bce38e3 [color="black", style="solid"];
+  node_nadc7eafa264e3ebf81f92c542438d80e0cba187c -> node_n00be97bb3a8e74370a31433e7c14c0939bce38e3 [color="black", style="solid"];
+  node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 -> node_n00be97bb3a8e74370a31433e7c14c0939bce38e3 [color="black", style="solid"];
+  node_n9a01af8b9f9e680022fb7cacc76d2740a3dbec58 -> node_n00be97bb3a8e74370a31433e7c14c0939bce38e3 [color="black", style="solid"];
+  node_n0cd72f9b4147a2bfd913d455a877964a980f909f -> node_neb9eb3948f9ce4a31e81bab1676569084a0eca29 [color="black", style="solid"];
+  node_n9d37a1753a5f3c0d1b0fcff0f4774db88b5f8124 -> node_neb9eb3948f9ce4a31e81bab1676569084a0eca29 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_nadc7eafa264e3ebf81f92c542438d80e0cba187c [color="black", style="solid"];
+  node_n6d997bf3f65f6b45c1669f7b901ff9408ded48b4 -> node_nadc7eafa264e3ebf81f92c542438d80e0cba187c [color="black", style="solid"];
+  node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 -> node_n58d4556bf2e115803f15f42168df2698e170f40e [color="black", style="solid"];
+  node_n15f21d2766a7b3efdc77592d15d0c984b26f857a -> node_n58d4556bf2e115803f15f42168df2698e170f40e [color="black", style="solid"];
+  node_n0cd72f9b4147a2bfd913d455a877964a980f909f -> node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="black", style="solid"];
+  node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 -> node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="black", style="solid"];
+  node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 -> node_n1a30bbfa3129970d10066080b4b1cd7a03cc28f5 [color="black", style="solid"];
+  node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 -> node_n0cd72f9b4147a2bfd913d455a877964a980f909f [color="black", style="solid"];
+  node_n66d8b5a077431b2b6237dedbf7cdb3a75d7b2f4c -> node_n0cd72f9b4147a2bfd913d455a877964a980f909f [color="black", style="solid"];
+  node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 -> node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_n2a6578f22a81833da3ebf8c90430904bb81f93e0 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_nc2c6a832113450f98f454fe5aca8e1352d2f13d7 [color="black", style="solid"];
+  node_na903977e06dfc4f15e87cd50fe206427a11b478e -> node_ndedc3ef47c7c1497462c6c3cae1dc008e5fd948a [color="black", style="solid"];
+  node_n28f8faafcd7cb766a92477453758733bea20a2a7 -> node_ndedc3ef47c7c1497462c6c3cae1dc008e5fd948a [color="black", style="solid"];
+  node_n15f21d2766a7b3efdc77592d15d0c984b26f857a -> node_na903977e06dfc4f15e87cd50fe206427a11b478e [color="black", style="solid"];
+  node_ne011c73957338b5603cffa07ac0490c3b5cb3ac5 -> node_n28f8faafcd7cb766a92477453758733bea20a2a7 [color="black", style="solid"];
+  node_nbb55f02aee32bdf6f24e750b78acc7b8f71f48d7 -> node_n28f8faafcd7cb766a92477453758733bea20a2a7 [color="black", style="solid"];
+  node_n76925b9967b455dafe672dbc3e6378f92b41ff12 -> node_ne011c73957338b5603cffa07ac0490c3b5cb3ac5 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_ne011c73957338b5603cffa07ac0490c3b5cb3ac5 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_n76925b9967b455dafe672dbc3e6378f92b41ff12 [color="black", style="solid"];
+  node_n9d37a1753a5f3c0d1b0fcff0f4774db88b5f8124 -> node_n9a01af8b9f9e680022fb7cacc76d2740a3dbec58 [color="black", style="solid"];
+  node_n6d997bf3f65f6b45c1669f7b901ff9408ded48b4 -> node_n9a01af8b9f9e680022fb7cacc76d2740a3dbec58 [color="black", style="solid"];
+  node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 -> node_n9a01af8b9f9e680022fb7cacc76d2740a3dbec58 [color="black", style="solid"];
+  node_ncced4fd2310948c307f4c5ae44e6ac2b6e259bad -> node_n9d37a1753a5f3c0d1b0fcff0f4774db88b5f8124 [color="black", style="solid"];
+  node_n66d8b5a077431b2b6237dedbf7cdb3a75d7b2f4c -> node_n9d37a1753a5f3c0d1b0fcff0f4774db88b5f8124 [color="black", style="solid"];
+  node_ncced4fd2310948c307f4c5ae44e6ac2b6e259bad -> node_n6d997bf3f65f6b45c1669f7b901ff9408ded48b4 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_n6d997bf3f65f6b45c1669f7b901ff9408ded48b4 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_ncced4fd2310948c307f4c5ae44e6ac2b6e259bad [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_nac14d0f446ebf05f8285b71b6a5e3a3a41bf70d9 [color="black", style="solid"];
+  node_n15f21d2766a7b3efdc77592d15d0c984b26f857a -> node_nbb55f02aee32bdf6f24e750b78acc7b8f71f48d7 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_nbb55f02aee32bdf6f24e750b78acc7b8f71f48d7 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_n15f21d2766a7b3efdc77592d15d0c984b26f857a [color="black", style="solid"];
+  node_n66d8b5a077431b2b6237dedbf7cdb3a75d7b2f4c -> node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_nb6bb00779966ea30ad14fb580c15644aa366a1f9 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_n66d8b5a077431b2b6237dedbf7cdb3a75d7b2f4c [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_nfbcdb6bcb4d30e70250720efde16269f004d4e01 [color="black", style="solid"];
+  node_n80bb4dd36e016f9285a39311cf8a75356e62accd -> node_n1452a67eae7ddfffd3e23b5b39fc0d4307216ba3 [color="black", style="solid"];
+  node_nfa251487da74df95ee20250ecaf6d9f4f9cc0e81 -> node_n1452a67eae7ddfffd3e23b5b39fc0d4307216ba3 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_n80bb4dd36e016f9285a39311cf8a75356e62accd [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_nfa251487da74df95ee20250ecaf6d9f4f9cc0e81 [color="black", style="solid"];
+  node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 -> node_nd31f85a96ae626525719c53d5d2ba6caca661d18 [color="black", style="solid"];
+  node_n97d170e1550eee4afc0af065b78cda302a97674c -> node_n3c197cb1f6842dc41aa48dc8b9032284bcf39a27 [color="black", style="solid"];
+
+  charset="UTF-8"
+  fontsize="11.0"
+  label="iimb_34"
+  overlap="false"
+}
