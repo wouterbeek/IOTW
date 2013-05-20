@@ -26,6 +26,7 @@
 */
 
 :- use_module(generics(assoc_multi)).
+:- use_module(generics(file_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(library(ordsets)).
@@ -40,8 +41,13 @@
 
 
 export_rdf_alignments(Graph, Alignments, Assoc):-
-  absolute_file_name(data(Graph), File, [access(write), file_type(graphviz)]),
-  export_rdf_alignments(File, Graph, Alignments, Assoc).
+  absolute_file_name(
+    data(Graph),
+    File1,
+    [access(write), file_type(graphviz)]
+  ),
+  new_file(File1, File2),
+  export_rdf_alignments(File2, Graph, Alignments, Assoc).
 
 %! export_rdf_alignments(
 %!   +Out:oneof([atom,stream]),
@@ -174,7 +180,6 @@ export_rdf_alignments(Stream, Graph, Alignments, Assoc):-
     ),
     Edges
   ),
-gtrace,
   % Graph properties
   GraphAttributes =
     [

@@ -50,7 +50,7 @@ load_shared_iimb(Integer, SVG):-
 
 load_shared_iimb(Integer, Graph, Alignments):-
   Graph = iotw_data,
-  between(0, 80, Integer),
+  between(1, 80, Integer),
   xml_register_namespace(
     'IIMBTBOX',
     'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
@@ -79,6 +79,7 @@ load_shared_iimb(Integer, Graph, Alignments):-
   ),
   rdf_load2(OWL_File, [graph(iotw_part2)]),
   rdf_graph_merge([iotw_part1,iotw_part2], Graph),
+  maplist(rdf_unload_graph, [iotw_part1, iotw_part2]),
   oaei_file_to_alignments(RDF_File, Alignments).
 
 load_shared_properties1:-
@@ -108,10 +109,17 @@ load_shared_properties3:-
   set_prolog_stack(global, limit(2*10**9)),
   forall(rdf_graph(Graph), rdf_shared(Graph)).
 
+load_alignment_iimb:-
+  forall(
+    between(3, 80, Integer),
+    load_alignment_iimb(Integer)
+  ).
+
 load_alignment_iimb(Integer):-
   load_shared_iimb(Integer, Graph, Alignments),
   set_prolog_stack(global, limit(2*10**9)),
   set_prolog_stack(local, limit(2*10**9)),
   rdf_alignment_share(Graph, Alignments, Predicates),
-  export_rdf_alignments(Graph, Alignments, Predicates).
+  export_rdf_alignments(Graph, Alignments, Predicates),
+  rdf_unload_graph(Graph).
 
