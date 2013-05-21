@@ -89,7 +89,7 @@ rdf_shared_pair(Subject1, Subject2, OldPredicates, Solution):-
   \+ member(Predicate1, OldPredicates),
   same_predicate(Predicate1, Predicate2),
   rdf(Subject2, Predicate2, Object2, Graph),
-  Subject1 @< Subject2,
+  Subject1 \== Subject2,
   same_object(Object1, Object2),
   !,
   ord_add_element(OldPredicates, Predicate1, NewPredicates),
@@ -190,8 +190,10 @@ export_rdf_alignments(Graph, Alignments, Assoc, SVG2):-
   xml_inject_attribute(SVG1, node, [onclick='function()'], SVG2),
 
   % DEB: Also export the PDF version in a separate file.
-  %once(file_type_alternative(File2, pdf, PDF_File)),
-  %convert_graphviz(File2, dot, pdf, PDF_File),
+  once(file_type_alternative(File2, pdf, PDF_File)),
+  convert_graphviz(File2, dot, pdf, PDF_File),
+  once(file_type_alternative(File2, svg, SVG_File)),
+  convert_graphviz(File2, dot, svg, SVG_File),
 
   delete_file(File2).
 
@@ -217,24 +219,28 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
 
   % Separate the nil node from the non-nil nodes.
   NilKey = [],
-  selectchk(NilKey, Keys, NonNilKeys),
-
-  % Nodes: nil nodes.
-  NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
-  NilRankNodeAttributes = [label(0), shape(plaintext)],
-  NilNode = node(NilNodeID, NilNodeAttributes),
-  indexed_sha_hash(NilKey, NilHash),
-  format(atom(NilNodeID), 'n~w', [NilHash]),
-  assoc:get_assoc(NilKey, Assoc, NilValues),
-  cardinality(NilValues, NumberOfNilIdentityPairs),
-  LinkedNilPercentage is NumberOfNilIdentityPairs / NumberOfIdentityPairs,
-  format(
-    atom(NilNodeLabel),
-    '{} [~d/~d=~2f]',
-    [NumberOfNilIdentityPairs, NumberOfIdentityPairs, LinkedNilPercentage]
+  (
+    selectchk(NilKey, Keys, NonNilKeys)
+  ->
+    % Nodes: nil nodes.
+    NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
+    NilRankNodeAttributes = [label(0), shape(plaintext)],
+    NilNode = node(NilNodeID, NilNodeAttributes),
+    indexed_sha_hash(NilKey, NilHash),
+    format(atom(NilNodeID), 'n~w', [NilHash]),
+    assoc:get_assoc(NilKey, Assoc, NilValues),
+    cardinality(NilValues, NumberOfNilIdentityPairs),
+    LinkedNilPercentage is NumberOfNilIdentityPairs / NumberOfIdentityPairs,
+    format(
+      atom(NilNodeLabel),
+      '{} [~d/~d=~2f]',
+      [NumberOfNilIdentityPairs, NumberOfIdentityPairs, LinkedNilPercentage]
+    ),
+    NilNodeAttributes =
+      [color(black), label(NilNodeLabel), shape(rectangle), style(solid)]
+  ;
+     NonNilKeys = Keys
   ),
-  NilNodeAttributes =
-    [color(black), label(NilNodeLabel), shape(rectangle), style(solid)],
 
   % Extract the ranks that occur in the hierarchy.
   setoff(

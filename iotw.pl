@@ -48,6 +48,59 @@ http:location(root, '/prasem/', []).
 
 
 
+load_alignment_anatomy:-
+  maplist(rdf_unload_graph, [human, mouse]),
+  flag(anatomy, ID, ID + 1),
+  format(atom(Graph), 'anatomy_~w', [ID]),
+  maplist(
+    xml_register_namespace,
+    [
+      rdfs,
+      oboRel,
+      owl,
+      xsd,
+      rdf,
+      oboInOwl
+    ],
+    [
+      'http://www.w3.org/2000/01/rdf-schema#',
+      'http://www.obofoundry.org/ro/ro.owl#',
+      'http://www.w3.org/2002/07/owl#',
+      'http://www.w3.org/2001/XMLSchema#',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      'http://www.geneontology.org/formats/oboInOwl#'
+    ]
+  ),
+  db_add_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))),
+  db_add_novel(user:file_search_path(raw_results, anatomy('Raw results'))),
+  absolute_file_name(
+    anatomy(human),
+    HumanFile,
+    [access(read), file_type(owl)]
+  ),
+  rdf_load2(HumanFile, [graph(human)]),
+  absolute_file_name(
+    anatomy(mouse),
+    MouseFile,
+    [access(read), file_type(owl)]
+  ),
+  rdf_load2(MouseFile, [graph(mouse)]),
+  rdf_graph_merge([human, mouse], Graph),
+  absolute_file_name(
+    raw_results(.),
+    AlignmentDir,
+    [access(read), file_type(directory)]
+  ),
+  path_walk_tree(AlignmentDir, '.*.rdf$', AlignmentFiles),
+  forall(
+    member(AlignmentFile, AlignmentFiles),
+    (
+      oaei_file_to_alignments(AlignmentFile, Alignments),
+      rdf_alignment_share(Graph, Alignments, Predicates),
+      export_rdf_alignments(Graph, Alignments, Predicates, _SVG)
+    )
+  ).
+
 load_shared_iimb(Integer, SVG):-
   load_shared_iimb(Integer, Graph, Alignments),
   rdf_shared(Graph, Alignments, SVG).

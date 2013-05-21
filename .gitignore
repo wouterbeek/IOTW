@@ -4,3 +4,4 @@ Data/*.xdot
 *.aux
 *.log
 *.pdf
+*.svg

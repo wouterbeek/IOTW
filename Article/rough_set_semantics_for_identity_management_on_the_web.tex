@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper,notitlepage,onecolumn,twoside]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{formula}{Formula}
+\newtheorem{problem}{Problem}
+
+\title{Rough Set Semantics for\\Identity management on the Web\\Notes}
+\author{Wouter Beek \and Stefan Schlobach \and Frank van Harmelen}
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+Identity relations are at the foundation of the Linked Open Data initiative and on the Semantic Web in general. They allow the interlinking of alternative descriptions of the same thing. However, the traditional notion of identity (owl:sameAs) is often problematic, e.g. when objects are considered the same in some contexts but not in others. The standing practice in such cases is to use weaker relations of relatedness (e.g. skos:related). Unfortunately, this limits reasoners in drawing inferences. 
+
+We propose a method that treats a given identity relation as a collection of indiscernability pairs, assigning meaning to such relations in terms of shared properties/values. Reflexivity, symmetry and (in some cases) transitivity are preserved under indiscernability, allowing reasoners to infer new results.
+
+Reinterpreting identity in this way allows the calculation of upper and a lower bounds, turning crisp identity into rough indiscernability, based on the well-understood rough-set semantics. These rough sets can be used to provide automated assistance for finding false positive and false negative errors for existing linksets.
+
+In a series of experiments we show that this method can indeed be used to improve on linksets that are the result of state of the art automated alignment mappings.
+
+\section{Introduction}
+
+\subsection{Previous work}
+
+First goal: Create a rational reconstruction of a given sameAs relation in terms of indiscernability conditions (i.e., shared properties).
+
+Second goal: The lower and higher approximation provide suggestions for extending and/or limiting a given sameAs relation.
+
+Third goal: Establish the quality of the linkset by quantitative means.
+
+\section{Approach}
+
+In our approach we approximate the identiy relation by using rough set theory [REF] to represent approximations of the full set of identity pairs. We assume that an RDF graph $G$ and a binary relation $\approx$ are given in advance.\footnote{For our approch it is not necessary to pose additional restrictions on the binary relation. In practice this will be either a linkset relating subgraphs of $G$ to each other, or a set of alignments created by an ontology mapping tool.}
+
+As the domain of our rough set approach we take the Cartesian product of the resources that occur in the subject position of some triple in the graph. As the set of relations\footnote{Relations are usually called attributes in rough set theory, and they are functions that map to an arbitrary set of value labels. We only consider functions that map onto the set of Boolean truth values.} we take the powerset of those resources that occur in the predicate prosition of some triple in the graph. This means that we have a big number of primitives to work with (a quadratic number of constants; an exponential number of relations).
+
+\subsection{A hunch}
+
+For a given set of identity pairs $\approx$, there may be different subrelations that we can identify in terms of the semantics of the graph. For instance, in the merged IIMB graph there are some identical resource that share the property XXX, while other pairs share the property YYY. In a graph that represents customer accounts, some resources may share the same social security number, whereas other may share the same country code.
+
+We are not only interested in what resources may share (e.g., the same social security number or the same country code), but also in what resource pairs share with one another. For instance, some identity pairs can be identified as consisting of resources that share the same social security number, whereas other identity pairs can be identified as consisting of resources that share the same country code.
+
+These properties that are shared by the resources that constitute an identity pair, may be considered a description of the identity pair. When we look at the set of identity pairs, there may be multiple pairs with the same such description. We are interested in precisely those predicate sets.
+
+\subsection{Indiscernability}
+
+As in rough set theory, we define indiscernability as a set of pairs for which it is impossible to show the distinction.
+
+Note that we do not define indiscernability on the level of resources, but on the level of pairs of resources. This allows us to define a rough set of pairs that is based on the given identity relation $\approx$.\footnote{As noted earlier, this could be done based on \emph{any} binary relationship, regardless of whether or not it is assumed to consitute an identity relation.}
+
+
+
+\subsection{Hypotheses}
+
+The quality of a linkset is inversely correlated with the size of the boundary
+
+\section{Experimental results}
+
+\section{Conclusion}
+
+\end{document}
+

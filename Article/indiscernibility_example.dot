@@ -1,0 +1,37 @@
+graph indiscernibility_example {
+  node [color="black", fillcolor="/pubu9/1", style="filled"];
+  edge [style="invis"];
+  
+  subgraph cluster_abc {
+    color="black";
+    fillcolor="/pubu9/3";
+    label = "{{},{P}}";
+    style="filled";
+    
+    subgraph cluster_ab {
+      color="black";
+      fillcolor="/pubu9/4";
+      label = "{{},{P},{Q},{P,Q}}";
+      style="filled";
+      node_a [label="{P,Q}"];
+      node_b [label="{P,Q}"];
+      node_a -- node_b;
+    }
+    
+    node_c [label="{P}"];
+    node_a -- node_c;
+    node_b -- node_c;
+  }
+  
+  node_d [label="{R}"];
+  
+  node_a -- node_d;
+  node_b -- node_d;
+  node_c -- node_d;
+  
+  charset="UTF-8"
+  fontsize="11.0"
+  label="Example showing an indiscernability partition for pairs of constances."
+  overlap="false"
+}
+

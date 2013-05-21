@@ -1,0 +1,24 @@
+digraph approximation_example {
+  {
+    rank=same;
+    x [label="{P}", shape="plaintext"];
+    y [label="{P}", shape="plaintext"];
+  }
+  
+  {
+    rank=same;
+    u [label="{P,Q}", shape="plaintext"];
+    v [label="{Q}", shape="plaintext"];
+  }
+  
+  x -> y [arrowhead="none", color="black:white:black"];
+  x -> u [arrowhead="none", color="black"];
+  y -> u [arrowhead="none", color="black"];
+  u -> v [arrowhead="none", color="black:white:black:white:black"];
+  
+  charset="UTF-8"
+  fontsize="11.0"
+  label="Example showing an equivalence relation together with its higher and lower approximation."
+  overlap="false"
+}
+
