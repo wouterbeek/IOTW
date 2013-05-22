@@ -216,7 +216,7 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
 
   % The number of identity pairs (for statistics).
   cardinality(Alignments, NumberOfIdentityPairs),
-
+  
   % Separate the nil node from the non-nil nodes.
   NilKey = [],
   (
@@ -239,7 +239,25 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
     NilNodeAttributes =
       [color(black), label(NilNodeLabel), shape(rectangle), style(solid)]
   ;
-     NonNilKeys = Keys
+     NonNilKeys = Keys,
+    
+    rdf_subjects(Graph, Subjects),
+    cardinality(Subjects, NumberOfSubjects),
+    NumberOfPairs is NumberOfSubjects ** 2,
+    
+    findall(
+      L,
+      (
+        member(Key, Keys),
+        assoc:get_assoc(Key, Assoc, Values),
+        cardinality(Values)
+      ),
+      Ls
+    ),
+    sum_list(Ls, NumberOfNonNilPairs),
+    NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
+    
+    
   ),
 
   % Extract the ranks that occur in the hierarchy.
@@ -266,9 +284,6 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
         node(NodeID, NodeAttributes),
         (
           member(Key, NonNilKeys),
-          % Establish the node ID.
-          indexed_sha_hash(Key, Hash),
-          format(atom(NodeID), 'n~w', [Hash]),
           % Include a description of the key.
           rdf_resource_naming(Key, KeyLabel),
           % Retrieve the key's associated values.
@@ -408,8 +423,58 @@ pair_to_dom(X-Y, Markup):-
 %! ) is det.
 
 export_rdf_shared(Graph, Alignments, Stash):-
-  absolute_file_name(data(Graph), File, [access(write), file_type(graphviz)]),
+  absolute_file_name(
+    data(Graph),
+    File,
+    [access(write), file_type(graphviz)]
+  ),
   export_rdf_shared(File, Graph, Alignments, Stash).
+
+  NilKeyLabel = '{}',
+  build_node(
+    NilKeyLabel,
+    NumberOfNilIdentityPairs,
+    NumberOfIdentityPairs,
+    NumberOfNilPairs,
+    NilNode
+  ),
+
+%! build_node(
+%!   +KeyLabel:atom,
+%!   +NumberOfTheseIdentityPairs:integer,
+%!   +NumberOfIdentityPairs:integer,
+%!   +NumberOfThesePairs:integer,
+%!   -Node:element
+%! ) is det.
+
+build_node(
+  KeyLabel,
+  NumberOfTheseIdentityPairs,
+  NumberOfIdentityPairs,
+  NumberOfThesePairs,
+  node(NodeID, NilNodeAttributes)
+):-
+  % Establish the node ID.
+  indexed_sha_hash(Key, Hash),
+  format(atom(NodeID), 'n~w', [Hash]),
+  
+  Percentage1 is NumberOfTheseIdentityPairs / NumberOfIdentityPairs,
+  Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
+  format(
+    atom(NilNodeLabel),
+    '~w [~d/~d=~2f] [~d/~d=~2f]',
+    [
+      KeyLabel,
+      NumberOfTheseIdentityPairs,
+      NumberOfIdentityPairs,
+      Percentage1,
+      NumberOfTheseIdentityPairs,
+      NumberOfThesePairs,
+      Percentage2
+    ]
+  ),
+  NodeAttributes =
+    [color(blue), label(NilNodeLabel), shape(rectangle), style(solid)].
 
 %! export_rdf_shared(
 %!   +In:oneof([file,stream]),
@@ -424,7 +489,7 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
 
   rdf_subjects(Graph, Subjects),
   cardinality(Subjects, NumberOfSubjects),
-  NumberOfAllPairs is NumberOfSubjects ** 2,
+  NumberOfPairs is NumberOfSubjects ** 2,
 
   % Nodes: Nil node
   % @tbd Establish the number of nil pairs (and the percentage).
@@ -434,7 +499,7 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
   format(
     atom(NilNodeLabel),
     '{} (100%) (~d/~d)',
-    [NumberOfAllPairs, NumberOfAllPairs]
+    [NumberOfPairs, NumberOfPairs]
   ),
   NilNodeAttributes =
     [color(black), label(NilNodeLabel), shape(rectangle), style(solid)],
@@ -464,12 +529,12 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
           ),
           rdf_resource_naming(PSet, PSetLabel),
           % Retrieve the ordered set, not on of its members!
-          Percentage is NumberOfThesePairs / NumberOfAllPairs * 100,
+          Percentage is NumberOfThesePairs / NumberOfPairs * 100,
           format(atom(NodeID), 'n~w', [I]),
           format(
             atom(NodeLabel),
             '~w (~2f%) (~d/~d) [~2f]',
-            [PSetLabel, Percentage, NumberOfThesePairs, NumberOfAllPairs, LinkedPercentage]
+            [PSetLabel, Percentage, NumberOfThesePairs, NumberOfPairs, LinkedPercentage]
           ),
           NodeAttributes =
             [color(blue), label(NodeLabel), shape(rectangle), style(solid)],
@@ -544,7 +609,7 @@ export_rdf_shared(File, Graph, Alignments, In):-
 % Returns the percentage of given pairs that are also in
 % the given alignments.
 
-linked_percentage(NumberOfAllPairs-AllPairs, Alignments, Percentage):-
+linked_percentage(NumberOfPairs-AllPairs, Alignments, Percentage):-
   setoff(
     X-Y,
     (
@@ -558,7 +623,7 @@ linked_percentage(NumberOfAllPairs-AllPairs, Alignments, Percentage):-
     LinkedPairs
   ),
   cardinality(LinkedPairs, NumberOfLinkedPairs),
-  Percentage is NumberOfLinkedPairs / NumberOfAllPairs.
+  Percentage is NumberOfLinkedPairs / NumberOfPairs.
 
 %! rdf_shared(+Graph:atom) is det.
 % Establish the pairs of shared properties for the given graph.
