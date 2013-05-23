@@ -5,19 +5,19 @@ graph indiscernibility_example {
   subgraph cluster_abcd {
     color="black";
     fillcolor="/pubu9/2";
-    label = "P({})"; //{{}}
+    label = "{}"; //{{}}
     style="filled";
     
     subgraph cluster_abc {
       color="black";
       fillcolor="/pubu9/3";
-      label = "Pow({P})"; //{{},{P}}
+      label = "{P}"; //{{},{P}}
       style="filled";
       
       subgraph cluster_ab {
         color="black";
         fillcolor="/pubu9/4";
-        label = "Pow({P,Q})"; //{{},{P},{Q},{P,Q}}
+        label = "{P,Q}"; //{{},{P},{Q},{P,Q}}
         style="filled";
         node_a [label="a: {P,Q}"];
         node_b [label="b: {P,Q}"];

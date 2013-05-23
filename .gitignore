@@ -5,3 +5,9 @@ Data/*.xdot
 *.log
 *.pdf
 *.svg
+*.jpeg
+*.png
+*.bbl
+*.blg
+*.out
+*.dvi
