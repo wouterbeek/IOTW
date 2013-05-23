@@ -41,6 +41,8 @@
 
 :- dynamic(current_assoc(_Assoc)).
 :- dynamic(current_graph(_Graph)).
+:- dynamic(current_lower(_Lower)).
+:- dynamic(current_higher(_Higher)).
 
 :- rdf_meta(same_object(r,r)).
 :- rdf_meta(same_predicate(r,r)).
@@ -48,6 +50,65 @@
 
 
 % ALIGNMENTS ONLY %
+
+%! build_node(
+%!   +Assoc:assoc,
+%!   +Key:ordset(uri),
+%!   +NumberOfIdentityPairs:integer,
+%!   +NumberOfThesePairs:integer,
+%!   -Node:element
+%! ) is det.
+
+build_node(
+  Assoc,
+  Key,
+  NumberOfIdentityPairs,
+  NumberOfThesePairs,
+  node(NodeID, NodeAttributes)
+):-
+  % Create the key label that described the key.
+  rdf_resource_naming(Key, KeyLabel),
+
+  % Establish the node ID.
+  indexed_sha_hash(Key, Hash),
+  format(atom(NodeID), 'n~w', [Hash]),
+
+  % Count the identity pairs and percentage.
+  unless(
+    assoc:get_assoc(Key, Assoc, TheseIdentityPairs),
+    TheseIdentityPairs = []
+  ),
+  cardinality(TheseIdentityPairs, NumberOfTheseIdentityPairs),
+  Percentage1 is NumberOfTheseIdentityPairs / NumberOfIdentityPairs,
+
+  % Calculate the percentage of identity pairs relative to all pairs
+  % in the partition set.
+  Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
+  
+  % Add to higher approximation.
+  assert(current_higher(NumberOfThesePairs)),
+  
+  % Add to lower approximation.
+  if_then(
+    NumberOfTheseIdentityPairs = NumberOfThesePairs,
+    assert(current_lower(NumberOfTheseIdentityPairs))
+  ),
+  
+  format(
+    atom(NodeLabel),
+    '~w [~d/~d=~2f] [~d/~d=~2f]',
+    [
+      KeyLabel,
+      NumberOfTheseIdentityPairs,
+      NumberOfIdentityPairs,
+      Percentage1,
+      NumberOfTheseIdentityPairs,
+      NumberOfThesePairs,
+      Percentage2
+    ]
+  ),
+  NodeAttributes =
+    [color(blue), label(NodeLabel), shape(rectangle), style(solid)].
 
 %! rdf_alignment_share(
 %!   +Graph:atom,
@@ -190,12 +251,15 @@ export_rdf_alignments(Graph, Alignments, Assoc, SVG2):-
   xml_inject_attribute(SVG1, node, [onclick='function()'], SVG2),
 
   % DEB: Also export the PDF version in a separate file.
-  once(file_type_alternative(File2, pdf, PDF_File)),
-  convert_graphviz(File2, dot, pdf, PDF_File),
-  once(file_type_alternative(File2, svg, SVG_File)),
-  convert_graphviz(File2, dot, svg, SVG_File),
-
-  delete_file(File2).
+  forall(
+    member(ExportType, [jpeg, pdf, png, svg]),
+    (
+      once(file_type_alternative(File2, ExportType, PDF_File)),
+      convert_graphviz(File2, dot, ExportType, PDF_File)
+    )
+  ),
+  %delete_file(File2),
+  true.
 
 %! export_rdf_alignments0(
 %!   +Stream:stream,
@@ -217,49 +281,50 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
   % The number of identity pairs (for statistics).
   cardinality(Alignments, NumberOfIdentityPairs),
   
-  % Separate the nil node from the non-nil nodes.
+  % Ranks: the nul rank.
+  NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
+  NilRankNodeAttributes = [label(0), shape(plaintext)],
+  
+  
+  % Nodes: the nil node.
   NilKey = [],
   (
+    % Separate the nil node from the non-nil nodes.
     selectchk(NilKey, Keys, NonNilKeys)
   ->
-    % Nodes: nil nodes.
-    NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
-    NilRankNodeAttributes = [label(0), shape(plaintext)],
-    NilNode = node(NilNodeID, NilNodeAttributes),
-    indexed_sha_hash(NilKey, NilHash),
-    format(atom(NilNodeID), 'n~w', [NilHash]),
-    assoc:get_assoc(NilKey, Assoc, NilValues),
-    cardinality(NilValues, NumberOfNilIdentityPairs),
-    LinkedNilPercentage is NumberOfNilIdentityPairs / NumberOfIdentityPairs,
-    format(
-      atom(NilNodeLabel),
-      '{} [~d/~d=~2f]',
-      [NumberOfNilIdentityPairs, NumberOfIdentityPairs, LinkedNilPercentage]
-    ),
-    NilNodeAttributes =
-      [color(black), label(NilNodeLabel), shape(rectangle), style(solid)]
+    build_node(
+      Assoc,
+      NilKey,
+      NumberOfIdentityPairs,
+      NumberOfNilPairs,
+      NilNode
+    )
   ;
-     NonNilKeys = Keys,
-    
+    NonNilKeys = Keys,
+
     rdf_subjects(Graph, Subjects),
     cardinality(Subjects, NumberOfSubjects),
     NumberOfPairs is NumberOfSubjects ** 2,
-    
-    findall(
-      L,
-      (
-        member(Key, Keys),
-        assoc:get_assoc(Key, Assoc, Values),
-        cardinality(Values)
-      ),
-      Ls
-    ),
-    sum_list(Ls, NumberOfNonNilPairs),
-    NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
-    
-    
-  ),
 
+    findall(
+      SomeLength,
+      (
+        member(SomeKey, Keys),
+        assoc:get_assoc(SomeKey, Assoc, SomeValues),
+        cardinality(SomeValues, SomeLength)
+      ),
+      AllLengths
+    ),
+    sum_list(AllLengths, NumberOfNonNilPairs),
+    NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
+    build_node(
+      Assoc,
+      NilKey,
+      NumberOfIdentityPairs,
+      NumberOfNilPairs,
+      NilNode
+    )
+  ),
   % Extract the ranks that occur in the hierarchy.
   setoff(
     RankNumber,
@@ -281,38 +346,21 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
       % Consider only keys of the rank length.
       length(Key, RankNumber),
       findall(
-        node(NodeID, NodeAttributes),
+        Node,
         (
           member(Key, NonNilKeys),
-          % Include a description of the key.
-          rdf_resource_naming(Key, KeyLabel),
-          % Retrieve the key's associated values.
-          unless(
-            assoc:get_assoc(Key, Assoc, TheseIdentityPairs),
-            TheseIdentityPairs = []
-          ),
-          % We like to include some numbers in the node label.
-          cardinality(TheseIdentityPairs, NumberOfTheseIdentityPairs),
+
           % There may be many pairs that are not in the alignment.
           predicates_to_pairs(Graph, Key, ThesePairs),
           cardinality(ThesePairs, NumberOfThesePairs),
-          Percentage1 is NumberOfTheseIdentityPairs / NumberOfIdentityPairs,
-          Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
-          format(
-            atom(NodeLabel),
-            '~w [~d/~d=~2f] [~d/~d=~2f]',
-            [
-              KeyLabel,
-              NumberOfTheseIdentityPairs,
-              NumberOfIdentityPairs,
-              Percentage1,
-              NumberOfTheseIdentityPairs,
-              NumberOfThesePairs,
-              Percentage2
-            ]
-          ),
-          NodeAttributes =
-            [color(blue), label(NodeLabel), shape(rectangle), style(solid)]
+
+          build_node(
+            Assoc,
+            Key,
+            NumberOfIdentityPairs,
+            NumberOfThesePairs,
+            Node
+          )
         ),
         ContentNodes
       )
@@ -327,7 +375,7 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
     (
       member(ToKey, Keys),
       strict_sublist(FromKey, ToKey),
-      member(FromKey, Keys),
+      member(FromKey, [ NilKey | Keys]),
       \+ ((
         strict_sublist(MiddleKey, ToKey),
         member(MiddleKey, Keys),
@@ -341,17 +389,34 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
     Edges
   ),
 
+  % Calculate the accuracy of the identity relation.
+  findall(Lower, current_lower(Lower), Lowers),
+  sum_list(Lowers, Lower),
+  findall(Higher, current_higher(Higher), Highers),
+  sum_list(Highers, Higher),
+  Accuracy is Lower / Higher,
+  % Clean up.
+  retractall(current_lower(_Lower)),
+  retractall(current_higher(_Higher)),
+
   % Graph properties
+  format(atom(GraphLabel), 'Name: ~w   Accuracy: ~e', [Graph, Accuracy]),
   GraphAttributes =
     [
       charset('UTF-8'),
       fontsize(11.0),
-      label(Graph),
+      label(GraphLabel),
       overlap(false)
     ],
+  
   stream_graphviz(
     Stream,
-    graph([], [NilRank | NonNilRanks], Edges, GraphAttributes)
+    graph(
+      [], % Unranked nodes.
+      [NilRank | NonNilRanks],
+      Edges,
+      [graph_name(Graph) | GraphAttributes]
+    )
   ).
 
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
@@ -429,52 +494,6 @@ export_rdf_shared(Graph, Alignments, Stash):-
     [access(write), file_type(graphviz)]
   ),
   export_rdf_shared(File, Graph, Alignments, Stash).
-
-  NilKeyLabel = '{}',
-  build_node(
-    NilKeyLabel,
-    NumberOfNilIdentityPairs,
-    NumberOfIdentityPairs,
-    NumberOfNilPairs,
-    NilNode
-  ),
-
-%! build_node(
-%!   +KeyLabel:atom,
-%!   +NumberOfTheseIdentityPairs:integer,
-%!   +NumberOfIdentityPairs:integer,
-%!   +NumberOfThesePairs:integer,
-%!   -Node:element
-%! ) is det.
-
-build_node(
-  KeyLabel,
-  NumberOfTheseIdentityPairs,
-  NumberOfIdentityPairs,
-  NumberOfThesePairs,
-  node(NodeID, NilNodeAttributes)
-):-
-  % Establish the node ID.
-  indexed_sha_hash(Key, Hash),
-  format(atom(NodeID), 'n~w', [Hash]),
-  
-  Percentage1 is NumberOfTheseIdentityPairs / NumberOfIdentityPairs,
-  Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
-  format(
-    atom(NilNodeLabel),
-    '~w [~d/~d=~2f] [~d/~d=~2f]',
-    [
-      KeyLabel,
-      NumberOfTheseIdentityPairs,
-      NumberOfIdentityPairs,
-      Percentage1,
-      NumberOfTheseIdentityPairs,
-      NumberOfThesePairs,
-      Percentage2
-    ]
-  ),
-  NodeAttributes =
-    [color(blue), label(NilNodeLabel), shape(rectangle), style(solid)].
 
 %! export_rdf_shared(
 %!   +In:oneof([file,stream]),
@@ -574,7 +593,7 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
     ),
     NonNilEdges
   ),
-
+  
   % Graph properties
   GraphAttributes =
     [
