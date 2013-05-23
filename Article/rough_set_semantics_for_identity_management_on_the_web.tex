@@ -7,7 +7,9 @@
 \usepackage{courier}
 \usepackage{graphicx}
 \usepackage{helvet}
+\usepackage{hyperref}
 \usepackage{times}
+\usepackage{verbatim}
 
 \newtheorem{definition}{Definition}
 \newtheorem{example}{Example}
@@ -21,17 +23,22 @@
 \setlength{\pdfpageheight}{11in}
 
 \pdfinfo{
-/Title Rough Set Semantics for Identity management on the Web
+/Title Rough Set Semantics for Identity Management on the Web
 /Author Wouter Beek, Stefan Schlobach, Frank van Harmelen}
 \setcounter{secnumdepth}{0}
 
 \begin{document}
 
-\title{Rough Set Semantics for\\Identity management on the Web}
-\author{Wouter Beek, Stefan Schlobach, Frank van Harmelen}
+\title{Rough Set Semantics for\\Identity Management on the Web}
+\author{Wouter Beek \and Stefan Schlobach \and Frank van Harmelen\\
+Vrije Universiteit Amsterdam\\
+De Boelelaan 1081a\\
+1081HV Amsterdam\\
+The Netherlands}
 \maketitle
 \begin{abstract}
 \begin{quote}
+...
 \end{quote}
 \end{abstract}
 
@@ -47,6 +54,8 @@ In a series of experiments we show that this method can indeed be used to improv
 
 \subsection{Previous work}
 
+\cite{mccusker_mcguinness_2010} define an ontology of identity relations, each with slightly different properties for derivation.
+
 \subsection{Research goals}
 
 First goal: In a linkset the identity pairs all look the same. We want to characterize subsets of a linkset based on the identity conditions that we can extrapolate from the data. In this way we can assign meanings to sets of indentity pairs.
@@ -55,13 +64,26 @@ Second goal: Based on an exiting identity relation, and using concepts from roug
 
 Third goal: We wamt to establish the quality of an identity relation in quantitative means, i.e. in semantic terms.
 
-\section{Shared properties \& shared shared properies}
+\subsection{Preliminaries}
 
-For a given identity relation there may be different subrelations that we can identify in terms of the semantics of the graph. For instance, in the merged IIMB graph there are some identical resources that share the property \verb|IIMBTBOX:spoken_in|, while other pairs share the property \verb|IIMBTBOX:form_of_government|. The set of pairs of resources that are spoken in the same language may even be disjoint from the set of pairs of resource that have the same form of government.
+For the examples in this paper we use the IIMB dataset as used in instance matching track of the Ontology Alignment Evaluation Initative 2012 \cite{oaei_2012}. This dataset consists of 80 ontologies that are linked to a base ontology. For each of these 80 links a reference mapping is available. The graph that is the result of merging the two linked graphs together with their linkset\footnote{A linkset is a collection of RDF links. An RDF link is an RDF triples whose subject and object terms are described in different datasets. \cite{void_2011} The predicate term of an RDF link is often the identity relation.} is called $G$. The resources (excluding blank nodes) that occur as the subject term of some triple in $G$ are called $S_G$.\footnote{We will not include blank nodes in our approach, since identity relations are almost never defined between then.} The resources that occur as the predicate term of some triples in $G$ are called $P_G$.\footnote{In the following we assume that $G$ is a fully materialized graph. This implies that $G$ is a multigraph.}
 
-Note that we are not only interested in the properties that resources share with one other (e.g., where they are spoken or which form of government they have), but also in which resource pairs share the same sharing properties. We can thus identify subsets of an identity relation based on differences in the sets of predicates relative to which they are discernable.
+For our approch it is not necessary to pose additional restrictions on the binary relation. In practice this will be either a linkset relating subgraphs of $G$ to each other, or a set of alignments created by an ontology mapping tool.
 
-We say that two resources are indiscernible ($IND(P)$, definition \ref{def:unary_indiscernability}) in case they share the same properties. We say that two resource pairs are indiscernible ($IND(P^*)$, definition \ref{def:binary_indiscernability}) in case both pairs are indiscernible for the same $P \subseteq \mathcal{P}(P_G)$.
+\section{Approach}
+
+\subsection{Shared properties and indiscernability}
+\label{sec:indiscernibility}
+
+When we look at the triples that constitute set of identity relations, we see that all links look the same. But when we take the graphs in which the subject and object terms occur into account, we see that within the identity relation there may be different subrelations that we can identify in terms of the semantics of the graphs.
+
+For instance, in the IIMB graphs there are some identical resources that share the property \verb|IIMBTBOX:spoken_in|, while other pairs share the property \verb|IIMBTBOX:form_of_government|. The set of pairs of resources that are spoken in the same language may even be disjoint from the set of pairs of resources that have the same form of government.
+
+Note that we are not only interested in the properties that resources share with one other (e.g., where they are spoken, or which form of government they have), but we are also interested in resource pairs that share the same sharing properties. We can thus identify subsets of an identity relation based on differences in the sets of predicates relative to which they take resources to be \emph{indiscernable} from one another.
+
+In the example above, one subset of the identity relation does not discern resources that are spoken in the same language, whereas another subject of the identity relation does not discern resources that have the same form of government.
+
+As in rough set theory, we define indiscernability as a set of pairs for which it is impossible to show the distinction. We therefore say that two resources are indiscernible ($IND(P)$, definition \ref{def:unary_indiscernability}) in case they share the same properties. We say that two resource pairs are indiscernible ($IND(P^*)$, definition \ref{def:binary_indiscernability}) in case both pairs are indiscernible for the same $P^* \subseteq \mathcal{P}(P_G)$. A property is takes to be a predicate-object pair. Examples of properties are ``is spoken in Germany'' and ``has a democratic form of government''. Examples of predicates are ``is spoken in'' and ``form of government is''.\footnote{In theory it would be able to create properties of arbitrary depth, i.e., containing blank nodes for existentially quantifying over intermittent resources. For example ``lives if a country that is next to Belgium'' is a property that quantifies over countries and that may be shared by a person living in France and one living in The Netherlands. In this paper we only consider properties of `depth one', i.e. that consits of a single predicate and object term.}
 
 \begin{definition}[Indiscernability]
 \begin{align}
@@ -78,6 +100,7 @@ IND(P^*) \  = \  \{
       \langle x_2, y_2 \rangle
     \rangle \in (S(G)^2)^2
   \  \vert \ 
+\nonumber
 \\
     \forall P \in P^*(P(x_1, y_1) = P(x_2, y_2))
   \}
@@ -85,7 +108,7 @@ IND(P^*) \  = \  \{
 \end{align}
 \end{definition}
 
-For a given set of identity pairs, there may be multiple pairs that have the same shared properties. These sets of predicates that are shared across resource pairs are considered to give a description of a specific subrelation of the identity relation. In figure \ref{fig:indiscernibility_example} the subrelation $\{ \langle a, c \rangle, \langle b, c \rangle \}$ is characterized by $\mathcal{P}(\{ P \})$.
+As explained above, for a given set of identity pairs there may be multiple pairs that have the same shared properties. These sets of predicates, that are shared across resource pairs, are considered to give a description of a specific subrelation of the identity relation. For example, in figure \ref{fig:indiscernibility_example} the subrelation $\{ \langle a, c \rangle, \langle b, c \rangle \}$ is characterized by $\mathcal{P}(\{ P \})$.
 
 \begin{figure}
 \caption{This figure contains four constants, represented by nodes and annotated with the properties $P$, $Q$, and $R$ that apply to them. It also contains six pairs, represented as edges between the nodes (reflexive pairs are not shown). The edges are drawn inside squares that represent the indiscernability sets to which they belong. For instance $\langle a, b \rangle$ and $\langle a, c \rangle$ belong to the same indiscernability set $\mathcal{P}(P)$.}
@@ -93,14 +116,24 @@ For a given set of identity pairs, there may be multiple pairs that have the sam
 \includegraphics{indiscernibility_example}
 \end{figure}
 
+According to the standard definition, identical resources are indiscernable with respect to all properties. We take a given set of identity pairs and partition it into subsets which we can describe as being $P$-indiscernable, for $P \subseteq P_G$.
+
+Figure \ref{fig:indiscernability_iimb} shows the partitioning of the indentity relation of IIMB dataset number 22.
+
+\begin{figure}
+\label{fig:indiscernability_iimb}
+\caption{The partition of the identity relation of IIMB dataset number 22. For each partition we give the number of identity pairs that belong to the partition. For instance, there are XXX identity pairs that are $\{ YYY \}$-indiscernable, while there are ZZZ identity pairs in total.}
+%\graphics{}
+\end{figure}
+
 \section{Approximation}
 \label{sec:approximation}
 
-In our approach we approximate the identity relation by using rough set theory [REF] to represent approximations of the full set of identity pairs. We assume that an RDF graph $G$ and a binary relation $\approx$ are given in advance.\footnote{For our approch it is not necessary to pose additional restrictions on the binary relation. In practice this will be either a linkset relating subgraphs of $G$ to each other, or a set of alignments created by an ontology mapping tool.}
+In the previous section we partitioned a given identity relation in subrelations that can be distinguished in semantic terms (i.e., subsets of $P_G$). In this section we create an approximation of the identity relation. This approximation will allow us to (1) quantify the quality of the linkset, and (2) give suggestions about which pairs to include in / exclude from the identity relation.
 
-As the domain of our rough set approach we take the Cartesian product of the resources that occur in the subject position of some triple in the graph $S_G$. As the set of relations\footnote{Relations are usually called attributes in rough set theory, and they are functions that map to an arbitrary set of value labels. We only consider functions that map onto the set of Boolean truth values.} we take the powerset of those resources that occur in the predicate prosition of some triple in the graph $P_G$. This means that we have a big number of primitives to work with (a quadratic number of constants; an exponential number of relations).
+For the approximation of the identity relation we use rough set theory [REF] to represent an approximation of a given identity relation called $\approx$. The domain for our rough set approach is the Cartesian product of $S_G$. The set of predicates is the powerset of $P_G$.\footnote{Relations are called attributes in rough set theory, and they are functions that map to an arbitrary set of value labels. We only consider functions that map from binary input onto the set of Boolean truth values, and therefore call these `predicates'.} This means that we have a big number of primitives to work with (quadratic in the number of constants; exponential in the number of relations).
 
-For an arbitrary binary relation $\approx$ we can define a higher (\ref{def:higher_approximation}) and a lower (\ref{def:lower_approximation}) approximation of that relation. Relation $\mathbb{R}$ characterizes a similarity metric between resource pairs. The intuition behind these definitions is that pairs that are similar to $\approx$-pairs should be in the higher approximation. 
+For an arbitrary binary relation $\approx$ we can define a higher ($\overline{\approx}$, definition \ref{def:higher_approximation}) and a lower ($\underline{\approx}$, definition \ref{def:lower_approximation}) approximation of that relation, where $\mathbb{R}$ characterizes a similarity relation between resource pairs. The intuition behind these definitions is that non-$approx$-pairs that are similar to $\approx$-pairs should be in the higher approximation, whereas no $\approx$-pair that has a similar non-$\approx$-pair should be in the lower approximation.
 
 \begin{definition}[Higher \& lower approximation]
 \begin{align}
@@ -122,17 +155,7 @@ x \underline{\approx} y \  & \iff & \
 \end{align}
 \end{definition}
 
-Since we want to stay close to the traditional notion of identity, we choose the indiscernability relation as our $R$.
-
-
-\subsection{Indiscernability}
-
-As in rough set theory, we define indiscernability as a set of pairs for which it is impossible to show the distinction.
-
-Note that we do not define indiscernability on the level of resources, but on the level of pairs of resources (definition \ref{def:binary_indiscernability}. This allows us to define a rough set of pairs that is based on the given identity relation $\approx$.\footnote{As noted earlier, this could be done based on \emph{any} binary relationship, regardless of whether or not it is assumed to consitute an identity relation.}
-
-For every set of predicates $P^*$ (i.e., subset of $\mathcal{P}(P(G))$) we can define the binary indiscernability relation \ref{def:binary_indiscernability}.
-
+\begin{comment}
 \begin{definition}[Higher \& lower approximation]
 \label{def:higher_lower_approximation}
 \begin{align}
@@ -148,14 +171,65 @@ y \in [x]_L \  \text{iff} \  \forall S \subseteq D (
   )
 \end{align}
 \end{definition}
+\end{comment}
+
+Since we want to stay close to the traditional notion of identity, defined in terms of indiscernability, we choose $IND(\mathcal{P}(P_G))$, defined in \ref{def:binary_indiscernability}, as our $R$.
+
+Figure \ref{fig:approximation_iimb} shows the lower and higher approximations for the 22th IIMB ontology alignment (see figure \ref{fig:indiscernability_iimb}). Since a partition is only drawn when there is at least one identity pair that is indiscernable with respect to some set of predicates, the higher approximation amount to the entire figure. The lower approximation only consists of those partition sets for which the number of identity pairs is the same as the number of pairs.
+
+\begin{figure}
+\label{fig:approximation_iimb}
+\caption{The discernability partition of the identity relation of IIMB alignment 22, plus its lower and higher approximation.}
+%\graphics{}
+\end{figure}
+
+\subsection{Quality}
+
+Given the rough set representation $\langle \underline{\approx}, \overline{\approx} \rangle$ of identity relation $\approx$, we can calculate the accuracy of this approximation with equation \ref{eq:accuracy}.
+
+\begin{equation}
+\label{eq:accuracy}
+\alpha_P(\approx) = \frac{\vert \underline{\approx} \vert}{\vert \overline{\approx} \vert}
+\end{equation}
+
+The rough set approximation accuracy provides a metric for linkset quality.
+
+\section{Evaluation}
+\label{sec:evaluation}
+
+\subsection{Implementation}
+\label{sec:implementation}
+
+The implementation that was built for this paper is deployed as a CPACK (extension pack) of the ClioPatria triple store \cite{schreiber_2006}. For RDF graphs that are loaded in ClioPatria this extension can calculate the discernability partition and rough set approximation and accuracy. The results are displayed as an SVG graph. Interactive Ajax code allows the user to click on paratition sets of the SVG graph to navigate to a description of the resource pairs that $P$-indiscernable but that are not in the identity relation (see figure \ref{fig:screenshot}).
+
+\begin{figure}
+\label{fig:screenshot}
+\caption{Screenshot of the SVG graph and the tabular description of non-identity pars that are $P$-indiscernable. The tabular view groups the overlapping and disjoint properties of two resources.}
+%\graphics{}
+\end{figure}
 
 \subsection{Hypotheses}
+\label{sec:hypotheses}
 
-The quality of a linkset is inversely correlated with the size of the boundary
+We use the indiscernability partition of an identity ralation, its lower and higher approximations, and its accuracy, in order to validate the following hypotheses.
 
-\section{Experimental results}
+The quality of a linkset is correlated with the accuracy metric.
 
 \section{Conclusion}
+\label{sec:conclusion}
+
+In this paper we have defined (1) the indiscernability partition of an identity ralation, (2) its lower and higher approximations, and (3) its accuracy.
+
+(1) allows an identity relation to be divided up into subrelations with a different meaning. The meaning is expressed in domain-dependent terms, drawing predicates from the schema of the dataset.
+
+Based on (2) it is possible to identify pairs for inclusion in / exclusion from the identity relation. Together with (3) this provides a way of establishing the quality of the subrelations identifies in (1), or the identity relation as a whole.
+
+We think that these qualitative means of characterizing an identity relation are a useful addition to existing quantitative means. Also, we think that it is more useful and viable to enrich existing identity relations in the LOD based on the semantics of the graphs in which they occur, than to introduce new relationships into Semantic Web languages to which modelers should conform. Appart from the practical difficulties of teaching practitioners and transforming/enriching existing datasets, we may claim that the exact meaning of an identity (sub)relation is only defined in its use, i.e., in the indiscernability criteria it embodies.
+
+We are currently in the process of validating the hypotheses enumerated in the previous section. The results of these evaluations are continuously published on \url{https://wouter-beek.squarespace.com/identity-on-the-web/}. The website currently contains the automated results of all 80 IIMB alignments. The website also refers to the publicly available Git repository \url{https://github.com/wouterbeek/IOTW} where the implementation discussed in section \ref{sec:implementation} can be found.
+
+\bibliographystyle{aaai}
+\bibliography{rough_set_semantics_for_identity_management_on_the_web}
 
 \end{document}
 
