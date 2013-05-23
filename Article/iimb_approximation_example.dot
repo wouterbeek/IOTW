@@ -1,55 +1,51 @@
 digraph iimb_4 {
-  {
-    rank=same;
-    node_r0 [label="", shape="plaintext"];
-    j [color="/greys9/1", label="0% {} 0", shape="rectangle", style="solid"];
-  }
+  edge [color=black, penwidth="1.25"];
+  node [color=black, penwidth="1.25"];
+  
   {
     rank=same;
     node_r1 [label="", shape="plaintext"];
-    h [color="/greys9/3", label="0.02% {rdf:type} 40", shape="rectangle", style="solid"];
+    h [label="0.02% {rdf:type} 40", shape="rectangle", style="dashed"];
   }
   {
     rank=same;
     node_r2 [label="", shape="plaintext"];
-    a [color="/greys9/3", label="44% {iimb:article,rdf:type} 162", shape="rectangle", style="solid"];
-    g [color="/greys9/3", label="2% {iimb:name,rdf:type} 4", shape="rectangle", style="solid"];
-    i [color="/greys9/3", label="0.3% {iimb:spoken_in,rdf:type} 1", shape="rectangle", style="solid"];
+    a [label="44% {iimb:article,rdf:type} 162", shape="rectangle", style="dashed"];
+    g [label="2% {iimb:name,rdf:type} 4", shape="rectangle", style="dashed"];
+    i [label="0.3% {iimb:spoken_in,rdf:type} 1", shape="rectangle", style="dashed"];
   }
   {
     rank=same;
     node_r3 [label="", shape="plaintext"];
-    b [color="/greys9/9", label="100% {iimb:article,iimb:date_of_birth,rdf:type} 2", shape="rectangle", style="solid"];
-    c [color="/greys9/3", label="50% {iimb:article,iimb:iso_639,rdf:type} 1", shape="rectangle", style="solid"];
-    e [color="/greys9/3", label="99% {iimb:article,iimb:name,rdf:type} 153", shape="rectangle", style="solid"];
+    b [label="100% {iimb:article,iimb:date_of_birth,rdf:type} 2", shape="rectangle", style="solid"];
+    c [label="50% {iimb:article,iimb:iso_639,rdf:type} 1", shape="rectangle", style="dashed"];
+    e [label="99% {iimb:article,iimb:name,rdf:type} 153", shape="rectangle", style="dashed"];
   }
   {
     rank=same;
     node_r4 [label="", shape="plaintext", style="invis"];
-    d [color="/greys9/9", label="100% {iimb:article,iimb:dialect,iimb:iso_639,rdf:type} 1", shape="rectangle", style="solid"];
+    d [label="100% {iimb:article,iimb:dialect,iimb:iso_639,rdf:type} 1", shape="rectangle", style="solid"];
   }
   {
     rank=same;
     node_r5 [label="", shape="plaintext", style="invis"];
-    f [color="/greys9/9", label="100% {iimb:article,iimb:form_of_government,iimb:has_capital,iimb:name,rdf:type} 1", shape="rectangle", style="solid"];
+    f [label="100% {iimb:article,iimb:form_of_government,iimb:has_capital,iimb:name,rdf:type} 1", shape="rectangle", style="solid"];
   }
   
-  node_r0 -> node_r1 [style="invis"];
   node_r1 -> node_r2 [style="invis"];
   node_r2 -> node_r3 [style="invis"];
   node_r3 -> node_r4 [style="invis"];
   node_r4 -> node_r5 [style="invis"];
   
-  a -> b [color="black", style="solid"];
-  c -> d [color="black", style="solid"];
-  e -> f [color="black", style="solid"];
-  a -> c [color="black", style="solid"];
-  a -> e [color="black", style="solid"];
-  g -> e [color="black", style="solid"];
-  h -> a [color="black", style="solid"];
-  h -> g [color="black", style="solid"];
-  h -> i [color="black", style="solid"];
-  j -> h [color="black", style="solid"];
+  a -> b [style="solid"];
+  c -> d [style="solid"];
+  e -> f [style="solid"];
+  a -> c [style="solid"];
+  a -> e [style="solid"];
+  g -> e [style="solid"];
+  h -> a [style="solid"];
+  h -> g [style="solid"];
+  h -> i [style="solid"];
   
   charset="UTF-8"
   fontsize="11.0"
