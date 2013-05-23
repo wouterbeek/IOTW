@@ -126,29 +126,28 @@ As explained above, for a given set of identity pairs there may be multiple pair
 
 According to the standard definition, identical resources are indiscernable with respect to all properties. We take a given set of identity pairs and partition it into subsets which we can describe as being $P$-indiscernable, for $P \subseteq P_G$.
 
-REDO THIS FUGIRE WITH LESS DETAIL.
-Figure \ref{fig:indiscernability_iimb} shows the partitioning of the indentity relation of IIMB dataset number 22.
+Figure \ref{fig:indiscernability_iimb} shows an exmaple of a discernability partitioning for a given identity relation.
 
 \begin{figure}
 \label{fig:indiscernability_iimb}
-\caption{The partition of the identity relation of IIMB dataset number 21. For each partition we give the number of identity pairs that belong to the partition. For instance, there are XXX identity pairs that are $\{ YYY \}$-indiscernable, while there are ZZZ identity pairs in total.}
-\includegraphics[scale=0.5]{iimb_21}
+\caption{An example of an indiscernability partition for an identity relation consisting of 365 pairs. Each node is annotated with the set of predicates $P$ for which its pairs are $P$-indiscernable. The numbers of identity pairs is also displayed for each node. Nodes with no identity pair are not show, except for the empty set of predicates. (This is the fourth IIMB linkset.)}
+\includegraphics[scale=0.7]{iimb_discernability_example}
 \end{figure}
 
-\section{Approximation}
+\subsection{Approximation}
 \label{sec:approximation}
 
-In the previous section we partitioned a given identity relation in subrelations that can be distinguished in semantic terms (i.e., subsets of $P_G$). In this section we create an approximation of the identity relation. This approximation will allow us to (1) quantify the quality of the linkset, and (2) give suggestions about which pairs to include in / exclude from the identity relation.
+In the previous section we partitioned a given identity relation in subrelations that can be distinguished in terms of schema predicates. In this section we create an approximation of the identity relation. This approximation will allow us to (1) give suggestions about which pairs to include in / exclude from the identity relation, and (2) give an indicator of the quality of the identity relation.
 
-For the approximation of the identity relation we use rough set theory [REF] to represent an approximation of a given identity relation called $\approx$. The domain for our rough set approach is the Cartesian product of $S_G$. The set of predicates is the powerset of $P_G$.\footnote{Relations are called attributes in rough set theory, and they are functions that map to an arbitrary set of value labels. We only consider functions that map from binary input onto the set of Boolean truth values, and therefore call these `predicates'.} This means that we have a big number of primitives to work with (quadratic in the number of constants; exponential in the number of relations).
+For the approximation of the identity relation we use rough set theory \cite{pawlak_1991} to represent an approximation of a given identity relation called $\approx$. The domain for our rough set approach is the Cartesian product of $S_G$. The set of predicates is the powerset of $P_G$.\footnote{Relations are called attributes in rough set theory, and they are functions that map to an arbitrary set of value labels. We only consider functions that map from binary input onto the set of Boolean truth values, and therefore use the term `predicates' to denote these functions.} This means that we have a big number of primitives to work with (quadratic in the number of constants; exponential in the number of relations).
 
-For an arbitrary binary relation $\approx$ we can define a higher ($\overline{\approx}$, definition \ref{def:higher_approximation}) and a lower ($\underline{\approx}$, definition \ref{def:lower_approximation}) approximation of that relation, where $\mathbb{R}$ characterizes a similarity relation between resource pairs. The intuition behind these definitions is that non-$approx$-pairs that are similar to $\approx$-pairs should be in the higher approximation, whereas no $\approx$-pair that has a similar non-$\approx$-pair should be in the lower approximation.
+For an arbitrary binary relation $\approx$ we can define a higher ($\overline{\approx}$, definition \ref{def:higher_approximation}) and a lower ($\underline{\approx}$, definition \ref{def:lower_approximation}) approximation of that relation. In definitions \ref{def:higher_approximation} and \ref{def:lower_approximation}, $\mathbb{R}$ characterizes a similarity relation between resource pairs. The intuition behind these definitions is that non-$approx$-pairs that are similar to $\approx$-pairs should be in the higher approximation, whereas no $\approx$-pair that has a similar non-$\approx$-pair should be in the lower approximation.
 
 \begin{definition}[Higher \& lower approximation]
 \begin{align}
 x \overline{\approx} y \  & \iff & \ 
   \exists u,v (
-      \mathbb{R}(\langle u, v \rangle, \langle x, y \rangle)
+      \langle u, v \rangle \mathbb{R} \langle x, y \rangle
     \land
       u \approx v
   )
@@ -156,7 +155,7 @@ x \overline{\approx} y \  & \iff & \
 \\
 x \underline{\approx} y \  & \iff & \ 
   \forall u,v (
-      \mathbb{R}(\langle u, v \rangle, \langle x, y \rangle)
+      \langle u, v \rangle \mathbb{R} \langle x, y \rangle
     \rightarrow
       u \approx v
   )
@@ -182,14 +181,14 @@ y \in [x]_L \  \text{iff} \  \forall S \subseteq D (
 \end{definition}
 \end{comment}
 
-Since we want to stay close to the traditional notion of identity, defined in terms of indiscernability, we choose $IND(\mathcal{P}(P_G))$, defined in \ref{def:binary_indiscernability}, as our $R$.
+Since we want to stay close to the traditional notion of identity, defined in terms of indiscernability, we choose $IND(\mathcal{P}(P_G))$, defined in \ref{def:binary_indiscernability}, as our $\mathbb{R}$.
 
-Figure \ref{fig:approximation_iimb} shows the lower and higher approximations for the 22th IIMB ontology alignment (see figure \ref{fig:indiscernability_iimb}). Since a partition is only drawn when there is at least one identity pair that is indiscernable with respect to some set of predicates, the higher approximation amount to the entire figure. The lower approximation only consists of those partition sets for which the number of identity pairs is the same as the number of pairs.
+Figure \ref{fig:approximation_iimb} adds the lower and higher approximations to figure \ref{fig:indiscernability_iimb}. Since a partition is only drawn when there is at least one identity pair that is indiscernable with respect to some set of predicates, the higher approximation amounts to the entire figure (excluding the empty predicate set). The lower approximation only consists of those partition sets that contain at least one identity pair, and that contain no non-identity pair.
 
 \begin{figure}
 \label{fig:approximation_iimb}
 \caption{The discernability partition of the identity relation of IIMB alignment 21, plus its lower and higher approximation.}
-\includegraphics[scale=0.5]{iimb_21}
+\includegraphics[scale=0.5]{iimb_approximation_example}
 \end{figure}
 
 \subsection{Quality}
@@ -237,7 +236,7 @@ Based on (2) it is possible to identify pairs for inclusion in / exclusion from 
 
 We think that these qualitative means of characterizing an identity relation are a useful addition to existing quantitative means. Also, we think that it is more useful and viable to enrich existing identity relations in the LOD based on the semantics of the graphs in which they occur, than to introduce new relationships into Semantic Web languages to which modelers should conform. Appart from the practical difficulties of teaching practitioners and transforming/enriching existing datasets, we may claim that the exact meaning of an identity (sub)relation is only defined in its use, i.e., in the indiscernability criteria it embodies.
 
-We are currently in the process of validating the hypotheses enumerated in the previous section. The results of these evaluations are continuously published on \url{https://wouter-beek.squarespace.com/identity-on-the-web/}. The website currently contains the automated results of all 80 IIMB alignments. The website also refers to the publicly available Git repository \url{https://github.com/wouterbeek/IOTW} where the implementation discussed in section \ref{sec:implementation} can be found.
+We are currently in the process of validating the hypotheses enumerated in the previous section. The results of these evaluations are continuously published on \url{http://wouterbeek.com/identity-on-the-web/}. The website currently contains the automated results of all 80 IIMB alignments. The website also refers to the publicly available Git repository \url{https://github.com/wouterbeek/IOTW} where the implementation discussed in section \ref{sec:implementation} can be found.
 
 For our approach it is not necessary to pose additional restrictions on the binary relation. In practice this will be either a linkset relating subgraphs of $G$ to each other, or a set of alignments created by an ontology mapping tool.
 
