@@ -3,7 +3,6 @@ Data/*.dot
 Data/*.xdot
 *.aux
 *.log
-*.pdf
 *.svg
 *.jpeg
 *.png
