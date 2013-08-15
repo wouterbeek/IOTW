@@ -1,0 +1,87 @@
+:- module(
+  iotw_export,
+  [
+    build_node/5 % +Assoc:assoc
+                 % +Key:ordset(uri)
+                 % +NumberOfIdentityPairs:integer
+                 % +NumberOfThesePairs:integer
+                 % -Node:element
+  ]
+).
+
+/** <module> IOTW_EXPORT
+
+@author Wouter Beek
+@version 2013/05-2013/08
+*/
+
+:- use_module(generics(meta_ext)).
+:- use_module(generics(set_theory)).
+:- use_module(gv(gv_hash)).
+:- use_module(library(assoc)).
+:- use_module(rdf(rdf_name)).
+
+
+
+%! build_node(
+%!   +Assoc:assoc,
+%!   +Key:ordset(uri),
+%!   +NumberOfIdentityPairs:integer,
+%!   +NumberOfThesePairs:integer,
+%!   -Node:element
+%! ) is det.
+% Exports a single node representing a set of predicates
+% and the pairs of resources that share those predicates.
+
+build_node(
+  Assoc,
+  Key,
+  NumberOfIdentityPairs,
+  NumberOfThesePairs,
+  node(NodeID, NodeAttributes)
+):-
+  % Create the key label that described the key.
+  rdf_term_name(Key, KeyLabel),
+
+  % Establish the node ID.
+  indexed_sha_hash(Key, Hash),
+  format(atom(NodeID), 'n~w', [Hash]),
+
+  % Count the identity pairs and percentage.
+  unless(
+    assoc:get_assoc(Key, Assoc, TheseIdentityPairs),
+    TheseIdentityPairs = []
+  ),
+  cardinality(TheseIdentityPairs, NumberOfTheseIdentityPairs),
+  Percentage1 is NumberOfTheseIdentityPairs / NumberOfIdentityPairs,
+
+  % Calculate the percentage of identity pairs relative to all pairs
+  % in the partition set.
+  Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
+
+  % Add to higher approximation.
+  assert(current_higher(NumberOfThesePairs)),
+
+  % Add to lower approximation.
+  if_then(
+    NumberOfTheseIdentityPairs = NumberOfThesePairs,
+    assert(current_lower(NumberOfTheseIdentityPairs))
+  ),
+  
+  % We like our node labels complicated...
+  format(
+    atom(NodeLabel),
+    '~w [~d/~d=~2f] [~d/~d=~2f]',
+    [
+      KeyLabel,
+      NumberOfTheseIdentityPairs,
+      NumberOfIdentityPairs,
+      Percentage1,
+      NumberOfTheseIdentityPairs,
+      NumberOfThesePairs,
+      Percentage2
+    ]
+  ),
+  NodeAttributes =
+    [color(blue),label(NodeLabel),shape(rectangle),style(solid)].
+
