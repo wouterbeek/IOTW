@@ -21,23 +21,27 @@
   ]
 ).
 
-/** <module>
+/** <module> IOTW_RELATEDNESS
 
 @author Wouter Beek
-@version 2013/05
+@version 2013/05, 2013/08
 */
 
 :- use_module(generics(assoc_multi)).
-:- use_module(generics(file_ext)).
+:- use_module(generics(db_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
+:- use_module(gv(gv_file)).
+:- use_module(gv(gv_hash)).
+:- use_module(html(html)).
+:- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_export)).
+:- use_module(os(run_ext)).
 :- use_module(rdf(rdf_graph)).
-:- use_module(standards(graphviz)).
-:- use_module(xml(xml)).
+:- use_module(rdf(rdf_name)).
+:- use_module(xml(xml_dom)).
 
 :- dynamic(current_assoc(_Assoc)).
 :- dynamic(current_graph(_Graph)).
@@ -67,7 +71,7 @@ build_node(
   node(NodeID, NodeAttributes)
 ):-
   % Create the key label that described the key.
-  rdf_resource_naming(Key, KeyLabel),
+  rdf_term_name(Key, KeyLabel),
 
   % Establish the node ID.
   indexed_sha_hash(Key, Hash),
@@ -84,16 +88,16 @@ build_node(
   % Calculate the percentage of identity pairs relative to all pairs
   % in the partition set.
   Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
-  
+
   % Add to higher approximation.
   assert(current_higher(NumberOfThesePairs)),
-  
+
   % Add to lower approximation.
   if_then(
     NumberOfTheseIdentityPairs = NumberOfThesePairs,
     assert(current_lower(NumberOfTheseIdentityPairs))
   ),
-  
+
   format(
     atom(NodeLabel),
     '~w [~d/~d=~2f] [~d/~d=~2f]',
@@ -127,8 +131,7 @@ rdf_alignment_share(Graph, Alignments, Predicates):-
 %!   -NewPredicates:assoc
 %! ) is det.
 
-rdf_alignment_share(_Graph, SolAssoc, [], SolAssoc):-
-  !.
+rdf_alignment_share(_Graph, SolAssoc, [], SolAssoc):- !.
 rdf_alignment_share(Graph, OldAssoc, [From-To | Alignments], SolAssoc):-
   rdf_shared_pair(From, To, Predicates),
   put_assoc(Predicates, OldAssoc, From-To, NewAssoc),
@@ -224,54 +227,24 @@ same_predicate(P, P).
 %!   +Assoc:assoc,
 %!   -SVG:dom
 %! ) is det.
+% @tbd Callback function injection.
 
-export_rdf_alignments(Graph, Alignments, Assoc, SVG2):-
-  rdf_graph(Graph),
-  !,
-
-  absolute_file_name(
-    data(Graph),
-    File1,
-    [access(write), file_type(graphviz)]
-  ),
-  new_file(File1, File2),
-
-  % The export is first streamed to a file and
-  % then converted to a displayable format.
-  access_file(File2, write),
-  open(File2, write, Stream),
-  % The alignments are only passed for the number-of-identity-pairs
-  % statistic.
-  export_rdf_alignments0(Stream, Graph, Alignments, Assoc),
-  close(Stream),
-
-  graphviz_to_svg(File2, dot, SVG1),
+export_rdf_alignments(RDF_Graph, Alignments, Assoc, SVG2):-
+  rdf_graph(RDF_Graph), !,
+  export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF),
+  graph_to_svg_dom([], GIF, dot, SVG1),
   db_replace_novel(current_assoc(Assoc)),
-  db_replace_novel(current_graph(Graph)),
-  xml_inject_attribute(SVG1, node, [onclick='function()'], SVG2),
+  db_replace_novel(current_graph(RDF_Graph)),
+  xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2).
 
-  % DEB: Also export the PDF version in a separate file.
-  forall(
-    member(ExportType, [jpeg, pdf, png, svg]),
-    (
-      once(file_type_alternative(File2, ExportType, PDF_File)),
-      convert_graphviz(File2, dot, ExportType, PDF_File)
-    )
-  ),
-  %delete_file(File2),
-  true.
-
-%! export_rdf_alignments0(
-%!   +Stream:stream,
-%!   +Graph:atom,
+%! export_rdf_alignments_(
+%!   +RDF_Graph:atom,
 %!   +Alignments:list(pair),
-%!   +Assoc:assoc
+%!   +Assoc:assoc,
+%!   -GIF:compound
 %! ) is det.
 
-export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
-  is_stream(Stream),
-  !,
-
+export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   % Reset the indexed SHA hash map.
   clear_indexed_sha_hash,
 
@@ -280,51 +253,44 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
 
   % The number of identity pairs (for statistics).
   cardinality(Alignments, NumberOfIdentityPairs),
-  
+
   % Ranks: the nul rank.
   NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
   NilRankNodeAttributes = [label(0), shape(plaintext)],
-  
-  
-  % Nodes: the nil node.
-  NilKey = [],
-  (
-    % Separate the nil node from the non-nil nodes.
-    selectchk(NilKey, Keys, NonNilKeys)
-  ->
-    build_node(
-      Assoc,
-      NilKey,
-      NumberOfIdentityPairs,
-      NumberOfNilPairs,
-      NilNode
-    )
-  ;
-    NonNilKeys = Keys,
 
-    rdf_subjects(Graph, Subjects),
-    cardinality(Subjects, NumberOfSubjects),
-    NumberOfPairs is NumberOfSubjects ** 2,
+  % Calculate the number of pairs.
+  setoff(Subject, rdf_subject(RDF_Graph, Subject), Subjects),
+  cardinality(Subjects, NumberOfSubjects),
+  NumberOfPairs is NumberOfSubjects ** 2,
 
-    findall(
-      SomeLength,
-      (
-        member(SomeKey, Keys),
-        assoc:get_assoc(SomeKey, Assoc, SomeValues),
-        cardinality(SomeValues, SomeLength)
-      ),
-      AllLengths
+  % Calculate the number of non-nil pairs.
+  findall(
+    SomeLength,
+    (
+      member(SomeKey, Keys),
+      assoc:get_assoc(SomeKey, Assoc, SomeValues),
+      cardinality(SomeValues, SomeLength)
     ),
-    sum_list(AllLengths, NumberOfNonNilPairs),
-    NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
-    build_node(
-      Assoc,
-      NilKey,
-      NumberOfIdentityPairs,
-      NumberOfNilPairs,
-      NilNode
-    )
+    AllLengths
   ),
+  sum_list(AllLengths, NumberOfNonNilPairs),
+
+  % Calculate the number of nil pairs.
+  NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
+
+  % Nodes: the nil node.
+  build_node(
+    Assoc,
+    NilKey,
+    NumberOfIdentityPairs,
+    NumberOfNilPairs,
+    NilNode
+  ),
+
+  % Separate the nil key from the non-nil keys.
+  NilKey = [],
+  (selectchk(NilKey, Keys, NonNilKeys), ! ; NonNilKeys = Keys),
+
   % Extract the ranks that occur in the hierarchy.
   setoff(
     RankNumber,
@@ -408,16 +374,15 @@ export_rdf_alignments0(Stream, Graph, Alignments, Assoc):-
       label(GraphLabel),
       overlap(false)
     ],
-  
-  stream_graphviz(
-    Stream,
+
+  % The graph compound term.
+  GIF =
     graph(
       [], % Unranked nodes.
       [NilRank | NonNilRanks],
       Edges,
       [graph_name(Graph) | GraphAttributes]
-    )
-  ).
+    ).
 
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
 
@@ -468,45 +433,21 @@ pair_to_dom(X-Y, Markup):-
   ),
 
   Markup =
-      [
-        element(h1, [], ['X: ', X]),
-        element(h1, [], ['Y: ', Y]),
-        SharedPropertyTable,
-        SharedPredicateTable,
-        X_Table,
-        Y_Table
-      ].
+    [
+      element(h1, [], ['X: ', X]),
+      element(h1, [], ['Y: ', Y]),
+      SharedPropertyTable,
+      SharedPredicateTable,
+      X_Table,
+      Y_Table
+    ].
 
 
 
 % ALL SHARED PREDICATES, ANNOTATED WITH ALIGNMENTS %
 
-%! export_rdf_shared(
-%!   +Graph:atom,
-%!   +Alignments:list(pair),
-%!   +Stash:list(tuple)
-%! ) is det.
-
-export_rdf_shared(Graph, Alignments, Stash):-
-  absolute_file_name(
-    data(Graph),
-    File,
-    [access(write), file_type(graphviz)]
-  ),
-  export_rdf_shared(File, Graph, Alignments, Stash).
-
-%! export_rdf_shared(
-%!   +In:oneof([file,stream]),
-%!   +Graph:atom,
-%!   +Alignments:list(pair),
-%!   +Stash:list(tuple)
-%! ) is det.
-
-export_rdf_shared(Stream, Graph, Alignments, Stash):-
-  is_stream(Stream),
-  !,
-
-  rdf_subjects(Graph, Subjects),
+export_rdf_shared(Graph, Alignments, Stash, GIF):-
+  setoff(Subject, rdf_subject(Graph, Subject), Subjects),
   cardinality(Subjects, NumberOfSubjects),
   NumberOfPairs is NumberOfSubjects ** 2,
 
@@ -546,18 +487,23 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
             Alignments,
             LinkedPercentage
           ),
-          rdf_resource_naming(PSet, PSetLabel),
+          rdf_term_name(PSet, PSetLabel),
           % Retrieve the ordered set, not on of its members!
           Percentage is NumberOfThesePairs / NumberOfPairs * 100,
           format(atom(NodeID), 'n~w', [I]),
           format(
             atom(NodeLabel),
             '~w (~2f%) (~d/~d) [~2f]',
-            [PSetLabel, Percentage, NumberOfThesePairs, NumberOfPairs, LinkedPercentage]
+            [
+              PSetLabel,
+              Percentage,
+              NumberOfThesePairs,
+              NumberOfPairs,
+              LinkedPercentage
+            ]
           ),
           NodeAttributes =
-            [color(blue), label(NodeLabel), shape(rectangle), style(solid)],
-          parse_attributes_graphviz(node, NodeAttributes)
+            [color(blue),label(NodeLabel),shape(rectangle),style(solid)]
         ),
         ContentNodes
       )
@@ -566,8 +512,7 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
   ),
 
   % Edges: Nil-edges
-  EdgeAttributes = [color(black), style(solid)],
-  parse_attributes_graphviz(edge, EdgeAttributes),
+  EdgeAttributes = [color(black),style(solid)],
   findall(
     edge(n0, ToNode, EdgeAttributes),
     (
@@ -593,7 +538,7 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
     ),
     NonNilEdges
   ),
-  
+
   % Graph properties
   GraphAttributes =
     [
@@ -602,23 +547,10 @@ export_rdf_shared(Stream, Graph, Alignments, Stash):-
       label(Graph),
       overlap(false)
     ],
-  parse_attributes_graphviz(graph, GraphAttributes),
 
+  % The graph compound term.
   append(NilEdges, NonNilEdges, Edges),
-  stream_graphviz(
-    Stream,
-    graph([], [NilRank | Ranks], Edges, GraphAttributes)
-  ).
-% If a file is given, then the export is first streamed to it and
-% then converted to a displayable format.
-export_rdf_shared(File, Graph, Alignments, In):-
-  access_file(File, write),
-  !,
-  open(File, write, Stream),
-  export_rdf_shared(Stream, Graph, Alignments, In),
-  close(Stream),
-  once(file_type_alternative(File, pdf, PDF_File)),
-  convert_graphviz(File, dot, pdf, PDF_File).
+  GIF = graph([], [NilRank|Ranks], Edges, GraphAttributes).
 
 %! linked_percentage(
 %!   +NumberOfAllPairsAndAllPairs:pair(integer,list(pair)),
@@ -658,26 +590,20 @@ rdf_shared(Graph):-
 %
 % Writes the results to a file with the given graph name.
 
-rdf_shared(Graph, Alignments):-
-  rdf_shared_pairs(Graph, Tuples),
-  export_rdf_shared(Graph, Alignments, Tuples).
+rdf_shared(RDF_Graph, Alignments):-
+  rdf_shared_pairs(RDF_Graph, Tuples),
+  export_rdf_shared(RDF_Graph, Alignments, Tuples, GIF),
+  graph_to_gv_file([], GIF, dot, pdf, PDF_File),
+  open_pdf(PDF_File). %DEB
 
 %! rdf_shared(+Graph:atom, +Alignments:list(pair), -SVG:dom) is det.
 % Returns the SVG representation of the shared properties between pairs
 % in the given graph, plus an annotation of the alignment overlap.
 
-rdf_shared(Graph, Alignments, SVG):-
-  rdf_shared_pairs(Graph, Tuples),
-  absolute_file_name(
-    personal(temp),
-    File,
-    [access(write), file_type(graphviz)]
-  ),
-  open(File, write, Stream, []),
-  export_rdf_shared(File, Graph, Alignments, Tuples),
-  graphviz_to_svg(File, dot, SVG),
-  close(Stream),
-  delete_file(File).
+rdf_shared(RDF_Graph, Alignments, SVG):-
+  rdf_shared_pairs(RDF_Graph, Tuples),
+  export_rdf_shared(RDF_Graph, Alignments, Tuples, GIF),
+  graph_to_svg_dom([], GIF, dot, SVG).
 
 %! rdf_shared_pairs(+Graph:atom, -Tuples:list) is det.
 % Loads the pairs that share the same properties.
@@ -725,8 +651,7 @@ rdf_shared_pairs(Graph, Stash):-
   ),
   rdf_shared_pairs(SingletonTuples, SingletonTuples, [], Stash).
 
-rdf_shared_pairs([], SingletonTuples, TempStash, SolStash):-
-  !,
+rdf_shared_pairs([], SingletonTuples, TempStash, SolStash):- !,
   append(SingletonTuples, TempStash, SolStash).
 rdf_shared_pairs(
   [PSet-NumberOfPs-_NumberOfPairs-Pairs | Tuples],
@@ -761,4 +686,39 @@ rdf_shared_pairs(
   append(Tuples, NewEntries, NewTuples),
   append(TempStash, NewEntries, NewTempStash),
   rdf_shared_pairs(NewTuples, SingletonTuples, NewTempStash, SolStash).
+
+/*
+% Test predicates for rdf_shared//1.
+
+load_shared_properties1:-
+  Graph = test1,
+  \+ rdf_graph(Graph),
+  rdf_assert(rdf:a, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:b, rdf:p, rdf:z1, Graph),
+  rdf_assert(rdf:c, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:d, rdf:p, rdf:z2, Graph),
+  rdf_assert(rdf:e, rdf:p, rdf:f, Graph),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties2:-
+  Graph = test2,
+  \+ rdf_graph(Graph),
+  absolute_file_name(data('VoID'), File, [access(read), file_type(turtle)]),
+  rdf_load2(File, [graph(Graph)]),
+  rdf_shared(Graph),
+  rdf_unload_graph(Graph).
+
+load_shared_properties3:-
+  absolute_file_name(data(.), DataDir, [access(read), file_type(directory)]),
+  path_walk_tree(DataDir, '.*.owl$', DataFiles),
+  forall(
+    member(DataFile, DataFiles),
+    rdf_load2(DataFile, [])
+  ),
+  forall(
+    rdf_graph(Graph),
+    rdf_shared(Graph)
+  ).
+*/
 

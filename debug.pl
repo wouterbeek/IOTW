@@ -1,5 +1,6 @@
-% Debug file for the Identity on the Web project.
+% Debug file for the Identity on the Web (IOTW) project.
 
-:- assert(user:debug).
+:- assert(user:debug_project).
 
 :- [load].
+
