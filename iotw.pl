@@ -10,8 +10,19 @@ module(
 
 My first publication with Stephan and Frank!
 
+# Identity & equality
+
+## Non-equal identicals
+
+In the value space of XSD floats, NaN is identical with itself, but
+not equivalent with itself.
+
+## Non-identical equals
+
+In the value space of XSD floats, -0 and 0 are equal but not identical.
+
 @author Wouter Beek
-@version 2013/04-2013/05
+@version 2013/04-2013/05, 2013/08
 */
 
 :- use_module(generics(assoc_multi)).
