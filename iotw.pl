@@ -76,7 +76,6 @@ rdf_shared(RDF_Graph, Alignments, SVG):-
   graph_to_svg_dom([], GIF, dot, SVG).
 
 run_experiment:-
-  gtrace,
   load_alignment_iimb(1, SVG),
   write(SVG).
 

@@ -21,6 +21,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(iotw(iotw_alignments)).
 :- use_module(iotw(iotw_alignments_export)).
 :- use_module(library(debug)).
+:- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(standards(oaei)).
@@ -54,6 +55,7 @@ load_alignment_iimb:-
 load_alignment_iimb(Integer, SVG):-
   load_shared_iimb(Integer, Graph, Alignments),
   debug(iotw, 'Loaded graph ~w.', [Graph]),
+gtrace,
   alignments_by_predicates(Graph, Alignments, Predicates),
   debug(iotw, '  Alignments established for graph ~w.', [Graph]),
   export_rdf_alignments(Graph, Alignments, Predicates, SVG),
@@ -68,14 +70,16 @@ load_alignment_iimb(Integer, SVG):-
 load_shared_iimb(Integer, OntologyGraph, Alignments):-
   between(1, 80, Integer), !,
 
+  % Clear the temporary RDF graphs we use for graph merge.
+  maplist(rdf_unload_graph, [iotw_temp_1,iotw_temp_2]),
+
   % Create a unique graph name.
   format(atom(GraphSuggestion), 'iimb_~w', [Integer]),
   rdf_new_graph(GraphSuggestion, OntologyGraph),
 
   % Load the base ontology.
   absolute_file_name(iimb(onto), BaseFile, [access(read), file_type(owl)]),
-  rdf_load2(BaseFile, [graph(OntologyGraph)]),
-  %rdf_load2(BaseFile, [graph(iotw_temp_1)]),
+  rdf_load2(BaseFile, [graph(iotw_temp_1)]),
 
   % Load the aligned ontology.
   format_integer(Integer, 3, SubDirName),
@@ -89,10 +93,11 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
     AlignedOntologyFile,
     [access(read), file_type(owl), relative_to(SubDir)]
   ),
-  rdf_load2(AlignedOntologyFile, [graph(OntologyGraph)]),
-  %rdf_load2(AlignedOntologyFile, [graph(iotw_temp_2)]),
-  %rdf_graph_merge([iotw_temp_1, iotw_temp_2], Graph),
-  %maplist(rdf_unload_graph, [iotw_temp_1, iotw_temp_2]),
+  rdf_load2(AlignedOntologyFile, [graph(iotw_temp_2)]),
+
+  % Merge the two ontology graphs.
+  rdf_graph_merge([iotw_temp_1, iotw_temp_2], OntologyGraph),
+  maplist(rdf_unload_graph, [iotw_temp_1, iotw_temp_2]),
 
   % Load the reference alignments between the base ontology and
   % the aligned ontology.
@@ -102,6 +107,4 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
     [access(read), file_type(rdf), relative_to(SubDir)]
   ),
   oaei_file_to_alignments(AlignmentsFile, Alignments).
-
-
 

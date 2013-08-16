@@ -1,11 +1,17 @@
 :- module(
   iotw_export,
   [
-    build_node/5 % +Assoc:assoc
-                 % +Key:ordset(uri)
-                 % +NumberOfIdentityPairs:integer
-                 % +NumberOfThesePairs:integer
-                 % -Node:element
+    build_node/5, % +Assoc:assoc
+                  % +Key:ordset(uri)
+                  % +NumberOfIdentityPairs:integer
+                  % +NumberOfThesePairs:integer
+                  % -Node:element
+    init_export/0,
+    node/5 % ?NodeID:atom,
+           % ?Key:ordset(iri),
+           % ?NumberOfIdentityPairs:nonneg,
+           % ?NumberOfPairs:nonneg,
+           % ?InLowerApproximation:boolean
   ]
 ).
 
@@ -20,6 +26,16 @@
 :- use_module(gv(gv_hash)).
 :- use_module(library(assoc)).
 :- use_module(rdf(rdf_name)).
+
+%! node(
+%!   ?NodeID:atom,
+%!   ?Key:ordset(iri),
+%!   ?NumberOfIdentityPairs:nonneg,
+%!   ?NumberOfPairs:nonneg,
+%!   ?InLowerApproximation:boolean
+%! ) is nondet.
+
+:- dynamic(node/5).
 
 
 
@@ -41,7 +57,7 @@ build_node(
   node(NodeID, NodeAttributes)
 ):-
   % Create the key label that described the key.
-  rdf_term_name(Key, KeyLabel),
+  rdf_terms_name(Key, KeyLabel),
 
   % Establish the node ID.
   indexed_sha_hash(Key, Hash),
@@ -59,15 +75,24 @@ build_node(
   % in the partition set.
   Percentage2 is NumberOfTheseIdentityPairs / NumberOfThesePairs,
 
-  % Add to higher approximation.
-  assert(current_higher(NumberOfThesePairs)),
-
-  % Add to lower approximation.
-  if_then(
-    NumberOfTheseIdentityPairs = NumberOfThesePairs,
-    assert(current_lower(NumberOfTheseIdentityPairs))
+  % Whether the node belongs to the lower approximation or not.
+  (
+    NumberOfTheseIdentityPairs =:= NumberOfThesePairs
+  ->
+    InLowerApproximation = true
+  ;
+    InLowerApproximation = false
   ),
-  
+  assert(
+    node(
+      NodeID,
+      Key,
+      NumberOfIdentityPairs,
+      NumberOfThesePairs,
+      InLowerApproximation
+    )
+  ),
+
   % We like our node labels complicated...
   format(
     atom(NodeLabel),
@@ -84,4 +109,7 @@ build_node(
   ),
   NodeAttributes =
     [color(blue),label(NodeLabel),shape(rectangle),style(solid)].
+
+init_export:-
+  retractall(node/5).
 

@@ -20,13 +20,11 @@ by the predicates they share.
 @version 2013/05, 2013/08
 */
 
-:- use_module(generics(db_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(gv(gv_file)).
 :- use_module(gv(gv_hash)).
-:- use_module(iotw(iotw_alignments)).
 :- use_module(iotw(iotw_export)).
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
@@ -45,6 +43,7 @@ by the predicates they share.
 % annotated with the number of resource pairs that share those and only those
 % predicates.
 %
+% @tbd Calculate the accuracy of the identity relation.
 % @tbd Add callback function injection.
 
 export_rdf_alignments(RDF_Graph, Alignments, Assoc, SVG2):-
@@ -61,6 +60,9 @@ export_rdf_alignments(RDF_Graph, Alignments, Assoc, SVG2):-
 %! ) is det.
 
 export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
+  % Clear the data of any previous export.
+  init_export,
+
   % Reset the indexed SHA hash map.
   clear_indexed_sha_hash,
 
@@ -75,37 +77,32 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   NilRankNodeAttributes = [label(0), shape(plaintext)],
 
   % Calculate the number of pairs.
-  setoff(Subject, rdf_subject(RDF_Graph, Subject), Subjects),
+  setoff(
+    Subject,
+    (
+      rdf_subject(RDF_Graph, Subject),
+      \+ rdf_is_bnode(Subject)
+    ),
+    Subjects
+  ),
   cardinality(Subjects, NumberOfSubjects),
   NumberOfPairs is NumberOfSubjects ** 2,
 
-  % Calculate the number of non-nil pairs.
-  findall(
-    SomeLength,
-    (
-      member(SomeKey, Keys),
-      assoc:get_assoc(SomeKey, Assoc, SomeValues),
-      cardinality(SomeValues, SomeLength)
-    ),
-    AllLengths
-  ),
-  sum_list(AllLengths, NumberOfNonNilPairs),
-
   % Calculate the number of nil pairs.
-  NumberOfNilPairs is NumberOfPairs - NumberOfNonNilPairs,
-
-  % Nodes: the nil node.
-  build_node(
-    Assoc,
-    NilKey,
-    NumberOfIdentityPairs,
-    NumberOfNilPairs,
-    NilNode
-  ),
+  NumberOfNonIdentityPairs is NumberOfPairs - NumberOfIdentityPairs,
 
   % Separate the nil key from the non-nil keys.
   NilKey = [],
   (selectchk(NilKey, Keys, NonNilKeys), ! ; NonNilKeys = Keys),
+
+  % Build nodes: build the nil node.
+  build_node(
+    Assoc,
+    NilKey,
+    NumberOfIdentityPairs,
+    NumberOfNonIdentityPairs,
+    NilNode
+  ),
 
   % Extract the ranks that occur in the hierarchy.
   setoff(
@@ -117,26 +114,30 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
     RankNumbers
   ),
 
-  % Nodes: non-nil nodes.
+  % Build nodes: build the non-nil nodes.
   findall(
     rank(node(RankNodeID, RankNodeAttributes), ContentNodes),
     (
+      % The rank.
       member(RankNumber, RankNumbers),
       format(atom(RankNodeID), 'r~w', [RankNumber]),
       atom_number(RankLabel, RankNumber),
       RankNodeAttributes = [label(RankLabel), shape(plaintext)],
+
       % Consider only keys of the rank length.
       length(Key, RankNumber),
       findall(
         Node,
         (
           member(Key, NonNilKeys),
-          
+
           % Retrieve the number of pairs of resources that share those
-          % and only those predicates in the key.
+          % and only those predicates in the key.e
+	  % Notice that we are now looking at *all* pairs,
+	  % not only those in the alignments.
           predicates_to_pairs(Graph, Key, ThesePairs),
           cardinality(ThesePairs, NumberOfThesePairs),
-          
+
           build_node(
             Assoc,
             Key,
@@ -172,20 +173,29 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
     Edges
   ),
 
-  % Calculate the accuracy of the identity relation.
-  % @tbd This makes no sense; the lower and higher approaximations
-  %      are set per node.
-  findall(Lower, current_lower(Lower), Lowers),
-  sum_list(Lowers, Lower),
-  findall(Higher, current_higher(Higher), Highers),
-  sum_list(Highers, Higher),
-  Accuracy is Lower / Higher,
-  % Clean up.
-  retractall(current_lower(_Lower)),
-  retractall(current_higher(_Higher)),
+  % Calculate the accuracy.
+  findall(
+    NumberOfPairsInLower1,
+    node(_NodeID, _Key, _NumberOfIdentityPairs, NumberOfPairsInLower1, true),
+    NumberOfPairsInLower2
+  ),
+  sum_list(NumberOfPairsInLower2, NumberOfPairsInLower3),
+  findall(
+    NumberOfPairsInHigher1,
+    node(_NodeID, _Key, _NumberOfIdentityPairs, NumberOfPairsInHigher1, false),
+    NumberOfPairsInHigher2
+  ),
+  sum_list(NumberOfPairsInHigher2, NumberOfPairsInHigher3),
+  (
+    NumberOfPairsInHigher3 =:= 0
+  ->
+    Accuracy = 0
+  ;
+    Accuracy is NumberOfPairsInLower3 / NumberOfPairsInHigher3
+  ),
 
   % Graph properties.
-  format(atom(GraphLabel), 'Name: ~w   Accuracy: ~e', [Graph, Accuracy]),
+  format(atom(GraphLabel), 'Name: ~w   Accuracy: ~e', [Graph,Accuracy]),
   GraphAttributes =
     [
       charset('UTF-8'),
@@ -209,6 +219,8 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
 %!   -Pair:pair
 %! ) is nondet.
 % Returns a pair of resources that shares all and only the given predicates.
+%
+% @tbd See whether this can be optimized using profile/1.
 
 predicates_to_pair(G, [P11|Ps], X-Y):-
   % Find two resources that share the first predicate.
