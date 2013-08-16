@@ -25,8 +25,6 @@ Classifies *all* resource pairs by the predicates they share.
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_name)).
 
-:- dynamic(current_assoc(_Assoc)).
-
 
 
 %! rdf_shared_pairs(+Graph:atom, -Tuples:list) is det.

@@ -21,6 +21,7 @@ by the predicates they share.
 @version 2013/05, 2013/08
 */
 
+:- use_module(generics(assoc_multi)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
@@ -29,6 +30,7 @@ by the predicates they share.
 :- use_module(iotw(iotw_export)).
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(library(sha)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(xml(xml_dom)).
 
@@ -44,12 +46,20 @@ by the predicates they share.
 % annotated with the number of resource pairs that share those and only those
 % predicates.
 %
-% @tbd Calculate the accuracy of the identity relation.
 % @tbd Add callback function injection.
+%      Add to function: RDF_Graph, AssocHash.
 
 export_rdf_alignments(RDF_Graph, Alignments, Assoc, SVG2):-
   rdf_graph(RDF_Graph), !,
   export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF),
+  
+  % Create an arbitrary but quite unique name for the association list
+  % and register it under that name.
+  term_to_atom(Assoc, Atom),
+  sha_hash(Atom, HashCodes, []),
+  hash_atom(HashCodes, AssocHash),
+  register_assoc(AssocHash, Assoc),
+  
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2).
 
@@ -77,7 +87,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   NilRankNodeID = r0,
   NilRank =
     rank(vertex(NilRankNodeID,NilRankNodeID,NilRankNodeAttributes),[NilNode]),
-  NilRankNodeAttributes = [label(NilRankNodeID),shape(plaintext)],
+  NilRankNodeAttributes = [label('0'),shape(plaintext)],
 
   % Calculate the number of pairs.
   setoff(
@@ -138,7 +148,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
           % and only those predicates in the key.e
           % Notice that we are now looking at *all* pairs,
           % not only those in the alignments.
-          predicates_to_pairs(Graph, Key, ThesePairs),
+          predicates_to_pairs(RDF_Graph, Key, ThesePairs),
           cardinality(ThesePairs, NumberOfThesePairs),
 
           build_vertex(

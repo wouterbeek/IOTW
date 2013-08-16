@@ -13,6 +13,7 @@
 @version 2013/05, 2013/08
 */
 
+:- use_module(generics(assoc_multi)).
 :- use_module(generics(meta_ext)).
 :- use_module(gv(gv_hash)).
 :- use_module(html(html)).
@@ -25,7 +26,8 @@
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
 
-http:location(root, '/prasem/', []).
+% First load the debug server.
+:- initialization(start_dev_server, now).
 
 :- http_handler(root(node), node, []).
 
