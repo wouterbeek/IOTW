@@ -1,11 +1,11 @@
 :- module(
   iotw_export,
   [
-    build_node/5, % +Assoc:assoc
-                  % +Key:ordset(uri)
-                  % +NumberOfIdentityPairs:integer
-                  % +NumberOfThesePairs:integer
-                  % -Node:element
+    build_vertex/5, % +Assoc:assoc
+                    % +Key:ordset(uri)
+                    % +NumberOfIdentityPairs:integer
+                    % +NumberOfThesePairs:integer
+                    % -Node:element
     init_export/0,
     node/5 % ?NodeID:atom,
            % ?Key:ordset(iri),
@@ -39,7 +39,7 @@
 
 
 
-%! build_node(
+%! build_vertex(
 %!   +Assoc:assoc,
 %!   +Key:ordset(uri),
 %!   +NumberOfIdentityPairs:integer,
@@ -49,12 +49,12 @@
 % Exports a single node representing a set of predicates
 % and the pairs of resources that share those predicates.
 
-build_node(
+build_vertex(
   Assoc,
   Key,
   NumberOfIdentityPairs,
   NumberOfThesePairs,
-  node(NodeID, NodeAttributes)
+  vertex(NodeID,NodeID,NodeAttributes)
 ):-
   % Create the key label that described the key.
   rdf_terms_name(Key, KeyLabel),

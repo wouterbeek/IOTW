@@ -35,9 +35,9 @@ export_rdf_shared(Graph, Alignments, Stash, GIF):-
 
   % Nodes: Nil node
   % @tbd Establish the number of nil pairs (and the percentage).
-  NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
-  NilRankNodeAttributes = [label(0), shape(plaintext)],
-  NilNode = node(n0, NilNodeAttributes),
+  NilRank = rank(vertex(r0,NilRankNodeAttributes),[NilNode]),
+  NilRankNodeAttributes = [label(0),shape(plaintext)],
+  NilNode = vertex(n0,NilNodeAttributes),
   format(
     atom(NilNodeLabel),
     '{} (100%) (~d/~d)',
@@ -54,14 +54,14 @@ export_rdf_shared(Graph, Alignments, Stash, GIF):-
     RankNumbers
   ),
   findall(
-    rank(node(RankNodeID, RankNodeAttributes), ContentNodes),
+    rank(vertex(RankNodeID,RankNodeAttributes),ContentNodes),
     (
       member(RankNumber, RankNumbers),
       format(atom(RankNodeID), 'r~w', [RankNumber]),
       atom_number(RankLabel, RankNumber),
       RankNodeAttributes = [label(RankLabel), shape(plaintext)],
       findall(
-        node(NodeID, NodeAttributes),
+        vertex(NodeID,NodeAttributes),
         (
           nth1(I, Stash, PSet-RankNumber-NumberOfThesePairs-ThesePairs),
           linked_percentage(

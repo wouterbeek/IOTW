@@ -17,6 +17,7 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
+@tbd Add rank to the left-hand side of the graphic order using GraphViz edges.
 @version 2013/05, 2013/08
 */
 
@@ -73,8 +74,10 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   cardinality(Alignments, NumberOfIdentityPairs),
 
   % Ranks: the nul rank.
-  NilRank = rank(node(r0, NilRankNodeAttributes), [NilNode]),
-  NilRankNodeAttributes = [label(0), shape(plaintext)],
+  NilRankNodeID = r0,
+  NilRank =
+    rank(vertex(NilRankNodeID,NilRankNodeID,NilRankNodeAttributes),[NilNode]),
+  NilRankNodeAttributes = [label(NilRankNodeID),shape(plaintext)],
 
   % Calculate the number of pairs.
   setoff(
@@ -96,7 +99,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   (selectchk(NilKey, Keys, NonNilKeys), ! ; NonNilKeys = Keys),
 
   % Build nodes: build the nil node.
-  build_node(
+  build_vertex(
     Assoc,
     NilKey,
     NumberOfIdentityPairs,
@@ -116,7 +119,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
 
   % Build nodes: build the non-nil nodes.
   findall(
-    rank(node(RankNodeID, RankNodeAttributes), ContentNodes),
+    rank(vertex(RankNodeID,RankNodeID,RankNodeAttributes),ContentNodes),
     (
       % The rank.
       member(RankNumber, RankNumbers),
@@ -133,12 +136,12 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
 
           % Retrieve the number of pairs of resources that share those
           % and only those predicates in the key.e
-	  % Notice that we are now looking at *all* pairs,
-	  % not only those in the alignments.
+          % Notice that we are now looking at *all* pairs,
+          % not only those in the alignments.
           predicates_to_pairs(Graph, Key, ThesePairs),
           cardinality(ThesePairs, NumberOfThesePairs),
 
-          build_node(
+          build_vertex(
             Assoc,
             Key,
             NumberOfIdentityPairs,
@@ -176,13 +179,13 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   % Calculate the accuracy.
   findall(
     NumberOfPairsInLower1,
-    node(_NodeID, _Key, _NumberOfIdentityPairs, NumberOfPairsInLower1, true),
+    node(_, _, _, NumberOfPairsInLower1, true),
     NumberOfPairsInLower2
   ),
   sum_list(NumberOfPairsInLower2, NumberOfPairsInLower3),
   findall(
     NumberOfPairsInHigher1,
-    node(_NodeID, _Key, _NumberOfIdentityPairs, NumberOfPairsInHigher1, false),
+    node(_, _, _, NumberOfPairsInHigher1, false),
     NumberOfPairsInHigher2
   ),
   sum_list(NumberOfPairsInHigher2, NumberOfPairsInHigher3),
@@ -195,7 +198,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
   ),
 
   % Graph properties.
-  format(atom(GraphLabel), 'Name: ~w   Accuracy: ~e', [Graph,Accuracy]),
+  format(atom(GraphLabel), 'Name: ~w   Accuracy: ~e', [RDF_Graph,Accuracy]),
   GraphAttributes =
     [
       charset('UTF-8'),
@@ -210,7 +213,7 @@ export_rdf_alignments_(RDF_Graph, Alignments, Assoc, GIF):-
       [], % Unranked nodes.
       [NilRank | NonNilRanks],
       Edges,
-      [graph_name(Graph) | GraphAttributes]
+      [graph_name(RDF_Graph) | GraphAttributes]
     ).
 
 %! predicates_to_pair(

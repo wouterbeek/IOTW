@@ -55,7 +55,6 @@ load_alignment_iimb:-
 load_alignment_iimb(Integer, SVG):-
   load_shared_iimb(Integer, Graph, Alignments),
   debug(iotw, 'Loaded graph ~w.', [Graph]),
-gtrace,
   alignments_by_predicates(Graph, Alignments, Predicates),
   debug(iotw, '  Alignments established for graph ~w.', [Graph]),
   export_rdf_alignments(Graph, Alignments, Predicates, SVG),
