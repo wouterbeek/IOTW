@@ -1,8 +1,8 @@
 :- module(
   iimb,
   [
-    load_alignment_iimb/2 % +Number:nonneg
-                          % -SVG:dom
+    iimb/2 % +Number:nonneg
+           % -SVG:dom
   ]
 ).
 
@@ -10,16 +10,14 @@
 
 Runs IOTW experiments on the IIMB alignment data.
 
---
-
 @author Wouter Beek
 @version 2013/05, 2013/08
 */
 
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
-:- use_module(iotw(iotw_alignments)).
-:- use_module(iotw(iotw_alignments_export)).
+:- use_module(iotw(iotw_inodes)).
+:- use_module(iotw(iotw_export)).
 :- use_module(library(debug)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_graph)).
@@ -40,25 +38,30 @@ Runs IOTW experiments on the IIMB alignment data.
 
 
 
-%! load_alignment_iimb is det.
+%! iimb is det.
 % Loads all the IIMB alignments into memory.
 
-load_alignment_iimb:-
+iimb:-
   forall(
     between(1, 80, Integer),
-    load_alignment_iimb(Integer, _SVG)
+    iimb(Integer, _SVG)
   ).
 
-%! load_alignment_iimb(+Number:nonneg, -SVG) is det.
+%! iimb(+Number:nonneg, -SVG) is det.
 % Loads a specific IIMB alignment into memory and exports the IOTW results.
 
-load_alignment_iimb(Integer, SVG):-
-  load_shared_iimb(Integer, Graph, Alignments),
-  debug(iotw, 'Loaded graph ~w.', [Graph]),
-  alignments_by_predicates(Graph, Alignments, Predicates),
-  debug(iotw, '  Alignments established for graph ~w.', [Graph]),
-  export_rdf_alignments(Graph, Alignments, Predicates, SVG),
-  debug(iotw, '  Exported alignments for graph ~w.', [Graph]).
+iimb(N, SVG):-
+  % Retrieve an RDF graph and a set of alignment pairs.
+  load_shared_iimb(N, G, A),
+  debug(iotw, 'Loaded graph ~w.', [G]),
+
+  % Returns the RDF graph and alignment pairs hash.
+  assert_identity_nodes(G, A, GA_Hash),
+  debug(iotw, '  Alignments established for graph ~w.', [G]),
+
+  % Create an SVG representation for the given hash.
+  export_identity_nodes(GA_Hash, SVG),
+  debug(iotw, '  Exported alignments for graph ~w.', [G]).
 
 %! load_shared_iimb(+Number:nonneg, -Graph:atom, -Alignments:list) is det.
 % @param Number The number of the IIMB alignments that is loaded.
@@ -105,5 +108,5 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
     AlignmentsFile,
     [access(read), file_type(rdf), relative_to(SubDir)]
   ),
-  oaei_file_to_alignments(AlignmentsFile, Alignments).
+  oaei_file_to_alignment_pairs(AlignmentsFile, Alignments).
 

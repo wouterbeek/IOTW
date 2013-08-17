@@ -1,8 +1,8 @@
 :- module(
   iotw_web,
   [
-    load_iimb_web/2 % +Integer:integer
-                    % -SVG:dom
+    iimb_web/2 % +Integer:integer
+               % -SVG:dom
   ]
 ).
 
@@ -15,10 +15,11 @@
 
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(meta_ext)).
-:- use_module(gv(gv_hash)).
 :- use_module(html(html)).
 :- use_module(iotw(iimb)).
-:- use_module(iotw(iotw_alignments_export)).
+:- use_module(iotw(iotw_inodes)).
+:- use_module(iotw(iotw_export)).
+:- use_module(library(apply)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
@@ -29,50 +30,32 @@
 % First load the debug server.
 :- initialization(start_dev_server, now).
 
-:- http_handler(root(node), node, []).
+:- http_handler(root(identity_node), identity_node, []).
 
 :- register_module(iotw_web).
 
 
 
-load_iimb_web(Integer, SVG):-
-  load_alignment_iimb(Integer, SVG).
+iimb_web(Integer, SVG):-
+  iimb(Integer, SVG).
 
-%! node(+Request:list(nvpair)) is det.
-% Callback HTTP handler reaction on a click action.
-%
-% @tbd
+%! identity_node(+Request:list(nvpair)) is det.
+% Callback HTTP handler reaction on a click action on an identity node.
 
-node(Request):-
+identity_node(Request):-
   member(search(SearchParameters), Request),
-  if_then(
-    (
-      memberchk(graph=Graph, SearchParameters),
-      memberchk(assoc=AssocName, SearchParameters),
-      memberchk(id=Id, SearchParameters),
-      assoc_by_name(AssocName, Assoc)
-    ),
-    node_(Graph, Assoc, Id)
+  (
+    memberchk(id=GAK_Hash, SearchParameters)
+  ->
+    identity_node(GAK_Hash)
+  ;
+    true
   ).
 
-node_(Graph, Assoc, Id1):-
-  % Use the hashed value to find the assoc key name.
-  sub_atom(Id1, 6, _Length, 0, Id2),
-  indexed_sha_hash(Key, Id2),
-
-  assoc:get_assoc(Key, Assoc, TheseIdentityPairs),
-  predicates_to_pairs(Graph, Key, ThesePairs),
-  ord_subtract(ThesePairs, TheseIdentityPairs, TheseNonIdentityPairs),
-  findall(
-    DOM,
-    (
-      member(TheseNonIdentityPair, TheseNonIdentityPairs),
-      pair_to_dom(TheseNonIdentityPair, DOM)
-    ),
-    DOMs
-  ),
-  append(DOMs, DOM),
-  push(console_output, DOM).
+node(GAK_Hash):-
+  update_identity_node(GAK_Hash),
+  export_identity_nodes(GAK_Hash, SVG),
+  push(console_output, SVG).
 
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
 
@@ -131,3 +114,14 @@ pair_to_dom(X-Y, Markup):-
       X_Table,
       Y_Table
     ].
+
+/*
+  identity_node(GAK_Hash,GA_Hash,Key,_,_,_),
+  graph_alignment(GA_Hash,G,_,PsAssoc,_,_),
+  assoc:get_assoc(Key, PsAssoc, KeyIdentityPairs),
+  predicates_to_pairs(G, Key, KeyPairs),
+  ord_subtract(KeyPairs, KeyIdentityPairs, KeyNonIdentityPairs),
+  maplist(pair_to_dom, KeyNonIdentityPairs, DOMs),
+  append(DOMs, DOM),
+  push(console_output, DOM).
+*/

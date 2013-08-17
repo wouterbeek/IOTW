@@ -37,12 +37,9 @@ In the value space of XSD floats, -0 and 0 are equal but not identical.
 :- use_module(iotw(iotw_pairs)).
 :- use_module(iotw(iotw_pairs_export)).
 :- use_module(os(run_ext)).
-%:- use_module(rdf(rdf_graph)).
 
 :- rdf_meta(same_object(r,r)).
 :- rdf_meta(same_predicate(r,r)).
-
-%:- initialization(run_experiment).
 
 
 
@@ -74,10 +71,6 @@ rdf_shared(RDF_Graph, Alignments, SVG):-
   rdf_shared_pairs(RDF_Graph, Tuples),
   export_rdf_shared(RDF_Graph, Alignments, Tuples, GIF),
   graph_to_svg_dom([], GIF, dot, SVG).
-
-run_experiment:-
-  load_alignment_iimb(1, SVG),
-  write(SVG).
 
 same_object(O, O).
 

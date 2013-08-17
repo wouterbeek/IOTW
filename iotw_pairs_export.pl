@@ -2,7 +2,7 @@
   iotw_pairs_export,
   [
     export_rdf_shared/4 % +Graph:atom
-                        % +Alignments:list(pair)
+                        % +AlignmentPairs:list(pair)
                         % +Stash
                         % -GIF:compound
   ]
@@ -28,7 +28,7 @@ by the predicates they share.
 
 
 
-export_rdf_shared(Graph, Alignments, Stash, GIF):-
+export_rdf_shared(Graph, AlignmentPairs, Stash, GIF):-
   setoff(Subject, rdf_subject(Graph, Subject), Subjects),
   cardinality(Subjects, NumberOfSubjects),
   NumberOfPairs is NumberOfSubjects ** 2,
@@ -66,7 +66,7 @@ export_rdf_shared(Graph, Alignments, Stash, GIF):-
           nth1(I, Stash, PSet-RankNumber-NumberOfThesePairs-ThesePairs),
           linked_percentage(
             NumberOfThesePairs-ThesePairs,
-            Alignments,
+            AlignmentPairs,
             LinkedPercentage
           ),
           rdf_term_name(PSet, PSetLabel),
@@ -136,17 +136,17 @@ export_rdf_shared(Graph, Alignments, Stash, GIF):-
 
 %! linked_percentage(
 %!   +NumberOfAllPairsAndAllPairs:pair(integer,list(pair)),
-%!   +Alignments:list(pair),
+%!   +AlignmentPairs:list(pair),
 %!   -Percentage:float
 %! ) is det.
 % Returns the percentage of given pairs that are also in
 % the given alignments.
 
-linked_percentage(NumberOfPairs-AllPairs, Alignments, Percentage):-
+linked_percentage(NumberOfPairs-AllPairs, AlignmentPairs, Percentage):-
   setoff(
     X-Y,
     (
-      member(X-Y, Alignments),
+      member(X-Y, AlignmentPairs),
       once((
         member(X-Y, AllPairs)
       ;

@@ -70,9 +70,9 @@ load_alignment_anatomy:-
   forall(
     member(AlignmentFile, AlignmentFiles),
     (
-      oaei_file_to_alignments(AlignmentFile, Alignments),
-      alignments_by_predicates(OntologyGraph, Alignments, Predicates),
-      export_rdf_alignments(OntologyGraph, Alignments, Predicates, _SVG)
+      oaei_file_to_alignment_pairs(AlignmentFile, Alignments),
+      assert_identity_nodes(OntologyGraph, Alignments, GA_Hash),
+      export_identity_nodes(GA_Hash, _SVG)
     )
   ).
 
