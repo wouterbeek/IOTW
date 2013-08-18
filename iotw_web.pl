@@ -23,7 +23,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
-:- use_module(rdf(rdf_graph)).
+:- use_module(rdf(rdf_term)).
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
 
@@ -60,59 +60,59 @@ node(GAK_Hash):-
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
 
 pair_to_dom(X-Y, Markup):-
-  rdf_po_pairs(X, X_PO_Pairs1), % PredicateObjectPairs
-  rdf_po_pairs(Y, Y_PO_Pairs1), % PredicateObjectPairs
+  rdf_po_pairs(X, X_PO_Pairs),
+  rdf_po_pairs(Y, Y_PO_Pairs),
 
-  % The table of shared properties.
-  select_shared_properties(
-    X_PO_Pairs1,
-    Y_PO_Pairs1,
-    SharedPropertyPairs,
-    X_PO_Pairs2,
-    Y_PO_Pairs2
+  % The table of shared predicates and objects.
+  rdf_shared_po_pairs(
+    X_PO_Pairs,
+    Y_PO_Pairs,
+    Shared_PO_Pairs,
+    X_Exclusive_PO_Pairs,
+    Y_Exclusive_PO_Pairs
   ),
   list_to_table(
     [caption('Table showing the shared properties.'),header(true)],
-    [['Predicate','Object']|SharedPropertyPairs],
-    SharedPropertyTable
+    [['Predicate','Object']|Shared_PO_Pairs],
+    Shared_PO_Table
   ),
 
-  % The table of shared predicates.
-  select_shared_predicates(
-    X_PO_Pairs2,
-    Y_PO_Pairs2,
-    SharedPredicateTriples,
-    X_PO_Pairs3,
-    Y_PO_Pairs3
+  % The table of shared predicates and different objects.
+  rdf_shared_p_triples(
+    X_Exclusive_PO_Pairs,
+    Y_Exclusive_PO_Pairs,
+    Shared_P_Triples,
+    X_Exclusive_P_Pairs,
+    Y_Exclusive_P_Pairs
   ),
   list_to_table(
     [caption('Table showing the shared predicates.'),header(true)],
-    [['Predicate','X-Object','Y-Object']|SharedPredicateTriples],
-    SharedPredicateTable
+    [['Predicate','X-Object','Y-Object']|Shared_P_Triples],
+    Shared_P_Table
   ),
 
   % The table of exclusive X-properties.
   list_to_table(
     [caption('Table showing the exclusive X predicates.'),header(true)],
-    [['X-Predicate','X-Object']|X_PO_Pairs3],
-    X_Table
+    [['X-Predicate','X-Object']|X_Exclusive_P_Pairs],
+    X_Exclusive_P_Table
   ),
 
   % The table of exclusive Y-properties.
   list_to_table(
     [caption('Table showing the exclusive Y predicates.'),header(true)],
-    [['Y-Predicate','Y-Object']|Y_PO_Pairs3],
-    Y_Table
+    [['Y-Predicate','Y-Object']|Y_Exclusive_P_Pairs],
+    Y_Exclusive_P_Table
   ),
 
   Markup =
     [
       element(h1,[],['X: ',X]),
       element(h1,[],['Y: ',Y]),
-      SharedPropertyTable,
-      SharedPredicateTable,
-      X_Table,
-      Y_Table
+      Shared_PO_Table,
+      Shared_P_Table,
+      X_Exclusive_P_Table,
+      Y_Exclusive_P_Table
     ].
 
 /*

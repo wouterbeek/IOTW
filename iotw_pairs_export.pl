@@ -23,8 +23,8 @@ by the predicates they share.
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(iotw(iotw_export)).
-:- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_name)).
+:- use_module(rdf(rdf_term)).
 
 
 

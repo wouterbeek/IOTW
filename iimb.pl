@@ -98,7 +98,7 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
   rdf_load2(AlignedOntologyFile, [graph(iotw_temp_2)]),
 
   % Merge the two ontology graphs.
-  rdf_graph_merge([iotw_temp_1, iotw_temp_2], OntologyGraph),
+  rdf_graph_merge([iotw_temp_1,iotw_temp_2], OntologyGraph),
   maplist(rdf_unload_graph, [iotw_temp_1, iotw_temp_2]),
 
   % Load the reference alignments between the base ontology and

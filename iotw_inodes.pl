@@ -41,6 +41,10 @@ Possible extensions of the alignment pairs:
   2. Non-identity pairs in proper supersets of the lower approximation.
 
 @author Wouter Beek
+@tbd Treat alignment sets, not alignment pairs (e.g. the properties that are
+     shared by three resources.
+@tbd Typed literals are the equivalent if the canonical mappings
+     of their inverse lexical mappings are the same.
 @version 2013/05, 2013/08
 */
 
@@ -54,7 +58,7 @@ Possible extensions of the alignment pairs:
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_graph)).
+:- use_module(rdf(rdf_term)).
 
 %! graph_alignment(
 %!   ?GraphAlignmentPairsHash:atom,

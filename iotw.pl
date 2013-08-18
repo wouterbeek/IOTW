@@ -36,7 +36,10 @@ In the value space of XSD floats, -0 and 0 are equal but not identical.
 :- use_module(iotw(iimb)).
 :- use_module(iotw(iotw_pairs)).
 :- use_module(iotw(iotw_pairs_export)).
+:- use_module(library(semweb/rdf_db)).
 :- use_module(os(run_ext)).
+:- use_module(owl(owl_read)).
+:- use_module(rdf(rdf_term)).
 
 :- rdf_meta(same_object(r,r)).
 :- rdf_meta(same_predicate(r,r)).
@@ -72,7 +75,23 @@ rdf_shared(RDF_Graph, Alignments, SVG):-
   export_rdf_shared(RDF_Graph, Alignments, Tuples, GIF),
   graph_to_svg_dom([], GIF, dot, SVG).
 
-same_object(O, O).
+same_object(O1, O2):-
+  rdf_is_bnode(O1), rdf_is_bnode(O2), !,
+  O1 == O2.
+same_object(O1, O2):-
+  rdf_is_literal(O1), rdf_is_literal(O2), !,
+  rdf_literal_equality(O1, O2).
+same_object(O1, O2):-
+  rdf_is_resource(O1), rdf_is_resource(O2), !,
+  (
+    O1 == O2, !
+  ;
+    owl_resource_identity(O1, O2)
+  ).
 
-same_predicate(P, P).
+%! same_property(+Property1:iri, +Property2:iri) is semidet.
+% @tbd Add OWL identity statement on properties.
+
+same_predicate(P1, P2):-
+  P1 == P2.
 

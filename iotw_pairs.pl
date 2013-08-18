@@ -22,8 +22,8 @@ Classifies *all* resource pairs by the predicates they share.
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_name)).
+:- use_module(rdf(rdf_term)).
 
 
 
