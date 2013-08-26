@@ -1,8 +1,10 @@
 :- module(
   iimb,
   [
-    iimb/2 % +Number:nonneg
-           % -SVG:dom
+    iimb/2, % +Number:nonneg
+            % -SVG:dom
+    iimb2/2 % +Number:nonneg
+            % -SVG:dom
   ]
 ).
 
@@ -16,8 +18,10 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
+:- use_module(gv(gv_file)).
 :- use_module(iotw(iotw_inodes)).
 :- use_module(iotw(iotw_export)).
+:- use_module(iotw(iotw_pairs)).
 :- use_module(library(debug)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_graph)).
@@ -53,15 +57,21 @@ iimb:-
 iimb(N, SVG):-
   % Retrieve an RDF graph and a set of alignment pairs.
   load_shared_iimb(N, G, A),
-  debug(iotw, 'Loaded graph ~w.', [G]),
+  debug(iimb, 'Loaded graph ~w.', [G]),
 
   % Returns the RDF graph and alignment pairs hash.
   assert_identity_nodes(G, A, GA_Hash),
-  debug(iotw, '  Alignments established for graph ~w.', [G]),
+  debug(iimb, '  Alignments established for graph ~w.', [G]),
 
   % Create an SVG representation for the given hash.
   export_identity_nodes(GA_Hash, SVG),
-  debug(iotw, '  Exported alignments for graph ~w.', [G]).
+  debug(iimb, '  Exported alignments for graph ~w.', [G]).
+
+iimb2(N, SVG):-
+  load_shared_iimb(N, G, _A),
+  lattice(G),
+  lattice_export(GIF),
+  graph_to_svg_dom([], GIF, dot, SVG).
 
 %! load_shared_iimb(+Number:nonneg, -Graph:atom, -Alignments:list) is det.
 % @param Number The number of the IIMB alignments that is loaded.
@@ -98,7 +108,8 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
   rdf_load2(AlignedOntologyFile, [graph(iotw_temp_2)]),
 
   % Merge the two ontology graphs.
-  rdf_graph_merge([iotw_temp_1,iotw_temp_2], OntologyGraph),
+  % @tbd Why is the module needed here?!
+  rdf_graph:rdf_graph_merge([iotw_temp_1,iotw_temp_2], OntologyGraph),
   maplist(rdf_unload_graph, [iotw_temp_1, iotw_temp_2]),
 
   % Load the reference alignments between the base ontology and

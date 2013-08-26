@@ -1,8 +1,8 @@
 :- module(
   iotw_pairs,
   [
-    rdf_shared_pairs/2 % +Graph:atom
-                       % -Tuples:list(compound)
+    lattice/1, % +Graph:atom
+    lattice_export/1 % -GIF:compound
   ]
 ).
 
@@ -11,105 +11,134 @@
 Classifies *all* resource pairs by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08
+@version 2013/08
 */
 
-:- use_module(generics(assoc_multi)).
-:- use_module(generics(db_ext)).
-:- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(set_theory)).
+:- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(math(math_ext)).
 :- use_module(rdf(rdf_name)).
 :- use_module(rdf(rdf_term)).
 
+:- dynamic edge/2, node/4.
+
+:- debug(iotw_pairs).
 
 
-%! rdf_shared_pairs(+Graph:atom, -Tuples:list) is det.
-% Loads the pairs that share the same properties,
-% irrespective of any alignments.
-%
-% ### Example
-%
-% Given the following 4 triples:
-% ==
-% <S1, P, O12>
-% <S2, P, O12>
-% <S3, P, O34>
-% <S4, P, O34>
-% ==
-%
-% The triples would be:
-% ==
-% <{P},{<S1,S2>,<S3,S4>}>
-% ==
-%
-% @param Stash A list containing tuples of the following form:
-%        =|Predicates-NumberOfPredicates-NumberOfPairs-Pairs|=
 
-rdf_shared_pairs(Graph, Stash):-
-  rdf_predicates(Graph, Predicates),
-  % Collect all length-one predicate sets with
-  % their associated resource pairs.
-  findall(
-    [Predicate]-1-Size-SingletonPairs,
+lattice(G):-
+  % Setup.
+  rdf_graph(G),
+  flag(column, _, 1),
+  retractall(edge(_,_)),
+  retractall(node(_,_,_,_)),
+
+  setoff(P-O, rdf(_, P, O, G), POs),
+
+  debug(iotw_pairs, 'Test', []),
+  % Lattice row 1.
+  forall(
+    member(P-O, POs),
     (
-      member(Predicate, Predicates),
+      setoff(S, rdf(S, P, O, G), Ss),
+      flag(column, Id, Id + 1),
+      assert(node(1, Id, [P-O], Ss))
+    )
+  ),
+  flag(column, _, 1),
+
+  % Lattice row N+1 based on lattice row N.
+  length(POs, L),
+  forall(
+    between(2, L, N),
+    (
+      lattice_row(L, N),
+      flag(column, _, 1)
+    )
+  ).
+
+lattice_row(L, N):-
+  succ(PreviousN, N),
+  binomial_coefficient(L, N, Max),
+  binomial_coefficient(L, PreviousN, BC),
+  succ(BCmin, BC),
+  between(1, BCmin, I),
+  between(2, BC, J),
+  lattice_cell(Max, PreviousN, N, I, J), !.
+lattice_row(_L, _N).
+
+lattice_cell(Max, _PreviousN, _N, _I, _J):-
+  flag(it, Max, Max), !, fail.
+lattice_cell(_Max, PreviousN, N, I, J):-
+  node(PreviousN, I, POs1, Ss1),
+  node(PreviousN, J, POs2, Ss2),
+  ord_union(POs1, POs2, POs),
+  ord_intersection(Ss1, Ss2, Ss),
+  debug(iotw_pairs, '~w CUP ~w\t~wCAP~w', [POs1,POs2,Ss1,Ss2]),
+  flag(column, Id, Id + 1),
+  assert(node(N, Id, POs, Ss)),
+  assert(edge(node(PreviousN,I,POs1,Ss1),node(N,Id,POs,Ss))),
+  assert(edge(node(PreviousN,J,POs2,Ss2),node(N,Id,POs,Ss))), !.
+% No I and/or no J? That's fine!
+lattice_cell(_Max, _PreviousN, _N, _I, _J).
+
+lattice_export(GIF):-
+  setoff(
+    Row,
+    node(Row, _, _, _),
+    Rows
+  ),
+  findall(
+    rank(vertex(RankId,RankId,RankAttrs),V_Terms),
+    (
+      member(Row,Rows),
+      format(atom(RankId), 'r~w', [Row]),
+      atom_number(RankLabel, Row),
+      RankAttrs = [label(RankLabel), shape(plaintext)],
+
       findall(
-        Subject1-Subject2,
+        vertex(V_Name,node(Row,Col,POs,Ss),V_Attrs),
         (
-          % We assume a fully materialized graph.
-          rdf(Subject1, Predicate, Object, Graph),
-          rdf(Subject2, Predicate, Object, Graph),
-          Subject1 @< Subject2
+          node(Row, Col, POs, Ss),
+          Ss \== [],
+          vertex_id(Row, Col, V_Name),
+          rdf_name:rdf_term_pairs_name([], POs, PsLabel),
+          length(Ss, Size),
+          format(
+            atom(V_Label),
+            '~w\n~w triples',
+            [PsLabel,Size]
+          ),
+          V_Attrs =
+            [color(darkgreen),label(V_Label),shape(rectangle),style(solid)]
         ),
-        SingletonPairs
-      ),
-      cardinality(SingletonPairs, Size),
-      % Sometimes predicates have no extension. Exclude these early on.
-      Size > 0
+        V_Terms
+      )
     ),
-    SingletonTuples
+    Ranks
   ),
-  rdf_shared_pairs(SingletonTuples, SingletonTuples, [], Stash).
 
-rdf_shared_pairs([], SingletonTuples, TempStash, SolStash):- !,
-  append(SingletonTuples, TempStash, SolStash).
-rdf_shared_pairs(
-  [PSet-NumberOfPs-_NumberOfPairs-Pairs|Tuples],
-  SingletonTuples,
-  TempStash,
-  SolStash
-):-
+  E_Attrs = [color(black),style(solid)],
   findall(
-    NewEntry,
+    edge(FromId,ToId,E_Attrs),
     (
-      % Find a single predicate that we can add to
-      % an existing set of predicates.
-      member(SingletonPSet-1-_-SingletonPairs, SingletonTuples),
-      \+ ord_subset(SingletonPSet, PSet),
-      ord_union(PSet, SingletonPSet, NewPSet),
-      % Since a bigger set can be obtained as a result of the union of
-      % multiple smaller sets, we make sure that we do not include any
-      % duplicates.
-      \+ member(NewPSet-_-_-_, TempStash),
-
-      % If the intersection is not empty, then we have found
-      % a new set of predicates.
-      ord_intersection(Pairs, SingletonPairs, NewPairs),
-      \+ ord_empty(NewPairs),
-
-      % The extended set of predicates may be further extensible.
-      NewNumberOfPs is NumberOfPs + 1,
-      cardinality(NewPairs, NewNumberOfPairs),
-      NewEntry = NewPSet-NewNumberOfPs-NewNumberOfPairs-NewPairs
+      edge(node(Row1,Col1,_,Ss1),node(Row2,Col2,_,Ss2)),
+      Ss1 \== [],
+      Ss2 \== [],
+      vertex_id(Row1, Col1, FromId),
+      vertex_id(Row2, Col2, ToId)
     ),
-    NewEntries
+    E_Terms
   ),
 
-  append(Tuples, NewEntries, NewTuples),
-  append(TempStash, NewEntries, NewTempStash),
-  rdf_shared_pairs(NewTuples, SingletonTuples, NewTempStash, SolStash).
+  G_Attrs =
+    [colorscheme(svg),charset('UTF-8'),fontsize(11.0),overlap(false)],
+
+  GIF = graph([], Ranks, E_Terms, [G_Attrs]).
+
+vertex_id(Row, Col, Id):-
+  format(atom(Id), 'r~wc~w', [Row,Col]).
 

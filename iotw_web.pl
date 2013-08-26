@@ -1,8 +1,10 @@
 :- module(
   iotw_web,
   [
-    iimb_web/2 % +Integer:integer
-               % -SVG:dom
+    iimb_web/2, % +Integer:integer
+                % -SVG:dom
+    iimb2_web/2 % +Integer:integer
+                % -SVG:dom
   ]
 ).
 
@@ -37,7 +39,11 @@
 
 
 iimb_web(Integer, SVG):-
+gtrace,
   iimb(Integer, SVG).
+
+iimb2_web(Integer, SVG):-
+  iimb2(Integer, SVG).
 
 %! identity_node(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.

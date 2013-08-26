@@ -32,6 +32,5 @@ load_iotw:-
   ),
   
   % Identity on the Web.
-  ensure_loaded(project(iotw)),
   use_module(project(iotw_web)).
 

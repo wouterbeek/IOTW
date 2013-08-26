@@ -52,12 +52,12 @@ Possible extensions of the alignment pairs:
 :- use_module(generics(db_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
-:- use_module(iotw(iotw)).
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(owl(owl_read)).
 :- use_module(rdf(rdf_term)).
 
 %! graph_alignment(
@@ -96,7 +96,7 @@ assert_identity_nodes(G, A, GA_Hash):-
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
   variant_sha1(G-A, GA_Hash),
-  
+
   % Calculate the number of identity pairs.
   cardinality(A, NumberOfIdentityPairs),
 
@@ -104,12 +104,12 @@ assert_identity_nodes(G, A, GA_Hash):-
   setoff(S, (rdf_subject(G, S), \+ rdf_is_bnode(S)), Ss),
   cardinality(Ss, NumberOfS),
   NumberOfPairs is NumberOfS ** 2,
-  
+
   % Calculate the predicate sets that are part of the hierarchy.
   alignment_pairs_by_predicates(G, A, PsAssoc),
   assoc_to_keys(PsAssoc, Keys),
   maplist(assert_node(GA_Hash, G, PsAssoc), Keys),
-  
+
   assert(graph_alignment(GA_Hash,G,A,PsAssoc,NumberOfIdentityPairs,NumberOfPairs)).
 
 %! alignment_pairs_by_predicates(
@@ -139,7 +139,7 @@ alignment_pairs_by_predicates(G, OldAssoc, [From-To|A], SolAssoc):-
 
 assert_node(GA_Hash, G, PsAssoc, Key):-
   variant_sha1(GA_Hash-Key, GAK_Hash),
-  
+
   % Count the identity pairs and percentage.
   (
     assoc:get_assoc(Key, PsAssoc, KeyIdentityPairs), !
@@ -147,7 +147,7 @@ assert_node(GA_Hash, G, PsAssoc, Key):-
     KeyIdentityPairs = []
   ),
   cardinality(KeyIdentityPairs, NumberOfKeyIdentityPairs),
-  
+
   % Whether the identity node belongs to the lower approximation or not.
   % The identity node belongs to the lower approximation if there is
   % at least one pair that shares the given predicates but does not
@@ -161,7 +161,7 @@ assert_node(GA_Hash, G, PsAssoc, Key):-
     InHigher = true,
     NumberOfKeyPairs = NumberOfKeyIdentityPairs
   ),
-  
+
   % -- say it --
   assert(identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs)).
 
@@ -268,7 +268,7 @@ calculate_higher(GA_Hash, Cardinality):-
   calculate(GA_Hash, true, Cardinality).
 
 calculate_lower(GA_Hash, Cardinality):-
-  calculate(GA_Hash, false, Cardinality).
+  calculate(GA_Hash, _, Cardinality).
 
 calculate_quality(GA_Hash, Quality):-
   calculate_higher(GA_Hash, HigherCardinality),
@@ -288,9 +288,29 @@ possible_to_calculate_higher(GA_Hash):-
   possible_to_calculate(GA_Hash, true).
 
 possible_to_calculate_lower(GA_Hash):-
-  possible_to_calculate(GA_Hash, false).
+  possible_to_calculate(GA_Hash, _).
 
 possible_to_calculate_quality(GA_Hash):-
   possible_to_calculate_higher(GA_Hash),
   possible_to_calculate_lower(GA_Hash).
+
+same_object(O1, O2):-
+  rdf_is_bnode(O1), rdf_is_bnode(O2), !,
+  O1 == O2.
+same_object(O1, O2):-
+  rdf_is_literal(O1), rdf_is_literal(O2), !,
+  rdf_literal_equality(O1, O2).
+same_object(O1, O2):-
+  rdf_is_resource(O1), rdf_is_resource(O2), !,
+  (
+    O1 == O2, !
+  ;
+    owl_resource_identity(O1, O2)
+  ).
+
+%! same_property(+Property1:iri, +Property2:iri) is semidet.
+% @tbd Add OWL identity statement on properties.
+
+same_predicate(P1, P2):-
+  P1 == P2.
 
