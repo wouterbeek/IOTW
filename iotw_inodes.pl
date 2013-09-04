@@ -45,11 +45,12 @@ Possible extensions of the alignment pairs:
      shared by three resources.
 @tbd Typed literals are the equivalent if the canonical mappings
      of their inverse lexical mappings are the same.
-@version 2013/05, 2013/08
+@version 2013/05, 2013/08-2013/09
 */
 
 :- use_module(generics(assoc_multi)).
 :- use_module(generics(db_ext)).
+:- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(library(aggregate)).
@@ -93,12 +94,13 @@ Possible extensions of the alignment pairs:
 % and alignment pair set values.
 
 assert_identity_nodes(G, A, GA_Hash):-
+gtrace,
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
   variant_sha1(G-A, GA_Hash),
 
   % Calculate the number of identity pairs.
-  cardinality(A, NumberOfIdentityPairs),
+  length(A, NumberOfIdentityPairs),
 
   % Calculate the number of pairs.
   setoff(S, (rdf_subject(G, S), \+ rdf_is_bnode(S)), Ss),
@@ -110,13 +112,16 @@ assert_identity_nodes(G, A, GA_Hash):-
   assoc_to_keys(PsAssoc, Keys),
   maplist(assert_node(GA_Hash, G, PsAssoc), Keys),
 
-  assert(graph_alignment(GA_Hash,G,A,PsAssoc,NumberOfIdentityPairs,NumberOfPairs)).
+  assert(
+    graph_alignment(GA_Hash,G,A,PsAssoc,NumberOfIdentityPairs,NumberOfPairs)
+  ).
 
 %! alignment_pairs_by_predicates(
 %!   +Graph:atom,
 %!   +AlignmentPairs:list(pair),
 %!   -Predicates:assoc
 %! ) is det.
+% @see Wrapper around alignment_pairs_by_predicates/4.
 
 alignment_pairs_by_predicates(G, A, SolAssoc):-
   empty_assoc(EmptyAssoc),
@@ -132,43 +137,63 @@ alignment_pairs_by_predicates(G, A, SolAssoc):-
 alignment_pairs_by_predicates(_G, SolAssoc, [], SolAssoc):- !.
 alignment_pairs_by_predicates(G, OldAssoc, [From-To|A], SolAssoc):-
   % Take the predicates that the alignment pair shares.
-  rdf_shared_pair(G, From, To, Ps),
+  rdf_shared_properties(G, [From,To], SharedPreds),
   % Add the alignment pair as a value to the predicates key.
-  put_assoc(Ps, OldAssoc, From-To, NewAssoc),
+  put_assoc(SharedPreds, OldAssoc, [From,To], NewAssoc),
   alignment_pairs_by_predicates(G, NewAssoc, A, SolAssoc).
 
-assert_node(GA_Hash, G, PsAssoc, Key):-
+%! assert_node(
+%!   +GraphAlignmentHash:atom,
+%!   +Graph:atom,
+%!   +GroupedBySharedPreds:assoc,
+%!   +SharedPreds:ordset
+%! ) is det.
+
+assert_node(GA_Hash, G, Assoc, SharedPreds):-
   variant_sha1(GA_Hash-Key, GAK_Hash),
 
   % Count the identity pairs and percentage.
   (
-    assoc:get_assoc(Key, PsAssoc, KeyIdentityPairs), !
+    assoc:get_assoc(SharedPreds, Assoc, IdSets)
   ;
-    KeyIdentityPairs = []
+    IdSets = []
+  ), !,
+  aggregate(
+    sum(IdSetSize),
+    (
+      member(IdSet, IdSets),
+      length(IdSet, IdSetSize)
+    ),
+    NumberOfKeyIdentityPairs
   ),
-  cardinality(KeyIdentityPairs, NumberOfKeyIdentityPairs),
 
-  % Whether the identity node belongs to the lower approximation or not.
-  % The identity node belongs to the lower approximation if there is
-  % at least one pair that shares the given predicates but does not
+  % Check whether this identity node belongs to the lower or to the
+  % higher approximation.
+  % It belongs to the lower approximation if there is
+  % at least one member that shares the given properties but does not
   % belong to the identity relation.
+  %
+  % We only need to find a single resource that shares `SharedPreds`
+  % but that does not belong to `IdSet` in order to assuse that
+  % `SharedPreds` is not in the higher approximation.
   (
-    predicates_to_pair(G, Key, From-To),
-    \+ member(From-To, KeyIdentityPairs)
+    rdf_shares_properties(G, SharedPreds, IdSets, _SimS1, _SimS2)
   ->
-    InHigher = false
-  ;
     InHigher = true,
     NumberOfKeyPairs = NumberOfKeyIdentityPairs
+  ;
+    InHigher = false
   ),
 
   % -- say it --
-  assert(identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs)).
+  assert(
+    identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs)
+  ).
 
-%! predicates_to_pair(
+%! predicates_to_set(
 %!   +Graph:atom,
-%!   +Predicates:ordset(uri),
-%!   -Pair:pair
+%!   +SharedPreds:ordset(iri),
+%!   -SharePreds:ordset
 %! ) is nondet.
 % Returns a pair of resources that shares all and only the given predicates.
 %
@@ -179,22 +204,22 @@ assert_node(GA_Hash, G, PsAssoc, Key):-
 %
 % @tbd See whether this can be optimized using profile/1.
 
-predicates_to_pair(G, [P11|Ps], X-Y):-
+predicates_to_set(G, Ps, SolSet):-
+  ord_empty(S),
+  predicates_to_set(G, Ps, S, SolSet).
+% @tbd
+predicates_to_set(G, [P1|Ps], X, Y):-
   % Find two resources that share the first predicate.
-  rdf(X, P11, O11, G),
-  same_predicate(P11, P12),
-  rdf(Y, P12, O12, G),
-  same_object(O11, O12),
+  rdf(X, P1, O1, G),
+  rdf(Y, P1, O1, G),
   % We only need pairs that are ordered in this way (no symmetric instances).
   X @< Y,
   % Now check whether they share the other predicates as well.
   forall(
-    member(P21, Ps),
+    member(P2, Ps),
     (
-      rdf(X, P21, O21, G),
-      rdf(Y, P22, O22, G),
-      same_predicate(P21, P22),
-      same_object(O21, O22)
+      rdf(X, P2, O2, G),
+      rdf(Y, P2, O2, G)
     )
   ).
 
@@ -209,38 +234,61 @@ predicates_to_pair(G, [P11|Ps], X-Y):-
 predicates_to_pairs(G, Ps, Pairs):-
   findall(
     Pair,
-    predicates_to_pair(G, Ps, Pair),
+    predicates_to_set(G, Ps, Pair),
     Pairs
   ).
 
-%! rdf_shared_pair(
+%! rdf_shared_properties(
 %!   +Graph:atom,
-%!   +Subject1:uri,
-%!   +Subject2:uri,
+%!   +IdentitySet:list(iri),
 %!   -Predicates:ordset(uri)
 %! ) is det.
 % Returns the predicates that both subjects possess.
 %
-% Moves from pairs to predicates.
+% Moves from sets of resources to the shared properties of those resources.
+%
+% @see Wrapper around rdf_shared_properties/4.
 
-rdf_shared_pair(G, S1, S2, SolPs):-
-  rdf_shared_pair(G, S1, S2, [], SolPs).
+rdf_shared_properties(G, ISet, SolPs):-
+  rdf_shared_properties(G, ISet, [], SolPs).
 
-rdf_shared_pair(G, S1, S2, OldPs, SolPs):-
+rdf_shared_properties(G, [S1|Ss], OldPs, SolPs):-
   % We assume a fully materialized graph.
-  rdf(S1, P1, O1, G),
+  rdf(S1, P, O, G),
   % We are looking for new predicates only.
-  \+ member(P1, OldPs),
-  same_predicate(P1, P2),
-  rdf(S2, P2, O2, G),
-  % @tbd If the alignments are assured to be ordered in a specific way,
-  %      then `@<` could be used here instead (more efficient).
-  S1 \== S2,
-  same_object(O1, O2),
-  !,
-  ord_add_element(OldPs, P1, NewPs),
-  rdf_shared_pair(G, S1, S2, NewPs, SolPs).
-rdf_shared_pair(_G, _S1, _S2, Ps, Ps).
+  \+ memberchk(P, OldPs),
+  % All subject terms in the set must share these properties.
+  % Succeeds if the given subject term has the given property
+  % (expressed by a predicate and object term).
+  forall(member(S2, Ss), rdf(S2, P, O, G)), !,
+  ord_add_element(OldPs, P, NewPs),
+  rdf_shared_properties(G, [S1|Ss], NewPs, SolPs).
+rdf_shared_properties(_G, _Ss, SolPs, SolPs).
+
+%! rdf_shares_properties(
+%!   +Graph:atom,
+%!   +SharedPreds:ordset(iri),
+%!   +IdentitySet:ordset(iri),
+%!   -SharedPreds1:iri,
+%!   -SharedPreds2:iri
+%! ) is det.
+% Returns a single pair that shares the given predicates,
+% but that does not belong to the given identity set.
+
+rdf_shares_properties(G, [P1|Ps], IdSets, SimS1, SimS2):-
+  % They share at least one property
+  rdf(SimS1, P1, O, G),
+  rdf(SimS2, P1, O, G),
+  % They are not the same.
+  % Discarding symmetric results.
+  SimS1 @< SimS2,
+  % They are not in any of the identity sets.
+  \+ ((
+    member(IdSet, IdSets),
+    member(SimS1, SimS2, IdSet)
+  )),
+  % They share all properties.
+  forall(member(P2, Ps), (rdf(SimS1, P2, O2, G), rdf(SimS2, P2, O2, G))).
 
 update_identity_node(GAK_Hash):-
   once(identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs1)),
@@ -293,24 +341,4 @@ possible_to_calculate_lower(GA_Hash):-
 possible_to_calculate_quality(GA_Hash):-
   possible_to_calculate_higher(GA_Hash),
   possible_to_calculate_lower(GA_Hash).
-
-same_object(O1, O2):-
-  rdf_is_bnode(O1), rdf_is_bnode(O2), !,
-  O1 == O2.
-same_object(O1, O2):-
-  rdf_is_literal(O1), rdf_is_literal(O2), !,
-  rdf_literal_equality(O1, O2).
-same_object(O1, O2):-
-  rdf_is_resource(O1), rdf_is_resource(O2), !,
-  (
-    O1 == O2, !
-  ;
-    owl_resource_identity(O1, O2)
-  ).
-
-%! same_property(+Property1:iri, +Property2:iri) is semidet.
-% @tbd Add OWL identity statement on properties.
-
-same_predicate(P1, P2):-
-  P1 == P2.
 

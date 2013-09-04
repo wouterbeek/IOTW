@@ -1,10 +1,8 @@
 :- module(
   iimb,
   [
-    iimb/2, % +Number:nonneg
-            % -SVG:dom
-    iimb2/2 % +Number:nonneg
-            % -SVG:dom
+    iimb/2 % +Number:nonneg
+           % -SVG:dom
   ]
 ).
 
@@ -13,7 +11,7 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08
+@version 2013/05, 2013/08-2013/09
 */
 
 :- use_module(generics(atom_ext)).
@@ -21,7 +19,6 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(gv(gv_file)).
 :- use_module(iotw(iotw_inodes)).
 :- use_module(iotw(iotw_export)).
-:- use_module(iotw(iotw_pairs)).
 :- use_module(library(debug)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_graph)).
@@ -33,6 +30,7 @@ Runs IOTW experiments on the IIMB alignment data.
   'IIMBTBOX',
   'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
 ).
+
 :- db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))).
 :- db_add_novel(
   user:file_search_path(instance_matching, oaei2012('Instance matching'))
@@ -66,12 +64,6 @@ iimb(N, SVG):-
   % Create an SVG representation for the given hash.
   export_identity_nodes(GA_Hash, SVG),
   debug(iimb, '  Exported alignments for graph ~w.', [G]).
-
-iimb2(N, SVG):-
-  load_shared_iimb(N, G, _A),
-  lattice(G),
-  lattice_export(GIF),
-  graph_to_svg_dom([], GIF, dot, SVG).
 
 %! load_shared_iimb(+Number:nonneg, -Graph:atom, -Alignments:list) is det.
 % @param Number The number of the IIMB alignments that is loaded.

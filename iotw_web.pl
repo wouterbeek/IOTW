@@ -1,10 +1,8 @@
 :- module(
   iotw_web,
   [
-    iimb_web/2, % +Integer:integer
-                % -SVG:dom
-    iimb2_web/2 % +Integer:integer
-                % -SVG:dom
+    iimb_web/2 % +Integer:integer
+               % -SVG:dom
   ]
 ).
 
@@ -12,19 +10,15 @@
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08
+@version 2013/05, 2013/08-2013/09
 */
 
-:- use_module(generics(assoc_multi)).
-:- use_module(generics(meta_ext)).
 :- use_module(html(html)).
 :- use_module(iotw(iimb)).
 :- use_module(iotw(iotw_inodes)).
 :- use_module(iotw(iotw_export)).
-:- use_module(library(apply)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
-:- use_module(library(ordsets)).
 :- use_module(rdf(rdf_term)).
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
@@ -39,11 +33,7 @@
 
 
 iimb_web(Integer, SVG):-
-gtrace,
   iimb(Integer, SVG).
-
-iimb2_web(Integer, SVG):-
-  iimb2(Integer, SVG).
 
 %! identity_node(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
@@ -121,13 +111,3 @@ pair_to_dom(X-Y, Markup):-
       Y_Exclusive_P_Table
     ].
 
-/*
-  identity_node(GAK_Hash,GA_Hash,Key,_,_,_),
-  graph_alignment(GA_Hash,G,_,PsAssoc,_,_),
-  assoc:get_assoc(Key, PsAssoc, KeyIdentityPairs),
-  predicates_to_pairs(G, Key, KeyPairs),
-  ord_subtract(KeyPairs, KeyIdentityPairs, KeyNonIdentityPairs),
-  maplist(pair_to_dom, KeyNonIdentityPairs, DOMs),
-  append(DOMs, DOM),
-  push(console_output, DOM).
-*/
