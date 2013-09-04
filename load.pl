@@ -12,7 +12,6 @@ project_name('IOTW').
 :- initialization(load_iotw).
 
 load_iotw:-
-gtrace,
   source_file(load_iotw, ThisFile),
   file_directory_name(ThisFile, ThisDirectory),
   assert(user:file_search_path(project, ThisDirectory)),
@@ -31,7 +30,7 @@ gtrace,
   ;
     ensure_loaded(pgc(load))
   ),
-  
+
   % Identity on the Web.
   use_module(project(iotw_web)).
 

@@ -94,7 +94,6 @@ Possible extensions of the alignment pairs:
 % and alignment pair set values.
 
 assert_identity_nodes(G, A, GA_Hash):-
-gtrace,
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
   variant_sha1(G-A, GA_Hash),
@@ -104,11 +103,12 @@ gtrace,
 
   % Calculate the number of pairs.
   setoff(S, (rdf_subject(G, S), \+ rdf_is_bnode(S)), Ss),
-  cardinality(Ss, NumberOfS),
+  length(Ss, NumberOfS),
   NumberOfPairs is NumberOfS ** 2,
 
+gtrace,
   % Calculate the predicate sets that are part of the hierarchy.
-  alignment_pairs_by_predicates(G, A, PsAssoc),
+  alignment_sets_by_predicates(G, A, PsAssoc),
   assoc_to_keys(PsAssoc, Keys),
   maplist(assert_node(GA_Hash, G, PsAssoc), Keys),
 
@@ -116,31 +116,31 @@ gtrace,
     graph_alignment(GA_Hash,G,A,PsAssoc,NumberOfIdentityPairs,NumberOfPairs)
   ).
 
-%! alignment_pairs_by_predicates(
+%! alignment_sets_by_predicates(
 %!   +Graph:atom,
-%!   +AlignmentPairs:list(pair),
+%!   +AlignmentSets:list(ordset(iri)),
 %!   -Predicates:assoc
 %! ) is det.
-% @see Wrapper around alignment_pairs_by_predicates/4.
+% @see Wrapper around alignment_sets_by_predicates/4.
 
-alignment_pairs_by_predicates(G, A, SolAssoc):-
+alignment_sets_by_predicates(G, A_Sets, SolAssoc):-
   empty_assoc(EmptyAssoc),
-  alignment_pairs_by_predicates(G, EmptyAssoc, A, SolAssoc).
+  alignment_sets_by_predicates(G, EmptyAssoc, A_Sets, SolAssoc).
 
-%! alignment_pairs_by_predicates(
+%! alignment_sets_by_predicates(
 %!   +Graph:atom,
 %!   +OldPredicates:assoc,
-%!   +AlignmentPairs:list(pair),
+%!   +AlignmentSets:list(ordset(iri)),
 %!   -NewPredicates:assoc
 %! ) is det.
 
-alignment_pairs_by_predicates(_G, SolAssoc, [], SolAssoc):- !.
-alignment_pairs_by_predicates(G, OldAssoc, [From-To|A], SolAssoc):-
+alignment_sets_by_predicates(_G, SolAssoc, [], SolAssoc):- !.
+alignment_sets_by_predicates(G, OldAssoc, [A_Set|A_Sets], SolAssoc):-
   % Take the predicates that the alignment pair shares.
-  rdf_shared_properties(G, [From,To], SharedPreds),
+  rdf_shared_properties(G, A_Set, SharedPreds),
   % Add the alignment pair as a value to the predicates key.
-  put_assoc(SharedPreds, OldAssoc, [From,To], NewAssoc),
-  alignment_pairs_by_predicates(G, NewAssoc, A, SolAssoc).
+  put_assoc(SharedPreds, OldAssoc, A_Set, NewAssoc),
+  alignment_sets_by_predicates(G, NewAssoc, A_Sets, SolAssoc).
 
 %! assert_node(
 %!   +GraphAlignmentHash:atom,
@@ -240,7 +240,7 @@ predicates_to_pairs(G, Ps, Pairs):-
 
 %! rdf_shared_properties(
 %!   +Graph:atom,
-%!   +IdentitySet:list(iri),
+%!   +Set:ordset(iri),
 %!   -Predicates:ordset(uri)
 %! ) is det.
 % Returns the predicates that both subjects possess.
@@ -249,21 +249,21 @@ predicates_to_pairs(G, Ps, Pairs):-
 %
 % @see Wrapper around rdf_shared_properties/4.
 
-rdf_shared_properties(G, ISet, SolPs):-
-  rdf_shared_properties(G, ISet, [], SolPs).
+rdf_shared_properties(G, Set, SolPs):-
+  rdf_shared_properties(G, Set, [], SolPs).
 
-rdf_shared_properties(G, [S1|Ss], OldPs, SolPs):-
+rdf_shared_properties(G, [X|Set], OldPs, SolPs):-
   % We assume a fully materialized graph.
-  rdf(S1, P, O, G),
+  rdf(X, P, O, G),
   % We are looking for new predicates only.
   \+ memberchk(P, OldPs),
   % All subject terms in the set must share these properties.
   % Succeeds if the given subject term has the given property
   % (expressed by a predicate and object term).
-  forall(member(S2, Ss), rdf(S2, P, O, G)), !,
+  forall(member(Y, Set), rdf(Y, P, O, G)), !,
   ord_add_element(OldPs, P, NewPs),
-  rdf_shared_properties(G, [S1|Ss], NewPs, SolPs).
-rdf_shared_properties(_G, _Ss, SolPs, SolPs).
+  rdf_shared_properties(G, [X|Set], NewPs, SolPs).
+rdf_shared_properties(_G, _Set, SolPs, SolPs).
 
 %! rdf_shares_properties(
 %!   +Graph:atom,

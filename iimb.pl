@@ -65,13 +65,16 @@ iimb(N, SVG):-
   export_identity_nodes(GA_Hash, SVG),
   debug(iimb, '  Exported alignments for graph ~w.', [G]).
 
-%! load_shared_iimb(+Number:nonneg, -Graph:atom, -Alignments:list) is det.
+%! load_shared_iimb(
+%!   +Number:nonneg,
+%!   -Graph:atom,
+%!   -AlignmentSets:list(ordset(iri))
+%! ) is det.
 % @param Number The number of the IIMB alignments that is loaded.
-% @param Graph The name of the RDF graph into which the aligned data
-%        is loaded.
-% @param Alignments ...
+% @param Graph The name of the RDF graph into which the alignments are loaded.
+% @param AlignmentSets A list of ordered sets of aligned resources.
 
-load_shared_iimb(Integer, OntologyGraph, Alignments):-
+load_shared_iimb(Integer, OntologyGraph, AlignmentSets):-
   between(1, 80, Integer), !,
 
   % Clear the temporary RDF graphs we use for graph merge.
@@ -111,5 +114,5 @@ load_shared_iimb(Integer, OntologyGraph, Alignments):-
     AlignmentsFile,
     [access(read), file_type(rdf), relative_to(SubDir)]
   ),
-  oaei_file_to_alignment_pairs(AlignmentsFile, Alignments).
+  oaei_file_to_alignment_sets(AlignmentsFile, AlignmentSets).
 
