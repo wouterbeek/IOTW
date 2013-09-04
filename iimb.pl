@@ -58,6 +58,7 @@ iimb(N, SVG):-
   debug(iimb, 'Loaded graph ~w.', [G]),
 
   % Returns the RDF graph and alignment pairs hash.
+gtrace,
   assert_identity_nodes(G, A, GA_Hash),
   debug(iimb, '  Alignments established for graph ~w.', [G]),
 

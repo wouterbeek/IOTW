@@ -106,7 +106,6 @@ assert_identity_nodes(G, A, GA_Hash):-
   length(Ss, NumberOfS),
   NumberOfPairs is NumberOfS ** 2,
 
-gtrace,
   % Calculate the predicate sets that are part of the hierarchy.
   alignment_sets_by_predicates(G, A, PsAssoc),
   assoc_to_keys(PsAssoc, Keys),
@@ -164,7 +163,7 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
       member(IdSet, IdSets),
       length(IdSet, IdSetSize)
     ),
-    NumberOfKeyIdentityPairs
+    NumberOfIdenticals
   ),
 
   % Check whether this identity node belongs to the lower or to the
@@ -172,22 +171,25 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
   % It belongs to the lower approximation if there is
   % at least one member that shares the given properties but does not
   % belong to the identity relation.
-  %
-  % We only need to find a single resource that shares `SharedPreds`
-  % but that does not belong to `IdSet` in order to assuse that
-  % `SharedPreds` is not in the higher approximation.
   (
     rdf_shares_properties(G, SharedPreds, IdSets, _SimS1, _SimS2)
   ->
     InHigher = true,
-    NumberOfKeyPairs = NumberOfKeyIdentityPairs
+    NumberOfEquivalents = NumberOfIdenticals
   ;
     InHigher = false
   ),
 
   % -- say it --
   assert(
-    identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs)
+    identity_node(
+      GAK_Hash,
+      GA_Hash,
+      Key,
+      InHigher,
+      NumberOfIdenticals,
+      NumberOfEquivalents
+    )
   ).
 
 %! predicates_to_set(
@@ -223,20 +225,16 @@ predicates_to_set(G, [P1|Ps], X, Y):-
     )
   ).
 
-%! predicates_to_pairs(
+%! predicates_to_sets(
 %!   +Graph:atom,
 %!   +Predicates:ordset(uri),
-%!   -Pairs:list(pair)
+%!   -Sets:list(ordset(iri))
 %! ) is det.
 % Returns all pairs of resources that share all and only
 % the given predicates.
 
-predicates_to_pairs(G, Ps, Pairs):-
-  findall(
-    Pair,
-    predicates_to_set(G, Ps, Pair),
-    Pairs
-  ).
+predicates_to_sets(G, Ps, Sets):-
+  findall(Set, predicates_to_set(G, Ps, Set), Sets).
 
 %! rdf_shared_properties(
 %!   +Graph:atom,
@@ -291,14 +289,43 @@ rdf_shares_properties(G, [P1|Ps], IdSets, SimS1, SimS2):-
   forall(member(P2, Ps), (rdf(SimS1, P2, O2, G), rdf(SimS2, P2, O2, G))).
 
 update_identity_node(GAK_Hash):-
-  once(identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs1)),
-  once(graph_alignment(GA_Hash,G,A,_,_,_)),
-  var(NumberOfKeyPairs1), !,
-  predicates_to_pairs(G, A, Pairs),
-  cardinality(Pairs, NumberOfKeyPairs2),
+  once(
+    identity_node(
+      GAK_Hash,
+      GA_Hash,
+      Key,
+      InHigher,
+      NumberOfIdenticals,
+      NumberOfEquivalents1
+    )
+  ),
+  once(graph_alignment(GA_Hash,G,A_Sets,_,_,_)),
+  var(NumberOfEquivalents1), !,
+  predicates_to_sets(G, A_Sets, Sets),
+  aggregate(
+    sum(Length),
+    (
+      member(Set, Sets),
+      length(Set, Length)
+    ),
+    NumberOfEquivalents2
+  ),
   db_replace_novel(
-    identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs1),
-    identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs2)
+    identity_node(
+      GAK_Hash,
+      GA_Hash,
+      Key,
+      InHigher,
+      NumberOfIdenticals,
+      NumberOfEquivalents1),
+    identity_node(
+      GAK_Hash,
+      GA_Hash,
+      Key,
+      InHigher,
+      NumberOfIdenticals,
+      NumberOfEquivalents2
+    )
   ).
 
 
