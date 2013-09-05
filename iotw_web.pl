@@ -33,7 +33,7 @@
 
 
 iimb_web(Integer, SVG):-
-  iimb(Integer, SVG).
+  profile(iimb(Integer, SVG)).
 
 %! identity_node(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.

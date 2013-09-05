@@ -24,6 +24,7 @@ by the predicates they share.
 :- use_module(gv(gv_file)).
 :- use_module(iotw(iotw_inodes)).
 :- use_module(library(lists)).
+:- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
 
@@ -39,14 +40,20 @@ by the predicates they share.
 
 build_vertex(GA, IdentityNode, Vertex):-
   GA = graph_alignment(GA_Hash,_,_,_,NumberOfIdentityPairs,_),
-  IdentityNode = identity_node(
-    GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs
-  ),
+  IdentityNode =
+    identity_node(
+      GAK_Hash,
+      GA_Hash,
+      Key,
+      InHigher,
+      NumberOfKeyIdentityPairs,
+      NumberOfKeyPairs
+    ),
   Vertex = vertex(GAK_Hash,IdentityNode,VertexAttributes),
 
   (  InHigher = true
-  -> Color = darkgreen
-  ;  Color = lightgreen),
+  -> Color = green
+  ;  Color = red),
 
   % The key label that describes the key.
   rdf_terms_name(Key, KeyLabel),
@@ -99,7 +106,6 @@ build_vertex(GA, IdentityNode, Vertex):-
 % @tbd Add callback function injection.
 
 export_identity_nodes(GA_Hash, SVG2):-
-gtrace,
   export_identity_nodes_(GA_Hash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2).
@@ -110,14 +116,21 @@ gtrace,
 %! ) is det.
 
 export_identity_nodes_(GA_Hash, GIF):-
-  graph_alignment(GA_Hash,G,A,_,NumberOfIdentityPairs,NumberOfPairs),
+  graph_alignment(GA_Hash, G, A, _, NumberOfIdentityPairs, NumberOfPairs),
 
   % Extract the ranks that occur in the hierarchy.
   setoff(
     RankNumber,
     (
-      identity_node(_GAK_Hash,_GA_Hash,Key,_InHigher,_NumberOfKeyIdentityPairs,_NumberOfKeyPairs),
-      cardinality(Key, RankNumber)
+      identity_node(
+        _GAK_Hash,
+        GA_Hash,
+        SharedPreds,
+        _InHigher,
+        _NumberOfKeyIdentityPairs,
+        _NumberOfKeyPairs
+      ),
+      length(SharedPreds, RankNumber)
     ),
     RankNumbers
   ),
@@ -132,15 +145,37 @@ export_identity_nodes_(GA_Hash, GIF):-
       atom_number(RankLabel, RankNumber),
       RankAttrs = [label(RankLabel), shape(plaintext)],
 
-      % Consider only keys of the rank length.
-      length(Key, RankNumber),
+      % Consider only keys / sets of shared predicates,
+      % that are of the given rank length.
+      length(SharedPreds, RankNumber),
       findall(
         V_Term,
         (
-          identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs),
+          identity_node(
+            GAK_Hash,
+            GA_Hash,
+            SharedPreds,
+            InHigher,
+            NumberOfKeyIdentityPairs,
+            NumberOfKeyPairs
+          ),
           build_vertex(
-            graph_alignment(GA_Hash,G,A,_,NumberOfIdentityPairs,NumberOfPairs),
-            identity_node(GAK_Hash,GA_Hash,Key,InHigher,NumberOfKeyIdentityPairs,NumberOfKeyPairs),
+            graph_alignment(
+              GA_Hash,
+              G,
+              A,
+              _,
+              NumberOfIdentityPairs,
+              NumberOfPairs
+            ),
+            identity_node(
+              GAK_Hash,
+              GA_Hash,
+              SharedPreds,
+              InHigher,
+              NumberOfKeyIdentityPairs,
+              NumberOfKeyPairs
+            ),
             V_Term
           )
         ),
@@ -178,7 +213,8 @@ export_identity_nodes_(GA_Hash, GIF):-
   ),
 
   % Graph properties.
-  format(atom(G_Label), 'Name: ~w~w', [G,Q_Label]),
+  rdf_statistics(triples_by_graph(G,Triples)),
+  format(atom(G_Label), 'Graph: ~w.  Triples:~w~w', [G,Triples,Q_Label]),
   G_Attrs =
     [
       colorscheme(svg),

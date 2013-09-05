@@ -4,8 +4,7 @@
     assert_identity_nodes/3, % +Graph:atom
                              % +AlignmentPairs:list(pair)
                              % -GraphAlignmentPairsHash:atom
-    calculate_quality/2, % +GraphAlignmentPairsHash:atom
-                         % -Quality:between(0.0,1.0)
+% DATA STORE ACCESS
     graph_alignment/6, % ?GraphAlignmentPairsHash:atom
                        % ?RDF_Graph:atom
                        % ?AlignmentPairs:list(pair)
@@ -18,6 +17,9 @@
                      % ?InHigherApproximation:boolean
                      % ?NumberOfIdentityPairs:nonneg
                      % ?NumberOfPairs:nonneg
+% SUPPORT PREDICATES
+    calculate_quality/2, % +GraphAlignmentPairsHash:atom
+                         % -Quality:between(0.0,1.0)
     possible_to_calculate_quality/1, % ?GraphAlignmentPairsHash:atom
     update_identity_node/1 % +GAK_Hash:atom
   ]
@@ -95,6 +97,8 @@ Possible extensions of the alignment pairs:
 % and alignment pair set values.
 
 assert_identity_nodes(G, A_Sets, GA_Hash):-
+  clear_db,
+
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
   variant_sha1(G-A_Sets, GA_Hash),
@@ -157,7 +161,7 @@ alignment_sets_by_predicates(G, OldAssoc, [A_Set|A_Sets], SolAssoc):-
 %! ) is det.
 
 assert_node(GA_Hash, G, Assoc, SharedPreds):-
-  variant_sha1(GA_Hash-Key, GAK_Hash),
+  variant_sha1(GA_Hash-SharedPreds, GAK_Hash),
 
   % Count the identity pairs and percentage.
   (
@@ -182,10 +186,10 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
   (
     rdf_shares_properties(G, SharedPreds, A_Sets, _X, _Y)
   ->
+    InHigher = false
+  ;
     InHigher = true,
     NumberOfEquivalents = NumberOfIdenticals
-  ;
-    InHigher = false
   ),
 
   % -- say it --
@@ -193,12 +197,19 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
     identity_node(
       GAK_Hash,
       GA_Hash,
-      Key,
+      SharedPreds,
       InHigher,
       NumberOfIdenticals,
       NumberOfEquivalents
     )
   ).
+
+%! clear_db is det.
+% Clears the data store.
+
+clear_db:-
+  retractall(graph_alignment/6),
+  retractall(identity_node/6).
 
 %! predicates_to_set(
 %!   +Graph:atom,
