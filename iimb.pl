@@ -54,12 +54,11 @@ iimb:-
 
 iimb(N, SVG):-
   % Retrieve an RDF graph and a set of alignment pairs.
-  load_shared_iimb(N, G, A),
+  load_shared_iimb(N, G, A_Sets),
   debug(iimb, 'Loaded graph ~w.', [G]),
-
+  
   % Returns the RDF graph and alignment pairs hash.
-gtrace,
-  assert_identity_nodes(G, A, GA_Hash),
+  assert_identity_nodes(G, A_Sets, GA_Hash),
   debug(iimb, '  Alignments established for graph ~w.', [G]),
 
   % Create an SVG representation for the given hash.
@@ -75,7 +74,7 @@ gtrace,
 % @param Graph The name of the RDF graph into which the alignments are loaded.
 % @param AlignmentSets A list of ordered sets of aligned resources.
 
-load_shared_iimb(Integer, OntologyGraph, AlignmentSets):-
+load_shared_iimb(Integer, OntologyGraph, A_Sets):-
   between(1, 80, Integer), !,
 
   % Clear the temporary RDF graphs we use for graph merge.
@@ -112,8 +111,8 @@ load_shared_iimb(Integer, OntologyGraph, AlignmentSets):-
   % the aligned ontology.
   absolute_file_name(
     refalign,
-    AlignmentsFile,
-    [access(read), file_type(rdf), relative_to(SubDir)]
+    A_File,
+    [access(read),file_type(rdf),relative_to(SubDir)]
   ),
-  oaei_file_to_alignment_sets(AlignmentsFile, AlignmentSets).
+  oaei_file_to_alignments(A_File, _A_Pairs, A_Sets).
 

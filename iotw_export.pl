@@ -99,6 +99,7 @@ build_vertex(GA, IdentityNode, Vertex):-
 % @tbd Add callback function injection.
 
 export_identity_nodes(GA_Hash, SVG2):-
+gtrace,
   export_identity_nodes_(GA_Hash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2).

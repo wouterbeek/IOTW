@@ -57,6 +57,7 @@ Possible extensions of the alignment pairs:
 :- use_module(library(apply)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
+:- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(owl(owl_read)).
 :- use_module(rdf(rdf_term)).
@@ -87,19 +88,19 @@ Possible extensions of the alignment pairs:
 
 %! assert_identity_nodes(
 %!   +Graph:atom,
-%!   +AlignmentPairs:list(pair),
+%!   +AlignmentSets:list(ordset(iri)),
 %!   -GraphAlignmentPairsHash:atom
 %! ) is det.
 % Returns an association list with predicate keys
 % and alignment pair set values.
 
-assert_identity_nodes(G, A, GA_Hash):-
+assert_identity_nodes(G, A_Sets, GA_Hash):-
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
-  variant_sha1(G-A, GA_Hash),
+  variant_sha1(G-A_Sets, GA_Hash),
 
   % Calculate the number of identity pairs.
-  length(A, NumberOfIdentityPairs),
+  length(A_Sets, NumberOfIdentityPairs),
 
   % Calculate the number of pairs.
   setoff(S, (rdf_subject(G, S), \+ rdf_is_bnode(S)), Ss),
@@ -107,12 +108,19 @@ assert_identity_nodes(G, A, GA_Hash):-
   NumberOfPairs is NumberOfS ** 2,
 
   % Calculate the predicate sets that are part of the hierarchy.
-  alignment_sets_by_predicates(G, A, PsAssoc),
+  alignment_sets_by_predicates(G, A_Sets, PsAssoc),
   assoc_to_keys(PsAssoc, Keys),
   maplist(assert_node(GA_Hash, G, PsAssoc), Keys),
 
   assert(
-    graph_alignment(GA_Hash,G,A,PsAssoc,NumberOfIdentityPairs,NumberOfPairs)
+    graph_alignment(
+      GA_Hash,
+      G,
+      A_Sets,
+      PsAssoc,
+      NumberOfIdentityPairs,
+      NumberOfPairs
+    )
   ).
 
 %! alignment_sets_by_predicates(
@@ -153,15 +161,15 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
 
   % Count the identity pairs and percentage.
   (
-    assoc:get_assoc(SharedPreds, Assoc, IdSets)
+    assoc:get_assoc(SharedPreds, Assoc, A_Sets)
   ;
-    IdSets = []
+    A_Sets = []
   ), !,
   aggregate(
-    sum(IdSetSize),
-    (
-      member(IdSet, IdSets),
-      length(IdSet, IdSetSize)
+    sum(A_SetSize),
+    A_Set^(
+      member(A_Set, A_Sets),
+      length(A_Set, A_SetSize)
     ),
     NumberOfIdenticals
   ),
@@ -172,7 +180,7 @@ assert_node(GA_Hash, G, Assoc, SharedPreds):-
   % at least one member that shares the given properties but does not
   % belong to the identity relation.
   (
-    rdf_shares_properties(G, SharedPreds, IdSets, _SimS1, _SimS2)
+    rdf_shares_properties(G, SharedPreds, A_Sets, _X, _Y)
   ->
     InHigher = true,
     NumberOfEquivalents = NumberOfIdenticals
@@ -225,17 +233,6 @@ predicates_to_set(G, [P1|Ps], X, Y):-
     )
   ).
 
-%! predicates_to_sets(
-%!   +Graph:atom,
-%!   +Predicates:ordset(uri),
-%!   -Sets:list(ordset(iri))
-%! ) is det.
-% Returns all pairs of resources that share all and only
-% the given predicates.
-
-predicates_to_sets(G, Ps, Sets):-
-  findall(Set, predicates_to_set(G, Ps, Set), Sets).
-
 %! rdf_shared_properties(
 %!   +Graph:atom,
 %!   +Set:ordset(iri),
@@ -273,20 +270,60 @@ rdf_shared_properties(_G, _Set, SolPs, SolPs).
 % Returns a single pair that shares the given predicates,
 % but that does not belong to the given identity set.
 
-rdf_shares_properties(G, [P1|Ps], IdSets, SimS1, SimS2):-
-  % They share at least one property
-  rdf(SimS1, P1, O, G),
-  rdf(SimS2, P1, O, G),
-  % They are not the same.
-  % Discarding symmetric results.
-  SimS1 @< SimS2,
+rdf_shares_properties(G, Preds, A_Sets, X, Y):-
+/*
+  % We first order the predicates by probable occurrence.
+  findall(
+    Prob-Pred,
+    (
+      member(Pred, Preds),
+      % We must first assure that something has been queried.
+      % I have mailed JW about this.
+      rdf_estimate_complexity(_, Pred, _, Prob)
+    ),
+    Pairs1
+  ),
+  keysort(Pairs1, Pairs2),
+  pairs_values(Pairs2, [P1|Ps]),
+*/
+  Preds = [P1|Ps],
+
+  % Two resources at least share the first, i.e. least probable, property.
+  rdf(X, P1, O, G),
+  rdf(Y, P1, O, G),
+
+  % We discarding symmetric results.
+  X @< Y,
+
   % They are not in any of the identity sets.
   \+ ((
-    member(IdSet, IdSets),
-    member(SimS1, SimS2, IdSet)
+    member(A_Set, A_Sets),
+    member(X, Y, A_Set)
   )),
-  % They share all properties.
-  forall(member(P2, Ps), (rdf(SimS1, P2, O2, G), rdf(SimS2, P2, O2, G))).
+
+  % They share all the other properties as well.
+  forall(
+    member(P2, Ps),
+    (
+      rdf(X, P2, O2, G),
+      rdf(Y, P2, O2, G)
+    )
+  ).
+
+
+
+% UPDATE %
+
+%! predicates_to_sets(
+%!   +Graph:atom,
+%!   +Predicates:ordset(uri),
+%!   -Sets:list(ordset(iri))
+%! ) is det.
+% Returns all pairs of resources that share all and only
+% the given predicates.
+
+predicates_to_sets(G, Ps, Sets):-
+  findall(Set, predicates_to_set(G, Ps, Set), Sets).
 
 update_identity_node(GAK_Hash):-
   once(
