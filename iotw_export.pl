@@ -15,7 +15,7 @@ by the predicates they share.
 
 @author Wouter Beek
 @tbd Add rank to the left-hand side of the graphic order using GraphViz edges.
-@version 2013/05, 2013/08
+@version 2013/05, 2013/08-2013/09
 */
 
 :- use_module(generics(list_ext)).
@@ -23,10 +23,14 @@ by the predicates they share.
 :- use_module(generics(set_theory)).
 :- use_module(gv(gv_file)).
 :- use_module(iotw(iotw_inodes)).
+:- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(os(datetime_ext)).
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
+
+:- debug(iotw_export).
 
 
 
@@ -108,7 +112,22 @@ build_vertex(GA, IdentityNode, Vertex):-
 export_identity_nodes(GA_Hash, SVG2):-
   export_identity_nodes_(GA_Hash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
-  xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2).
+  xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
+  
+  % DEB
+  (
+    debug(iotw_export)
+  ->
+    current_date_time(DT),
+    absolute_file_name(
+      personal(DT),
+      PDF_File,
+      [access(write),file_type(pdf)]
+    ),
+    graph_to_gv_file([], GIF, dot, pdf, PDF_File)
+  ;
+    true
+  ).
 
 %! export_identity_nodes_(
 %!   +GraphAlignmentPairsHash:atom,

@@ -1,7 +1,8 @@
 :- module(
   iimb,
   [
-    iimb/2 % +Number:nonneg
+    iimb/3 % +Options:list(nvpair)
+           % +Number:nonneg
            % -SVG:dom
   ]
 ).
@@ -20,7 +21,9 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(iotw(iotw_inodes)).
 :- use_module(iotw(iotw_export)).
 :- use_module(library(debug)).
+:- use_module(library(option)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(logic(rdf_axiom)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(standards(oaei)).
@@ -40,23 +43,32 @@ Runs IOTW experiments on the IIMB alignment data.
 
 
 
-%! iimb is det.
-% Loads all the IIMB alignments into memory.
-
-iimb:-
-  forall(
-    between(1, 80, Integer),
-    iimb(Integer, _SVG)
-  ).
-
-%! iimb(+Number:nonneg, -SVG) is det.
+%! iimb(+Options:list(nvpair), +Number:between(1,80), -SVG:list) is det.
 % Loads a specific IIMB alignment into memory and exports the IOTW results.
+%
+% The following options are supported:
+%   * `deduction(+DeductionMode:oneof([none,rdfs])`
+%     The default is `none`.
+%
+% @param Options A list of name-value pairs.
+% @param Number The number of the IIMB dataset that is used.
+% @param SVG A list of compound terms describing an SVG DOM.
 
-iimb(N, SVG):-
+iimb(O, N, SVG):-
   % Retrieve an RDF graph and a set of alignment pairs.
-  load_shared_iimb(N, G, A_Sets),
+  load_shared_iimb(O, N, G, A_Sets),
   debug(iimb, 'Loaded graph ~w.', [G]),
   
+  % Materializing the graph reveals additional properties of existing
+  % resources, and therefore may reveal additional shared properties.
+  (
+    option(deduction(rdfs), O, none)
+  ->
+    materialize(G)
+  ;
+    true
+  ),
+  gtrace,
   % Returns the RDF graph and alignment pairs hash.
   assert_identity_nodes(G, A_Sets, GA_Hash),
   debug(iimb, '  Alignments established for graph ~w.', [G]),
@@ -66,6 +78,7 @@ iimb(N, SVG):-
   debug(iimb, '  Exported alignments for graph ~w.', [G]).
 
 %! load_shared_iimb(
+%!   +Options:list(nvpair),
 %!   +Number:nonneg,
 %!   -Graph:atom,
 %!   -AlignmentSets:list(ordset(iri))
@@ -74,7 +87,7 @@ iimb(N, SVG):-
 % @param Graph The name of the RDF graph into which the alignments are loaded.
 % @param AlignmentSets A list of ordered sets of aligned resources.
 
-load_shared_iimb(Integer, OntologyGraph, A_Sets):-
+load_shared_iimb(O, Integer, OntologyGraph, A_Sets):-
   between(1, 80, Integer), !,
 
   % Clear the temporary RDF graphs we use for graph merge.
@@ -83,6 +96,20 @@ load_shared_iimb(Integer, OntologyGraph, A_Sets):-
   % Create a unique graph name.
   format(atom(GraphSuggestion), 'iimb_~w', [Integer]),
   rdf_new_graph(GraphSuggestion, OntologyGraph),
+
+  % Pre-load the RDF(S) vocabulary.
+  % This means that materialization has to make less deductions
+  % (tested on 163 less), and there are some labels and comments
+  % that deduction would not produce.
+  (
+    option(deduction(rdfs), O, none)
+  ->
+    absolute_file_name(rdfs(rdfs), File, [access(read),file_type(rdf)]),
+    rdf_load2(File, [graph(OntologyGraph)]),
+    materialize(OntologyGraph)
+  ;
+    true
+  ),
 
   % Load the base ontology.
   absolute_file_name(iimb(onto), BaseFile, [access(read), file_type(owl)]),
