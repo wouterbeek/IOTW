@@ -75,6 +75,7 @@ predicates_to_sets(G, Ps, Sets):-
 update_identity_node(INodeHash):-
   once(
     inode(
+      Mode,
       INodeHash,
       IHierHash,
       SharedPs,
@@ -96,6 +97,7 @@ update_identity_node(INodeHash):-
   ),
   db_replace_novel(
     inode(
+      Mode,
       INodeHash,
       IHierHash,
       SharedPs,
@@ -103,6 +105,7 @@ update_identity_node(INodeHash):-
       NumberOfIdPairs,
       NumberOfPairs1),
     inode(
+      Mode,
       INodeHash,
       IHierHash,
       SharedPs,

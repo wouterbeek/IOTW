@@ -12,7 +12,6 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@tbd Add rank to the left-hand side of the graphic order using GraphViz edges.
 @version 2013/05, 2013/08-2013/09
 */
 
@@ -32,87 +31,55 @@ by the predicates they share.
 
 
 
-%! build_vertex(
-%!   +IdentityHierarchy:compound,
-%!   +IdentityNode:compound,
-%!   -VertexTerm:compound
-%! ) is det.
+%! build_vertex(+IdentityNodeHash:atom, -VertexTerm:compound) is det.
 % Exports a single identity node representing a set of predicates
 % and the pairs of resources that share those predicates.
 
-build_vertex(
-  ihier(
-    IHierHash,
-    _G,
-    _IdSets,
-    _P_Assoc,
-    _PPO_Assoc,
-    NumberOfAllIdPairs
-  ),
+build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
+  % Retrieve the inode based on the given hash.
   inode(
-    INodeHash,
-    IHierHash,
-    SharedPs,
+    Mode,
+    NodeHash,
+    ParentHash,
+    Shared,
     InHigher,
     NumberOfIdPairs,
     NumberOfPairs
   ),
-  vertex(INodeHash,INodeHash,V_Attrs)
-):-
-  (  InHigher = true
+  
+  % Retrieve the number of identity pairs in the parent entity.
+  number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
+  
+  % Vertex color.
+  (  InHigher == true
   -> Color = green
   ;  Color = red),
-
+  
+  % Vertex style.
+  (  Mode == p
+  -> Style = solid
+  ;  Style = dashed),
+  
   % The key label that describes the key.
-  rdf_terms_name(SharedPs, SharedPsLabel),
-
-  % How many of the pairs that are characterized by this inode
-  % are actually identity pairs?
-  % This is the *precision* of this inode.
-  % It is defined in the standard way:
-  % $Precision(X) = \frac{\vert Relevant(X) \vert}{\vert Retrieved(X) \vert}$
-  %   * $Relevant(X) = (\bigcap X) \cap \approx$
-  %   * $Retrieved(X) = (\bigcap X)$
-  %   * Because all relevant pairs are retrieved,
-  %     the relevant and retrieved pairs are the relevant pairs.
+  rdf_terms_name(Shared, SharedLabel),
+  
+  % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
-  (
-    nonvar(NumberOfPairs)
-  ->
-    % @tbd This is no longer correct: sets/pairs.
-    Precision is NumberOfIdPairs / NumberOfPairs,
-    format(
-      atom(PrecisionLabel),
-      ' precision[~d/~d=~2f]',
-      [NumberOfIdPairs,NumberOfPairs,Precision]
-    )
-  ;
-    PrecisionLabel = ''
-  ),
-
-  % How many identity pairs are identity key pairs?
-  % @tbd Is there a common name for this metric in the literature?
-  Percentage is NumberOfIdPairs / NumberOfAllIdPairs,
-
-  % We like our vertex labels complicated...
+  precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel),
+  percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel),
   format(
     atom(V_Label),
-    '~w~w identity[~d/~d=~2f]',
-    [
-      SharedPsLabel,
-      PrecisionLabel,
-      NumberOfIdPairs,
-      NumberOfAllIdPairs,
-      Percentage
-    ]
+    '~w~w identity~w',
+    [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
+  
   V_Attrs =
-    [color(Color),label(V_Label),shape(rectangle),style(solid)].
+    [color(Color),label(V_Label),shape(rectangle),style(Style)].
 
 calculate(IHierHash, InHigher, NumberOfPairs):-
   aggregate(
     sum(NumberOfPairs_),
-    inode(_, IHierHash, _, InHigher, _, NumberOfPairs_),
+    inode(_, _, IHierHash, _, InHigher, _, NumberOfPairs_),
     NumberOfPairs
   ).
 
@@ -169,15 +136,6 @@ export_identity_nodes(IHierHash, SVG2, PDF_File):-
 %! export_identity_nodes_(+IdentityHierarchyHash:atom, -GIF:compound) is det.
 
 export_identity_nodes_(IHierHash, GIF):-
-  ihier(
-    IHierHash,
-    G,
-    IdSets,
-    P_Assoc,
-    PPO_Assoc,
-    NumberOfAllIdPairs
-  ),
-
   % Extract the ranks that occur in the hierarchy.
   % The ranks are the cardinalities of the sets of shared predicates.
   % Ranks are used to align the partitioning subsets is a style similar
@@ -185,7 +143,7 @@ export_identity_nodes_(IHierHash, GIF):-
   setoff(
     RankNumber,
     (
-      inode(_, IHierHash, SharedPs, _, _, _),
+      inode(_, _, IHierHash, SharedPs, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
@@ -206,33 +164,8 @@ export_identity_nodes_(IHierHash, GIF):-
       findall(
         V_Term,
         (
-          inode(
-            INodeHash,
-            IHierHash,
-            SharedPs,
-            InHigher,
-            NumberOfIdentitySets,
-            NumberOfPairs
-          ),
-          build_vertex(
-            ihier(
-              IHierHash,
-              G,
-              IdSets,
-              P_Assoc,
-              PPO_Assoc,
-              NumberOfAllIdPairs
-            ),
-            inode(
-              INodeHash,
-              IHierHash,
-              SharedPs,
-              InHigher,
-              NumberOfIdentitySets,
-              NumberOfPairs
-            ),
-            V_Term
-          )
+          inode(_, INodeHash, IHierHash, _, _, _, _),
+          build_vertex(INodeHash, V_Term)
         ),
         V_Terms
       )
@@ -245,12 +178,12 @@ export_identity_nodes_(IHierHash, GIF):-
   findall(
     edge(FromId,ToId,E_Attrs),
     (
-      inode(ToId, IHierHash, ToPs, _, _, _),
+      inode(_, ToId, IHierHash, ToPs, _, _, _),
       strict_sublist(FromPs, ToPs),
-      inode(FromId, IHierHash, FromPs, _, _, _),
+      inode(_, FromId, IHierHash, FromPs, _, _, _),
       \+ ((
         strict_sublist(MiddlePs, ToPs),
-        inode(_, IHierHash, MiddlePs, _, _, _),
+        inode(_, _, IHierHash, MiddlePs, _, _, _),
         strict_sublist(FromPs, MiddlePs)
       ))
     ),
@@ -282,9 +215,30 @@ export_identity_nodes_(IHierHash, GIF):-
   % The graph compound term.
   GIF = graph([], Ranks, Es, [graph_name(G)|G_Attrs]).
 
+number_of_parent_identity_pairs(p, ParentHash, NumberOfParentIdPairs):- !,
+  ihier(ParentHash, _, _, _, _, NumberOfParentIdPairs).
+number_of_parent_identity_pairs(po, ParentHash, NumberOfParentIdPairs):-
+  inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _).
+
+%! percentage_label(
+%!   +NumberOfIdentityPairs:nonneg,
+%!   +NumberOfParentIdentityPairs:nonneg,
+%!   -PercentageLabel:atom
+%! ) is det.
+% Returns an atomic representation of the percentage of the parent's
+% identity relation that is covered by a specific node.
+
+percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel):-
+  Percentage is NumberOfIdPairs / NumberOfParentIdPairs,
+  format(
+    atom(PercentageLabel),
+    '[~d/~d=~2f]',
+    [NumberOfIdPairs,NumberOfParentIdPairs,Percentage]
+  ).
+
 possible_to_calculate(IHierHash, InHigher):-
   forall(
-    inode(_, IHierHash, _, InHigher, _, NumberOfPairs),
+    inode(_, _, IHierHash, _, InHigher, _, NumberOfPairs),
     nonvar(NumberOfPairs)
   ).
 
@@ -297,4 +251,30 @@ possible_to_calculate_lower(IHierHash):-
 possible_to_calculate_quality(IHierHash):-
   possible_to_calculate_higher(IHierHash),
   possible_to_calculate_lower(IHierHash).
+
+%! precision_label(
+%!   +NumberOfIdentityPairs:nonneg,
+%!   +NumberOfPairs:nonneg,
+%!   -PrecisionLabel:atom
+%! ) is det.
+% How many of the pairs that are characterized by this inode
+% are actually identity pairs? This is the *precision* of this inode.
+% It is defined in the standard way:
+%
+% $Precision(X) = \frac{\vert Relevant(X) \vert}{\vert Retrieved(X) \vert}$
+%   * $Relevant(X) = (\bigcap X) \cap \approx$
+%   * $Retrieved(X) = (\bigcap X)$
+%   * Because all relevant pairs are retrieved,
+%     the relevant and retrieved pairs are the relevant pairs.
+
+precision_label(_NumberOfIdPairs, NumberOfPairs, PrecisionLabel):-
+  var(NumberOfPairs), !,
+  PrecisionLabel = ''.
+precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel):-
+  Precision is NumberOfIdPairs / NumberOfPairs,
+  format(
+    atom(PrecisionLabel),
+    ' precision[~d/~d=~2f]',
+    [NumberOfIdPairs,NumberOfPairs,Precision]
+  ).
 

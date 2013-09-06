@@ -12,18 +12,13 @@
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
              % ?NumberOfAllIdentityPairs:nonneg
-    inode/6, % ?IdentityNodeHash:atom
-             % ?IdentityHierarchyHash:atom
-             % ?SharedPredicates:ordset(iri)
-             % ?InHigherApproximation:boolean
-             % ?NumberOfIdentityPairs:nonneg
-             % ?NumberOfPairs:nonneg
-    isubnode/6 % ?IdentitySubnodeHash:atom
-               % ?IdentityNodeHash:atom
-               % ?SharedPredicateObjectPairs:ordset(pair(iri))
-               % ?InHigherApproximation:boolean
-               % ?NumberOfIdentityPairs:nonneg
-               % ?NumberOfPairs:nonneg
+    inode/7 % ?Mode:oneof([p,po])
+            % ?NodeHash:atom
+            % ?ParentHash:atom
+            % ?Shared:ordset(or([iri,pair(iri)]))
+            % ?InHigherApproximation:boolean
+            % ?NumberOfIdentityPairs:nonneg
+            % ?NumberOfPairs:nonneg
   ]
 ).
 
@@ -101,26 +96,16 @@ Possible extensions of the alignment pairs:
 :- dynamic(ihier/6).
 
 %! inode(
-%!   ?IdentityNodeHash:atom,
-%!   ?IdentityHierarchyHash:atom,
-%!   ?SharedPredicates:ordset(iri),
+%!   ?Mode:oneof([p,po]),
+%!   ?NodeHash:atom,
+%!   ?ParentHash:atom,
+%!   ?Shared:ordset(or([iri,pair(iri)])),
 %!   ?InHigherApproximation:boolean,
 %!   ?NumberOfIdentityPairs:nonneg,
 %!   ?NumberOfPairs:nonneg
 %! ) is nondet.
 
-:- dynamic(inode/6).
-
-%! isubnode(
-%!   ?IdentitySubnodeHash:atom,
-%!   ?IdentityNodeHash:atom,
-%!   ?SharedPredicateObjectPairs:ordset(pair(iri)),
-%!   ?InHigherApproximation:boolean,
-%!   ?NumberOfIdentityPairs:nonneg,
-%!   ?NumberOfPairs:nonneg
-%! ) is nondet.
-
-:- dynamic(isubnode/6).
+:- dynamic(inode/7).
 
 
 
@@ -263,7 +248,7 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
         forall(
           member(SharedPOs-IdSets1, Pairs),
           assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
-	)
+        )
       )
     )
   ),
@@ -301,17 +286,16 @@ assert_node_(Mode, G, Hash1, Shared, IdSets):-
   ),
 
   % -- say it --
-  Args = [Hash2,Hash1,Shared,InHigher,NumberOfIdPairs,NumberOfPairs],
-  (Mode == po -> Term =.. [isubnode|Args] ; Term =.. [inode|Args]),
-  assert(Term).
+  assert(
+    inode(Mode,Hash2,Hash1,Shared,InHigher,NumberOfIdPairs,NumberOfPairs)
+  ).
 
 %! clear_db is det.
 % Clears the data store.
 
 clear_db:-
   retractall(ihier/6),
-  retractall(inode/6),
-  retractall(isubnode/6).
+  retractall(inode/7).
 
 identity_sets_to_number_of_identity_pairs(IdSets, NumberOfIdPairs):-
   aggregate(
