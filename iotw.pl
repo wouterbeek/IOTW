@@ -67,5 +67,5 @@ run_experiment(O, G, NumberOfIdPairs, ISets, SVG, PDF_File):-
   assert_identity_nodes(O, G, NumberOfIdPairs, ISets, GA_Hash),
 
   % Create an SVG representation for the given hash.
-  export_identity_nodes(GA_Hash, SVG, PDF_File).
+  export_inodes(O, GA_Hash, SVG, PDF_File).
 

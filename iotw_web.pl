@@ -51,7 +51,7 @@ inode(Request):-
 
 node(GAK_Hash):-
   update_identity_node(GAK_Hash),
-  export_identity_nodes(GAK_Hash, SVG, _PDF_File),
+  export_inodes([], GAK_Hash, SVG, _PDF_File),
   push(console_output, SVG).
 
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.

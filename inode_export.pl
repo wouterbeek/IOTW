@@ -1,9 +1,10 @@
 :- module(
   inode_export,
   [
-    export_identity_nodes/3 % +IdentityHierarchyHash:atom
-                            % -SVG:dom
-                            % -PDF_File:atom
+    export_inodes/4 % +Options:list(nvpair)
+                    % +IdentityHierarchyHash:atom
+                    % -SVG:dom
+                    % -PDF_File:atom
   ]
 ).
 
@@ -17,7 +18,6 @@ by the predicates they share.
 
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(set_theory)).
 :- use_module(gv(gv_file)).
 :- use_module(iotw(inode)).
 :- use_module(library(debug)).
@@ -46,23 +46,19 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
     NumberOfIdPairs,
     NumberOfPairs
   ),
-  
+
   % Retrieve the number of identity pairs in the parent entity.
   number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
-  
+
   % Vertex color.
-  (  InHigher == true
-  -> Color = green
-  ;  Color = red),
-  
+  (InHigher == true -> Color = green ; Color = red),
+
   % Vertex style.
-  (  Mode == p
-  -> Style = solid
-  ;  Style = dashed),
-  
+  (Mode == p -> Style = solid ; Style = dashed),
+
   % The key label that describes the key.
-  rdf_terms_name(Shared, SharedLabel),
-  
+  (Mode == p -> rdf_terms_name(Shared, SharedLabel) ; rdf_pairs_name(Shared, SharedLabel)),
+
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
   precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel),
@@ -72,9 +68,17 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
     '~w~w identity~w',
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
-  
+
   V_Attrs =
     [color(Color),label(V_Label),shape(rectangle),style(Style)].
+
+rdf_pairs_name(Pairs, Name):-
+  maplist(rdf_pair_name, Pairs, Names),
+  atomic_list_concat(Names, ',', Name).
+rdf_pair_name(X-Y, PairName):-
+  rdf_term_name(X, X_Name),
+  rdf_term_name(Y, Y_Name),
+  format(atom(PairName), '~w-~w', [X_Name,Y_Name]).
 
 calculate(IHierHash, InHigher, NumberOfPairs):-
   aggregate(
@@ -102,7 +106,8 @@ calculate_quality(IHierHash, Quality):-
     Quality = HigherCardinality / LowerCardinality
   ).
 
-%! export_identity_nodes(
+%! export_inodes(
+%!   +Options:list(nvpair),
 %!   +IdentityHierarchyHash:atom,
 %!   -SVG:dom,
 %!   -PDF_File:atom
@@ -113,8 +118,8 @@ calculate_quality(IHierHash, Quality):-
 %
 % @tbd Add callback function injection.
 
-export_identity_nodes(IHierHash, SVG2, PDF_File):-
-  export_identity_nodes_(IHierHash, GIF),
+export_inodes(O, IHierHash, SVG2, PDF_File):-
+  export_identity_nodes_(O, IHierHash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
 
@@ -133,22 +138,30 @@ export_identity_nodes(IHierHash, SVG2, PDF_File):-
     true
   ).
 
-%! export_identity_nodes_(+IdentityHierarchyHash:atom, -GIF:compound) is det.
+%! export_identity_nodes_(
+%!   +Options:list(nvpair),
+%!   +IdentityHierarchyHash:atom,
+%!   -GIF:compound
+%! ) is det.
 
-export_identity_nodes_(IHierHash, GIF):-
-  % Extract the ranks that occur in the hierarchy.
+export_identity_nodes_(O, IHierHash, GIF):-
+  % Mode `p` constrains the nodes that we find edges for.
+  option(granularity(Mode), O, p),
+  (Mode == p -> Mode_ = p ; true),
+
+  % Vertices for `po`-nodes.
+  % First extract the ranks that occur in the hierarchy.
   % The ranks are the cardinalities of the sets of shared predicates.
   % Ranks are used to align the partitioning subsets is a style similar
   % to a Hasse Diagram.
   setoff(
     RankNumber,
     (
-      inode(_, _, IHierHash, SharedPs, _, _, _),
+      inode(Mode_, _, IHierHash, SharedPs, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
   ),
-  % Build the identity nodes.
   findall(
     rank(vertex(RankId,RankId,RankAttrs),V_Terms),
     (
@@ -164,7 +177,7 @@ export_identity_nodes_(IHierHash, GIF):-
       findall(
         V_Term,
         (
-          inode(_, INodeHash, IHierHash, _, _, _, _),
+          inode(p, INodeHash, IHierHash, _, _, _, _),
           build_vertex(INodeHash, V_Term)
         ),
         V_Terms
@@ -173,36 +186,60 @@ export_identity_nodes_(IHierHash, GIF):-
     Ranks
   ),
 
-  % Edges
-  E_Attrs = [color(black),style(solid)],
+  % Vertices for `po`-nodes.
   findall(
-    edge(FromId,ToId,E_Attrs),
+    PO_V_Term,
     (
-      inode(_, ToId, IHierHash, ToPs, _, _, _),
-      strict_sublist(FromPs, ToPs),
-      inode(_, FromId, IHierHash, FromPs, _, _, _),
-      \+ ((
-        strict_sublist(MiddlePs, ToPs),
-        inode(_, _, IHierHash, MiddlePs, _, _, _),
-        strict_sublist(FromPs, MiddlePs)
-      ))
+      % No vertices for `po` nodes are created in `p`-mode.
+      Mode \== p,
+      inode(p, INodeHash, IHierHash, _, _, _, _),
+      inode(po, ISubnodeHash, INodeHash, _, _, _, _),
+      build_vertex(ISubnodeHash, PO_V_Term)
     ),
-    Es
+    PO_V_Terms
   ),
 
-  % Calculate the quality of the rough set, if this is possible.
-  (
-    possible_to_calculate_quality(IHierHash)
-  ->
-    calculate_quality(IHierHash, Q),
-    format(atom(Q_Label), '   Quality: ~e', [Q])
-  ;
-    Q_Label = ''
-  ),
+  % Edges between the identity nodes of the _same_ mode.
+  findall(
+    edge(FromHash,ToHash,E_Attrs),
+    (
+      % Find two nodes that are either directly or indirectly related.
+      inode(Mode_, ToHash, ParentHash, ToShared, _, _, _),
+      ord_strict_subset(FromShared, ToShared),
+      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _),
 
-  % Graph properties.
+      % There must be no node in between:
+      % We only display edges between _directly_ related vertices.
+      \+ ((
+        strict_sublist(MiddleShared, ToShared),
+        inode(Mode_, _, ParentHash, MiddleShared, _, _, _),
+        ord_strict_subset(FromShared, MiddleShared)
+      )),
+
+      % Base the edge style on the identity nodes mode.
+      (Mode_ == p -> Style = solid ; Style = dotted),
+
+      % Edge attributes.
+      E_Attrs = [color(black),style(Style)]
+    ),
+    Es1
+  ),
+  % Edges between the identity nodes of the _different_ modes.
+  findall(
+    edge(SubnodeHash,NodeHash,E_Atts),
+    (
+      inode(p, NodeHash, _, _, _, _, _),
+      inode(po, SubnodeHash, NodeHash, _, _, _, _),
+      E_Atts = [color(black),style(dashed)]
+    ),
+    Es2
+  ),
+  append(Es1, Es2, Es),
+
+  % Graph attributes.
+  %quality_label(IHierHash, Q_Label),
   rdf_statistics(triples_by_graph(G,Triples)),
-  format(atom(G_Label), 'Graph: ~w.  Triples:~w~w', [G,Triples,Q_Label]),
+  format(atom(G_Label), 'Graph: ~w.  Triples:~w', [G,Triples]),
   G_Attrs =
     [
       colorscheme(svg),
@@ -213,12 +250,16 @@ export_identity_nodes_(IHierHash, GIF):-
     ],
 
   % The graph compound term.
-  GIF = graph([], Ranks, Es, [graph_name(G)|G_Attrs]).
+  GIF = graph(PO_V_Terms, Ranks, Es, [graph_name(G)|G_Attrs]).
 
 number_of_parent_identity_pairs(p, ParentHash, NumberOfParentIdPairs):- !,
   ihier(ParentHash, _, _, _, _, NumberOfParentIdPairs).
 number_of_parent_identity_pairs(po, ParentHash, NumberOfParentIdPairs):-
   inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _).
+
+ord_strict_subset(Sub, Super):-
+  ord_subset(Sub, Super),
+  Sub \== Super.
 
 %! percentage_label(
 %!   +NumberOfIdentityPairs:nonneg,
@@ -277,4 +318,13 @@ precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel):-
     ' precision[~d/~d=~2f]',
     [NumberOfIdPairs,NumberOfPairs,Precision]
   ).
+
+%! quality_label(+IHierHash:atom, -Q_Label:atom) is det.
+% Calculates the quality of the rough set, if this is possible.
+
+quality_label(IHierHash, Q_Label):-
+  possible_to_calculate_quality(IHierHash), !,
+  calculate_quality(IHierHash, Q),
+  format(atom(Q_Label), '   Quality: ~e', [Q]).
+quality_label(_IHierHash, '').
 
