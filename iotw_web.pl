@@ -44,7 +44,7 @@ inode(Request):-
   (
     memberchk(id=GAK_Hash, SearchParameters)
   ->
-    inode(GAK_Hash)
+    node(GAK_Hash)
   ;
     true
   ).

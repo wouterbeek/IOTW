@@ -1,23 +1,29 @@
 :- module(
   inode,
   [
-    assert_identity_nodes/4, % +Options:list(nvpair)
+    assert_identity_nodes/5, % +Options:list(nvpair)
                              % +Graph:atom
+                             % +NumberOfIdentityPairs:nonneg
                              % +IdentitySets:list(ordset(iri))
                              % -IdentityHierarchyHash:atom
-    ihier/7, % ?IdentityHierarchyHash:atom
+    ihier/6, % ?IdentityHierarchyHash:atom
              % ?RDF_Graph:atom
              % ?IdentitySets:list(ordset(iri))
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
-             % ?NumberOfIdentitySets:nonneg
+             % ?NumberOfAllIdentityPairs:nonneg
+    inode/6, % ?IdentityNodeHash:atom
+             % ?IdentityHierarchyHash:atom
+             % ?SharedPredicates:ordset(iri)
+             % ?InHigherApproximation:boolean
+             % ?NumberOfIdentityPairs:nonneg
              % ?NumberOfPairs:nonneg
-    inode/6 % ?IdentityNodeHash:atom
-            % ?IdentityHierarchyHash:atom
-            % ?SharedPredicates:ordset(iri)
-            % ?InHigherApproximation:boolean
-            % ?NumberOfIdentitySets:nonneg
-            % ?NumberOfPairs:nonneg
+    isubnode/6 % ?IdentitySubnodeHash:atom
+               % ?IdentityNodeHash:atom
+               % ?SharedPredicateObjectPairs:ordset(pair(iri))
+               % ?InHigherApproximation:boolean
+               % ?NumberOfIdentityPairs:nonneg
+               % ?NumberOfPairs:nonneg
   ]
 ).
 
@@ -89,53 +95,56 @@ Possible extensions of the alignment pairs:
 %!   ?IdentitySets:list(ordset(iri)),
 %!   ?GroupedBySharedPredicates:assoc,
 %!   ?GroupedBySharedPredicateObjectPairs:assoc,
-%!   ?NumberOfIdentitySets:nonneg,
-%!   ?NumberOfPairs:nonneg
+%!   ?NumberOfAllIdentityPairs:nonneg
 %! ) is nondet.
 
-:- dynamic(ihier/7).
+:- dynamic(ihier/6).
 
 %! inode(
 %!   ?IdentityNodeHash:atom,
 %!   ?IdentityHierarchyHash:atom,
 %!   ?SharedPredicates:ordset(iri),
 %!   ?InHigherApproximation:boolean,
-%!   ?NumberOfIdentitySets:nonneg,
+%!   ?NumberOfIdentityPairs:nonneg,
 %!   ?NumberOfPairs:nonneg
 %! ) is nondet.
 
 :- dynamic(inode/6).
+
+%! isubnode(
+%!   ?IdentitySubnodeHash:atom,
+%!   ?IdentityNodeHash:atom,
+%!   ?SharedPredicateObjectPairs:ordset(pair(iri)),
+%!   ?InHigherApproximation:boolean,
+%!   ?NumberOfIdentityPairs:nonneg,
+%!   ?NumberOfPairs:nonneg
+%! ) is nondet.
+
+:- dynamic(isubnode/6).
 
 
 
 %! assert_identity_nodes(
 %!   +Options:list(nvpair),
 %!   +Graph:atom,
+%!   +NumberOfIdentityPairs:nonneg,
 %!   +IdentitySets:list(ordset(iri)),
 %!   -IdentityHierarchyHash:atom
 %! ) is det.
 % Asserts identity nodes for the given alignment sets.
 
-assert_identity_nodes(O, G, IdSets, IHierHash):-
+assert_identity_nodes(O, G, NumberOfAllIdPairs, IdSets, IHierHash):-
   clear_db,
+  option(granularity(Mode), O, p),
 
   % We can identify this RDF graph and alignment pairs combination later
   % using a hash.
   variant_sha1(G-IdSets, IHierHash),
 
-  % Calculate the number of identity sets.
-  length(IdSets, NumberOfIdentitySets),
-
-  % Calculate the number of pairs that can be formed out of subject terms
-  % that are not blank nodes.
-  setoff(S, (rdf_subject(G, S), \+ rdf_is_bnode(S)), Ss),
-  length(Ss, NumberOfS),
-  NumberOfPairs is NumberOfS ** 2,
-
   % Assert the identity hierarchy based on the given identity sets.
-  identity_sets_to_assocs(O, G, IdSets, P_Assoc, PPO_Assoc),
+  identity_sets_to_assocs(Mode, G, IdSets, P_Assoc, PPO_Assoc),
   assoc_to_keys(P_Assoc, SharedPs),
-  maplist(assert_node(IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
+  maplist(assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
 
   assert(
     ihier(
@@ -144,13 +153,12 @@ assert_identity_nodes(O, G, IdSets, IHierHash):-
       IdSets,
       P_Assoc,
       PPO_Assoc,
-      NumberOfIdentitySets,
-      NumberOfPairs
+      NumberOfAllIdPairs
     )
   ).
 
 %! identity_sets_to_assocs(
-%!   +Options:list(nvpair),
+%!   +Mode:oneof([p,po]),
 %!   +Graph:atom,
 %!   +IdentitySets:list(ordset(iri)),
 %!   -GroupedBySharedPredicates:assoc,
@@ -158,13 +166,12 @@ assert_identity_nodes(O, G, IdSets, IHierHash):-
 %! ) is det.
 % @see Wrapper around identity_sets_to_assocs/7.
 
-identity_sets_to_assocs(O, G, IdSets, P_Assoc, PPO_Assoc):-
+identity_sets_to_assocs(Mode, G, IdSets, P_Assoc, PPO_Assoc):-
   empty_assoc(EmptyP_Assoc),
   empty_assoc(EmptyPO_Assoc),
-  option(granularity(Mode), O, p),
   identity_sets_to_assocs(
-    G,
     Mode,
+    G,
     IdSets,
     EmptyP_Assoc,
     P_Assoc,
@@ -173,8 +180,8 @@ identity_sets_to_assocs(O, G, IdSets, P_Assoc, PPO_Assoc):-
   ).
 
 %! identity_sets_to_assocs(
-%!   +Graph:atom,
 %!   +Mode:oneof([p,po]),
+%!   +Graph:atom,
 %!   +IdentitySets:list(ordset(iri)),
 %!   +OldGroupedBySharedPredicates:assoc,
 %!   -NewGroupedBySharedPredicates:assoc,
@@ -183,8 +190,8 @@ identity_sets_to_assocs(O, G, IdSets, P_Assoc, PPO_Assoc):-
 %! ) is det.
 
 identity_sets_to_assocs(
-  _G,
   _Mode,
+  _G,
   [],
   SolP_Assoc,
   SolP_Assoc,
@@ -192,8 +199,8 @@ identity_sets_to_assocs(
   SolPPO_Assoc
 ):- !.
 identity_sets_to_assocs(
-  G,
   Mode,
+  G,
   [IdSet|IdSets],
   P_Assoc1,
   P_Assoc3,
@@ -218,8 +225,8 @@ identity_sets_to_assocs(
   put_assoc(SharedPs, PPO_Assoc1, PO_Assoc2, PPO_Assoc2),
 
   identity_sets_to_assocs(
-    G,
     Mode,
+    G,
     IdSets,
     P_Assoc2,
     P_Assoc3,
@@ -228,6 +235,7 @@ identity_sets_to_assocs(
   ).
 
 %! assert_node(
+%!   +Mode:oneof([p,po]),
 %!   +IdentityHierarchyHash:atom,
 %!   +Graph:atom,
 %!   +GroupedBySharedPredicates:assoc,
@@ -235,23 +243,48 @@ identity_sets_to_assocs(
 %!   +SharedPreds:ordset
 %! ) is det.
 
-assert_node(IHierHash, G, P_Assoc, _PPO_Assoc, SharedPs):-
-  variant_sha1(IHierHash-SharedPs, INodeHash),
-
-  % Count the alignment pairs for the given sets of predicates.
+assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
   (
-    assoc:get_assoc(SharedPs, P_Assoc, IdSets)
+    % Skip the assertion of isubnodes.
+    Mode == p, !
   ;
-    IdSets = []
-  ), !,
-  aggregate(
-    sum(A_SetSize),
-    IdSet^(
-      member(IdSet, IdSets),
-      length(IdSet, A_SetSize)
-    ),
-    NumberOfIdenticals
+    % We need to identify the isubnodes as belonging to the proper inode.
+    variant_sha1(IHierHash-SharedPs, INodeHash),
+
+    % Retrieve the association list from sets of predicate-object pairs
+    % to sets of resources.
+    assoc:get_assoc(SharedPs, PPO_Assoc, PO_Assocs),
+
+    % For each key in the association list we add a isubnode.
+    forall(
+      member(PO_Assoc, PO_Assocs),
+      (
+        assoc:assoc_to_list(PO_Assoc, Pairs),
+        forall(
+          member(SharedPOs-IdSets1, Pairs),
+          assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
+	)
+      )
+    )
   ),
+
+  % Count the identity pairs for the given sets of predicates.
+  assoc:get_assoc(SharedPs, P_Assoc, IdSets2),
+  assert_node_(p, G, IHierHash, SharedPs, IdSets2).
+
+%! assert_node_(
+%!   +Mode:oneof([p,po]),
+%!   +Graph:atom,
+%!   +Hash:atom,
+%!   +Shared:ordset,
+%!   +IdSets:list(ordset(iri))
+%! ) is det.
+% This works for both inodes (mode `p`) and isubnodes (mode `po`).
+
+assert_node_(Mode, G, Hash1, Shared, IdSets):-
+  variant_sha1(Hash1-Shared, Hash2),
+
+  identity_sets_to_number_of_identity_pairs(IdSets, NumberOfIdPairs),
 
   % Check whether this identity node belongs to the lower or to the
   % higher approximation.
@@ -259,32 +292,39 @@ assert_node(IHierHash, G, P_Assoc, _PPO_Assoc, SharedPs):-
   % at least one member that shares the given properties but does not
   % belong to the identity relation.
   (
-    rdf_shares_properties(G, SharedPs, IdSets, _X, _Y)
+    check_shares(Mode, G, Shared, IdSets)
   ->
     InHigher = false
   ;
     InHigher = true,
-    NumberOfEquivalents = NumberOfIdenticals
+    NumberOfPairs = NumberOfIdPairs
   ),
 
   % -- say it --
-  assert(
-    inode(
-      INodeHash,
-      IHierHash,
-      SharedPs,
-      InHigher,
-      NumberOfIdenticals,
-      NumberOfEquivalents
-    )
-  ).
+  Args = [Hash2,Hash1,Shared,InHigher,NumberOfIdPairs,NumberOfPairs],
+  (Mode == po -> Term =.. [isubnode|Args] ; Term =.. [inode|Args]),
+  assert(Term).
 
 %! clear_db is det.
 % Clears the data store.
 
 clear_db:-
-  retractall(ihier/7),
-  retractall(inode/6).
+  retractall(ihier/6),
+  retractall(inode/6),
+  retractall(isubnode/6).
+
+identity_sets_to_number_of_identity_pairs(IdSets, NumberOfIdPairs):-
+  aggregate(
+    sum(NumberOfIdPairs__),
+    IdSet^(
+      member(IdSet, IdSets),
+      length(IdSet, NumberOfMembers),
+      NumberOfIdPairs__ is NumberOfMembers * (NumberOfMembers - 1)
+    ),
+    NumberOfIdPairs_
+  ),
+  % Do not count symmetric copies.
+  NumberOfIdPairs is NumberOfIdPairs_ / 2.
 
 %! rdf_shared(
 %!   +Graph:atom,
@@ -327,12 +367,38 @@ rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
   rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
 rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 
-%! rdf_shares_properties(
+check_shares(p, G, SharedPs, IdSets):- !,
+  check_shares_predicates(G, SharedPs, IdSets).
+check_shares(po, G, SharedPOs, IdSets):-
+  check_shares_predicate_object_pairs(G, SharedPOs, IdSets).
+
+check_shares_predicate_object_pairs(G, [P1-O1|POs], IdSets):-
+  % Two resources at least share the first, i.e. least probable, property.
+  rdf(X, P1, O1, G),
+  rdf(Y, P1, O1, G),
+
+  % We discarding symmetric results.
+  X @< Y,
+
+  % They are not in any of the identity sets.
+  \+ ((
+    member(IdSet, IdSets),
+    member(X, Y, IdSet)
+  )),
+
+  % They share all the other properties as well.
+  forall(
+    member(P2-O2, POs),
+    (
+      rdf(X, P2, O2, G),
+      rdf(Y, P2, O2, G)
+    )
+  ), !.
+
+%! check_shares_predicates(
 %!   +Graph:atom,
 %!   +SharedPreds:ordset(iri),
-%!   +IdentitySets:list(ordset(iri)),
-%!   -SharedPreds1:iri,
-%!   -SharedPreds2:iri
+%!   +IdentitySets:list(ordset(iri))
 %! ) is det.
 % Returns a single pair that shares the given predicates,
 % but that does not belong to the given identity set.
@@ -340,7 +406,7 @@ rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 % @param IdentitySets Only the identity sets formed by resources
 %        that share the given predicates.
 
-rdf_shares_properties(G, SharedPs, IdSets, X, Y):-
+check_shares_predicates(G, SharedPs, IdSets):-
 /*
   % We first order the predicates by probable occurrence.
   findall(
@@ -378,5 +444,5 @@ rdf_shares_properties(G, SharedPs, IdSets, X, Y):-
       rdf(X, P2, O2, G),
       rdf(Y, P2, O2, G)
     )
-  ).
+  ), !.
 

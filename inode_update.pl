@@ -1,7 +1,7 @@
 :- module(
   inode_update,
   [
-    update_identity_node/1 % +GAK_Hash:atom
+    update_identity_node/1 % +INodeHash:atom
   ]
 ).
 
@@ -72,19 +72,19 @@ predicates_to_sets(G, Ps, Sets):-
     Sets
   ).
 
-update_identity_node(GAK_Hash):-
+update_identity_node(INodeHash):-
   once(
     inode(
-      GAK_Hash,
-      GA_Hash,
-      Key,
+      INodeHash,
+      IHierHash,
+      SharedPs,
       InHigher,
-      NumberOfIdenticals,
-      NumberOfEquivalents1
+      NumberOfIdPairs,
+      NumberOfPairs1
     )
   ),
-  once(ihier(GA_Hash,G,IdSets,_,_,_,_)),
-  var(NumberOfEquivalents1), !,
+  once(ihier(IHierHash,G,IdSets,_,_,_)),
+  var(NumberOfPairs1), !,
   predicates_to_sets(G, IdSets, Sets),
   aggregate(
     sum(Length),
@@ -92,23 +92,23 @@ update_identity_node(GAK_Hash):-
       member(Set, Sets),
       length(Set, Length)
     ),
-    NumberOfEquivalents2
+    NumberOfPairs2
   ),
   db_replace_novel(
     inode(
-      GAK_Hash,
-      GA_Hash,
-      Key,
+      INodeHash,
+      IHierHash,
+      SharedPs,
       InHigher,
-      NumberOfIdenticals,
-      NumberOfEquivalents1),
+      NumberOfIdPairs,
+      NumberOfPairs1),
     inode(
-      GAK_Hash,
-      GA_Hash,
-      Key,
+      INodeHash,
+      IHierHash,
+      SharedPs,
       InHigher,
-      NumberOfIdenticals,
-      NumberOfEquivalents2
+      NumberOfIdPairs,
+      NumberOfPairs2
     )
   ).
 

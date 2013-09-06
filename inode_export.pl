@@ -41,13 +41,20 @@ by the predicates they share.
 % and the pairs of resources that share those predicates.
 
 build_vertex(
-  ihier(IHierHash,_,_,_,_,NumberOfAllISets,_),
+  ihier(
+    IHierHash,
+    _G,
+    _IdSets,
+    _P_Assoc,
+    _PPO_Assoc,
+    NumberOfAllIdPairs
+  ),
   inode(
     INodeHash,
     IHierHash,
     SharedPs,
     InHigher,
-    NumberOfISets,
+    NumberOfIdPairs,
     NumberOfPairs
   ),
   vertex(INodeHash,INodeHash,V_Attrs)
@@ -59,11 +66,13 @@ build_vertex(
   % The key label that describes the key.
   rdf_terms_name(SharedPs, SharedPsLabel),
 
-  % How many key pairs are identity key pairs?
-  % This is the precision of `Key`, defined in the standard way:
-  % $Precision(Key) = \frac{\vert Relevant(X) \vert}{\vert Retrieved(X) \vert}$
-  %   * $Relevant(X) = (\bigcap Key) \cap \approx$
-  %   * $Retrieved(X) = (\bigcap Key)$
+  % How many of the pairs that are characterized by this inode
+  % are actually identity pairs?
+  % This is the *precision* of this inode.
+  % It is defined in the standard way:
+  % $Precision(X) = \frac{\vert Relevant(X) \vert}{\vert Retrieved(X) \vert}$
+  %   * $Relevant(X) = (\bigcap X) \cap \approx$
+  %   * $Retrieved(X) = (\bigcap X)$
   %   * Because all relevant pairs are retrieved,
   %     the relevant and retrieved pairs are the relevant pairs.
   % Notice that the recall is not displayed, since it is always `1.0`.
@@ -71,11 +80,11 @@ build_vertex(
     nonvar(NumberOfPairs)
   ->
     % @tbd This is no longer correct: sets/pairs.
-    Precision is NumberOfISets / NumberOfPairs,
+    Precision is NumberOfIdPairs / NumberOfPairs,
     format(
       atom(PrecisionLabel),
       ' precision[~d/~d=~2f]',
-      [NumberOfISets,NumberOfPairs,Precision]
+      [NumberOfIdPairs,NumberOfPairs,Precision]
     )
   ;
     PrecisionLabel = ''
@@ -83,7 +92,7 @@ build_vertex(
 
   % How many identity pairs are identity key pairs?
   % @tbd Is there a common name for this metric in the literature?
-  Percentage is NumberOfISets / NumberOfAllISets,
+  Percentage is NumberOfIdPairs / NumberOfAllIdPairs,
 
   % We like our vertex labels complicated...
   format(
@@ -92,19 +101,19 @@ build_vertex(
     [
       SharedPsLabel,
       PrecisionLabel,
-      NumberOfISets,
-      NumberOfAllISets,
+      NumberOfIdPairs,
+      NumberOfAllIdPairs,
       Percentage
     ]
   ),
   V_Attrs =
     [color(Color),label(V_Label),shape(rectangle),style(solid)].
 
-calculate(IHierHash, InHigher, Cardinality):-
+calculate(IHierHash, InHigher, NumberOfPairs):-
   aggregate(
-    sum(N),
-    inode(_,IHierHash,_,InHigher,_,N),
-    Cardinality
+    sum(NumberOfPairs_),
+    inode(_, IHierHash, _, InHigher, _, NumberOfPairs_),
+    NumberOfPairs
   ).
 
 calculate_higher(IHierHash, Cardinality):-
@@ -166,8 +175,7 @@ export_identity_nodes_(IHierHash, GIF):-
     IdSets,
     P_Assoc,
     PPO_Assoc,
-    NumberOfAllIdentitySets,
-    NumberOfAllPairs
+    NumberOfAllIdPairs
   ),
 
   % Extract the ranks that occur in the hierarchy.
@@ -213,8 +221,7 @@ export_identity_nodes_(IHierHash, GIF):-
               IdSets,
               P_Assoc,
               PPO_Assoc,
-              NumberOfAllIdentitySets,
-              NumberOfAllPairs
+              NumberOfAllIdPairs
             ),
             inode(
               INodeHash,
@@ -238,12 +245,12 @@ export_identity_nodes_(IHierHash, GIF):-
   findall(
     edge(FromId,ToId,E_Attrs),
     (
-      inode(ToId,IHierHash,ToPs,_,_,_),
+      inode(ToId, IHierHash, ToPs, _, _, _),
       strict_sublist(FromPs, ToPs),
-      inode(FromId,IHierHash,FromPs,_,_,_),
+      inode(FromId, IHierHash, FromPs, _, _, _),
       \+ ((
         strict_sublist(MiddlePs, ToPs),
-        inode(_,IHierHash,MiddlePs,_,_,_),
+        inode(_, IHierHash, MiddlePs, _, _, _),
         strict_sublist(FromPs, MiddlePs)
       ))
     ),
@@ -277,7 +284,7 @@ export_identity_nodes_(IHierHash, GIF):-
 
 possible_to_calculate(IHierHash, InHigher):-
   forall(
-    inode(_,IHierHash,_,InHigher,_,NumberOfPairs),
+    inode(_, IHierHash, _, InHigher, _, NumberOfPairs),
     nonvar(NumberOfPairs)
   ).
 

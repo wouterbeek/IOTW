@@ -38,10 +38,10 @@ test0:-
   
   list_to_ord_set([Andrea,Wouter], ISet1),
   list_to_ord_set([Amsterdam,Berlin], ISet2),
-gtrace,
   run_experiment(
-    [deduction(none),granularity(p)],
+    [deduction(none),granularity(po)],
     G,
+    2,
     [ISet1,ISet2],
     _SVG,
     PDF_File

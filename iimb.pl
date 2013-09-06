@@ -45,21 +45,8 @@ Runs IOTW experiments on the IIMB alignment data.
 % @param SVG A list of compound terms describing an SVG DOM.
 
 iimb(O, N, SVG):-
-  % Retrieve an RDF graph and a set of alignment pairs.
-  load_shared_iimb(N, G, A_Sets),
-  run_experiment(O, G, A_Sets, SVG, _PDF_File).
-
-%! load_shared_iimb(
-%!   +Number:nonneg,
-%!   -Graph:atom,
-%!   -AlignmentSets:list(ordset(iri))
-%! ) is det.
-% @param Number The number of the IIMB alignments that is loaded.
-% @param Graph The name of the RDF graph into which the alignments are loaded.
-% @param AlignmentSets A list of ordered sets of aligned resources.
-
-load_shared_iimb(N, OntologyGraph, A_Sets):-
-  between(1, 80, N), !,
+  % Typecheck.
+  between(1, 80, N),
 
   % Clear the temporary RDF graphs we use for graph merge.
   maplist(rdf_unload_graph, [iotw_temp_1,iotw_temp_2]),
@@ -98,5 +85,8 @@ load_shared_iimb(N, OntologyGraph, A_Sets):-
     A_File,
     [access(read),file_type(rdf),relative_to(SubDir)]
   ),
-  oaei_file_to_alignments(A_File, _A_Pairs, A_Sets).
+  oaei_file_to_alignments(A_File, A_Pairs, A_Sets),
+  
+  length(A_Pairs, NumberOf_A_Pairs),
+  run_experiment(O, OntologyGraph, NumberOf_A_Pairs, A_Sets, SVG, _PDF_File).
 
