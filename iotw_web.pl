@@ -15,8 +15,9 @@
 
 :- use_module(html(html)).
 :- use_module(iotw(iimb)).
-:- use_module(iotw(iotw_inodes)).
-:- use_module(iotw(iotw_export)).
+:- use_module(iotw(inode)).
+:- use_module(iotw(inode_export)).
+:- use_module(iotw(inode_update)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(rdf(rdf_term)).
@@ -33,7 +34,7 @@
 
 
 iimb_web(Integer, SVG):-
-  iimb([deduction(rdfs)], Integer, SVG).
+  iimb([deduction(none),granularity(p)], Integer, SVG).
 
 %! identity_node(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.

@@ -1,15 +1,12 @@
 :- module(
-  iotw_export,
+  inode_export,
   [
-    build_vertex/3, % +GraphAlignmentPairsTerm:compound
-                    % +IdentityNodeTerm:compound
-                    % -VertexTerm:compound
-    export_identity_nodes/2 % +GraphAlignmentPairsHash:atom
+    export_identity_nodes/2 % +IdentityHierarchyHash:atom
                             % -SVG:dom
   ]
 ).
 
-/** <module> IOTW_EXPORT
+/** <module> Export of identity nodes
 Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
@@ -22,7 +19,7 @@ by the predicates they share.
 :- use_module(generics(meta_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(gv(gv_file)).
-:- use_module(iotw(iotw_inodes)).
+:- use_module(iotw(inode)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
@@ -35,32 +32,31 @@ by the predicates they share.
 
 
 %! build_vertex(
-%!   +GraphAlignmentPairsTerm:compound,
-%!   +IdentityNodeTerm:compound,
+%!   +IdentityHierarchy:compound,
+%!   +IdentityNode:compound,
 %!   -VertexTerm:compound
 %! ) is det.
 % Exports a single identity node representing a set of predicates
 % and the pairs of resources that share those predicates.
 
-build_vertex(GA, IdentityNode, Vertex):-
-  GA = graph_alignment(GA_Hash,_,_,_,NumberOfIdentityPairs,_),
-  IdentityNode =
-    identity_node(
-      GAK_Hash,
-      GA_Hash,
-      Key,
-      InHigher,
-      NumberOfKeyIdentityPairs,
-      NumberOfKeyPairs
-    ),
-  Vertex = vertex(GAK_Hash,IdentityNode,VertexAttributes),
-
+build_vertex(
+  identity_hierarchy(IHierHash,_,_,_,_,NumberOfAllISets,_),
+  identity_node(
+    INodeHash,
+    IHierHash,
+    SharedPs,
+    InHigher,
+    NumberOfISets,
+    NumberOfPairs
+  ),
+  vertex(INodeHash,INodeHash,V_Attrs)
+):-
   (  InHigher = true
   -> Color = green
   ;  Color = red),
 
   % The key label that describes the key.
-  rdf_terms_name(Key, KeyLabel),
+  rdf_terms_name(SharedPs, SharedPsLabel),
 
   % How many key pairs are identity key pairs?
   % This is the precision of `Key`, defined in the standard way:
@@ -71,13 +67,14 @@ build_vertex(GA, IdentityNode, Vertex):-
   %     the relevant and retrieved pairs are the relevant pairs.
   % Notice that the recall is not displayed, since it is always `1.0`.
   (
-    nonvar(NumberOfKeyPairs)
+    nonvar(NumberOfPairs)
   ->
-    Precision is NumberOfKeyIdentityPairs / NumberOfKeyPairs,
+    % @tbd This is no longer correct: sets/pairs.
+    Precision is NumberOfISets / NumberOfPairs,
     format(
       atom(PrecisionLabel),
       ' precision[~d/~d=~2f]',
-      [NumberOfKeyIdentityPairs,NumberOfKeyPairs,Precision]
+      [NumberOfISets,NumberOfPairs,Precision]
     )
   ;
     PrecisionLabel = ''
@@ -85,36 +82,62 @@ build_vertex(GA, IdentityNode, Vertex):-
 
   % How many identity pairs are identity key pairs?
   % @tbd Is there a common name for this metric in the literature?
-  Percentage is NumberOfKeyIdentityPairs / NumberOfIdentityPairs,
+  Percentage is NumberOfISets / NumberOfAllISets,
 
   % We like our vertex labels complicated...
   format(
-    atom(VertexLabel),
+    atom(V_Label),
     '~w~w identity[~d/~d=~2f]',
     [
-      KeyLabel,
+      SharedPsLabel,
       PrecisionLabel,
-      NumberOfKeyIdentityPairs,
-      NumberOfIdentityPairs,
+      NumberOfISets,
+      NumberOfAllISets,
       Percentage
     ]
   ),
-  VertexAttributes =
-    [color(Color),label(VertexLabel),shape(rectangle),style(solid)].
+  V_Attrs =
+    [color(Color),label(V_Label),shape(rectangle),style(solid)].
 
-%! export_identity_nodes(+GraphAlignmentPairsHash:atom, -SVG:dom) is det.
+calculate(IHierHash, InHigher, Cardinality):-
+  aggregate(
+    sum(N),
+    identity_node(_,IHierHash,_,InHigher,_,N),
+    Cardinality
+  ).
+
+calculate_higher(IHierHash, Cardinality):-
+  calculate(IHierHash, true, Cardinality).
+
+calculate_lower(IHierHash, Cardinality):-
+  calculate(IHierHash, _, Cardinality).
+
+calculate_quality(IHierHash, Quality):-
+  calculate_higher(IHierHash, HigherCardinality),
+  calculate_lower(IHierHash, LowerCardinality),
+
+  % Make sure we never divide by zero.
+  (
+    HigherCardinality =:= LowerCardinality
+  ->
+    Quality = 1.0
+  ;
+    Quality = HigherCardinality / LowerCardinality
+  ).
+
+%! export_identity_nodes(+IdentityHierarchyHash:atom, -SVG:dom) is det.
 % Returns the SVG DOM representation of the hierarchy of predicate (sub)sets
 % annotated with the number of resource pairs that share those and only those
 % predicates.
 %
 % @tbd Add callback function injection.
 
-export_identity_nodes(GA_Hash, SVG2):-
-  export_identity_nodes_(GA_Hash, GIF),
+export_identity_nodes(IHierHash, SVG2):-
+  export_identity_nodes_(IHierHash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
-  
-  % DEB
+
+  % DEB: Aslo export as PDF (in a persistent file).
   (
     debug(iotw_export)
   ->
@@ -129,71 +152,72 @@ export_identity_nodes(GA_Hash, SVG2):-
     true
   ).
 
-%! export_identity_nodes_(
-%!   +GraphAlignmentPairsHash:atom,
-%!   -GIF:compound
-%! ) is det.
+%! export_identity_nodes_(+IdentityHierarchyHash:atom, -GIF:compound) is det.
 
-export_identity_nodes_(GA_Hash, GIF):-
-  graph_alignment(GA_Hash, G, A, _, NumberOfIdentityPairs, NumberOfPairs),
+export_identity_nodes_(IHierHash, GIF):-
+  identity_hierarchy(
+    IHierHash,
+    G,
+    IdSets,
+    P_Assoc,
+    PPO_Assoc,
+    NumberOfAllIdentitySets,
+    NumberOfAllPairs
+  ),
 
   % Extract the ranks that occur in the hierarchy.
+  % The ranks are the cardinalities of the sets of shared predicates.
+  % Ranks are used to align the partitioning subsets is a style similar
+  % to a Hasse Diagram.
   setoff(
     RankNumber,
     (
-      identity_node(
-        _GAK_Hash,
-        GA_Hash,
-        SharedPreds,
-        _InHigher,
-        _NumberOfKeyIdentityPairs,
-        _NumberOfKeyPairs
-      ),
-      length(SharedPreds, RankNumber)
+      identity_node(_, IHierHash, SharedPs, _, _, _),
+      length(SharedPs, RankNumber)
     ),
     RankNumbers
   ),
-
-  % Build nodes: build the non-nil nodes.
+  % Build the identity nodes.
   findall(
     rank(vertex(RankId,RankId,RankAttrs),V_Terms),
     (
-      % The rank.
+      % We do this for every rank.
       member(RankNumber, RankNumbers),
       format(atom(RankId), 'r~w', [RankNumber]),
       atom_number(RankLabel, RankNumber),
       RankAttrs = [label(RankLabel), shape(plaintext)],
 
-      % Consider only keys / sets of shared predicates,
-      % that are of the given rank length.
-      length(SharedPreds, RankNumber),
+      % Consider only those sets of shared predicates that are of
+      % the given rank cardinality.
+      length(SharedPs, RankNumber),
       findall(
         V_Term,
         (
           identity_node(
-            GAK_Hash,
-            GA_Hash,
-            SharedPreds,
+            INodeHash,
+            IHierHash,
+            SharedPs,
             InHigher,
-            NumberOfKeyIdentityPairs,
-            NumberOfKeyPairs
+            NumberOfIdentitySets,
+            NumberOfPairs
           ),
           build_vertex(
-            graph_alignment(
-              GA_Hash,
+            identity_hierarchy(
+              IHierHash,
               G,
-              A,
-              _,
-              NumberOfIdentityPairs,
-              NumberOfPairs
+              IdSets,
+              P_Assoc,
+              PPO_Assoc,
+              NumberOfAllIdentitySets,
+              NumberOfAllPairs
             ),
             identity_node(
-              GAK_Hash,
-              GA_Hash,
-              SharedPreds,
+              INodeHash,
+              IHierHash,
+              SharedPs,
               InHigher,
-              NumberOfKeyIdentityPairs,
-              NumberOfKeyPairs
+              NumberOfIdentitySets,
+              NumberOfPairs
             ),
             V_Term
           )
@@ -209,13 +233,13 @@ export_identity_nodes_(GA_Hash, GIF):-
   findall(
     edge(FromId,ToId,E_Attrs),
     (
-      identity_node(ToId,GA_Hash,ToKey,_,_,_),
-      strict_sublist(FromKey, ToKey),
-      identity_node(FromId,GA_Hash,FromKey,_,_,_),
+      identity_node(ToId,IHierHash,ToPs,_,_,_),
+      strict_sublist(FromPs, ToPs),
+      identity_node(FromId,IHierHash,FromPs,_,_,_),
       \+ ((
-        strict_sublist(MiddleKey, ToKey),
-        identity_node(_,GA_Hash,MiddleKey,_,_,_),
-        strict_sublist(FromKey, MiddleKey)
+        strict_sublist(MiddlePs, ToPs),
+        identity_node(_,IHierHash,MiddlePs,_,_,_),
+        strict_sublist(FromPs, MiddlePs)
       ))
     ),
     Es
@@ -223,9 +247,9 @@ export_identity_nodes_(GA_Hash, GIF):-
 
   % Calculate the quality of the rough set, if this is possible.
   (
-    possible_to_calculate_quality(GA_Hash)
+    possible_to_calculate_quality(IHierHash)
   ->
-    calculate_quality(GA_Hash, Q),
+    calculate_quality(IHierHash, Q),
     format(atom(Q_Label), '   Quality: ~e', [Q])
   ;
     Q_Label = ''
@@ -245,4 +269,20 @@ export_identity_nodes_(GA_Hash, GIF):-
 
   % The graph compound term.
   GIF = graph([], Ranks, Es, [graph_name(G)|G_Attrs]).
+
+possible_to_calculate(IHierHash, InHigher):-
+  forall(
+    identity_node(_,IHierHash,_,InHigher,_,NumberOfPairs),
+    nonvar(NumberOfPairs)
+  ).
+
+possible_to_calculate_higher(IHierHash):-
+  possible_to_calculate(IHierHash, true).
+
+possible_to_calculate_lower(IHierHash):-
+  possible_to_calculate(IHierHash, _).
+
+possible_to_calculate_quality(IHierHash):-
+  possible_to_calculate_higher(IHierHash),
+  possible_to_calculate_lower(IHierHash).
 
