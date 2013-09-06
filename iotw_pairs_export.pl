@@ -69,7 +69,7 @@ export_rdf_shared(Graph, AlignmentPairs, Stash, GIF):-
             AlignmentPairs,
             LinkedPercentage
           ),
-          rdf_term_name(PSet, PSetLabel),
+          rdf_term_name([], PSet, PSetLabel),
           % Retrieve the ordered set, not on of its members!
           Percentage is NumberOfThesePairs / NumberOfPairs * 100,
           format(atom(NodeID), 'n~w', [I]),

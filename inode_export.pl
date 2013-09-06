@@ -18,6 +18,7 @@ by the predicates they share.
 
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
+:- use_module(generics(print_ext)).
 :- use_module(gv(gv_file)).
 :- use_module(iotw(inode)).
 :- use_module(library(debug)).
@@ -55,9 +56,22 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
 
   % Vertex style.
   (Mode == p -> Style = solid ; Style = dashed),
-
-  % The key label that describes the key.
-  (Mode == p -> rdf_terms_name(Shared, SharedLabel) ; rdf_pairs_name(Shared, SharedLabel)),
+  
+  % The label that describes the shared predicates
+  % or the shared predicate-object pairs.
+  (
+    Mode == p
+  ->
+    with_output_to(
+      atom(SharedLabel),
+      print_set([write_method(rdf_term_name)], Shared)
+    )
+  ;
+    with_output_to(
+      atom(SharedLabel),
+      print_set([write_method(rdf_pair_name)], Shared)
+    )
+  ),
 
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
@@ -71,14 +85,6 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
 
   V_Attrs =
     [color(Color),label(V_Label),shape(rectangle),style(Style)].
-
-rdf_pairs_name(Pairs, Name):-
-  maplist(rdf_pair_name, Pairs, Names),
-  atomic_list_concat(Names, ',', Name).
-rdf_pair_name(X-Y, PairName):-
-  rdf_term_name(X, X_Name),
-  rdf_term_name(Y, Y_Name),
-  format(atom(PairName), '~w-~w', [X_Name,Y_Name]).
 
 calculate(IHierHash, InHigher, NumberOfPairs):-
   aggregate(
