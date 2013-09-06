@@ -27,7 +27,7 @@
 % First load the debug server.
 :- initialization(start_dev_server, now).
 
-:- http_handler(root(identity_node), identity_node, []).
+:- http_handler(root(inode), inode, []).
 
 :- register_module(iotw_web).
 
@@ -36,22 +36,22 @@
 iimb_web(Integer, SVG):-
   iimb([deduction(none),granularity(p)], Integer, SVG).
 
-%! identity_node(+Request:list(nvpair)) is det.
+%! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
 
-identity_node(Request):-
+inode(Request):-
   member(search(SearchParameters), Request),
   (
     memberchk(id=GAK_Hash, SearchParameters)
   ->
-    identity_node(GAK_Hash)
+    inode(GAK_Hash)
   ;
     true
   ).
 
 node(GAK_Hash):-
   update_identity_node(GAK_Hash),
-  export_identity_nodes(GAK_Hash, SVG),
+  export_identity_nodes(GAK_Hash, SVG, _PDF_File),
   push(console_output, SVG).
 
 %! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.

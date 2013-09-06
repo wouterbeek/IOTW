@@ -1,10 +1,11 @@
 :- module(
   iotw,
   [
-    run_experiment/4 % +Options:list(nvpair),
+    run_experiment/5 % +Options:list(nvpair),
                      % +Graph:atom,
                      % +IdentitySets:list(ordset(iri))
                      % -SVG:list
+                     % -PDF_File:atom
   ]
 ).
 
@@ -35,7 +36,8 @@ preload_rdfs_voc(_O, _G).
 %!   +Options:list(nvpair),
 %!   +Graph:atom,
 %!   +IdentitySets:list(ordset(iri)),
-%!   -SVG:list
+%!   -SVG:list,
+%!   -PDF_File:atom
 %! ) is det.
 % The following options are supported:
 %   * `deduction(+DeductionMode:oneof([none,rdfs])`
@@ -44,7 +46,7 @@ preload_rdfs_voc(_O, _G).
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 
-run_experiment(O, G, ISets, SVG):-
+run_experiment(O, G, ISets, SVG, PDF_File):-
   % Pre-load the RDF(S) vocabulary.
   % This means that materialization has to make less deductions
   % (tested on 163 less), and there are some labels and comments
@@ -54,16 +56,14 @@ run_experiment(O, G, ISets, SVG):-
   % Materializing the graph reveals additional properties of existing
   % resources, and therefore may reveal additional shared properties.
   (
-    option(deduction(rdfs), O, none)
-  ->
-    materialize(G)
+    option(deduction(none), O, none), !
   ;
-    true
+    materialize(G)
   ),
 
   % Returns the RDF graph and alignment pairs hash.
   assert_identity_nodes(O, G, ISets, GA_Hash),
 
   % Create an SVG representation for the given hash.
-  export_identity_nodes(GA_Hash, SVG).
+  export_identity_nodes(GA_Hash, SVG, PDF_File).
 

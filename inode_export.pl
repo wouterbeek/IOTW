@@ -1,8 +1,9 @@
 :- module(
   inode_export,
   [
-    export_identity_nodes/2 % +IdentityHierarchyHash:atom
+    export_identity_nodes/3 % +IdentityHierarchyHash:atom
                             % -SVG:dom
+                            % -PDF_File:atom
   ]
 ).
 
@@ -40,8 +41,8 @@ by the predicates they share.
 % and the pairs of resources that share those predicates.
 
 build_vertex(
-  identity_hierarchy(IHierHash,_,_,_,_,NumberOfAllISets,_),
-  identity_node(
+  ihier(IHierHash,_,_,_,_,NumberOfAllISets,_),
+  inode(
     INodeHash,
     IHierHash,
     SharedPs,
@@ -102,7 +103,7 @@ build_vertex(
 calculate(IHierHash, InHigher, Cardinality):-
   aggregate(
     sum(N),
-    identity_node(_,IHierHash,_,InHigher,_,N),
+    inode(_,IHierHash,_,InHigher,_,N),
     Cardinality
   ).
 
@@ -125,14 +126,18 @@ calculate_quality(IHierHash, Quality):-
     Quality = HigherCardinality / LowerCardinality
   ).
 
-%! export_identity_nodes(+IdentityHierarchyHash:atom, -SVG:dom) is det.
+%! export_identity_nodes(
+%!   +IdentityHierarchyHash:atom,
+%!   -SVG:dom,
+%!   -PDF_File:atom
+%! ) is det.
 % Returns the SVG DOM representation of the hierarchy of predicate (sub)sets
 % annotated with the number of resource pairs that share those and only those
 % predicates.
 %
 % @tbd Add callback function injection.
 
-export_identity_nodes(IHierHash, SVG2):-
+export_identity_nodes(IHierHash, SVG2, PDF_File):-
   export_identity_nodes_(IHierHash, GIF),
   graph_to_svg_dom([], GIF, dot, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
@@ -155,7 +160,7 @@ export_identity_nodes(IHierHash, SVG2):-
 %! export_identity_nodes_(+IdentityHierarchyHash:atom, -GIF:compound) is det.
 
 export_identity_nodes_(IHierHash, GIF):-
-  identity_hierarchy(
+  ihier(
     IHierHash,
     G,
     IdSets,
@@ -172,7 +177,7 @@ export_identity_nodes_(IHierHash, GIF):-
   setoff(
     RankNumber,
     (
-      identity_node(_, IHierHash, SharedPs, _, _, _),
+      inode(_, IHierHash, SharedPs, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
@@ -193,7 +198,7 @@ export_identity_nodes_(IHierHash, GIF):-
       findall(
         V_Term,
         (
-          identity_node(
+          inode(
             INodeHash,
             IHierHash,
             SharedPs,
@@ -202,7 +207,7 @@ export_identity_nodes_(IHierHash, GIF):-
             NumberOfPairs
           ),
           build_vertex(
-            identity_hierarchy(
+            ihier(
               IHierHash,
               G,
               IdSets,
@@ -211,7 +216,7 @@ export_identity_nodes_(IHierHash, GIF):-
               NumberOfAllIdentitySets,
               NumberOfAllPairs
             ),
-            identity_node(
+            inode(
               INodeHash,
               IHierHash,
               SharedPs,
@@ -233,12 +238,12 @@ export_identity_nodes_(IHierHash, GIF):-
   findall(
     edge(FromId,ToId,E_Attrs),
     (
-      identity_node(ToId,IHierHash,ToPs,_,_,_),
+      inode(ToId,IHierHash,ToPs,_,_,_),
       strict_sublist(FromPs, ToPs),
-      identity_node(FromId,IHierHash,FromPs,_,_,_),
+      inode(FromId,IHierHash,FromPs,_,_,_),
       \+ ((
         strict_sublist(MiddlePs, ToPs),
-        identity_node(_,IHierHash,MiddlePs,_,_,_),
+        inode(_,IHierHash,MiddlePs,_,_,_),
         strict_sublist(FromPs, MiddlePs)
       ))
     ),
@@ -272,7 +277,7 @@ export_identity_nodes_(IHierHash, GIF):-
 
 possible_to_calculate(IHierHash, InHigher):-
   forall(
-    identity_node(_,IHierHash,_,InHigher,_,NumberOfPairs),
+    inode(_,IHierHash,_,InHigher,_,NumberOfPairs),
     nonvar(NumberOfPairs)
   ).
 

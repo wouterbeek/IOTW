@@ -1,23 +1,23 @@
 :- module(
-  inodes,
+  inode,
   [
     assert_identity_nodes/4, % +Options:list(nvpair)
                              % +Graph:atom
                              % +IdentitySets:list(ordset(iri))
                              % -IdentityHierarchyHash:atom
-    identity_hierarchy/7, % ?IdentityHierarchyHash:atom
-                          % ?RDF_Graph:atom
-                          % ?IdentitySets:list(ordset(iri))
-                          % ?GroupedBySharedPredicates:assoc
-                          % ?GroupedBySharedPredicateObjectPairs:assoc
-                          % ?NumberOfIdentitySets:nonneg
-                          % ?NumberOfPairs:nonneg
-    identity_node/6 % ?IdentityNodeHash:atom
-                    % ?IdentityHierarchyHash:atom
-                    % ?SharedPredicates:ordset(iri)
-                    % ?InHigherApproximation:boolean
-                    % ?NumberOfIdentitySets:nonneg
-                    % ?NumberOfPairs:nonneg
+    ihier/7, % ?IdentityHierarchyHash:atom
+             % ?RDF_Graph:atom
+             % ?IdentitySets:list(ordset(iri))
+             % ?GroupedBySharedPredicates:assoc
+             % ?GroupedBySharedPredicateObjectPairs:assoc
+             % ?NumberOfIdentitySets:nonneg
+             % ?NumberOfPairs:nonneg
+    inode/6 % ?IdentityNodeHash:atom
+            % ?IdentityHierarchyHash:atom
+            % ?SharedPredicates:ordset(iri)
+            % ?InHigherApproximation:boolean
+            % ?NumberOfIdentitySets:nonneg
+            % ?NumberOfPairs:nonneg
   ]
 ).
 
@@ -83,7 +83,7 @@ Possible extensions of the alignment pairs:
 :- use_module(owl(owl_read)).
 :- use_module(rdf(rdf_term)).
 
-%! identity_hierarchy(
+%! ihier(
 %!   ?IdentityHierarchyHash:atom,
 %!   ?RDF_Graph:atom,
 %!   ?IdentitySets:list(ordset(iri)),
@@ -93,9 +93,9 @@ Possible extensions of the alignment pairs:
 %!   ?NumberOfPairs:nonneg
 %! ) is nondet.
 
-:- dynamic(identity_hierarchy/7).
+:- dynamic(ihier/7).
 
-%! identity_node(
+%! inode(
 %!   ?IdentityNodeHash:atom,
 %!   ?IdentityHierarchyHash:atom,
 %!   ?SharedPredicates:ordset(iri),
@@ -104,7 +104,7 @@ Possible extensions of the alignment pairs:
 %!   ?NumberOfPairs:nonneg
 %! ) is nondet.
 
-:- dynamic(identity_node/6).
+:- dynamic(inode/6).
 
 
 
@@ -138,7 +138,7 @@ assert_identity_nodes(O, G, IdSets, IHierHash):-
   maplist(assert_node(IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
 
   assert(
-    identity_hierarchy(
+    ihier(
       IHierHash,
       G,
       IdSets,
@@ -269,7 +269,7 @@ assert_node(IHierHash, G, P_Assoc, _PPO_Assoc, SharedPs):-
 
   % -- say it --
   assert(
-    identity_node(
+    inode(
       INodeHash,
       IHierHash,
       SharedPs,
@@ -283,8 +283,8 @@ assert_node(IHierHash, G, P_Assoc, _PPO_Assoc, SharedPs):-
 % Clears the data store.
 
 clear_db:-
-  retractall(identity_hierarchy/7),
-  retractall(identity_node/6).
+  retractall(ihier/7),
+  retractall(inode/6).
 
 %! rdf_shared(
 %!   +Graph:atom,

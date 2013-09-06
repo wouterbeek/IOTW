@@ -47,7 +47,7 @@ Runs IOTW experiments on the IIMB alignment data.
 iimb(O, N, SVG):-
   % Retrieve an RDF graph and a set of alignment pairs.
   load_shared_iimb(N, G, A_Sets),
-  run_experiment(O, G, A_Sets, SVG).
+  run_experiment(O, G, A_Sets, SVG, _PDF_File).
 
 %! load_shared_iimb(
 %!   +Number:nonneg,

@@ -74,7 +74,7 @@ predicates_to_sets(G, Ps, Sets):-
 
 update_identity_node(GAK_Hash):-
   once(
-    identity_node(
+    inode(
       GAK_Hash,
       GA_Hash,
       Key,
@@ -83,7 +83,7 @@ update_identity_node(GAK_Hash):-
       NumberOfEquivalents1
     )
   ),
-  once(identity_hierarchy(GA_Hash,G,IdSets,_,_,_,_)),
+  once(ihier(GA_Hash,G,IdSets,_,_,_,_)),
   var(NumberOfEquivalents1), !,
   predicates_to_sets(G, IdSets, Sets),
   aggregate(
@@ -95,14 +95,14 @@ update_identity_node(GAK_Hash):-
     NumberOfEquivalents2
   ),
   db_replace_novel(
-    identity_node(
+    inode(
       GAK_Hash,
       GA_Hash,
       Key,
       InHigher,
       NumberOfIdenticals,
       NumberOfEquivalents1),
-    identity_node(
+    inode(
       GAK_Hash,
       GA_Hash,
       Key,
