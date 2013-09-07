@@ -21,15 +21,18 @@ IOTW experiments.
 :- use_module(iotw(inode_export)).
 :- use_module(library(option)).
 :- use_module(logic(rdf_axiom)).
+:- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_serial)).
 
 
 
-preload_rdfs_voc(O, G):-
+preload_rdfs_voc(O, G2):-
   option(deduction(rdfs), O, none), !,
   absolute_file_name(rdfs(rdfs), File, [access(read),file_type(rdf)]),
-  rdf_load2(File, [graph(G)]),
-  materialize(G).
+  rdf_new_graph(rdfs_voc, G1),
+  rdf_load2(File, [graph(G1)]),
+  materialize(G1),
+  rdf_graph:rdf_graph_merge([G1], G2).
 preload_rdfs_voc(_O, _G).
 
 %! run_experiment(

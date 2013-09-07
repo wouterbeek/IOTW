@@ -34,7 +34,7 @@
 
 
 iimb_web(Integer, SVG):-
-  iimb([deduction(none),granularity(p)], Integer, SVG).
+  iimb([deduction(rdfs),granularity(p)], Integer, SVG).
 
 %! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
