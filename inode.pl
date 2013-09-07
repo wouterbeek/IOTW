@@ -1,11 +1,10 @@
 :- module(
   inode,
   [
-    assert_identity_nodes/5, % +Options:list(nvpair)
-                             % +Graph:atom
-                             % +NumberOfIdentityPairs:nonneg
-                             % +IdentitySets:list(ordset(iri))
-                             % -IdentityHierarchyHash:atom
+    assert_inodes/4, % +Options:list(nvpair)
+                     % +Graph:atom
+                     % +IdentitySets:list(ordset(iri))
+                     % -IdentityHierarchyHash:atom
     ihier/6, % ?IdentityHierarchyHash:atom
              % ?RDF_Graph:atom
              % ?IdentitySets:list(ordset(iri))
@@ -104,16 +103,22 @@ Possible extensions of the alignment pairs:
 
 
 
-%! assert_identity_nodes(
+%! assert_inodes(
 %!   +Options:list(nvpair),
 %!   +Graph:atom,
-%!   +NumberOfIdentityPairs:nonneg,
 %!   +IdentitySets:list(ordset(iri)),
 %!   -IdentityHierarchyHash:atom
 %! ) is det.
 % Asserts identity nodes for the given alignment sets.
 
-assert_identity_nodes(O, G, NumberOfAllIdPairs, IdSets, IHierHash):-
+assert_inodes(O, G, IdSets, IHierHash):-
+  % We need to establish the number of identity pairs based on
+  % the collection of identity sets, because this can be larger
+  % that the number of pairs.
+  % For every two pairs `X-Y` and `Y-Z` we have an identity set ${X,Y,Z}$
+  % representing three non-reflexive and non-symmetric identity pairs.
+  identity_sets_to_number_of_identity_pairs(IdSets, NumberOfAllIdPairs),
+
   clear_db,
   option(granularity(Mode), O, p),
 
@@ -122,7 +127,6 @@ assert_identity_nodes(O, G, NumberOfAllIdPairs, IdSets, IHierHash):-
   variant_sha1(G-IdSets, IHierHash),
 
   % Assert the identity hierarchy based on the given identity sets.
-gtrace,
   identity_sets_to_assocs(Mode, G, IdSets, P_Assoc, PPO_Assoc),
   assoc_to_keys(P_Assoc, SharedPs),
   maplist(assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
@@ -260,7 +264,6 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 
 assert_node_(Mode, G, Hash1, Shared, IdSets):-
   variant_sha1(Hash1-Shared, Hash2),
-
   identity_sets_to_number_of_identity_pairs(IdSets, NumberOfIdPairs),
 
   % Check whether this identity node belongs to the lower or to the
@@ -286,13 +289,13 @@ assert_node_(Mode, G, Hash1, Shared, IdSets):-
 % Clears the data store.
 
 clear_db:-
-  retractall(ihier/6),
-  retractall(inode/7).
+  retractall(ihier(_,_,_,_,_,_)),
+  retractall(inode(_,_,_,_,_,_,_)).
 
 identity_sets_to_number_of_identity_pairs(IdSets, NumberOfIdPairs):-
-  aggregate(
+  aggregate_all(
     sum(NumberOfIdPairs__),
-    IdSet^(
+    (
       member(IdSet, IdSets),
       length(IdSet, NumberOfMembers),
       NumberOfIdPairs__ is NumberOfMembers * (NumberOfMembers - 1)

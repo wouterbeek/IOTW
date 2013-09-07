@@ -70,7 +70,7 @@ load_alignment_anatomy:-
     member(AlignmentFile, AlignmentFiles),
     (
       oaei_file_to_alignment_pairs(AlignmentFile, Alignments),
-      assert_identity_nodes(_O, OntologyGraph, Alignments, GA_Hash),
+      assert_inodes(_O, OntologyGraph, Alignments, GA_Hash),
       export_inodes(O, GA_Hash, _SVG, _PDF_File)
     )
   ).

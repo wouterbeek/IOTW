@@ -87,7 +87,7 @@ update_identity_node(INodeHash):-
   once(ihier(IHierHash,G,IdSets,_,_,_)),
   var(NumberOfPairs1), !,
   predicates_to_sets(G, IdSets, Sets),
-  aggregate(
+  aggregate_all(
     sum(Length),
     (
       member(Set, Sets),

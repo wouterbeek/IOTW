@@ -56,7 +56,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
 
   % Vertex style.
   (Mode == p -> Style = solid ; Style = dashed),
-  
+
   % The label that describes the shared predicates
   % or the shared predicate-object pairs.
   (
@@ -86,7 +86,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
 
 calculate(IHierHash, InHigher, NumberOfPairs):-
-  aggregate(
+  aggregate_all(
     sum(NumberOfPairs_),
     inode(_, _, IHierHash, _, InHigher, _, NumberOfPairs_),
     NumberOfPairs
@@ -167,8 +167,9 @@ export_identity_nodes_(O, IHierHash, GIF):-
     ),
     RankNumbers
   ),
+  
   findall(
-    rank(vertex(RankId,RankId,RankAttrs),V_Terms),
+    rank(vertex(RankId,RankId,RankAttrs),P_V_Terms),
     (
       % We do this for every rank.
       member(RankNumber, RankNumbers),
@@ -176,16 +177,15 @@ export_identity_nodes_(O, IHierHash, GIF):-
       atom_number(RankLabel, RankNumber),
       RankAttrs = [label(RankLabel), shape(plaintext)],
 
-      % Consider only those sets of shared predicates that are of
-      % the given rank cardinality.
+      % Consider only those sets of shared predicates that have rank cardinality.
       length(SharedPs, RankNumber),
       findall(
-        V_Term,
+        P_V_Term,
         (
-          inode(p, INodeHash, IHierHash, _, _, _, _),
-          build_vertex(INodeHash, V_Term)
+          inode(p, INodeHash, IHierHash, SharedPs, _, _, _),
+          build_vertex(INodeHash, P_V_Term)
         ),
-        V_Terms
+        P_V_Terms
       )
     ),
     Ranks
@@ -209,16 +209,16 @@ export_identity_nodes_(O, IHierHash, GIF):-
     edge(FromHash,ToHash,E_Attrs),
     (
       % Find two nodes that are either directly or indirectly related.
+      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _),
       inode(Mode_, ToHash, ParentHash, ToShared, _, _, _),
       ord_strict_subset(FromShared, ToShared),
-      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _),
 
       % There must be no node in between:
       % We only display edges between _directly_ related vertices.
       \+ ((
-        strict_sublist(MiddleShared, ToShared),
         inode(Mode_, _, ParentHash, MiddleShared, _, _, _),
-        ord_strict_subset(FromShared, MiddleShared)
+        ord_strict_subset(FromShared, MiddleShared),
+        ord_strict_subset(MiddleShared, ToShared)
       )),
 
       % Base the edge style on the identity nodes mode.
