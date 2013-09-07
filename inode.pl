@@ -331,10 +331,9 @@ rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
 
   % All subject terms in the set must share the same
   % predicate-object pair / property (regardless of mode).
-  forall(
-    member(Res2, Resources),
-    rdf(Res2, P, O, G)
-  ), !,
+  % Here we assume that all typed literals are using
+  % their canonical lexical form.
+  forall(member(Res2, Resources), rdf(Res2, P, O, G)), !,
 
   % Add a shared predicate.
   ord_add_element(OldPs, P, NewPs),

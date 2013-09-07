@@ -23,6 +23,7 @@ IOTW experiments.
 :- use_module(logic(rdf_axiom)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_serial)).
+:- use_module(xsd(xsd)).
 
 
 
@@ -55,6 +56,8 @@ run_experiment(O, G, ISets, SVG, PDF_File):-
   % (tested on 163 less), and there are some labels and comments
   % that deduction would not produce.
   preload_rdfs_voc(O, G),
+
+  xsd_canonize_graph(G),
 
   % Materializing the graph reveals additional properties of existing
   % resources, and therefore may reveal additional shared properties.
