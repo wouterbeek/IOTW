@@ -70,19 +70,14 @@ Possible extensions of the alignment pairs:
 @version 2013/05, 2013/08-2013/09
 */
 
-:- use_module(generics(assoc_multi)).
-:- use_module(generics(db_ext)).
+:- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
-:- use_module(generics(meta_ext)).
-:- use_module(generics(set_theory)).
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
-:- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(owl(owl_read)).
-:- use_module(rdf(rdf_term)).
+:- use_module(rdf(rdf_term)). % Used in meta-options.
 
 %! ihier(
 %!   ?IdentityHierarchyHash:atom,
@@ -127,6 +122,7 @@ assert_identity_nodes(O, G, NumberOfAllIdPairs, IdSets, IHierHash):-
   variant_sha1(G-IdSets, IHierHash),
 
   % Assert the identity hierarchy based on the given identity sets.
+gtrace,
   identity_sets_to_assocs(Mode, G, IdSets, P_Assoc, PPO_Assoc),
   assoc_to_keys(P_Assoc, SharedPs),
   maplist(assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
@@ -153,14 +149,14 @@ assert_identity_nodes(O, G, NumberOfAllIdPairs, IdSets, IHierHash):-
 
 identity_sets_to_assocs(Mode, G, IdSets, P_Assoc, PPO_Assoc):-
   empty_assoc(EmptyP_Assoc),
-  empty_assoc(EmptyPO_Assoc),
+  empty_assoc(EmptyPPO_Assoc),
   identity_sets_to_assocs(
     Mode,
     G,
     IdSets,
     EmptyP_Assoc,
     P_Assoc,
-    EmptyPO_Assoc,
+    EmptyPPO_Assoc,
     PPO_Assoc
   ).
 
@@ -195,18 +191,20 @@ identity_sets_to_assocs(
   % Take the predicates that the alignment pair shares.
   rdf_shared(G, Mode, IdSet, SharedPs, SharedPOs),
 
-  % Add the alignment pair as a value to the shared predicates key.
-  put_assoc(SharedPs, P_Assoc1, IdSet, P_Assoc2),
+  % Add to the ordered set under the `SharedPs` key.
+  put_assoc_ord_member(SharedPs, P_Assoc1, IdSet, P_Assoc2),
 
   % Add the alignment pair as a value to the shared objects key of the
   % association list that is a value to the shared predicates key.
   (
+    % Get the nested assoc.
     get_assoc(SharedPs, PPO_Assoc1, PO_Assoc1), !
   ;
     empty_assoc(PO_Assoc1)
   ),
-  put_assoc(SharedPOs, PO_Assoc1, IdSet, PO_Assoc2),
-  % This predicate does both insertion and change/update.
+  % Add to the ordered set under the `SharedPOs` key of the nested assoc.
+  put_assoc_ord_member(SharedPOs, PO_Assoc1, IdSet, PO_Assoc2),
+  % REPLACE the nested assoc.
   put_assoc(SharedPs, PPO_Assoc1, PO_Assoc2, PPO_Assoc2),
 
   identity_sets_to_assocs(
@@ -238,23 +236,17 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 
     % Retrieve the association list from sets of predicate-object pairs
     % to sets of resources.
-    assoc:get_assoc(SharedPs, PPO_Assoc, PO_Assocs),
+    get_assoc(SharedPs, PPO_Assoc, PO_Assoc),
 
     % For each key in the association list we add a isubnode.
+    assoc_to_list(PO_Assoc, Pairs),
     forall(
-      member(PO_Assoc, PO_Assocs),
-      (
-        assoc:assoc_to_list(PO_Assoc, Pairs),
-        forall(
-          member(SharedPOs-IdSets1, Pairs),
-          assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
-        )
-      )
+      member(SharedPOs-IdSets1, Pairs),
+      assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
     )
   ),
 
-  % Count the identity pairs for the given sets of predicates.
-  assoc:get_assoc(SharedPs, P_Assoc, IdSets2),
+  get_assoc(SharedPs, P_Assoc, IdSets2),
   assert_node_(p, G, IHierHash, SharedPs, IdSets2).
 
 %! assert_node_(

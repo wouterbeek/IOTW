@@ -83,8 +83,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
-  V_Attrs =
-    [color(Color),label(V_Label),shape(rectangle),style(Style)].
+  V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
 
 calculate(IHierHash, InHigher, NumberOfPairs):-
   aggregate(
