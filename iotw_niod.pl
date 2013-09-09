@@ -18,19 +18,16 @@
 :- use_module(library(semweb/rdf_library)).
 :- use_module(library(semweb/rdf_turtle)).
 :- use_module(library(xpath)).
+:- use_module(os(dir_ext)).
 :- use_module(vocabularies(void)).
 :- use_module(xml(xml_namespace)).
-
-:- db_add_novel(user:file_search_path(vk_data, data('VK'))).
-:- db_add_novel(user:file_search_path(vk_rdf, vk_data('RDF'))).
-:- db_add_novel(user:file_search_path(vk_dbpedia, vk_rdf(dbpedia))).
 
 :- db_add_novel(user:prolog_file_type(ttl, turtle)).
 
 :- rdf_meta(rdf_literal(r,r,?)).
 :- rdf_meta(rdf_literal(r,r,?,?)).
 :- rdf_meta(rdf_literal(r,r,?,?,?)).
-:- rdf_meta(top_messages(+, r)).
+:- rdf_meta(top_messages(+,r)).
 
 :- xml_register_namespace('category-nl', 'http://nl.dbpedia.org/resource/').
 :- xml_register_namespace('prop-nl', 'http://nl.dbpedia.org/property/').
@@ -45,12 +42,22 @@
 
 
 iotw_niod:-
+  % Make a safe copy of the data to experiment with.
   absolute_file_name(
-    vk_rdf(void),
-    VoID_File,
-    [access(read),file_type(turtle)]
+    home('Dropbox/VK/RDF'),
+    FromDir,
+    [access(read),file_type(directory)]
   ),
+  safe_copy_experiment_data(FromDir, ToDir),
+  absolute_file_name(
+    void,
+    VoID_File,
+    [access(read),file_type(turtle),relative_to(ToDir)]
+  ),
+  
+  % Load the entire dataset by loading the VoID file.
   void_load_library(VoID_File, _, VoID_Graph),
+  
   debug(iotw_niod, 'VoID graph ~w is loaded.', [VoID_Graph]).
 /*
   rdf_attach_library(File),

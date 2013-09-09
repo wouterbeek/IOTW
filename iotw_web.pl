@@ -15,7 +15,6 @@
 
 :- use_module(html(html)).
 :- use_module(iotw(iimb)).
-:- use_module(iotw(inode)).
 :- use_module(iotw(inode_export)).
 :- use_module(iotw(inode_update)).
 :- use_module(library(http/http_dispatch)).

@@ -13,6 +13,24 @@
 
 IOTW experiments.
 
+## Changes in the 2013/08-2013/09 version w.r.t. the 2013/05 version
+
+  * Optimization (assoc AVL tree ordsets)
+  * Identity sets i.o. identity pairs.
+  * RDF(S) materialization
+  * PO subpartitions
+  * Literal identity via canonical form.
+  * Modular rewrite
+  * GV DCG reuse
+
+## TODO
+
+  * JS callback (PO, quality)
+  * Multi-agent materialization
+  * SKOS, OWL identity reasoning
+
+Recommendation sharing non-monotonic?
+
 @author Wouter Beek
 @version 2013/05, 2013/08-2013/09
 */
