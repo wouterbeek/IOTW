@@ -1,0 +1,1580 @@
+@prefix     skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix cornetto: <http://purl.org/vocabularies/cornetto/> .
+@prefix     niod: <http://purl.org/collections/nl/niod/> .
+
+# Named toplevel resources (524)
+# This mapping was consolidated from an amalgame effort and was previously known as 'dataset39.ttl'
+# A sample was evaluated by NIOD experts. Individual experts rated the precision 86%, the combined precision is 79%
+
+
+niod:Aankoopbeleid
+	skos:exactMatch cornetto:synset-aankoopbeleid-1-noun .
+
+niod:Aannemers
+	skos:exactMatch cornetto:synset-aannemer-1-noun .
+
+niod:Aansprakelijkheid
+	skos:exactMatch cornetto:synset-aansprakelijkheid-1-noun .
+
+niod:Abolitie
+	skos:exactMatch cornetto:synset-afschaffing-1-noun .
+
+niod:Admiraliteit
+	skos:exactMatch cornetto:synset-admiraliteit-1-noun .
+
+niod:Adreslijsten
+	skos:exactMatch cornetto:synset-adreslijst-1-noun .
+
+niod:Advocatuur
+	skos:exactMatch cornetto:synset-advocatuur-1-noun .
+
+niod:Affiches
+	skos:exactMatch cornetto:synset-aanplakbiljet-1-noun .
+
+niod:Aftocht
+	skos:exactMatch cornetto:synset-aftocht-1-noun .
+
+niod:Amnestie
+	skos:exactMatch cornetto:synset-amnestie-1-noun .
+
+niod:Amusement
+	skos:exactMatch cornetto:synset-amusement-1-noun .
+
+niod:Anarchisme
+	skos:exactMatch cornetto:synset-anarchisme-1-noun .
+
+niod:Anschluss
+	skos:exactMatch cornetto:synset-anschluss-1-noun .
+
+niod:Antifascisme
+	skos:exactMatch cornetto:synset-antifascisme-1-noun .
+
+niod:Antisemitisme
+	skos:exactMatch cornetto:synset-jodenhaat-1-noun .
+
+niod:Antroposofie
+	skos:exactMatch cornetto:synset-antroposofie-1-noun .
+
+niod:Arbeid
+	skos:exactMatch cornetto:synset-werk-1-noun .
+
+niod:Arbeidersbewegingen
+	skos:exactMatch cornetto:synset-arbeidersbeweging-1-noun .
+
+niod:Arbeidsbemiddeling
+	skos:exactMatch cornetto:synset-arbeidsbemiddeling-1-noun .
+
+niod:Arbeidsinspectie
+	skos:exactMatch cornetto:synset-arbeidsinspectie-1-noun .
+
+niod:Arbeidsvoorwaarden
+	skos:exactMatch cornetto:synset-arbeidsvoorwaarde-1-noun .
+
+niod:Archeologie
+	skos:exactMatch cornetto:synset-archeologie-1-noun .
+
+niod:Architecten
+	skos:exactMatch cornetto:synset-architect-1-noun .
+
+niod:Arierverklaring
+	skos:exactMatch cornetto:synset-Ariërverklaring-1-noun .
+
+niod:Armenzorg
+	skos:exactMatch cornetto:synset-armenzorg-1-noun .
+
+niod:Armoede
+	skos:exactMatch cornetto:synset-armoede-1-noun .
+
+niod:Artiesten
+	skos:exactMatch cornetto:synset-artiest-1-noun .
+
+niod:Asmogendheden
+	skos:exactMatch cornetto:synset-asmogendheden-1-noun .
+
+niod:Astrologie
+	skos:exactMatch cornetto:synset-astrologie-1-noun .
+
+niod:Auteurs
+	skos:exactMatch cornetto:synset-schrijver-1-noun .
+
+niod:Autobanen
+	skos:exactMatch cornetto:synset-snelweg-1-noun .
+
+niod:Bakkerijen
+	skos:exactMatch cornetto:synset-bakkerij-1-noun .
+
+niod:Ballingschap
+	skos:exactMatch cornetto:synset-ballingschap-1-noun .
+
+niod:Bankwezen
+	skos:exactMatch cornetto:synset-bankwezen-1-noun .
+
+niod:Beeldhouwkunst
+	skos:exactMatch cornetto:synset-beeldhouwkunst-1-noun .
+
+niod:Beeldmateriaal
+	skos:exactMatch cornetto:synset-beeldmateriaal-1-noun .
+
+niod:Beheer
+	skos:exactMatch cornetto:synset-beheer-1-noun .
+
+niod:Beroepsgroepen
+	skos:exactMatch cornetto:synset-beroepsgroep-1-noun .
+
+niod:Betalingsverkeer
+	skos:exactMatch cornetto:synset-geldverkeer-1-noun .
+
+niod:Bevolkingsgroepen
+	skos:exactMatch cornetto:synset-bevolkingsgroep-1-noun .
+
+niod:Bevolkingspolitiek
+	skos:exactMatch cornetto:synset-bevolkingspolitiek-1-noun .
+
+niod:Bijltjesdag
+	skos:exactMatch cornetto:synset-bijltjesdag-1-noun .
+
+niod:Binnenvaart
+	skos:exactMatch cornetto:synset-binnenvaart-1-noun .
+
+niod:Bioscopen
+	skos:exactMatch cornetto:synset-bioscoop-1-noun .
+
+niod:Blitzkrieg
+	skos:exactMatch cornetto:synset-blitzkrieg-1-noun .
+
+niod:Boeddhisme
+	skos:exactMatch cornetto:synset-boeddhisme-1-noun .
+
+niod:Boekverbrandingen
+	skos:exactMatch cornetto:synset-boekverbranding-1-noun .
+
+niod:Bombardementen
+	skos:exactMatch cornetto:synset-bombardement-1-noun .
+
+niod:Bordelen
+	skos:exactMatch cornetto:synset-bordeel-1-noun .
+
+niod:Bosbouw
+	skos:exactMatch cornetto:synset-bosbouw-1-noun .
+
+niod:Boycot
+	skos:exactMatch cornetto:synset-boycot-1-noun .
+
+niod:Brandweer
+	skos:exactMatch cornetto:synset-brandweer-1-noun .
+
+niod:Burgemeesters
+	skos:exactMatch cornetto:synset-burgervader-1-noun .
+
+niod:Burgerbescherming
+	skos:exactMatch cornetto:synset-burgerbescherming-1-noun .
+
+niod:Burgeroorlogen
+	skos:exactMatch cornetto:synset-burgeroorlog-1-noun .
+
+niod:Burgerrechten
+	skos:exactMatch cornetto:synset-burgerrechten-1-noun .
+
+niod:Burgerwacht
+	skos:exactMatch cornetto:synset-burgerwachter-1-noun .
+
+niod:Calamiteiten
+	skos:exactMatch cornetto:synset-calamiteit-1-noun .
+
+niod:Camouflage
+	skos:exactMatch cornetto:synset-camouflage-1-noun .
+
+niod:Castratie
+	skos:exactMatch cornetto:synset-castratie-1-noun .
+
+niod:Chemische_oorlogvoering
+	skos:exactMatch cornetto:synset-mosterdgas-1-noun .
+
+niod:Christendom
+	skos:exactMatch cornetto:synset-christendom-1-noun .
+
+niod:Collaborateurs
+	skos:exactMatch cornetto:synset-landverrader-1-noun .
+
+niod:Collaboratie
+	skos:exactMatch cornetto:synset-collaboratie-1-noun .
+
+niod:Colportage
+	skos:exactMatch cornetto:synset-colportage-1-noun .
+
+niod:Communisten
+	skos:exactMatch cornetto:synset-communist-1-noun .
+
+niod:Concentratiekampen
+	skos:exactMatch cornetto:synset-concentratiekamp-1-noun .
+
+niod:Concordaten
+	skos:exactMatch cornetto:synset-concordaat-1-noun .
+
+niod:Confectie-industrie
+	skos:exactMatch cornetto:synset-confectie-industrie-1-noun .
+
+niod:Conservatisme
+	skos:exactMatch cornetto:synset-conservatisme-1-noun .
+
+niod:Consulaten
+	skos:exactMatch cornetto:synset-consulaat-1-noun .
+
+niod:Contraspionage
+	skos:exactMatch cornetto:synset-contraspionage-1-noun .
+
+niod:Corporatisme
+	skos:exactMatch cornetto:synset-corporatisme-1-noun .
+
+niod:Corruptie
+	skos:exactMatch cornetto:synset-corruptie-1-noun .
+
+niod:Criminaliteit
+	skos:exactMatch cornetto:synset-criminaliteit-1-noun .
+
+niod:Criminologie
+	skos:exactMatch cornetto:synset-criminologie-1-noun .
+
+niod:Crisistijd
+	skos:exactMatch cornetto:synset-crisistijd-1-noun .
+
+niod:Cultuurgeschiedenis
+	skos:exactMatch cornetto:synset-cultuurgeschiedenis-1-noun .
+
+niod:Cultuurkritiek
+	skos:exactMatch cornetto:synset-moderniteit-1-noun .
+
+niod:Cultuurpolitiek
+	skos:exactMatch cornetto:synset-cultuurpolitiek-1-noun .
+
+niod:Dagboeken
+	skos:exactMatch cornetto:synset-dagboek-1-noun .
+
+niod:Daklozen
+	skos:exactMatch cornetto:synset-zwerver-1-noun .
+
+niod:Decodering
+	skos:exactMatch cornetto:synset-decoder-1-noun .
+
+niod:Decreten
+	skos:exactMatch cornetto:synset-decreet-1-noun .
+
+niod:Defaitisme
+	skos:exactMatch cornetto:synset-defaitisme-1-noun .
+
+niod:Dekolonisatie
+	skos:exactMatch cornetto:synset-dekolonisatie-1-noun .
+
+niod:Demobilisatie
+	skos:exactMatch cornetto:synset-demobilisatie-1-noun .
+
+niod:Demografie
+	skos:exactMatch cornetto:synset-demografie-1-noun .
+
+niod:Desertie
+	skos:exactMatch cornetto:synset-desertie-1-noun .
+
+niod:Deviezen
+	skos:exactMatch cornetto:synset-deviezen-1-noun .
+
+niod:Diefstal
+	skos:exactMatch cornetto:synset-diefstal-1-noun .
+
+niod:Dienstplicht
+	skos:exactMatch cornetto:synset-dienstplicht-1-noun .
+
+niod:Dienstweigering
+	skos:exactMatch cornetto:synset-dienstweigering-1-noun .
+
+niod:Dieren
+	skos:exactMatch cornetto:synset-dier-1-noun .
+
+niod:Dierenbescherming
+	skos:exactMatch cornetto:synset-dierenbescherming-1-noun .
+
+niod:Dierentuinen
+	skos:exactMatch cornetto:synset-dierentuin-1-noun .
+
+niod:Dijken
+	skos:exactMatch cornetto:synset-dijk-1-noun .
+
+niod:Dissidenten
+	skos:exactMatch cornetto:synset-dissident-1-noun .
+
+niod:Distributiekantoren
+	skos:exactMatch cornetto:synset-distributiekantoor-1-noun .
+
+niod:Dividend
+	skos:exactMatch cornetto:synset-dividend-1-noun .
+
+niod:Documentatie
+	skos:exactMatch cornetto:synset-documentatie-1-noun .
+
+niod:Dodenherdenking
+	skos:exactMatch cornetto:synset-dodenherdenking-1-noun .
+
+niod:Doodstraf
+	skos:exactMatch cornetto:synset-doodstraf-1-noun .
+
+niod:Doorgangskampen
+	skos:exactMatch cornetto:synset-doorgangskamp-1-noun .
+
+niod:Dorpen
+	skos:exactMatch cornetto:synset-dorp-1-noun .
+
+niod:Drenkelingen
+	skos:exactMatch cornetto:synset-drenkeling-1-noun .
+
+niod:Droppings
+	skos:exactMatch cornetto:synset-oriëntatieloop-1-noun .
+
+niod:Drukkerijen
+	skos:exactMatch cornetto:synset-drukkerij-1-noun .
+
+niod:Duikboten
+	skos:exactMatch cornetto:synset-onderzeeër-1-noun .
+
+niod:Dwangarbeid
+	skos:exactMatch cornetto:synset-dwangarbeid-1-noun .
+
+niod:Dwangarbeiders
+	skos:exactMatch cornetto:synset-dwangarbeider-1-noun .
+
+niod:Echtscheidingen
+	skos:exactMatch cornetto:synset-echtscheiding-1-noun .
+
+niod:Edelmetalen
+	skos:exactMatch cornetto:synset-edelmetaal-1-noun .
+
+niod:Effectenhandel
+	skos:exactMatch cornetto:synset-effectenhandel-1-noun .
+
+niod:Egodocumenten
+	skos:exactMatch cornetto:synset-egodocument-1-noun .
+
+niod:Eindstrijd
+	skos:exactMatch cornetto:synset-finale-2-noun .
+
+niod:Emigranten
+	skos:exactMatch cornetto:synset-emigrant-1-noun .
+
+niod:Emigratie
+	skos:exactMatch cornetto:synset-emigratie-1-noun .
+
+niod:Emoties
+	skos:exactMatch cornetto:synset-gevoelswereld-1-noun .
+
+niod:Engelandvaarders
+	skos:exactMatch cornetto:synset-Engelandvaarder-1-noun .
+
+niod:Erediensten
+	skos:exactMatch cornetto:synset-kerkdienst-1-noun .
+
+niod:Erevelden
+	skos:exactMatch cornetto:synset-ereveld-1-noun .
+
+niod:Erfelijkheidsleer
+	skos:exactMatch cornetto:synset-genetica-1-noun .
+
+niod:Essays
+	skos:exactMatch cornetto:synset-opstel-1-noun .
+
+niod:Eugenetica
+	skos:exactMatch cornetto:synset-eugenetica-1-noun .
+
+niod:Euthanasie
+	skos:exactMatch cornetto:synset-euthanasie-1-noun .
+
+niod:Extremisme
+	skos:exactMatch cornetto:synset-extremisme-1-noun .
+
+niod:Faillissementen
+	skos:exactMatch cornetto:synset-faillissement-1-noun .
+
+niod:Familieleven
+	skos:exactMatch cornetto:synset-familieleven-1-noun .
+
+niod:Fascisme
+	skos:exactMatch cornetto:synset-fascisme-1-noun .
+
+niod:Filmkeuring
+	skos:exactMatch cornetto:synset-filmkeuring-1-noun .
+
+niod:Folklore
+	skos:exactMatch cornetto:synset-folklore-1-noun .
+
+niod:Fotoboeken
+	skos:exactMatch cornetto:synset-fotoboek-1-noun .
+
+niod:Fraude
+	skos:exactMatch cornetto:synset-fraude-1-noun .
+
+niod:Fuhrerprincipe
+	skos:exactMatch cornetto:synset-leidersbeginsel-1-noun .
+
+niod:Fundamentalisme
+	skos:exactMatch cornetto:synset-orthodoxie-1-noun .
+
+niod:Geallieerden
+	skos:exactMatch cornetto:synset-geallieerden-1-noun .
+
+niod:Gebouwen
+	skos:exactMatch cornetto:synset-gebouw-1-noun .
+
+niod:Geesteswetenschappen
+	skos:exactMatch cornetto:synset-geesteswetenschappen-1-noun .
+
+niod:Geinterneerden
+	skos:exactMatch cornetto:synset-geïnterneerde-1-noun .
+
+niod:Geldzuivering
+	skos:exactMatch cornetto:synset-geldsanering-1-noun .
+
+niod:Gemachtigden
+	skos:exactMatch cornetto:synset-gemachtigde-1-noun .
+
+niod:Genietroepen
+	skos:exactMatch cornetto:synset-genie-2-noun .
+
+niod:Genocide
+	skos:exactMatch cornetto:synset-genocide-1-noun .
+
+niod:Geografie
+	skos:exactMatch cornetto:synset-aardrijkskunde-1-noun .
+
+niod:Geopolitiek
+	skos:exactMatch cornetto:synset-geopolitiek-1-noun .
+
+niod:Geschiedschrijving
+	skos:exactMatch cornetto:synset-geschiedschrijving-1-noun .
+
+niod:Geschiedvervalsing
+	skos:exactMatch cornetto:synset-geschiedvervalsing-1-noun .
+
+niod:Geslachtsziekten
+	skos:exactMatch cornetto:synset-geslachtsziekte-1-noun .
+
+niod:Gestapo
+	skos:exactMatch cornetto:synset-Gestapo-1-noun .
+
+niod:Gevechtshandelingen
+	skos:exactMatch cornetto:synset-oorlogshandeling-1-noun .
+
+niod:Gevechtsvliegtuigen
+	skos:exactMatch cornetto:synset-gevechtsvliegtuig-1-noun .
+
+niod:Geweldpleging
+	skos:exactMatch cornetto:synset-geweldpleging-1-noun .
+
+niod:Gewetensbezwaren
+	skos:exactMatch cornetto:synset-gewetensbezwaar-1-noun .
+
+niod:Gewonden
+	skos:exactMatch cornetto:synset-gewonde-1-noun .
+
+niod:Gezagsvacuum
+	skos:exactMatch cornetto:synset-gezagsvacuüm-1-noun .
+
+niod:Gezinshereniging
+	skos:exactMatch cornetto:synset-gezinshereniging-1-noun .
+
+niod:Gilden
+	skos:exactMatch cornetto:synset-gilde-1-noun .
+
+niod:Goelags
+	skos:exactMatch cornetto:synset-goelag-1-noun .
+
+niod:Grafschennis
+	skos:exactMatch cornetto:synset-grafschennis-1-noun .
+
+niod:Grammofoonplaten
+	skos:exactMatch cornetto:synset-draaischijf-1-noun .
+
+niod:Graven
+	skos:exactMatch cornetto:synset-grave-1-noun .
+
+niod:Grensarbeiders
+	skos:exactMatch cornetto:synset-grensarbeider-1-noun .
+
+niod:Grensbewaking
+	skos:exactMatch cornetto:synset-grensbewaking-1-noun .
+
+niod:Grenscontrole
+	skos:exactMatch cornetto:synset-grenscontrole-1-noun .
+
+niod:Grensverkeer
+	skos:exactMatch cornetto:synset-grensverkeer-1-noun .
+
+niod:Grenzen
+	skos:exactMatch cornetto:synset-scheidslijn-1-noun .
+
+niod:Groenten
+	skos:exactMatch cornetto:synset-groente-1-noun .
+
+niod:Groepsportretten
+	skos:exactMatch cornetto:synset-groepsportret-1-noun .
+
+niod:Grondwet
+	skos:exactMatch cornetto:synset-grondwet-1-noun .
+
+niod:Hakenkruis
+	skos:exactMatch cornetto:synset-hakenkruis-1-noun .
+
+niod:Hamsteren
+	skos:exactMatch cornetto:synset-hamster-1-noun .
+
+niod:Helikopters
+	skos:exactMatch cornetto:synset-helikopter-1-noun .
+
+niod:Heraldiek
+	skos:exactMatch cornetto:synset-heraldiek-1-noun .
+
+niod:Herbewapening
+	skos:exactMatch cornetto:synset-herbewapening-1-noun .
+
+niod:Herdenkingen
+	skos:exactMatch cornetto:synset-herdenking-1-noun .
+
+niod:Hereniging
+	skos:exactMatch cornetto:synset-hereniging-1-noun .
+
+niod:Herinneringen
+	skos:exactMatch cornetto:synset-memoires-1-noun .
+
+niod:Herstelbetalingen
+	skos:exactMatch cornetto:synset-herstelbetaling-1-noun .
+
+niod:Hitlergroet
+	skos:exactMatch cornetto:synset-fascistengroet-1-noun .
+
+niod:Hogescholen
+	skos:exactMatch cornetto:synset-hogeschool-1-noun .
+
+niod:Hongerwinter
+	skos:exactMatch cornetto:synset-hongerwinter-1-noun .
+
+niod:Hoogleraren
+	skos:exactMatch cornetto:synset-hoogleraar-1-noun .
+
+niod:Hoogverraad
+	skos:exactMatch cornetto:synset-hoogverraad-1-noun .
+
+niod:Horeca
+	skos:exactMatch cornetto:synset-horeca-1-noun .
+
+niod:Huiszoeking
+	skos:exactMatch cornetto:synset-huiszoeking-1-noun .
+
+niod:Huldigingen
+	skos:exactMatch cornetto:synset-huldiging-1-noun .
+
+niod:Identiteitspapieren
+	skos:exactMatch cornetto:synset-identiteitspapieren-1-noun .
+
+niod:Illegaliteit
+	skos:exactMatch cornetto:synset-illegaliteit-2-noun .
+
+niod:Immigratie
+	skos:exactMatch cornetto:synset-immigratie-1-noun .
+
+niod:Imperialisme
+	skos:exactMatch cornetto:synset-imperialisme-1-noun .
+
+niod:Inbeslagneming
+	skos:exactMatch cornetto:synset-beslaglegging-1-noun .
+
+niod:Inboedels
+	skos:exactMatch cornetto:synset-inboedel-1-noun .
+
+niod:Industrialisatie
+	skos:exactMatch cornetto:synset-industrialisatie-1-noun .
+
+niod:Infanterie
+	skos:exactMatch cornetto:synset-infanterie-1-noun .
+
+niod:Inflatie
+	skos:exactMatch cornetto:synset-inflatie-1-noun .
+
+niod:Infrastructuur
+	skos:exactMatch cornetto:synset-infrastructuur-1-noun .
+
+niod:Inkwartiering
+	skos:exactMatch cornetto:synset-inkwartiering-1-noun .
+
+niod:Inlevering
+	skos:exactMatch cornetto:synset-inlevering-1-noun .
+
+niod:Inlichtingendiensten
+	skos:exactMatch cornetto:synset-spionagedienst-1-noun .
+
+niod:Integratie
+	skos:exactMatch cornetto:synset-integratie-1-noun .
+
+niod:Intelligentsia
+	skos:exactMatch cornetto:synset-intelligentsia-1-noun .
+
+niod:Interbellum
+	skos:exactMatch cornetto:synset-interbellum-1-noun .
+
+niod:Internering
+	skos:exactMatch cornetto:synset-internering-1-noun .
+
+niod:Interneringskampen
+	skos:exactMatch cornetto:synset-gevangenenkamp-1-noun .
+
+niod:Internet
+	skos:exactMatch cornetto:synset-Internet-1-noun .
+
+niod:Intocht
+	skos:exactMatch cornetto:synset-intocht-1-noun .
+
+niod:Islam
+	skos:exactMatch cornetto:synset-islam-1-noun .
+
+niod:Isolationisme
+	skos:exactMatch cornetto:synset-isolationisme-1-noun .
+
+niod:Jazz
+	skos:exactMatch cornetto:synset-jazz-1-noun .
+
+niod:Jeugdliteratuur
+	skos:exactMatch cornetto:synset-jeugdliteratuur-1-noun .
+
+niod:Jodenvervolging
+	skos:exactMatch cornetto:synset-jodenvervolging-1-noun .
+
+niod:Kaartmateriaal
+	skos:exactMatch cornetto:synset-cartografie-1-noun .
+
+niod:Kampcommandanten
+	skos:exactMatch cornetto:synset-kampcommandant-1-noun .
+
+niod:Kanonneerboten
+	skos:exactMatch cornetto:synset-kanonneerboot-1-noun .
+
+niod:Kartelvorming
+	skos:exactMatch cornetto:synset-kartelvorming-1-noun .
+
+niod:Kinderboeken
+	skos:exactMatch cornetto:synset-kinderboek-1-noun .
+
+niod:Kinderuitzending
+	skos:exactMatch cornetto:synset-kinderprogramma-1-noun .
+
+niod:Klederdrachten
+	skos:exactMatch cornetto:synset-klederdracht-1-noun .
+
+niod:Kloosterorden
+	skos:exactMatch cornetto:synset-kloosterorde-1-noun .
+
+niod:Kluizen
+	skos:exactMatch cornetto:synset-kluis-1-noun .
+
+niod:Knokploegen
+	skos:exactMatch cornetto:synset-knokploeg-1-noun .
+
+niod:Koeriers
+	skos:exactMatch cornetto:synset-koerier-1-noun .
+
+niod:Kolonialisme
+	skos:exactMatch cornetto:synset-kolonialisme-1-noun .
+
+niod:Koningsgezindheid
+	skos:exactMatch cornetto:synset-koningsgezindheid-1-noun .
+
+niod:Koningskwestie
+	skos:exactMatch cornetto:synset-koningskwestie-1-noun .
+
+niod:Kookboeken
+	skos:exactMatch cornetto:synset-kookboek-1-noun .
+
+niod:Krijgsgevangenkampen
+	skos:exactMatch cornetto:synset-krijgsgevangenkamp-1-noun .
+
+niod:Kunstenaars
+	skos:exactMatch cornetto:synset-kunstenaar-1-noun .
+
+niod:Kustgebied
+	skos:exactMatch cornetto:synset-kustgebied-1-noun .
+
+niod:Kustvaart
+	skos:exactMatch cornetto:synset-kustvaart-1-noun .
+
+niod:Landbouwproducten
+	skos:exactMatch cornetto:synset-landbouwprodukt-2-noun .
+
+niod:Landdagen
+	skos:exactMatch cornetto:synset-landdag-1-noun .
+
+niod:Landingsvaartuigen
+	skos:exactMatch cornetto:synset-landingsboot-1-noun .
+
+niod:Lebensraum
+	skos:exactMatch cornetto:synset-levensruimte-1-noun .
+
+niod:Lesmateriaal
+	skos:exactMatch cornetto:synset-lesmateriaal-1-noun .
+
+niod:Levensmiddelen
+	skos:exactMatch cornetto:synset-levensmiddelen-1-noun .
+
+niod:Levensonderhoud
+	skos:exactMatch cornetto:synset-kost-2-noun .
+
+niod:Liberalisme
+	skos:exactMatch cornetto:synset-liberalisme-1-noun .
+
+niod:Lichaamscultuur
+	skos:exactMatch cornetto:synset-lichaamscultuur-1-noun .
+
+niod:Lichaamsverzorging
+	skos:exactMatch cornetto:synset-lichaamsverzorging-1-noun .
+
+niod:Liederen
+	skos:exactMatch cornetto:synset-ontucht-1-noun .
+
+niod:Lijken
+	skos:exactMatch cornetto:synset-lijk-1-noun .
+
+niod:Lonen
+	skos:exactMatch cornetto:synset-loon-1-noun .
+
+niod:Loyaliteitsverklaring
+	skos:exactMatch cornetto:synset-loyaliteitsverklaring-1-noun .
+
+niod:Luchtafweer
+	skos:exactMatch cornetto:synset-luchtafweer-1-noun .
+
+niod:Luchtfotografie
+	skos:exactMatch cornetto:synset-luchtfotografie-1-noun .
+
+niod:Luchtmacht
+	skos:exactMatch cornetto:synset-luchtmacht-1-noun .
+
+niod:Luchtoorlog
+	skos:exactMatch cornetto:synset-luchtoorlog-1-noun .
+
+niod:Luchtschepen
+	skos:exactMatch cornetto:synset-zeppelin-1-noun .
+
+niod:Luchtvaart
+	skos:exactMatch cornetto:synset-luchtvaart-1-noun .
+
+niod:Machinegeweren
+	skos:exactMatch cornetto:synset-machinegeweer-1-noun .
+
+niod:Machtsovername
+	skos:exactMatch cornetto:synset-machtsovername-1-noun .
+
+niod:Manifesten
+	skos:exactMatch cornetto:synset-manifest-1-noun .
+
+niod:Mariniers
+	skos:exactMatch cornetto:synset-marinier-1-noun .
+
+niod:Marxisme
+	skos:exactMatch cornetto:synset-marxisme-1-noun .
+
+niod:Massabijeenkomsten
+	skos:exactMatch cornetto:synset-massabijeenkomst-1-noun .
+
+niod:Massamoorden
+	skos:exactMatch cornetto:synset-massamoord-1-noun .
+
+niod:Massapsychologie
+	skos:exactMatch cornetto:synset-massapsychologie-1-noun .
+
+niod:Medische_experimenten
+	skos:exactMatch cornetto:synset-test-1-noun .
+
+niod:Mensenrechten
+	skos:exactMatch cornetto:synset-mensenrechten-1-noun .
+
+niod:Meteorologie
+	skos:exactMatch cornetto:synset-meteorologie-1-noun .
+
+niod:Meubelen
+	skos:exactMatch cornetto:synset-meubelstuk-1-noun .
+
+niod:Middenstand
+	skos:exactMatch cornetto:synset-middenstand-1-noun .
+
+niod:Mijnbouw
+	skos:exactMatch cornetto:synset-mijnbouw-1-noun .
+
+niod:Mijnenleggers
+	skos:exactMatch cornetto:synset-mijnenlegger-1-noun .
+
+niod:Mijnenvegers
+	skos:exactMatch cornetto:synset-mijnenveger-1-noun .
+
+niod:Militaire_geschiedenis
+	skos:exactMatch cornetto:synset-krijgsgeschiedenis-1-noun .
+
+niod:Militairen
+	skos:exactMatch cornetto:synset-militair-1-noun .
+
+niod:Militarisme
+	skos:exactMatch cornetto:synset-militarisme-1-noun .
+
+niod:Ministers
+	skos:exactMatch cornetto:synset-minister-1-noun .
+
+niod:Mishandeling
+	skos:exactMatch cornetto:synset-mishandeling-1-noun .
+
+niod:Modder
+	skos:exactMatch cornetto:synset-modder-1-noun .
+
+niod:Moordaanslagen
+	skos:exactMatch cornetto:synset-moordaanslag-1-noun .
+
+niod:Moordpartijen
+	skos:exactMatch cornetto:synset-bloedbad-1-noun .
+
+niod:Moslims
+	skos:exactMatch cornetto:synset-moslim-1-noun .
+
+niod:Munitie
+	skos:exactMatch cornetto:synset-munitie-1-noun .
+
+niod:Muntgeld
+	skos:exactMatch cornetto:synset-muntgeld-1-noun .
+
+niod:Muziekinstrumenten
+	skos:exactMatch cornetto:synset-muziekinstrument-1-noun .
+
+niod:Mythevorming
+	skos:exactMatch cornetto:synset-mythevorming-1-noun .
+
+niod:Namenlijsten
+	skos:exactMatch cornetto:synset-ledenlijst-1-noun .
+
+niod:Nationaal-Socialisme
+	skos:exactMatch cornetto:synset-nationaal-socialisme-1-noun .
+
+niod:Nationalisme
+	skos:exactMatch cornetto:synset-chauvinisme-1-noun .
+
+niod:Natuurbescherming
+	skos:exactMatch cornetto:synset-natuurbescherming-1-noun .
+
+niod:Natuurrampen
+	skos:exactMatch cornetto:synset-natuurramp-1-noun .
+
+niod:Neofascisme
+	skos:exactMatch cornetto:synset-neofascisme-1-noun .
+
+niod:Neonazisme
+	skos:exactMatch cornetto:synset-neonazisme-1-noun .
+
+niod:Neutraliteit
+	skos:exactMatch cornetto:synset-neutraliteit-1-noun .
+
+niod:Nieuwsberichten
+	skos:exactMatch cornetto:synset-nieuwsberichten-1-noun .
+
+niod:Nieuwsvoorziening
+	skos:exactMatch cornetto:synset-nieuwsvoorziening-1-noun .
+
+niod:Noodwoningen
+	skos:exactMatch cornetto:synset-noodwoning-1-noun .
+
+niod:Occultisme
+	skos:exactMatch cornetto:synset-occultisme-1-noun .
+
+niod:Offensieven
+	skos:exactMatch cornetto:synset-aanvalsoorlog-1-noun .
+
+niod:Onafhankelijkheidsverklaringen
+	skos:exactMatch cornetto:synset-onafhankelijkheidsverklaring-1-noun .
+
+niod:Onderduikers
+	skos:exactMatch cornetto:synset-onderduiker-1-noun .
+
+niod:Onderhandelingen
+	skos:exactMatch cornetto:synset-onderhandeling-1-noun .
+
+niod:Ondersteuning
+	skos:exactMatch cornetto:synset-steun-2-noun .
+
+niod:Onderwijs
+	skos:exactMatch cornetto:synset-onderwijs-1-noun .
+
+niod:Onderzoek
+	skos:exactMatch cornetto:synset-onderzoek-1-noun .
+
+niod:Ontvluchtingen
+	skos:exactMatch cornetto:synset-ontsnapping-1-noun .
+
+niod:Ontvoeringen
+	skos:exactMatch cornetto:synset-ontvoering-1-noun .
+
+niod:Oorlogen
+	skos:exactMatch cornetto:synset-oorlog-1-noun .
+
+niod:Oorlogsbuit
+	skos:exactMatch cornetto:synset-oorlogsbuit-1-noun .
+
+niod:Oorlogscorrespondenten
+	skos:exactMatch cornetto:synset-oorlogscorrespondent-1-noun .
+
+niod:Oorlogseconomie
+	skos:exactMatch cornetto:synset-oorlogseconomie-1-noun .
+
+niod:Oorlogsindustrie
+	skos:exactMatch cornetto:synset-oorlogsindustrie-1-noun .
+
+niod:Oorlogsmisdaden
+	skos:exactMatch cornetto:synset-oorlogsmisdaad-1-noun .
+
+niod:Oorlogsmisdadigers
+	skos:exactMatch cornetto:synset-oorlogsmisdadiger-1-noun .
+
+niod:Oorlogsmonumenten
+	skos:exactMatch cornetto:synset-oorlogsmonument-1-noun .
+
+niod:Oorlogsschade
+	skos:exactMatch cornetto:synset-oorlogsschade-1-noun .
+
+niod:Oorlogsschulden
+	skos:exactMatch cornetto:synset-oorlogsschuld-1-noun .
+
+niod:Oorlogsverklaringen
+	skos:exactMatch cornetto:synset-oorlogsverklaring-1-noun .
+
+niod:Oorlogswinst
+	skos:exactMatch cornetto:synset-oorlogswinst-1-noun .
+
+niod:Oorlogvoering
+	skos:exactMatch cornetto:synset-oorlogvoering-1-noun .
+
+niod:Oostfront
+	skos:exactMatch cornetto:synset-Oostfront-1-noun .
+
+niod:Opleidingen
+	skos:exactMatch cornetto:synset-opleiding-1-noun .
+
+niod:Opmars
+	skos:exactMatch cornetto:synset-opkomst-2-noun .
+
+niod:Opsporing
+	skos:exactMatch cornetto:synset-opsporing-1-noun .
+
+niod:Opstanden
+	skos:exactMatch cornetto:synset-muiterij-1-noun .
+
+niod:Opvangkampen
+	skos:exactMatch cornetto:synset-opvangkamp-1-noun .
+
+niod:Ordediensten
+	skos:exactMatch cornetto:synset-ordedienst-1-noun .
+
+niod:Orkesten
+	skos:exactMatch cornetto:synset-orkest-1-noun .
+
+niod:Overheidsinstellingen
+	skos:exactMatch cornetto:synset-overheidsinstelling-1-noun .
+
+niod:Pacifisme
+	skos:exactMatch cornetto:synset-pacifisme-1-noun .
+
+niod:Padvinderij
+	skos:exactMatch cornetto:synset-scouting-2-noun .
+
+niod:Pamfletten
+	skos:exactMatch cornetto:synset-pamflet-1-noun .
+
+niod:Pangermanisme
+	skos:exactMatch cornetto:synset-pangermanisme-1-noun .
+
+niod:Pantservoertuigen
+	skos:exactMatch cornetto:synset-pantservoertuig-1-noun .
+
+niod:Parachutisten
+	skos:exactMatch cornetto:synset-parachutist-1-noun .
+
+niod:Parapsychologie
+	skos:exactMatch cornetto:synset-parapsychologie-1-noun .
+
+niod:Parken
+	skos:exactMatch cornetto:synset-park-1-noun .
+
+niod:Parketwacht
+	skos:exactMatch cornetto:synset-parketwacht-1-noun .
+
+niod:Partijdagen
+	skos:exactMatch cornetto:synset-partijdag-1-noun .
+
+niod:Partijleiding
+	skos:exactMatch cornetto:synset-partijleiding-1-noun .
+
+niod:Partizanen
+	skos:exactMatch cornetto:synset-guerrillastrijder-1-noun .
+
+niod:Pausen
+	skos:exactMatch cornetto:synset-pontifex-1-noun .
+
+niod:Persberichten
+	skos:exactMatch cornetto:synset-communiqué-1-noun-d_n-13210 .
+
+niod:Personeel
+	skos:exactMatch cornetto:synset-personeel-1-noun .
+
+niod:Persvrijheid
+	skos:exactMatch cornetto:synset-persvrijheid-1-noun .
+
+niod:Piloten
+	skos:exactMatch cornetto:synset-piloot-1-noun .
+
+niod:Planeconomie
+	skos:exactMatch cornetto:synset-planeconomie-1-noun .
+
+niod:Plunderingen
+	skos:exactMatch cornetto:synset-plundering-1-noun .
+
+niod:Pogroms
+	skos:exactMatch cornetto:synset-jodenvervolging-1-noun .
+
+niod:Polemologie
+	skos:exactMatch cornetto:synset-polemologie-1-noun .
+
+niod:Politicologie
+	skos:exactMatch cornetto:synset-politicologie-1-noun .
+
+niod:Posterijen
+	skos:exactMatch cornetto:synset-P_T_T_-1-noun .
+
+niod:Postverkeer
+	skos:exactMatch cornetto:synset-postverzending-1-noun .
+
+niod:Predikanten
+	skos:exactMatch cornetto:synset-predikant-1-noun .
+
+niod:Prijspolitiek
+	skos:exactMatch cornetto:synset-prijspolitiek-1-noun .
+
+niod:Processen
+	skos:exactMatch cornetto:synset-rechtszaak-1-noun .
+
+niod:Propaganda
+	skos:exactMatch cornetto:synset-propaganda-1-noun .
+
+niod:Prostitutie
+	skos:exactMatch cornetto:synset-prostitutie-1-noun .
+
+niod:Protestantisme
+	skos:exactMatch cornetto:synset-protestantisme-1-noun .
+
+niod:Psychiatrie
+	skos:exactMatch cornetto:synset-psychiatrie-1-noun .
+
+niod:Publicatieverboden
+	skos:exactMatch cornetto:synset-publikatieverbod-1-noun .
+
+niod:Rabbijnen
+	skos:exactMatch cornetto:synset-rabbijn-1-noun .
+
+niod:Radar
+	skos:exactMatch cornetto:synset-radar-1-noun .
+
+niod:Radicalisme
+	skos:exactMatch cornetto:synset-radicalisme-1-noun .
+
+niod:Rantsoenering
+	skos:exactMatch cornetto:synset-rantsoenering-1-noun .
+
+niod:Rassenkunde
+	skos:exactMatch cornetto:synset-rassenkunde-1-noun .
+
+niod:Rassenpolitiek
+	skos:exactMatch cornetto:synset-rassenpolitiek-1-noun .
+
+niod:Rechtsherstel
+	skos:exactMatch cornetto:synset-rechtsherstel-1-noun .
+
+niod:Rechtswetenschap
+	skos:exactMatch cornetto:synset-rechtswetenschap-1-noun .
+
+niod:Reclassering
+	skos:exactMatch cornetto:synset-reclasseringswerk-1-noun .
+
+niod:Reddingswezen
+	skos:exactMatch cornetto:synset-reddingswezen-1-noun .
+
+niod:Rederijen
+	skos:exactMatch cornetto:synset-scheepvaartmaatschappij-1-noun .
+
+niod:Referenda
+	skos:exactMatch cornetto:synset-volksstemming-1-noun .
+
+niod:Reisverslagen
+	skos:exactMatch cornetto:synset-reisverslag-1-noun .
+
+niod:Religie
+	skos:exactMatch cornetto:synset-geloof-3-noun .
+
+niod:Rente
+	skos:exactMatch cornetto:synset-interest-1-noun .
+
+niod:Represailles
+	skos:exactMatch cornetto:synset-wraak-1-noun .
+
+niod:Republikeinen
+	skos:exactMatch cornetto:synset-republikein-1-noun .
+
+niod:Reservetroepen
+	skos:exactMatch cornetto:synset-reservetroepen-1-noun .
+
+niod:Restitutie
+	skos:exactMatch cornetto:synset-terugbetaling-1-noun .
+
+niod:Rijksdag
+	skos:exactMatch cornetto:synset-rijksdag-1-noun .
+
+niod:Rijksdiensten
+	skos:exactMatch cornetto:synset-staatsdienst-1-noun .
+
+niod:Rijwielen
+	skos:exactMatch cornetto:synset-fiets-1-noun .
+
+niod:Ruimtelijke_ordening
+	skos:exactMatch cornetto:synset-planologie-1-noun .
+
+niod:Ruimtevaart
+	skos:exactMatch cornetto:synset-ruimtevaart-1-noun .
+
+niod:Sabotage
+	skos:exactMatch cornetto:synset-sabotage-1-noun .
+
+niod:Schaarste
+	skos:exactMatch cornetto:synset-schaarste-1-noun .
+
+niod:Scheepsrampen
+	skos:exactMatch cornetto:synset-scheepsramp-1-noun .
+
+niod:Scheepvaart
+	skos:exactMatch cornetto:synset-scheepvaart-1-noun .
+
+niod:Scheikunde
+	skos:exactMatch cornetto:synset-scheikunde-1-noun .
+
+niod:Schepen
+	skos:exactMatch cornetto:synset-schepen-1-noun .
+
+niod:Schilderkunst
+	skos:exactMatch cornetto:synset-schilderkunst-1-noun .
+
+niod:Schuilkelders
+	skos:exactMatch cornetto:synset-schuilkelder-1-noun .
+
+niod:Schuldvraag
+	skos:exactMatch cornetto:synset-schuldvraag-1-noun .
+
+niod:Seksualiteit
+	skos:exactMatch cornetto:synset-seksualiteit-1-noun .
+
+niod:Separatisme
+	skos:exactMatch cornetto:synset-separatisme-1-noun .
+
+niod:Shoah
+	skos:exactMatch cornetto:synset-holocaust-1-noun .
+
+niod:Sinti_en_Roma
+	skos:exactMatch cornetto:synset-zigeuner-1-noun .
+
+niod:Slachten
+	skos:exactMatch cornetto:synset-slacht-1-noun .
+
+niod:Slagveld
+	skos:exactMatch cornetto:synset-slagveld-1-noun .
+
+niod:Sleepvaart
+	skos:exactMatch cornetto:synset-sleepvaart-1-noun .
+
+niod:Socialisme
+	skos:exactMatch cornetto:synset-socialisme-1-noun .
+
+niod:Sociologie
+	skos:exactMatch cornetto:synset-sociologie-1-noun .
+
+niod:Soevereiniteitsoverdracht
+	skos:exactMatch cornetto:synset-soevereiniteitsoverdracht-1-noun .
+
+niod:Speelgoed
+	skos:exactMatch cornetto:synset-speelgoed-1-noun .
+
+niod:Spionage
+	skos:exactMatch cornetto:synset-spionage-1-noun .
+
+niod:Spoorwegen
+	skos:exactMatch cornetto:synset-spoorwegen-1-noun .
+
+niod:Staatsbezoeken
+	skos:exactMatch cornetto:synset-staatsbezoek-1-noun .
+
+niod:Staatsbladen
+	skos:exactMatch cornetto:synset-Staatsblad-1-noun .
+
+niod:Staatshoofden
+	skos:exactMatch cornetto:synset-staatshoofd-1-noun .
+
+niod:Staatsinrichting
+	skos:exactMatch cornetto:synset-staatsvorm-1-noun .
+
+niod:Staatsrecht
+	skos:exactMatch cornetto:synset-staatsrecht-1-noun .
+
+niod:Stafkaarten
+	skos:exactMatch cornetto:synset-stafkaart-1-noun .
+
+niod:Stakingen
+	skos:exactMatch cornetto:synset-staking-1-noun .
+
+niod:Stalinisme
+	skos:exactMatch cornetto:synset-stalinisme-1-noun .
+
+niod:Standbeelden
+	skos:exactMatch cornetto:synset-standbeeld-1-noun .
+
+niod:Standrecht
+	skos:exactMatch cornetto:synset-standrecht-1-noun .
+
+niod:Statenbonden
+	skos:exactMatch cornetto:synset-statenbond-1-noun .
+
+niod:Sterftecijfers
+	skos:exactMatch cornetto:synset-sterftecijfer-1-noun .
+
+niod:Stoottroepen
+	skos:exactMatch cornetto:synset-stoottroepen-1-noun .
+
+niod:Straatbeelden
+	skos:exactMatch cornetto:synset-straatbeeld-1-noun .
+
+niod:Straatnamen
+	skos:exactMatch cornetto:synset-straatnaam-1-noun .
+
+niod:Strafrecht
+	skos:exactMatch cornetto:synset-strafrecht-1-noun .
+
+niod:Stress
+	skos:exactMatch cornetto:synset-stress-1-noun .
+
+niod:Stripverhalen
+	skos:exactMatch cornetto:synset-stripverhaal-1-noun .
+
+niod:Studentenverzet
+	skos:exactMatch cornetto:synset-studentenverzet-1-noun .
+
+niod:Sultanaten
+	skos:exactMatch cornetto:synset-sultanaat-1-noun .
+
+niod:Surrogaten
+	skos:exactMatch cornetto:synset-surrogaat-1-noun .
+
+niod:Synagogen
+	skos:exactMatch cornetto:synset-synagoge-1-noun .
+
+niod:Taalgebruik
+	skos:exactMatch cornetto:synset-taalgebruik-1-noun .
+
+niod:Taalwetenschap
+	skos:exactMatch cornetto:synset-taalkunde-1-noun .
+
+niod:Telefonie
+	skos:exactMatch cornetto:synset-telefonie-1-noun .
+
+niod:Telefoonboeken
+	skos:exactMatch cornetto:synset-telefoongids-1-noun .
+
+niod:Telegrafie
+	skos:exactMatch cornetto:synset-telegrafie-1-noun .
+
+niod:Tentoonstellingen
+	skos:exactMatch cornetto:synset-uitstalling-2-noun .
+
+niod:Terugkeer
+	skos:exactMatch cornetto:synset-terugkeer-1-noun .
+
+niod:Tewerkstelling
+	skos:exactMatch cornetto:synset-tewerkstelling-1-noun .
+
+niod:Theologie
+	skos:exactMatch cornetto:synset-theologie-1-noun .
+
+niod:Theosofie
+	skos:exactMatch cornetto:synset-theosofie-1-noun .
+
+niod:Thuisfront
+	skos:exactMatch cornetto:synset-thuisfront-1-noun .
+
+niod:Toerisme
+	skos:exactMatch cornetto:synset-toerisme-1-noun .
+
+niod:Toneelstukken
+	skos:exactMatch cornetto:synset-toneelstuk-1-noun .
+
+niod:Torpedoboten
+	skos:exactMatch cornetto:synset-torpedoboot-1-noun .
+
+niod:Totalitarisme
+	skos:exactMatch cornetto:synset-totalitarisme-1-noun .
+
+niod:Transportvliegtuigen
+	skos:exactMatch cornetto:synset-transportvliegtuig-1-noun .
+
+niod:Treinen
+	skos:exactMatch cornetto:synset-trein-1-noun .
+
+niod:Tribunalen
+	skos:exactMatch cornetto:synset-tribunaal-1-noun .
+
+niod:Troepenbewegingen
+	skos:exactMatch cornetto:synset-troepenverplaatsing-1-noun .
+
+niod:Tuinbouw
+	skos:exactMatch cornetto:synset-tuinbouw-1-noun .
+
+niod:Uitgaansverboden
+	skos:exactMatch cornetto:synset-uitgaansverbod-1-noun .
+
+niod:Uitleveringen
+	skos:exactMatch cornetto:synset-uitlevering-1-noun .
+
+niod:Vakbeweging
+	skos:exactMatch cornetto:synset-vakbeweging-1-noun .
+
+niod:Vakverenigingen
+	skos:exactMatch cornetto:synset-vakbond-1-noun .
+
+niod:Variete
+	skos:exactMatch cornetto:synset-revue-1-noun .
+
+niod:Vechtpartijen
+	skos:exactMatch cornetto:synset-vechtpartij-1-noun .
+
+niod:Veeteelt
+	skos:exactMatch cornetto:synset-veeteelt-1-noun .
+
+niod:Veldpost
+	skos:exactMatch cornetto:synset-veldpost-1-noun .
+
+niod:Veldslagen
+	skos:exactMatch cornetto:synset-veldslag-1-noun .
+
+niod:Verbindingsdiensten
+	skos:exactMatch cornetto:synset-verbindingsdienst-1-noun .
+
+niod:Verblijfsvergunningen
+	skos:exactMatch cornetto:synset-verblijfsvergunning-1-noun .
+
+niod:Verboden
+	skos:exactMatch cornetto:synset-verbod-1-noun .
+
+niod:Verdedigingswerken
+	skos:exactMatch cornetto:synset-verdedigingswerk-1-noun .
+
+niod:Verdragen
+	skos:exactMatch cornetto:synset-verdrag-1-noun .
+
+niod:Verhuizingen
+	skos:exactMatch cornetto:synset-verhuizing-1-noun .
+
+niod:Verjaring
+	skos:exactMatch cornetto:synset-verjaring-1-noun .
+
+niod:Verkiezingen
+	skos:exactMatch cornetto:synset-verkiezingen-1-noun .
+
+niod:Verlofgangers
+	skos:exactMatch cornetto:synset-verlofganger-1-noun .
+
+niod:Vermisten
+	skos:exactMatch cornetto:synset-vermiste-1-noun .
+
+niod:Vermommingen
+	skos:exactMatch cornetto:synset-vermomming-1-noun .
+
+niod:Vernielingen
+	skos:exactMatch cornetto:synset-vernieling-1-noun .
+
+niod:Vernietigingskampen
+	skos:exactMatch cornetto:synset-vernietigingskamp-1-noun .
+
+niod:Verordeningen
+	skos:exactMatch cornetto:synset-verordening-1-noun .
+
+niod:Verraad
+	skos:exactMatch cornetto:synset-verraad-1-noun .
+
+niod:Verwerking
+	skos:exactMatch cornetto:synset-verwerking-1-noun .
+
+niod:Verwoestingen
+	skos:exactMatch cornetto:synset-deletie-2-noun .
+
+niod:Verzetsgroepen
+	skos:exactMatch cornetto:synset-verzetsgroep-1-noun .
+
+niod:Verzuiling
+	skos:exactMatch cornetto:synset-verzuiling-1-noun .
+
+niod:Vestingen
+	skos:exactMatch cornetto:synset-vesting-1-noun .
+
+niod:Visserij
+	skos:exactMatch cornetto:synset-visserij-1-noun .
+
+niod:Vlammenwerpers
+	skos:exactMatch cornetto:synset-vlammenwerper-1-noun .
+
+niod:Vleeswaren
+	skos:exactMatch cornetto:synset-vleeswaren-1-noun .
+
+niod:Vliegboten
+	skos:exactMatch cornetto:synset-vliegboot-1-noun .
+
+niod:Vliegtuigen
+	skos:exactMatch cornetto:synset-vliegtuig-1-noun .
+
+niod:Vliegvelden
+	skos:exactMatch cornetto:synset-vliegveld-1-noun .
+
+niod:Vloot
+	skos:exactMatch cornetto:synset-vlot-3-noun .
+
+niod:Vluchtelingenkampen
+	skos:exactMatch cornetto:synset-vluchtelingenkamp-1-noun .
+
+niod:Voedselvoorziening
+	skos:exactMatch cornetto:synset-voedselvoorziening-1-noun .
+
+niod:Voertuigen
+	skos:exactMatch cornetto:synset-voertuig-1-noun .
+
+niod:Volksgezondheid
+	skos:exactMatch cornetto:synset-volksgezondheid-1-noun .
+
+niod:Volkskunde
+	skos:exactMatch cornetto:synset-volkskunde-1-noun .
+
+niod:Volksverhuizingen
+	skos:exactMatch cornetto:synset-volksverhuizing-1-noun .
+
+niod:Voogdij
+	skos:exactMatch cornetto:synset-voogdij-1-noun .
+
+niod:Voorlichting
+	skos:exactMatch cornetto:synset-voorlichting-1-noun .
+
+niod:Voorschriften
+	skos:exactMatch cornetto:synset-voorschrift-1-noun .
+
+niod:Vorderingen
+	skos:exactMatch cornetto:synset-vooruitgang-2-noun .
+
+niod:Vredesonderhandelingen
+	skos:exactMatch cornetto:synset-vredesbesprekingen-1-noun .
+
+niod:Vreemdelingenhaat
+	skos:exactMatch cornetto:synset-vreemdelingenhaat-1-noun .
+
+niod:Vrijlating
+	skos:exactMatch cornetto:synset-vrijlating-1-noun .
+
+niod:Vrijmetselarij
+	skos:exactMatch cornetto:synset-vrijmetselarij-1-noun .
+
+niod:Vrouwengeschiedenis
+	skos:exactMatch cornetto:synset-vrouwengeschiedenis-3-noun .
+
+niod:Vrouwenkampen
+	skos:exactMatch cornetto:synset-vrouwenkamp-1-noun .
+
+niod:Waarschuwingen
+	skos:exactMatch cornetto:synset-waarschuwing-1-noun .
+
+niod:Wapensmokkel
+	skos:exactMatch cornetto:synset-wapensmokkel-1-noun .
+
+niod:Wapenstilstanden
+	skos:exactMatch cornetto:synset-wapenstilstand-1-noun .
+
+niod:Waterwegen
+	skos:exactMatch cornetto:synset-waterweg-1-noun .
+
+niod:Weigeraars
+	skos:exactMatch cornetto:synset-weigeraar-1-noun .
+
+niod:Werkverschaffing
+	skos:exactMatch cornetto:synset-werkverschaffing-1-noun .
+
+niod:Wetboeken
+	skos:exactMatch cornetto:synset-wetboek-1-noun .
+
+niod:Wetenschappen
+	skos:exactMatch cornetto:synset-wetenschappelijkheid-1-noun .
+
+niod:Wethouders
+	skos:exactMatch cornetto:synset-wethouder-1-noun .
+
+niod:Winkels
+	skos:exactMatch cornetto:synset-detailhandel-1-noun .
+
+niod:Winter
+	skos:exactMatch cornetto:synset-winter-1-noun .
+
+niod:Wintertijd
+	skos:exactMatch cornetto:synset-wintertijd-1-noun .
+
+niod:Wiskunde
+	skos:exactMatch cornetto:synset-wiskunde-1-noun .
+
+niod:Woestijnoorlogen
+	skos:exactMatch cornetto:synset-woestijnoorlog-1-noun .
+
+niod:Woningen
+	skos:exactMatch cornetto:synset-woning-1-noun .
+
+niod:Woonwagenbewoners
+	skos:exactMatch cornetto:synset-woonwagenbewoner-1-noun .
+
+niod:Woordenboeken
+	skos:exactMatch cornetto:synset-woordenboek-1-noun .
+
+niod:Zangbundels
+	skos:exactMatch cornetto:synset-liedboek-1-noun .
+
+niod:Zedelijkheid
+	skos:exactMatch cornetto:synset-deugdzaamheid-1-noun .
+
+niod:Zeeoorlog
+	skos:exactMatch cornetto:synset-zeeoorlog-1-noun .
+
+niod:Zelfbeschikkingsrecht
+	skos:exactMatch cornetto:synset-zelfbeschikkingsrecht-1-noun .
+
+niod:Zelfmoorden
+	skos:exactMatch cornetto:synset-zelfmoord-1-noun .
+
+niod:Ziekenhuizen
+	skos:exactMatch cornetto:synset-ziekenhuis-1-noun .
+
+niod:Ziekten
+	skos:exactMatch cornetto:synset-ziekte-2-noun .
+
+niod:Zionisme
+	skos:exactMatch cornetto:synset-zionisme-1-noun .
+
+niod:Zomertijd
+	skos:exactMatch cornetto:synset-zomertijd-1-noun .
+
+niod:Zuivelproducten
+	skos:exactMatch cornetto:synset-zuivelprodukt-2-noun .
+
+niod:Zweefvliegtuigen
+	skos:exactMatch cornetto:synset-zweefvliegtuig-1-noun .
+
+niod:Zwijgplicht
+	skos:exactMatch cornetto:synset-zwijgplicht-1-noun .

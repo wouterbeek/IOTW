@@ -1,0 +1,2472 @@
+@prefix     time: <http://www.w3.org/2006/time#> .
+@prefix     skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix      xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix     rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix      rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix amalgame: <http://purl.org/vocabularies/amalgame#> .
+@prefix     opmv: <http://purl.org/net/opmv/ns#> .
+@prefix     niod: <http://purl.org/collections/nl/niod/> .
+@prefix    amexp: <http://localhost/ns/> .
+@prefix     user: <http://eculture.cs.vu.nl:1914/user/> .
+
+# Named toplevel resources (770)
+
+user:biktorrr
+	a opmv:Agent ;
+	rdfs:label "Administrator" .
+
+amexp:dataset34_flat_triples
+	a opmv:Artifact ,
+	  amalgame:ExportedAlignment ;
+	opmv:wasDerivedFrom amexp:dataset34 ;
+	opmv:wasGeneratedBy [ a opmv:Process ;
+			      opmv:used amexp:dataset34 ;
+			      opmv:wasEndedAt [ a time:Instant ;
+						time:inXSDDateTime "2012-11-05T17-57-54+01:00"^^xsd:dateTime
+					      ] ;
+			      opmv:wasPerformedBy _:bn1 ,
+						  user:biktorrr
+			    ] .
+
+
+niod:entity-Aagtekerke
+	skos:exactMatch <http://sws.geonames.org/2760147/> .
+
+niod:entity-Aalten
+	skos:exactMatch <http://sws.geonames.org/2760123/> .
+
+niod:entity-Aardenburg
+	skos:exactMatch <http://sws.geonames.org/2760096/> .
+
+niod:entity-Achterberg
+	skos:exactMatch <http://sws.geonames.org/2760049/> .
+
+niod:entity-Adorp
+	skos:exactMatch <http://sws.geonames.org/2759967/> .
+
+niod:entity-Aerdenhout
+	skos:exactMatch <http://sws.geonames.org/2759951/> .
+
+niod:entity-AfSluitdijk
+	skos:exactMatch <http://sws.geonames.org/2759939/> .
+
+niod:entity-Afsluitdijk
+	skos:exactMatch <http://sws.geonames.org/2759939/> .
+
+niod:entity-Akersloot
+	skos:exactMatch <http://sws.geonames.org/2759931/> .
+
+niod:entity-Akkerwoude
+	skos:exactMatch <http://sws.geonames.org/2759924/> .
+
+niod:entity-Albergen
+	skos:exactMatch <http://sws.geonames.org/2759919/> .
+
+niod:entity-Alblas
+	skos:exactMatch <http://sws.geonames.org/2759916/> .
+
+niod:entity-Alblasserwaard
+	skos:exactMatch <http://sws.geonames.org/2759913/> .
+
+niod:entity-Alkmaardermeer
+	skos:exactMatch <http://sws.geonames.org/2759897/> .
+
+niod:entity-Alm
+	skos:exactMatch <http://sws.geonames.org/2759890/> .
+
+niod:entity-Almen
+	skos:exactMatch <http://sws.geonames.org/2759884/> .
+
+niod:entity-Almkerk
+	skos:exactMatch <http://sws.geonames.org/2759878/> .
+
+niod:entity-Amen
+	skos:exactMatch <http://sws.geonames.org/2759838/> .
+
+niod:entity-America
+	skos:exactMatch <http://sws.geonames.org/2759831/> .
+
+niod:entity-Amerongen
+	skos:exactMatch <http://sws.geonames.org/2759828/> .
+
+niod:entity-Amstelland
+	skos:exactMatch <http://sws.geonames.org/2759802/> .
+
+niod:entity-Amstelodamum
+	skos:exactMatch <http://sws.geonames.org/2759794/> .
+
+niod:entity-Amstenrade
+	skos:exactMatch <http://sws.geonames.org/2759796/> .
+
+niod:entity-Amsterdam-Rijnkanaal
+	skos:exactMatch <http://sws.geonames.org/2759788/> .
+
+niod:entity-Amsterdams_Lyceum
+	skos:exactMatch <http://sws.geonames.org/6951821/> .
+
+niod:entity-Anderen
+	skos:exactMatch <http://sws.geonames.org/2759778/> .
+
+niod:entity-Angeren
+	skos:exactMatch <http://sws.geonames.org/2759765/> .
+
+niod:entity-Ansen
+	skos:exactMatch <http://sws.geonames.org/2759716/> .
+
+niod:entity-Antonius
+	skos:exactMatch <http://sws.geonames.org/2759708/> .
+
+niod:entity-Appel
+	skos:exactMatch <http://sws.geonames.org/2759700/> .
+
+niod:entity-Appelscha
+	skos:exactMatch <http://sws.geonames.org/2759698/> .
+
+niod:entity-Appingedam
+	skos:exactMatch <http://sws.geonames.org/2759687/> .
+
+niod:entity-Arkel
+	skos:exactMatch <http://sws.geonames.org/2759673/> .
+
+niod:entity-Arnemuiden
+	skos:exactMatch <http://sws.geonames.org/2759664/> .
+
+niod:entity-Arnhem
+	skos:exactMatch <http://sws.geonames.org/2759661/> .
+
+niod:entity-Assen
+	skos:exactMatch <http://sws.geonames.org/2759633/> .
+
+niod:entity-Asten
+	skos:exactMatch <http://sws.geonames.org/2759621/> .
+
+niod:entity-Austerlitz
+	skos:exactMatch <http://sws.geonames.org/2759610/> .
+
+niod:entity-Axel
+	skos:exactMatch <http://sws.geonames.org/2759594/> .
+
+niod:entity-Baai
+	skos:exactMatch <http://sws.geonames.org/2759584/> .
+
+niod:entity-Baal
+	skos:exactMatch <http://sws.geonames.org/2759576/> .
+
+niod:entity-Baard
+	skos:exactMatch <http://sws.geonames.org/2759567/> .
+
+niod:entity-Baarle-Nassau
+	skos:exactMatch <http://sws.geonames.org/2759554/> .
+
+niod:entity-Baars
+	skos:exactMatch <http://sws.geonames.org/2759541/> .
+
+niod:entity-Bakel
+	skos:exactMatch <http://sws.geonames.org/2759511/> .
+
+niod:entity-Bantam
+	skos:exactMatch <http://sws.geonames.org/2759432/> .
+
+niod:entity-Barchem
+	skos:exactMatch <http://sws.geonames.org/2759429/> .
+
+niod:entity-Barneveld
+	skos:exactMatch <http://sws.geonames.org/2759407/> .
+
+niod:entity-Bathmen
+	skos:exactMatch <http://sws.geonames.org/2759381/> .
+
+niod:entity-Bazuin
+	skos:exactMatch <http://sws.geonames.org/2759368/> .
+
+niod:entity-Beaufort
+	skos:exactMatch <http://sws.geonames.org/6956021/> .
+
+niod:entity-Beegden
+	skos:exactMatch <http://sws.geonames.org/2759353/> .
+
+niod:entity-Beekbergen
+	skos:exactMatch <http://sws.geonames.org/2759342/> .
+
+niod:entity-Beekhuizen
+	skos:exactMatch <http://sws.geonames.org/2759336/> .
+
+niod:entity-Beerta
+	skos:exactMatch <http://sws.geonames.org/2759298/> .
+
+niod:entity-Beesd
+	skos:exactMatch <http://sws.geonames.org/2759288/> .
+
+niod:entity-Beesel
+	skos:exactMatch <http://sws.geonames.org/2759286/> .
+
+niod:entity-Beijerland
+	skos:exactMatch <http://sws.geonames.org/2759273/> .
+
+niod:entity-Beilen
+	skos:exactMatch <http://sws.geonames.org/2759271/> .
+
+niod:entity-Beinum
+	skos:exactMatch <http://sws.geonames.org/2759265/> .
+
+niod:entity-Belanda
+	skos:exactMatch <http://sws.geonames.org/2750405/> .
+
+niod:entity-Bellinckhof
+	skos:exactMatch <http://sws.geonames.org/2759251/> .
+
+niod:entity-Bellingwolde
+	skos:exactMatch <http://sws.geonames.org/2759247/> .
+
+niod:entity-Bemmel
+	skos:exactMatch <http://sws.geonames.org/2759231/> .
+
+niod:entity-Bennekom
+	skos:exactMatch <http://sws.geonames.org/2759197/> .
+
+niod:entity-Bergharen
+	skos:exactMatch <http://sws.geonames.org/2759129/> .
+
+niod:entity-Bergse_Maas
+	skos:exactMatch <http://sws.geonames.org/2759114/> .
+
+niod:entity-Bern
+	skos:exactMatch <http://sws.geonames.org/2759053/> .
+
+niod:entity-Best
+	skos:exactMatch <http://sws.geonames.org/2759040/> .
+
+niod:entity-Betuwe
+	skos:exactMatch <http://sws.geonames.org/2759029/> .
+
+niod:entity-Beusichem
+	skos:exactMatch <http://sws.geonames.org/2759006/> .
+
+niod:entity-Beyerland
+	skos:exactMatch <http://sws.geonames.org/2759273/> .
+
+niod:entity-Bezuidenhout
+	skos:exactMatch <http://sws.geonames.org/2758993/> .
+
+niod:entity-Bierum
+	skos:exactMatch <http://sws.geonames.org/2758983/> .
+
+niod:entity-Biervliet
+	skos:exactMatch <http://sws.geonames.org/2758980/> .
+
+niod:entity-Biesbos
+	skos:exactMatch <http://sws.geonames.org/2758979/> .
+
+niod:entity-Biggekerke
+	skos:exactMatch <http://sws.geonames.org/2758956/> .
+
+niod:entity-Bilt
+	skos:exactMatch <http://sws.geonames.org/6544692/> .
+
+niod:entity-Bilthoven
+	skos:exactMatch <http://sws.geonames.org/2758927/> .
+
+niod:entity-Bisschop
+	skos:exactMatch <http://sws.geonames.org/2758891/> .
+
+niod:entity-Blauw
+	skos:exactMatch <http://sws.geonames.org/2758864/> .
+
+niod:entity-Bleijs
+	skos:exactMatch <http://sws.geonames.org/6544853/> .
+
+niod:entity-Bleiswijk
+	skos:exactMatch <http://sws.geonames.org/2758838/> .
+
+niod:entity-Blerick
+	skos:exactMatch <http://sws.geonames.org/2758831/> .
+
+niod:entity-Blokzijl
+	skos:exactMatch <http://sws.geonames.org/2758777/> .
+
+niod:entity-Boekelo
+	skos:exactMatch <http://sws.geonames.org/2758755/> .
+
+niod:entity-Boer
+	skos:exactMatch <http://sws.geonames.org/2758747/> .
+
+niod:entity-Bohemen
+	skos:exactMatch <http://sws.geonames.org/2758711/> .
+
+niod:entity-Bolnes
+	skos:exactMatch <http://sws.geonames.org/2758686/> .
+
+niod:entity-Bommelerwaard
+	skos:exactMatch <http://sws.geonames.org/2758673/> .
+
+niod:entity-Boompjes
+	skos:exactMatch <http://sws.geonames.org/2758640/> .
+
+niod:entity-Borculo
+	skos:exactMatch <http://sws.geonames.org/2758626/> .
+
+niod:entity-Borger
+	skos:exactMatch <http://sws.geonames.org/2758621/> .
+
+niod:entity-Borgharen
+	skos:exactMatch <http://sws.geonames.org/2758611/> .
+
+niod:entity-Born
+	skos:exactMatch <http://sws.geonames.org/2758602/> .
+
+niod:entity-Borneo
+	skos:exactMatch <http://sws.geonames.org/6544867/> .
+
+niod:entity-Boskamp
+	skos:exactMatch <http://sws.geonames.org/2758549/> .
+
+niod:entity-Bovenlanden
+	skos:exactMatch <http://sws.geonames.org/2758491/> .
+
+niod:entity-Boxmeer
+	skos:exactMatch <http://sws.geonames.org/2758462/> .
+
+niod:entity-Boxtel
+	skos:exactMatch <http://sws.geonames.org/2758460/> .
+
+niod:entity-Braak
+	skos:exactMatch <http://sws.geonames.org/6950107/> .
+
+niod:entity-Braakman
+	skos:exactMatch <http://sws.geonames.org/2758444/> .
+
+niod:entity-Brabander
+	skos:exactMatch <http://sws.geonames.org/2758431/> .
+
+niod:entity-Brabant
+	skos:exactMatch <http://sws.geonames.org/2749990/> .
+
+niod:entity-Brandaris
+	skos:exactMatch <http://sws.geonames.org/2758414/> .
+
+niod:entity-Brandenburg
+	skos:exactMatch <http://sws.geonames.org/2758409/> .
+
+niod:entity-Brandt
+	skos:exactMatch <http://sws.geonames.org/2758406/> .
+
+niod:entity-Breskens
+	skos:exactMatch <http://sws.geonames.org/2758341/> .
+
+niod:entity-Brink
+	skos:exactMatch <http://sws.geonames.org/6954376/> .
+
+niod:entity-Bronbeek
+	skos:exactMatch <http://sws.geonames.org/2758226/> .
+
+niod:entity-Brummen
+	skos:exactMatch <http://sws.geonames.org/2758177/> .
+
+niod:entity-Budel
+	skos:exactMatch <http://sws.geonames.org/2758166/> .
+
+niod:entity-Bueren
+	skos:exactMatch <http://sws.geonames.org/2758096/> .
+
+niod:entity-Buiksloot
+	skos:exactMatch <http://sws.geonames.org/2758159/> .
+
+niod:entity-Buitenhof
+	skos:exactMatch <http://sws.geonames.org/2758143/> .
+
+niod:entity-Cadzand
+	skos:exactMatch <http://sws.geonames.org/2758033/> .
+
+niod:entity-Callantsoog
+	skos:exactMatch <http://sws.geonames.org/2758027/> .
+
+niod:entity-Camp
+	skos:exactMatch <http://sws.geonames.org/2758020/> .
+
+niod:entity-Campen
+	skos:exactMatch <http://sws.geonames.org/2753107/> .
+
+niod:entity-Capelse_Veer
+	skos:exactMatch <http://sws.geonames.org/2758006/> .
+
+niod:entity-Centrum
+	skos:exactMatch <http://sws.geonames.org/2757973/> .
+
+niod:entity-Charlois
+	skos:exactMatch <http://sws.geonames.org/2757963/> .
+
+niod:entity-Cocksdorp
+	skos:exactMatch <http://sws.geonames.org/2757710/> .
+
+niod:entity-Coevorden
+	skos:exactMatch <http://sws.geonames.org/2757937/> .
+
+niod:entity-Concertgebouw
+	skos:exactMatch <http://sws.geonames.org/6944491/> .
+
+niod:entity-Crackstate
+	skos:exactMatch <http://sws.geonames.org/6950577/> .
+
+niod:entity-Cuba
+	skos:exactMatch <http://sws.geonames.org/6946879/> .
+
+niod:entity-Curacao
+	skos:exactMatch <http://sws.geonames.org/6955744/> .
+
+niod:entity-DIE
+	skos:exactMatch <http://sws.geonames.org/2756893/> .
+
+niod:entity-Dalen
+	skos:exactMatch <http://sws.geonames.org/2757857/> .
+
+niod:entity-Dalfsen
+	skos:exactMatch <http://sws.geonames.org/2757850/> .
+
+niod:entity-Damrak
+	skos:exactMatch <http://sws.geonames.org/6951689/> .
+
+niod:entity-De_Baan
+	skos:exactMatch <http://sws.geonames.org/2757814/> .
+
+niod:entity-De_Cocksdorp
+	skos:exactMatch <http://sws.geonames.org/2757710/> .
+
+niod:entity-De_Groene
+	skos:exactMatch <http://sws.geonames.org/2757614/> .
+
+niod:entity-De_Maas
+	skos:exactMatch <http://sws.geonames.org/2751306/> .
+
+niod:entity-De_Stuw
+	skos:exactMatch <http://sws.geonames.org/2757028/> .
+
+niod:entity-De_Tijd
+	skos:exactMatch <http://sws.geonames.org/6948786/> .
+
+niod:entity-De_Waag
+	skos:exactMatch <http://sws.geonames.org/6956386/> .
+
+niod:entity-Defensie
+	skos:exactMatch <http://sws.geonames.org/2748688/> .
+
+niod:entity-Delfzijl
+	skos:exactMatch <http://sws.geonames.org/2757340/> .
+
+niod:entity-DenHaag
+	skos:exactMatch <http://sws.geonames.org/2747373/> .
+
+niod:entity-Den_Briel
+	skos:exactMatch <http://sws.geonames.org/2758326/> .
+
+niod:entity-Den_Burg
+	skos:exactMatch <http://sws.geonames.org/2757244/> .
+
+niod:entity-Den_Dolder
+	skos:exactMatch <http://sws.geonames.org/2757240/> .
+
+niod:entity-Den_Dungen
+	skos:exactMatch <http://sws.geonames.org/2757237/> .
+
+niod:entity-Den_Haag
+	skos:exactMatch <http://sws.geonames.org/2747373/> .
+
+niod:entity-Denekamp
+	skos:exactMatch <http://sws.geonames.org/2757232/> .
+
+niod:entity-Denemarken
+	skos:exactMatch <http://sws.geonames.org/2757229/> .
+
+niod:entity-Des_Indes
+	skos:exactMatch <http://sws.geonames.org/6469538/> .
+
+niod:entity-Deurne
+	skos:exactMatch <http://sws.geonames.org/2757009/> .
+
+niod:entity-Deventer
+	skos:exactMatch <http://sws.geonames.org/2756987/> .
+
+niod:entity-Diamantbeurs
+	skos:exactMatch <http://sws.geonames.org/6951711/> .
+
+niod:entity-Didam
+	skos:exactMatch <http://sws.geonames.org/2756896/> .
+
+niod:entity-Dieren
+	skos:exactMatch <http://sws.geonames.org/2756865/> .
+
+niod:entity-Diergaarde
+	skos:exactMatch <http://sws.geonames.org/2756863/> .
+
+niod:entity-Diever
+	skos:exactMatch <http://sws.geonames.org/2756855/> .
+
+niod:entity-Dinteloord
+	skos:exactMatch <http://sws.geonames.org/2756800/> .
+
+niod:entity-Dinxperlo
+	skos:exactMatch <http://sws.geonames.org/2756793/> .
+
+niod:entity-Doetinchem
+	skos:exactMatch <http://sws.geonames.org/2756767/> .
+
+niod:entity-Dokkum
+	skos:exactMatch <http://sws.geonames.org/2756759/> .
+
+niod:entity-Dolder
+	skos:exactMatch <http://sws.geonames.org/2757240/> .
+
+niod:entity-Dollard
+	skos:exactMatch <http://sws.geonames.org/2756750/> .
+
+niod:entity-Dollart
+	skos:exactMatch <http://sws.geonames.org/2756750/> .
+
+niod:entity-Domaniale_Mijn
+	skos:exactMatch <http://sws.geonames.org/2756747/> .
+
+niod:entity-Domburg
+	skos:exactMatch <http://sws.geonames.org/2756746/> .
+
+niod:entity-Dommel
+	skos:exactMatch <http://sws.geonames.org/2756741/> .
+
+niod:entity-Doniaga
+	skos:exactMatch <http://sws.geonames.org/2756715/> .
+
+niod:entity-Doorn
+	skos:exactMatch <http://sws.geonames.org/2756686/> .
+
+niod:entity-Dorp
+	skos:exactMatch <http://sws.geonames.org/2756664/> .
+
+niod:entity-Drachten
+	skos:exactMatch <http://sws.geonames.org/2756644/> .
+
+niod:entity-Drente
+	skos:exactMatch <http://sws.geonames.org/2756631/> .
+
+niod:entity-Dreumel
+	skos:exactMatch <http://sws.geonames.org/2756626/> .
+
+niod:entity-Driebergen
+	skos:exactMatch <http://sws.geonames.org/2756620/> .
+
+niod:entity-Driebergen-Rijsenburg
+	skos:exactMatch <http://sws.geonames.org/2756619/> .
+
+niod:entity-Drimmelen
+	skos:exactMatch <http://sws.geonames.org/2756569/> .
+
+niod:entity-Dronrijp
+	skos:exactMatch <http://sws.geonames.org/2756561/> .
+
+niod:entity-Dronten
+	skos:exactMatch <http://sws.geonames.org/2756559/> .
+
+niod:entity-Drunen
+	skos:exactMatch <http://sws.geonames.org/2756543/> .
+
+niod:entity-Druten
+	skos:exactMatch <http://sws.geonames.org/2756539/> .
+
+niod:entity-Dubbeldam
+	skos:exactMatch <http://sws.geonames.org/2756537/> .
+
+niod:entity-Duindigt
+	skos:exactMatch <http://sws.geonames.org/2756527/> .
+
+niod:entity-Duindorp
+	skos:exactMatch <http://sws.geonames.org/2756526/> .
+
+niod:entity-Duivelseiland
+	skos:exactMatch <http://sws.geonames.org/2756510/> .
+
+niod:entity-Dussen
+	skos:exactMatch <http://sws.geonames.org/2756483/> .
+
+niod:entity-Echt
+	skos:exactMatch <http://sws.geonames.org/2756444/> .
+
+niod:entity-Ede
+	skos:exactMatch <http://sws.geonames.org/2756429/> .
+
+niod:entity-Eede
+	skos:exactMatch <http://sws.geonames.org/2756419/> .
+
+niod:entity-Eefde
+	skos:exactMatch <http://sws.geonames.org/2756418/> .
+
+niod:entity-Eelde
+	skos:exactMatch <http://sws.geonames.org/2756408/> .
+
+niod:entity-Een
+	skos:exactMatch <http://sws.geonames.org/2756380/> .
+
+niod:entity-Effen
+	skos:exactMatch <http://sws.geonames.org/2756310/> .
+
+niod:entity-Egmond_aan_Zee
+	skos:exactMatch <http://sws.geonames.org/2756301/> .
+
+niod:entity-Egypte
+	skos:exactMatch <http://sws.geonames.org/2756296/> .
+
+niod:entity-Eibergen
+	skos:exactMatch <http://sws.geonames.org/2756295/> .
+
+niod:entity-El
+	skos:exactMatch <http://sws.geonames.org/2756202/> .
+
+niod:entity-Elburg
+	skos:exactMatch <http://sws.geonames.org/2756232/> .
+
+niod:entity-Ellecom
+	skos:exactMatch <http://sws.geonames.org/2756200/> .
+
+niod:entity-Elspeet
+	skos:exactMatch <http://sws.geonames.org/2756165/> .
+
+niod:entity-Empel
+	skos:exactMatch <http://sws.geonames.org/2756116/> .
+
+niod:entity-Emst
+	skos:exactMatch <http://sws.geonames.org/2756114/> .
+
+niod:entity-Engel
+	skos:exactMatch <http://sws.geonames.org/2757657/> .
+
+niod:entity-Engelen
+	skos:exactMatch <http://sws.geonames.org/2756096/> .
+
+niod:entity-Enschede
+	skos:exactMatch <http://sws.geonames.org/2756071/> .
+
+niod:entity-Epe
+	skos:exactMatch <http://sws.geonames.org/2756059/> .
+
+niod:entity-Epse
+	skos:exactMatch <http://sws.geonames.org/2756050/> .
+
+niod:entity-Ermelo
+	skos:exactMatch <http://sws.geonames.org/2756039/> .
+
+niod:entity-Etten
+	skos:exactMatch <http://sws.geonames.org/2755995/> .
+
+niod:entity-Etten-Leur
+	skos:exactMatch <http://sws.geonames.org/2755996/> .
+
+niod:entity-Eygelshoven
+	skos:exactMatch <http://sws.geonames.org/2756285/> .
+
+niod:entity-Eysden
+	skos:exactMatch <http://sws.geonames.org/2756283/> .
+
+niod:entity-Finsterwolde
+	skos:exactMatch <http://sws.geonames.org/2755905/> .
+
+niod:entity-France
+	skos:exactMatch <http://sws.geonames.org/6503910/> .
+
+niod:entity-Franeker
+	skos:exactMatch <http://sws.geonames.org/2755845/> .
+
+niod:entity-Frans
+	skos:exactMatch <http://sws.geonames.org/2755838/> .
+
+niod:entity-GROEP
+	skos:exactMatch <http://sws.geonames.org/2755342/> .
+
+niod:entity-Gaag
+	skos:exactMatch <http://sws.geonames.org/2755797/> .
+
+niod:entity-Garderen
+	skos:exactMatch <http://sws.geonames.org/2755732/> .
+
+niod:entity-Gauw
+	skos:exactMatch <http://sws.geonames.org/2755702/> .
+
+niod:entity-Geitenkamp
+	skos:exactMatch <http://sws.geonames.org/2755638/> .
+
+niod:entity-Gelderland
+	skos:exactMatch <http://sws.geonames.org/2755634/> .
+
+niod:entity-Gelderse_Vallei
+	skos:exactMatch <http://sws.geonames.org/2755622/> .
+
+niod:entity-Geldrop
+	skos:exactMatch <http://sws.geonames.org/2755619/> .
+
+niod:entity-Gemeente_Utrecht
+	skos:exactMatch <http://sws.geonames.org/2745911/> .
+
+niod:entity-Gemert
+	skos:exactMatch <http://sws.geonames.org/2755605/> .
+
+niod:entity-Gendringen
+	skos:exactMatch <http://sws.geonames.org/2755599/> .
+
+niod:entity-Gendt
+	skos:exactMatch <http://sws.geonames.org/2755597/> .
+
+niod:entity-Genemuiden
+	skos:exactMatch <http://sws.geonames.org/2755594/> .
+
+niod:entity-Genooi
+	skos:exactMatch <http://sws.geonames.org/2755580/> .
+
+niod:entity-Gent
+	skos:exactMatch <http://sws.geonames.org/2755597/> .
+
+niod:entity-Gestel
+	skos:exactMatch <http://sws.geonames.org/2755562/> .
+
+niod:entity-Gilze-Rijen
+	skos:exactMatch <http://sws.geonames.org/6296686/> .
+
+niod:entity-Ginneken
+	skos:exactMatch <http://sws.geonames.org/2755498/> .
+
+niod:entity-Goengamieden
+	skos:exactMatch <http://sws.geonames.org/2755479/> .
+
+niod:entity-Goirle
+	skos:exactMatch <http://sws.geonames.org/2755464/> .
+
+niod:entity-Gorssel
+	skos:exactMatch <http://sws.geonames.org/2755428/> .
+
+niod:entity-Goudriaan
+	skos:exactMatch <http://sws.geonames.org/2755405/> .
+
+niod:entity-Goudsberg
+	skos:exactMatch <http://sws.geonames.org/2755403/> .
+
+niod:entity-Graaf
+	skos:exactMatch <http://sws.geonames.org/2755387/> .
+
+niod:entity-Graafland
+	skos:exactMatch <http://sws.geonames.org/2755386/> .
+
+niod:entity-Grave
+	skos:exactMatch <http://sws.geonames.org/2755358/> .
+
+niod:entity-Gravendeel
+	skos:exactMatch <http://sws.geonames.org/2747375/> .
+
+niod:entity-Grebbeberg
+	skos:exactMatch <http://sws.geonames.org/2755351/> .
+
+niod:entity-Groede
+	skos:exactMatch <http://sws.geonames.org/2755305/> .
+
+niod:entity-Groenlo
+	skos:exactMatch <http://sws.geonames.org/2755281/> .
+
+niod:entity-Groep
+	skos:exactMatch <http://sws.geonames.org/2755342/> .
+
+niod:entity-Groesbeek
+	skos:exactMatch <http://sws.geonames.org/2755272/> .
+
+niod:entity-Grote_Markt
+	skos:exactMatch <http://sws.geonames.org/6954200/> .
+
+niod:entity-Group
+	skos:exactMatch <http://sws.geonames.org/2755342/> .
+
+niod:entity-Grouw
+	skos:exactMatch <http://sws.geonames.org/2755052/> .
+
+niod:entity-Haaften
+	skos:exactMatch <http://sws.geonames.org/2755039/> .
+
+niod:entity-Haaksbergen
+	skos:exactMatch <http://sws.geonames.org/2755030/> .
+
+niod:entity-Haamstede
+	skos:exactMatch <http://sws.geonames.org/2755023/> .
+
+niod:entity-Haaren
+	skos:exactMatch <http://sws.geonames.org/2755009/> .
+
+niod:entity-Haarlemmermeer
+	skos:exactMatch <http://sws.geonames.org/2753801/> .
+
+niod:entity-Haarlemmermeerpolder
+	skos:exactMatch <http://sws.geonames.org/2754998/> .
+
+niod:entity-Haelen
+	skos:exactMatch <http://sws.geonames.org/2754975/> .
+
+niod:entity-Haga
+	skos:exactMatch <http://sws.geonames.org/2747373/> .
+
+niod:entity-Hagoort
+	skos:exactMatch <http://sws.geonames.org/2754956/> .
+
+niod:entity-Halder
+	skos:exactMatch <http://sws.geonames.org/2754948/> .
+
+niod:entity-Halle
+	skos:exactMatch <http://sws.geonames.org/2754935/> .
+
+niod:entity-Handel
+	skos:exactMatch <http://sws.geonames.org/2754897/> .
+
+niod:entity-Hare
+	skos:exactMatch <http://sws.geonames.org/2757580/> .
+
+niod:entity-Harinxmakanaal
+	skos:exactMatch <http://sws.geonames.org/2745827/> .
+
+niod:entity-Harkezijl
+	skos:exactMatch <http://sws.geonames.org/2754820/> .
+
+niod:entity-Harmelen
+	skos:exactMatch <http://sws.geonames.org/2754814/> .
+
+niod:entity-Harmonie
+	skos:exactMatch <http://sws.geonames.org/6947341/> .
+
+niod:entity-Harskamp
+	skos:exactMatch <http://sws.geonames.org/2754804/> .
+
+niod:entity-Hatert
+	skos:exactMatch <http://sws.geonames.org/2754773/> .
+
+niod:entity-Hattem
+	skos:exactMatch <http://sws.geonames.org/2754768/> .
+
+niod:entity-Have
+	skos:exactMatch <http://sws.geonames.org/2754754/> .
+
+niod:entity-Havelte
+	skos:exactMatch <http://sws.geonames.org/2754752/> .
+
+niod:entity-Haven
+	skos:exactMatch <http://sws.geonames.org/2754747/> .
+
+niod:entity-Hazenberg
+	skos:exactMatch <http://sws.geonames.org/2754730/> .
+
+niod:entity-Hazerswoude
+	skos:exactMatch <http://sws.geonames.org/2754724/> .
+
+niod:entity-Hee
+	skos:exactMatch <http://sws.geonames.org/2754714/> .
+
+niod:entity-Heek
+	skos:exactMatch <http://sws.geonames.org/2754708/> .
+
+niod:entity-Heel
+	skos:exactMatch <http://sws.geonames.org/2754706/> .
+
+niod:entity-Heelsum
+	skos:exactMatch <http://sws.geonames.org/2754703/> .
+
+niod:entity-Heer
+	skos:exactMatch <http://sws.geonames.org/2754682/> .
+
+niod:entity-Heerde
+	skos:exactMatch <http://sws.geonames.org/2754681/> .
+
+niod:entity-Heerjansdam
+	skos:exactMatch <http://sws.geonames.org/2754656/> .
+
+niod:entity-Heerlen
+	skos:exactMatch <http://sws.geonames.org/2754652/> .
+
+niod:entity-Heeten
+	skos:exactMatch <http://sws.geonames.org/2754621/> .
+
+niod:entity-Heijningen
+	skos:exactMatch <http://sws.geonames.org/2754553/> .
+
+niod:entity-Hekelingen
+	skos:exactMatch <http://sws.geonames.org/2754491/> .
+
+niod:entity-Helden
+	skos:exactMatch <http://sws.geonames.org/2754482/> .
+
+niod:entity-Helder
+	skos:exactMatch <http://sws.geonames.org/2757220/> .
+
+niod:entity-Helenaveen
+	skos:exactMatch <http://sws.geonames.org/2754474/> .
+
+niod:entity-Hellendoorn
+	skos:exactMatch <http://sws.geonames.org/2754457/> .
+
+niod:entity-Helmond
+	skos:exactMatch <http://sws.geonames.org/2754447/> .
+
+niod:entity-Helsdingen
+	skos:exactMatch <http://sws.geonames.org/2754441/> .
+
+niod:entity-Helvoirt
+	skos:exactMatch <http://sws.geonames.org/2754440/> .
+
+niod:entity-Hemmen
+	skos:exactMatch <http://sws.geonames.org/2754420/> .
+
+niod:entity-Hensbroek
+	skos:exactMatch <http://sws.geonames.org/2754375/> .
+
+niod:entity-Hertogenbosch
+	skos:exactMatch <http://sws.geonames.org/2747351/> .
+
+niod:entity-Heteren
+	skos:exactMatch <http://sws.geonames.org/2754287/> .
+
+niod:entity-Heumen
+	skos:exactMatch <http://sws.geonames.org/2754147/> .
+
+niod:entity-Heuven
+	skos:exactMatch <http://sws.geonames.org/2754119/> .
+
+niod:entity-Hill
+	skos:exactMatch <http://sws.geonames.org/2754075/> .
+
+niod:entity-Hillegersberg
+	skos:exactMatch <http://sws.geonames.org/2754074/> .
+
+niod:entity-Hindeloopen
+	skos:exactMatch <http://sws.geonames.org/2754059/> .
+
+niod:entity-Hoedekenskerke
+	skos:exactMatch <http://sws.geonames.org/2754035/> .
+
+niod:entity-Hoenderloo
+	skos:exactMatch <http://sws.geonames.org/2754004/> .
+
+niod:entity-Hoensbroek
+	skos:exactMatch <http://sws.geonames.org/2753996/> .
+
+niod:entity-Hofvijver
+	skos:exactMatch <http://sws.geonames.org/2755061/> .
+
+niod:entity-Holk
+	skos:exactMatch <http://sws.geonames.org/2753922/> .
+
+niod:entity-Hollander
+	skos:exactMatch <http://sws.geonames.org/2753916/> .
+
+niod:entity-Hollands_Diep
+	skos:exactMatch <http://sws.geonames.org/2753912/> .
+
+niod:entity-Holst
+	skos:exactMatch <http://sws.geonames.org/2753879/> .
+
+niod:entity-Holthe
+	skos:exactMatch <http://sws.geonames.org/2753869/> .
+
+niod:entity-Holwierde
+	skos:exactMatch <http://sws.geonames.org/2753846/> .
+
+niod:entity-Honselersdijk
+	skos:exactMatch <http://sws.geonames.org/2753806/> .
+
+niod:entity-Hoofddorp
+	skos:exactMatch <http://sws.geonames.org/2753801/> .
+
+niod:entity-Hooghalen
+	skos:exactMatch <http://sws.geonames.org/2753698/> .
+
+niod:entity-Hoogkarspel
+	skos:exactMatch <http://sws.geonames.org/2753691/> .
+
+niod:entity-Hoogmade
+	skos:exactMatch <http://sws.geonames.org/2753681/> .
+
+niod:entity-Hordijk
+	skos:exactMatch <http://sws.geonames.org/2753614/> .
+
+niod:entity-Horssen
+	skos:exactMatch <http://sws.geonames.org/2753593/> .
+
+niod:entity-Hoven
+	skos:exactMatch <http://sws.geonames.org/2753532/> .
+
+niod:entity-Huis_ten_Bosch
+	skos:exactMatch <http://sws.geonames.org/2753492/> .
+
+niod:entity-Huissen
+	skos:exactMatch <http://sws.geonames.org/2753504/> .
+
+niod:entity-Huize_Doorn
+	skos:exactMatch <http://sws.geonames.org/2753472/> .
+
+niod:entity-Hummelo
+	skos:exactMatch <http://sws.geonames.org/2753423/> .
+
+niod:entity-Husken
+	skos:exactMatch <http://sws.geonames.org/2753401/> .
+
+niod:entity-IJselmeer
+	skos:exactMatch <http://sws.geonames.org/2753361/> .
+
+niod:entity-IJselstein
+	skos:exactMatch <http://sws.geonames.org/2753355/> .
+
+niod:entity-IJsselmeer
+	skos:exactMatch <http://sws.geonames.org/2753361/> .
+
+niod:entity-Ide
+	skos:exactMatch <http://sws.geonames.org/2744130/> .
+
+niod:entity-Ie
+	skos:exactMatch <http://sws.geonames.org/2756422/> .
+
+niod:entity-Ierseke
+	skos:exactMatch <http://sws.geonames.org/2744129/> .
+
+niod:entity-Ijlst
+	skos:exactMatch <http://sws.geonames.org/2753379/> .
+
+niod:entity-Ijselmeer
+	skos:exactMatch <http://sws.geonames.org/2753361/> .
+
+niod:entity-Ijselstein
+	skos:exactMatch <http://sws.geonames.org/2753355/> .
+
+niod:entity-Ijsselmeer
+	skos:exactMatch <http://sws.geonames.org/2753361/> .
+
+niod:entity-Ijsselmuiden
+	skos:exactMatch <http://sws.geonames.org/2753358/> .
+
+niod:entity-Imbosch
+	skos:exactMatch <http://sws.geonames.org/2753331/> .
+
+niod:entity-Imperial
+	skos:exactMatch <http://sws.geonames.org/6469692/> .
+
+niod:entity-Julianakanaal
+	skos:exactMatch <http://sws.geonames.org/2753180/> .
+
+niod:entity-Kaag
+	skos:exactMatch <http://sws.geonames.org/2753171/> .
+
+niod:entity-Kaap
+	skos:exactMatch <http://sws.geonames.org/2743689/> .
+
+niod:entity-Kaatsheuvel
+	skos:exactMatch <http://sws.geonames.org/2753156/> .
+
+niod:entity-Kalkhaven
+	skos:exactMatch <http://sws.geonames.org/2753132/> .
+
+niod:entity-Kanaal
+	skos:exactMatch <http://sws.geonames.org/2754258/> .
+
+niod:entity-Kapellerlaan
+	skos:exactMatch <http://sws.geonames.org/6254916/> .
+
+niod:entity-Kasteel_Amerongen
+	skos:exactMatch <http://sws.geonames.org/2759826/> .
+
+niod:entity-Katendrecht
+	skos:exactMatch <http://sws.geonames.org/2753045/> .
+
+niod:entity-Kattenburg
+	skos:exactMatch <http://sws.geonames.org/2753021/> .
+
+niod:entity-Katwijk_aan_Zee
+	skos:exactMatch <http://sws.geonames.org/2753010/> .
+
+niod:entity-Katwijk_aan_den_Rijn
+	skos:exactMatch <http://sws.geonames.org/2753011/> .
+
+niod:entity-Keizerrijk
+	skos:exactMatch <http://sws.geonames.org/2752980/> .
+
+niod:entity-Keizersveer
+	skos:exactMatch <http://sws.geonames.org/2752971/> .
+
+niod:entity-Kennemerland
+	skos:exactMatch <http://sws.geonames.org/7302154/> .
+
+niod:entity-Kerkhoven
+	skos:exactMatch <http://sws.geonames.org/2752927/> .
+
+niod:entity-Kerkrade
+	skos:exactMatch <http://sws.geonames.org/2752923/> .
+
+niod:entity-Kersbergen
+	skos:exactMatch <http://sws.geonames.org/6950747/> .
+
+niod:entity-Kesteren
+	skos:exactMatch <http://sws.geonames.org/2752899/> .
+
+niod:entity-Kethel
+	skos:exactMatch <http://sws.geonames.org/2752887/> .
+
+niod:entity-Kiel
+	skos:exactMatch <http://sws.geonames.org/2752863/> .
+
+niod:entity-Kil
+	skos:exactMatch <http://sws.geonames.org/2756667/> .
+
+niod:entity-Kinderdijk
+	skos:exactMatch <http://sws.geonames.org/2752828/> .
+
+niod:entity-Kloosterzande
+	skos:exactMatch <http://sws.geonames.org/2752611/> .
+
+niod:entity-Kluis
+	skos:exactMatch <http://sws.geonames.org/2752604/> .
+
+niod:entity-Knolle
+	skos:exactMatch <http://sws.geonames.org/2757427/> .
+
+niod:entity-Koedijk
+	skos:exactMatch <http://sws.geonames.org/2752575/> .
+
+niod:entity-Koninkrijk_der_Nederlanden
+	skos:exactMatch <http://sws.geonames.org/2750405/> .
+
+niod:entity-Koolhoven
+	skos:exactMatch <http://sws.geonames.org/2752451/> .
+
+niod:entity-Kooten
+	skos:exactMatch <http://sws.geonames.org/2752447/> .
+
+niod:entity-Kootwijk
+	skos:exactMatch <http://sws.geonames.org/2752443/> .
+
+niod:entity-Kortgene
+	skos:exactMatch <http://sws.geonames.org/2752399/> .
+
+niod:entity-Kraan
+	skos:exactMatch <http://sws.geonames.org/2752345/> .
+
+niod:entity-Kralingse_Plas
+	skos:exactMatch <http://sws.geonames.org/2752313/> .
+
+niod:entity-Krommenie
+	skos:exactMatch <http://sws.geonames.org/2752240/> .
+
+niod:entity-Kruiningen
+	skos:exactMatch <http://sws.geonames.org/2752213/> .
+
+niod:entity-Kuilenburg
+	skos:exactMatch <http://sws.geonames.org/2757872/> .
+
+niod:entity-Laan
+	skos:exactMatch <http://sws.geonames.org/2752087/> .
+
+niod:entity-Lage_Zwaluwe
+	skos:exactMatch <http://sws.geonames.org/2752009/> .
+
+niod:entity-Lammers
+	skos:exactMatch <http://sws.geonames.org/2751997/> .
+
+niod:entity-Langen
+	skos:exactMatch <http://sws.geonames.org/2751936/> .
+
+niod:entity-Langweer
+	skos:exactMatch <http://sws.geonames.org/2751888/> .
+
+niod:entity-Leende
+	skos:exactMatch <http://sws.geonames.org/2751821/> .
+
+niod:entity-Leersum
+	skos:exactMatch <http://sws.geonames.org/2751801/> .
+
+niod:entity-Leidschendam
+	skos:exactMatch <http://sws.geonames.org/2751769/> .
+
+niod:entity-Leidseplein
+	skos:exactMatch <http://sws.geonames.org/6944492/> .
+
+niod:entity-Lek
+	skos:exactMatch <http://sws.geonames.org/2751747/> .
+
+niod:entity-Lemmer
+	skos:exactMatch <http://sws.geonames.org/2751729/> .
+
+niod:entity-Leuven
+	skos:exactMatch <http://sws.geonames.org/2751679/> .
+
+niod:entity-Lichtenvoorde
+	skos:exactMatch <http://sws.geonames.org/2751651/> .
+
+niod:entity-Lier
+	skos:exactMatch <http://sws.geonames.org/2757336/> .
+
+niod:entity-Lieshout
+	skos:exactMatch <http://sws.geonames.org/2751627/> .
+
+niod:entity-Lijmers
+	skos:exactMatch <http://sws.geonames.org/2751607/> .
+
+niod:entity-Limburg
+	skos:exactMatch <http://sws.geonames.org/2751596/> .
+
+niod:entity-Linden
+	skos:exactMatch <http://sws.geonames.org/2755115/> .
+
+niod:entity-Linge
+	skos:exactMatch <http://sws.geonames.org/2751572/> .
+
+niod:entity-Linne
+	skos:exactMatch <http://sws.geonames.org/2751566/> .
+
+niod:entity-Lobith
+	skos:exactMatch <http://sws.geonames.org/2751538/> .
+
+niod:entity-Lochem
+	skos:exactMatch <http://sws.geonames.org/2751537/> .
+
+niod:entity-Loosdrecht
+	skos:exactMatch <http://sws.geonames.org/2748915/> .
+
+niod:entity-Loosduinen
+	skos:exactMatch <http://sws.geonames.org/2751442/> .
+
+niod:entity-Losser
+	skos:exactMatch <http://sws.geonames.org/2751424/> .
+
+niod:entity-Lunenburg
+	skos:exactMatch <http://sws.geonames.org/2751388/> .
+
+niod:entity-Lunteren
+	skos:exactMatch <http://sws.geonames.org/2751385/> .
+
+niod:entity-Lutterade
+	skos:exactMatch <http://sws.geonames.org/2751355/> .
+
+niod:entity-MOOK
+	skos:exactMatch <http://sws.geonames.org/2750621/> .
+
+niod:entity-Maaldrift
+	skos:exactMatch <http://sws.geonames.org/2751330/> .
+
+niod:entity-Maanen
+	skos:exactMatch <http://sws.geonames.org/2751216/> .
+
+niod:entity-Maarheeze
+	skos:exactMatch <http://sws.geonames.org/2751325/> .
+
+niod:entity-Maarn
+	skos:exactMatch <http://sws.geonames.org/2751320/> .
+
+niod:entity-Maarsbergen
+	skos:exactMatch <http://sws.geonames.org/2751318/> .
+
+niod:entity-Maarseveen
+	skos:exactMatch <http://sws.geonames.org/2748924/> .
+
+niod:entity-Maartensdijk
+	skos:exactMatch <http://sws.geonames.org/2751310/> .
+
+niod:entity-Maas
+	skos:exactMatch <http://sws.geonames.org/2751306/> .
+
+niod:entity-Maas-Waalkanaal
+	skos:exactMatch <http://sws.geonames.org/2751279/> .
+
+niod:entity-Maasbracht
+	skos:exactMatch <http://sws.geonames.org/2751303/> .
+
+niod:entity-Maasdam
+	skos:exactMatch <http://sws.geonames.org/2751299/> .
+
+niod:entity-Maaskant
+	skos:exactMatch <http://sws.geonames.org/2751290/> .
+
+niod:entity-Maastricht
+	skos:exactMatch <http://sws.geonames.org/2751283/> .
+
+niod:entity-Maastunnel
+	skos:exactMatch <http://sws.geonames.org/2751281/> .
+
+niod:entity-Made
+	skos:exactMatch <http://sws.geonames.org/2751272/> .
+
+niod:entity-Malden
+	skos:exactMatch <http://sws.geonames.org/2751242/> .
+
+niod:entity-Malieveld
+	skos:exactMatch <http://sws.geonames.org/2751238/> .
+
+niod:entity-Malta
+	skos:exactMatch <http://sws.geonames.org/2751227/> .
+
+niod:entity-Manen
+	skos:exactMatch <http://sws.geonames.org/2751216/> .
+
+niod:entity-Markkanaal
+	skos:exactMatch <http://sws.geonames.org/2751149/> .
+
+niod:entity-Mataram
+	skos:exactMatch <http://sws.geonames.org/2751098/> .
+
+niod:entity-Meeden
+	skos:exactMatch <http://sws.geonames.org/2751068/> .
+
+niod:entity-Meerloo
+	skos:exactMatch <http://sws.geonames.org/2751042/> .
+
+niod:entity-Meerssen
+	skos:exactMatch <http://sws.geonames.org/2751037/> .
+
+niod:entity-Meeuwen
+	skos:exactMatch <http://sws.geonames.org/2751021/> .
+
+niod:entity-Megchelen
+	skos:exactMatch <http://sws.geonames.org/2751004/> .
+
+niod:entity-Megen
+	skos:exactMatch <http://sws.geonames.org/2751002/> .
+
+niod:entity-Meppel
+	skos:exactMatch <http://sws.geonames.org/2750947/> .
+
+niod:entity-Meppen
+	skos:exactMatch <http://sws.geonames.org/2750944/> .
+
+niod:entity-Merwede
+	skos:exactMatch <http://sws.geonames.org/2750930/> .
+
+niod:entity-Merwedehaven
+	skos:exactMatch <http://sws.geonames.org/2750929/> .
+
+niod:entity-Merwedekanaal
+	skos:exactMatch <http://sws.geonames.org/2750928/> .
+
+niod:entity-Mheer
+	skos:exactMatch <http://sws.geonames.org/2750913/> .
+
+niod:entity-Middenmeer
+	skos:exactMatch <http://sws.geonames.org/2750850/> .
+
+niod:entity-Mierlo
+	skos:exactMatch <http://sws.geonames.org/2750821/> .
+
+niod:entity-Mil
+	skos:exactMatch <http://sws.geonames.org/2750802/> .
+
+niod:entity-Mill
+	skos:exactMatch <http://sws.geonames.org/2750802/> .
+
+niod:entity-Minden
+	skos:exactMatch <http://sws.geonames.org/6955644/> .
+
+niod:entity-Minnertsga
+	skos:exactMatch <http://sws.geonames.org/2750790/> .
+
+niod:entity-Moerdijk
+	skos:exactMatch <http://sws.geonames.org/2750769/> .
+
+niod:entity-Moerdijkbruggen
+	skos:exactMatch <http://sws.geonames.org/2750768/> .
+
+niod:entity-Moergestel
+	skos:exactMatch <http://sws.geonames.org/2750766/> .
+
+niod:entity-Moezel
+	skos:exactMatch <http://sws.geonames.org/2750751/> .
+
+niod:entity-Molen
+	skos:exactMatch <http://sws.geonames.org/2750737/> .
+
+niod:entity-Molenbroek
+	skos:exactMatch <http://sws.geonames.org/2750720/> .
+
+niod:entity-Montfort
+	skos:exactMatch <http://sws.geonames.org/2750624/> .
+
+niod:entity-Mook
+	skos:exactMatch <http://sws.geonames.org/2750621/> .
+
+niod:entity-Moordrecht
+	skos:exactMatch <http://sws.geonames.org/2750613/> .
+
+niod:entity-Moorsel
+	skos:exactMatch <http://sws.geonames.org/2750611/> .
+
+niod:entity-Munster
+	skos:exactMatch <http://sws.geonames.org/2750540/> .
+
+niod:entity-Muntendam
+	skos:exactMatch <http://sws.geonames.org/2750535/> .
+
+niod:entity-Murmerwoude
+	skos:exactMatch <http://sws.geonames.org/2757838/> .
+
+niod:entity-NOORD-BRABANT
+	skos:exactMatch <http://sws.geonames.org/2749990/> .
+
+niod:entity-NOORD-HOLLAND
+	skos:exactMatch <http://sws.geonames.org/2749879/> .
+
+niod:entity-Naaldwijk
+	skos:exactMatch <http://sws.geonames.org/2750523/> .
+
+niod:entity-Nede
+	skos:exactMatch <http://sws.geonames.org/2750460/> .
+
+niod:entity-Nederlan
+	skos:exactMatch <http://sws.geonames.org/2750405/> .
+
+niod:entity-Nederlanden
+	skos:exactMatch <http://sws.geonames.org/2750405/> .
+
+niod:entity-Nederweert
+	skos:exactMatch <http://sws.geonames.org/2750467/> .
+
+niod:entity-Neede
+	skos:exactMatch <http://sws.geonames.org/2750460/> .
+
+niod:entity-Neerbosch
+	skos:exactMatch <http://sws.geonames.org/2750451/> .
+
+niod:entity-Neuzen
+	skos:exactMatch <http://sws.geonames.org/2746420/> .
+
+niod:entity-Niers
+	skos:exactMatch <http://sws.geonames.org/2750384/> .
+
+niod:entity-Nieuw-Beijerland
+	skos:exactMatch <http://sws.geonames.org/2750371/> .
+
+niod:entity-Nieuwe_Merwede
+	skos:exactMatch <http://sws.geonames.org/2750296/> .
+
+niod:entity-Nieuwe_Pekela
+	skos:exactMatch <http://sws.geonames.org/2750272/> .
+
+niod:entity-Nieuwe_Waterweg
+	skos:exactMatch <http://sws.geonames.org/2750222/> .
+
+niod:entity-Nieuwenhagen
+	skos:exactMatch <http://sws.geonames.org/2750282/> .
+
+niod:entity-Nieuweschans
+	skos:exactMatch <http://sws.geonames.org/2750250/> .
+
+niod:entity-Nieuwleusen
+	skos:exactMatch <http://sws.geonames.org/2750161/> .
+
+niod:entity-Nieuwmarkt
+	skos:exactMatch <http://sws.geonames.org/6954356/> .
+
+niod:entity-Nieuwolda
+	skos:exactMatch <http://sws.geonames.org/2750154/> .
+
+niod:entity-Nieuwstadt
+	skos:exactMatch <http://sws.geonames.org/2750126/> .
+
+niod:entity-Nieuwveen
+	skos:exactMatch <http://sws.geonames.org/2750123/> .
+
+niod:entity-Niftrik
+	skos:exactMatch <http://sws.geonames.org/2750108/> .
+
+niod:entity-Nijenrode
+	skos:exactMatch <http://sws.geonames.org/2750081/> .
+
+niod:entity-Nijland
+	skos:exactMatch <http://sws.geonames.org/2750059/> .
+
+niod:entity-Nijverdal
+	skos:exactMatch <http://sws.geonames.org/2750039/> .
+
+niod:entity-Nimwegen
+	skos:exactMatch <http://sws.geonames.org/2750053/> .
+
+niod:entity-Nispen
+	skos:exactMatch <http://sws.geonames.org/2750035/> .
+
+niod:entity-Noorbeek
+	skos:exactMatch <http://sws.geonames.org/2750003/> .
+
+niod:entity-Noord-Brabant
+	skos:exactMatch <http://sws.geonames.org/2749990/> .
+
+niod:entity-Noord-Holland
+	skos:exactMatch <http://sws.geonames.org/2749879/> .
+
+niod:entity-NoordBrabant
+	skos:exactMatch <http://sws.geonames.org/2749990/> .
+
+niod:entity-NoordHolland
+	skos:exactMatch <http://sws.geonames.org/2749879/> .
+
+niod:entity-Noorderburen
+	skos:exactMatch <http://sws.geonames.org/6544921/> .
+
+niod:entity-Noordereiland
+	skos:exactMatch <http://sws.geonames.org/2749945/> .
+
+niod:entity-Noordersluis
+	skos:exactMatch <http://sws.geonames.org/6950508/> .
+
+niod:entity-Noordhollands_Kanaal
+	skos:exactMatch <http://sws.geonames.org/2749877/> .
+
+niod:entity-Noordoostpolder
+	skos:exactMatch <http://sws.geonames.org/2749852/> .
+
+niod:entity-Noordwijk_aan_Zee
+	skos:exactMatch <http://sws.geonames.org/2749813/> .
+
+niod:entity-Noordzeekanaal
+	skos:exactMatch <http://sws.geonames.org/2749803/> .
+
+niod:entity-Norden
+	skos:exactMatch <http://sws.geonames.org/2749798/> .
+
+niod:entity-Norg
+	skos:exactMatch <http://sws.geonames.org/2749796/> .
+
+niod:entity-Nude
+	skos:exactMatch <http://sws.geonames.org/2749781/> .
+
+niod:entity-Numansdorp
+	skos:exactMatch <http://sws.geonames.org/2749765/> .
+
+niod:entity-Nunspeet
+	skos:exactMatch <http://sws.geonames.org/2749756/> .
+
+niod:entity-OOl
+	skos:exactMatch <http://sws.geonames.org/2749563/> .
+
+niod:entity-Obbicht
+	skos:exactMatch <http://sws.geonames.org/2749748/> .
+
+niod:entity-Obdam
+	skos:exactMatch <http://sws.geonames.org/2749745/> .
+
+niod:entity-Ochten
+	skos:exactMatch <http://sws.geonames.org/2749741/> .
+
+niod:entity-Ockenburg
+	skos:exactMatch <http://sws.geonames.org/2749740/> .
+
+niod:entity-Oirschot
+	skos:exactMatch <http://sws.geonames.org/2749683/> .
+
+niod:entity-Oisterwijk
+	skos:exactMatch <http://sws.geonames.org/2749680/> .
+
+niod:entity-Oldeberkoop
+	skos:exactMatch <http://sws.geonames.org/2749671/> .
+
+niod:entity-Oldebroek
+	skos:exactMatch <http://sws.geonames.org/2749668/> .
+
+niod:entity-Oldenzaal
+	skos:exactMatch <http://sws.geonames.org/2749644/> .
+
+niod:entity-Olst
+	skos:exactMatch <http://sws.geonames.org/2749626/> .
+
+niod:entity-Olympisch_Stadion
+	skos:exactMatch <http://sws.geonames.org/6951731/> .
+
+niod:entity-Ommen
+	skos:exactMatch <http://sws.geonames.org/2749613/> .
+
+niod:entity-Onstwedde
+	skos:exactMatch <http://sws.geonames.org/2749577/> .
+
+niod:entity-Ooltgensplaat
+	skos:exactMatch <http://sws.geonames.org/2749560/> .
+
+niod:entity-Oord
+	skos:exactMatch <http://sws.geonames.org/2743463/> .
+
+niod:entity-Oorschot
+	skos:exactMatch <http://sws.geonames.org/2749683/> .
+
+niod:entity-Oort
+	skos:exactMatch <http://sws.geonames.org/2749555/> .
+
+niod:entity-Oost-Souburg
+	skos:exactMatch <http://sws.geonames.org/2749341/> .
+
+niod:entity-OostIndie
+	skos:exactMatch <http://sws.geonames.org/2749365/> .
+
+niod:entity-Oostburg
+	skos:exactMatch <http://sws.geonames.org/2749541/> .
+
+niod:entity-Oosterbroek
+	skos:exactMatch <http://sws.geonames.org/2749490/> .
+
+niod:entity-Oosterburen
+	skos:exactMatch <http://sws.geonames.org/2747591/> .
+
+niod:entity-Oosterhuis
+	skos:exactMatch <http://sws.geonames.org/2757187/> .
+
+niod:entity-Oostermeer
+	skos:exactMatch <http://sws.geonames.org/2749430/> .
+
+niod:entity-Oostkapelle
+	skos:exactMatch <http://sws.geonames.org/2749362/> .
+
+niod:entity-Oostmahorn
+	skos:exactMatch <http://sws.geonames.org/2749357/> .
+
+niod:entity-Oostplein
+	skos:exactMatch <http://sws.geonames.org/6941877/> .
+
+niod:entity-Oostvoorne
+	skos:exactMatch <http://sws.geonames.org/2749330/> .
+
+niod:entity-Oppenhuizen
+	skos:exactMatch <http://sws.geonames.org/2749284/> .
+
+niod:entity-Oranje
+	skos:exactMatch <http://sws.geonames.org/2749271/> .
+
+niod:entity-Oranjesluizen
+	skos:exactMatch <http://sws.geonames.org/2749254/> .
+
+niod:entity-Oss
+	skos:exactMatch <http://sws.geonames.org/2749234/> .
+
+niod:entity-Osse
+	skos:exactMatch <http://sws.geonames.org/2749230/> .
+
+niod:entity-Otterlo
+	skos:exactMatch <http://sws.geonames.org/2749203/> .
+
+niod:entity-Oud-Roosteren
+	skos:exactMatch <http://sws.geonames.org/2748905/> .
+
+niod:entity-Oude_Maas
+	skos:exactMatch <http://sws.geonames.org/2749069/> .
+
+niod:entity-Over-Betuwe
+	skos:exactMatch <http://sws.geonames.org/2759029/> .
+
+niod:entity-Overbeek
+	skos:exactMatch <http://sws.geonames.org/2748866/> .
+
+niod:entity-Overflakkee
+	skos:exactMatch <http://sws.geonames.org/2748846/> .
+
+niod:entity-Overijssel
+	skos:exactMatch <http://sws.geonames.org/2748838/> .
+
+niod:entity-Overloon
+	skos:exactMatch <http://sws.geonames.org/2748833/> .
+
+niod:entity-Overschie
+	skos:exactMatch <http://sws.geonames.org/2748826/> .
+
+niod:entity-Overveen
+	skos:exactMatch <http://sws.geonames.org/2748813/> .
+
+niod:entity-Paleis_Soestdijk
+	skos:exactMatch <http://sws.geonames.org/6950760/> .
+
+niod:entity-Palestina
+	skos:exactMatch <http://sws.geonames.org/2748757/> .
+
+niod:entity-Parkweg
+	skos:exactMatch <http://sws.geonames.org/6954298/> .
+
+niod:entity-Peize
+	skos:exactMatch <http://sws.geonames.org/2748673/> .
+
+niod:entity-Peursum
+	skos:exactMatch <http://sws.geonames.org/2748626/> .
+
+niod:entity-Pingjum
+	skos:exactMatch <http://sws.geonames.org/2748582/> .
+
+niod:entity-Polen
+	skos:exactMatch <http://sws.geonames.org/2748518/> .
+
+niod:entity-Poortvliet
+	skos:exactMatch <http://sws.geonames.org/2748498/> .
+
+niod:entity-Postkantoor
+	skos:exactMatch <http://sws.geonames.org/6544143/> .
+
+niod:entity-Princenhage
+	skos:exactMatch <http://sws.geonames.org/2748457/> .
+
+niod:entity-Puttershoek
+	skos:exactMatch <http://sws.geonames.org/2748389/> .
+
+niod:entity-RA
+	skos:exactMatch <http://sws.geonames.org/2748376/> .
+
+niod:entity-Raalte
+	skos:exactMatch <http://sws.geonames.org/2748371/> .
+
+niod:entity-Randwijk
+	skos:exactMatch <http://sws.geonames.org/2748329/> .
+
+niod:entity-Rapenburg
+	skos:exactMatch <http://sws.geonames.org/2748323/> .
+
+niod:entity-Ravenstein
+	skos:exactMatch <http://sws.geonames.org/2748308/> .
+
+niod:entity-Ravenswaay
+	skos:exactMatch <http://sws.geonames.org/2748306/> .
+
+niod:entity-Ravestein
+	skos:exactMatch <http://sws.geonames.org/2748308/> .
+
+niod:entity-Rembrandtplein
+	skos:exactMatch <http://sws.geonames.org/6930385/> .
+
+niod:entity-Renesse
+	skos:exactMatch <http://sws.geonames.org/2748240/> .
+
+niod:entity-Renkum
+	skos:exactMatch <http://sws.geonames.org/2748236/> .
+
+niod:entity-Ressen
+	skos:exactMatch <http://sws.geonames.org/2748224/> .
+
+niod:entity-Reuver
+	skos:exactMatch <http://sws.geonames.org/2748208/> .
+
+niod:entity-Rheden
+	skos:exactMatch <http://sws.geonames.org/2748201/> .
+
+niod:entity-Rijen
+	skos:exactMatch <http://sws.geonames.org/2748130/> .
+
+niod:entity-Rijndijk
+	skos:exactMatch <http://sws.geonames.org/2748116/> .
+
+niod:entity-Rijnland
+	skos:exactMatch <http://sws.geonames.org/2748108/> .
+
+niod:entity-Rijnsburg
+	skos:exactMatch <http://sws.geonames.org/2748104/> .
+
+niod:entity-Rijsbergen
+	skos:exactMatch <http://sws.geonames.org/2748091/> .
+
+niod:entity-Rijsoord
+	skos:exactMatch <http://sws.geonames.org/2748085/> .
+
+niod:entity-Rijssen
+	skos:exactMatch <http://sws.geonames.org/2748083/> .
+
+niod:entity-Rilland
+	skos:exactMatch <http://sws.geonames.org/2748068/> .
+
+niod:entity-Ripperdakazerne
+	skos:exactMatch <http://sws.geonames.org/6951275/> .
+
+niod:entity-Ritthem
+	skos:exactMatch <http://sws.geonames.org/2748042/> .
+
+niod:entity-Rockanje
+	skos:exactMatch <http://sws.geonames.org/2748029/> .
+
+niod:entity-Roden
+	skos:exactMatch <http://sws.geonames.org/2748026/> .
+
+niod:entity-Rodenrijs
+	skos:exactMatch <http://sws.geonames.org/2748023/> .
+
+niod:entity-Roermond
+	skos:exactMatch <http://sws.geonames.org/2748000/> .
+
+niod:entity-Rolde
+	skos:exactMatch <http://sws.geonames.org/2747979/> .
+
+niod:entity-Rome
+	skos:exactMatch <http://sws.geonames.org/2747972/> .
+
+niod:entity-Romer
+	skos:exactMatch <http://sws.geonames.org/2747971/> .
+
+niod:entity-Roon
+	skos:exactMatch <http://sws.geonames.org/2748178/> .
+
+niod:entity-Roosteren
+	skos:exactMatch <http://sws.geonames.org/2747924/> .
+
+niod:entity-Roskam
+	skos:exactMatch <http://sws.geonames.org/2747911/> .
+
+niod:entity-Rottumeroog
+	skos:exactMatch <http://sws.geonames.org/2747881/> .
+
+niod:entity-Rouveen
+	skos:exactMatch <http://sws.geonames.org/2747879/> .
+
+niod:entity-Ruigenhoek
+	skos:exactMatch <http://sws.geonames.org/2747847/> .
+
+niod:entity-Ruinen
+	skos:exactMatch <http://sws.geonames.org/2747835/> .
+
+niod:entity-SIon
+	skos:exactMatch <http://sws.geonames.org/2747209/> .
+
+niod:entity-Salland
+	skos:exactMatch <http://sws.geonames.org/2747775/> .
+
+niod:entity-Santpoort
+	skos:exactMatch <http://sws.geonames.org/2747760/> .
+
+niod:entity-Sappemeer
+	skos:exactMatch <http://sws.geonames.org/2747758/> .
+
+niod:entity-Schaarsbergen
+	skos:exactMatch <http://sws.geonames.org/2747735/> .
+
+niod:entity-Schalkhaar
+	skos:exactMatch <http://sws.geonames.org/2747704/> .
+
+niod:entity-Scheepmakershaven
+	skos:exactMatch <http://sws.geonames.org/2747657/> .
+
+niod:entity-Schelde
+	skos:exactMatch <http://sws.geonames.org/3301577/> .
+
+niod:entity-Schelle
+	skos:exactMatch <http://sws.geonames.org/2747641/> .
+
+niod:entity-Schellingwoude
+	skos:exactMatch <http://sws.geonames.org/2747640/> .
+
+niod:entity-Schermerhorn
+	skos:exactMatch <http://sws.geonames.org/2747617/> .
+
+niod:entity-Scherpenisse
+	skos:exactMatch <http://sws.geonames.org/2747610/> .
+
+niod:entity-Scheveningen
+	skos:exactMatch <http://sws.geonames.org/2747599/> .
+
+niod:entity-Scheveningse_Bosjes
+	skos:exactMatch <http://sws.geonames.org/2747598/> .
+
+niod:entity-Schiebroek
+	skos:exactMatch <http://sws.geonames.org/2747597/> .
+
+niod:entity-Schieland
+	skos:exactMatch <http://sws.geonames.org/2747593/> .
+
+niod:entity-Schijndel
+	skos:exactMatch <http://sws.geonames.org/2747584/> .
+
+niod:entity-Schipluiden
+	skos:exactMatch <http://sws.geonames.org/2747540/> .
+
+niod:entity-Scholtenhuis
+	skos:exactMatch <http://sws.geonames.org/2747526/> .
+
+niod:entity-Schoondijke
+	skos:exactMatch <http://sws.geonames.org/2747517/> .
+
+niod:entity-Schoorl
+	skos:exactMatch <http://sws.geonames.org/2747492/> .
+
+niod:entity-Schouwen
+	skos:exactMatch <http://sws.geonames.org/2747466/> .
+
+niod:entity-Schouwen-Duiveland
+	skos:exactMatch <http://sws.geonames.org/6544251/> .
+
+niod:entity-Sevenum
+	skos:exactMatch <http://sws.geonames.org/2747382/> .
+
+niod:entity-Singel
+	skos:exactMatch <http://sws.geonames.org/6469139/> .
+
+niod:entity-Sint-Michielsgestel
+	skos:exactMatch <http://sws.geonames.org/2747234/> .
+
+niod:entity-Sint_Maarten
+	skos:exactMatch <http://sws.geonames.org/2747244/> .
+
+niod:entity-Sint_Pancras
+	skos:exactMatch <http://sws.geonames.org/2747225/> .
+
+niod:entity-Sint_Pietersberg
+	skos:exactMatch <http://sws.geonames.org/2747217/> .
+
+niod:entity-Sion
+	skos:exactMatch <http://sws.geonames.org/2747209/> .
+
+niod:entity-Sittard
+	skos:exactMatch <http://sws.geonames.org/2747203/> .
+
+niod:entity-Slagveld
+	skos:exactMatch <http://sws.geonames.org/2747190/> .
+
+niod:entity-Sleeuwijk
+	skos:exactMatch <http://sws.geonames.org/2747178/> .
+
+niod:entity-Sluiskil
+	skos:exactMatch <http://sws.geonames.org/2747109/> .
+
+niod:entity-Smilde
+	skos:exactMatch <http://sws.geonames.org/2747076/> .
+
+niod:entity-Snijders
+	skos:exactMatch <http://sws.geonames.org/2747049/> .
+
+niod:entity-Soestdijk
+	skos:exactMatch <http://sws.geonames.org/2747032/> .
+
+niod:entity-Sommelsdijk
+	skos:exactMatch <http://sws.geonames.org/2747016/> .
+
+niod:entity-Souburg
+	skos:exactMatch <http://sws.geonames.org/2746992/> .
+
+niod:entity-Spakenburg
+	skos:exactMatch <http://sws.geonames.org/2746981/> .
+
+niod:entity-Sprang-Capelle
+	skos:exactMatch <http://sws.geonames.org/2746903/> .
+
+niod:entity-Staatsmijn_Emma
+	skos:exactMatch <http://sws.geonames.org/2756144/> .
+
+niod:entity-Staatsmijn_Maurits
+	skos:exactMatch <http://sws.geonames.org/2751082/> .
+
+niod:entity-Stampersgat
+	skos:exactMatch <http://sws.geonames.org/2746846/> .
+
+niod:entity-Stapel
+	skos:exactMatch <http://sws.geonames.org/2757043/> .
+
+niod:entity-Statendam
+	skos:exactMatch <http://sws.geonames.org/2746827/> .
+
+niod:entity-Station_HofPlein
+	skos:exactMatch <http://sws.geonames.org/2747889/> .
+
+niod:entity-Stationsplein
+	skos:exactMatch <http://sws.geonames.org/6951181/> .
+
+niod:entity-Staveren
+	skos:exactMatch <http://sws.geonames.org/2746816/> .
+
+niod:entity-Stavoren
+	skos:exactMatch <http://sws.geonames.org/2746816/> .
+
+niod:entity-Steenwijk
+	skos:exactMatch <http://sws.geonames.org/2746766/> .
+
+niod:entity-Straat
+	skos:exactMatch <http://sws.geonames.org/2746636/> .
+
+niod:entity-Stramproy
+	skos:exactMatch <http://sws.geonames.org/2746631/> .
+
+niod:entity-Straten
+	skos:exactMatch <http://sws.geonames.org/2746626/> .
+
+niod:entity-Strijensas
+	skos:exactMatch <http://sws.geonames.org/2746605/> .
+
+niod:entity-Stroom
+	skos:exactMatch <http://sws.geonames.org/2752765/> .
+
+niod:entity-Susteren
+	skos:exactMatch <http://sws.geonames.org/2746555/> .
+
+niod:entity-Swalmen
+	skos:exactMatch <http://sws.geonames.org/2746548/> .
+
+niod:entity-TOl
+	skos:exactMatch <http://sws.geonames.org/2746236/> .
+
+niod:entity-Tegelen
+	skos:exactMatch <http://sws.geonames.org/2746504/> .
+
+niod:entity-Tempel
+	skos:exactMatch <http://sws.geonames.org/2746495/> .
+
+niod:entity-Ter_Apel
+	skos:exactMatch <http://sws.geonames.org/2746475/> .
+
+niod:entity-Terborg
+	skos:exactMatch <http://sws.geonames.org/2746468/> .
+
+niod:entity-Terbregge
+	skos:exactMatch <http://sws.geonames.org/2746464/> .
+
+niod:entity-Terheijden
+	skos:exactMatch <http://sws.geonames.org/2746456/> .
+
+niod:entity-Terlet
+	skos:exactMatch <http://sws.geonames.org/2746436/> .
+
+niod:entity-Terp
+	skos:exactMatch <http://sws.geonames.org/2746416/> .
+
+niod:entity-Thorn
+	skos:exactMatch <http://sws.geonames.org/2746342/> .
+
+niod:entity-Tij
+	skos:exactMatch <http://sws.geonames.org/2757024/> .
+
+niod:entity-Tilburg
+	skos:exactMatch <http://sws.geonames.org/2746301/> .
+
+niod:entity-Tinaarlo
+	skos:exactMatch <http://sws.geonames.org/2746038/> .
+
+niod:entity-Tjeukemeer
+	skos:exactMatch <http://sws.geonames.org/2746267/> .
+
+niod:entity-Tol
+	skos:exactMatch <http://sws.geonames.org/2746236/> .
+
+niod:entity-Tongelre
+	skos:exactMatch <http://sws.geonames.org/2746215/> .
+
+niod:entity-Top
+	skos:exactMatch <http://sws.geonames.org/2746196/> .
+
+niod:entity-Treebeek
+	skos:exactMatch <http://sws.geonames.org/2746174/> .
+
+niod:entity-Tricht
+	skos:exactMatch <http://sws.geonames.org/2746162/> .
+
+niod:entity-Tubbergen
+	skos:exactMatch <http://sws.geonames.org/2746133/> .
+
+niod:entity-Turkije
+	skos:exactMatch <http://sws.geonames.org/2746105/> .
+
+niod:entity-Twente
+	skos:exactMatch <http://sws.geonames.org/2746058/> .
+
+niod:entity-Twist
+	skos:exactMatch <http://sws.geonames.org/2746048/> .
+
+niod:entity-Ubbergen
+	skos:exactMatch <http://sws.geonames.org/2746012/> .
+
+niod:entity-Uchelen
+	skos:exactMatch <http://sws.geonames.org/2745997/> .
+
+niod:entity-Uden
+	skos:exactMatch <http://sws.geonames.org/2746005/> .
+
+niod:entity-Udenhout
+	skos:exactMatch <http://sws.geonames.org/2746003/> .
+
+niod:entity-Ulft
+	skos:exactMatch <http://sws.geonames.org/2745953/> .
+
+niod:entity-Ulvenhout
+	skos:exactMatch <http://sws.geonames.org/2745940/> .
+
+niod:entity-Ursem
+	skos:exactMatch <http://sws.geonames.org/2745924/> .
+
+niod:entity-Vaals
+	skos:exactMatch <http://sws.geonames.org/2745906/> .
+
+niod:entity-Vaartse_Rijn
+	skos:exactMatch <http://sws.geonames.org/6955919/> .
+
+niod:entity-Vaassen
+	skos:exactMatch <http://sws.geonames.org/2745892/> .
+
+niod:entity-Valburg
+	skos:exactMatch <http://sws.geonames.org/2745885/> .
+
+niod:entity-Valkenswaard
+	skos:exactMatch <http://sws.geonames.org/2745860/> .
+
+niod:entity-Valthe
+	skos:exactMatch <http://sws.geonames.org/2745846/> .
+
+niod:entity-Varsseveld
+	skos:exactMatch <http://sws.geonames.org/2745800/> .
+
+niod:entity-Veendam
+	skos:exactMatch <http://sws.geonames.org/2745783/> .
+
+niod:entity-Veer
+	skos:exactMatch <http://sws.geonames.org/2744120/> .
+
+niod:entity-Veghel
+	skos:exactMatch <http://sws.geonames.org/2745726/> .
+
+niod:entity-Velde
+	skos:exactMatch <http://sws.geonames.org/2757182/> .
+
+niod:entity-Velden
+	skos:exactMatch <http://sws.geonames.org/2745717/> .
+
+niod:entity-Velserbeek
+	skos:exactMatch <http://sws.geonames.org/2745672/> .
+
+niod:entity-Velserpont
+	skos:exactMatch <http://sws.geonames.org/6951067/> .
+
+niod:entity-Venlo
+	skos:exactMatch <http://sws.geonames.org/2745641/> .
+
+niod:entity-Venray
+	skos:exactMatch <http://sws.geonames.org/2745634/> .
+
+niod:entity-Vere
+	skos:exactMatch <http://sws.geonames.org/2745739/> .
+
+niod:entity-Vessem
+	skos:exactMatch <http://sws.geonames.org/2745589/> .
+
+niod:entity-Vierhouten
+	skos:exactMatch <http://sws.geonames.org/2745558/> .
+
+niod:entity-Vierlingsbeek
+	skos:exactMatch <http://sws.geonames.org/2745550/> .
+
+niod:entity-Vijver
+	skos:exactMatch <http://sws.geonames.org/2755061/> .
+
+niod:entity-Vinkeveen
+	skos:exactMatch <http://sws.geonames.org/2745493/> .
+
+niod:entity-Vlake
+	skos:exactMatch <http://sws.geonames.org/2745457/> .
+
+niod:entity-Vledder
+	skos:exactMatch <http://sws.geonames.org/2745449/> .
+
+niod:entity-Vlodrop
+	skos:exactMatch <http://sws.geonames.org/2745382/> .
+
+niod:entity-Vloet
+	skos:exactMatch <http://sws.geonames.org/2745374/> .
+
+niod:entity-Voerendaal
+	skos:exactMatch <http://sws.geonames.org/2745369/> .
+
+niod:entity-Volendam
+	skos:exactMatch <http://sws.geonames.org/2745340/> .
+
+niod:entity-Vollenhoven
+	skos:exactMatch <http://sws.geonames.org/2745332/> .
+
+niod:entity-Voorburg
+	skos:exactMatch <http://sws.geonames.org/2745321/> .
+
+niod:entity-Voorhout
+	skos:exactMatch <http://sws.geonames.org/2745311/> .
+
+niod:entity-Voorthuizen
+	skos:exactMatch <http://sws.geonames.org/2745271/> .
+
+niod:entity-Vredespaleis
+	skos:exactMatch <http://sws.geonames.org/2745201/> .
+
+niod:entity-VriJ
+	skos:exactMatch <http://sws.geonames.org/2745180/> .
+
+niod:entity-Vries
+	skos:exactMatch <http://sws.geonames.org/2745189/> .
+
+niod:entity-Vriezenveen
+	skos:exactMatch <http://sws.geonames.org/2745182/> .
+
+niod:entity-Vught
+	skos:exactMatch <http://sws.geonames.org/2745154/> .
+
+niod:entity-Vuurtoren
+	skos:exactMatch <http://sws.geonames.org/6946500/> .
+
+niod:entity-WESTERBORK
+	skos:exactMatch <http://sws.geonames.org/2744769/> .
+
+niod:entity-WIe
+	skos:exactMatch <http://sws.geonames.org/2744572/> .
+
+niod:entity-Waalbrug
+	skos:exactMatch <http://sws.geonames.org/2745130/> .
+
+niod:entity-Waalhaven
+	skos:exactMatch <http://sws.geonames.org/2745128/> .
+
+niod:entity-Waalre
+	skos:exactMatch <http://sws.geonames.org/2745127/> .
+
+niod:entity-Waalsdorpervlakte
+	skos:exactMatch <http://sws.geonames.org/2745124/> .
+
+niod:entity-Waar
+	skos:exactMatch <http://sws.geonames.org/2746083/> .
+
+niod:entity-Waard
+	skos:exactMatch <http://sws.geonames.org/2745120/> .
+
+niod:entity-Waddeneilanden
+	skos:exactMatch <http://sws.geonames.org/2744659/> .
+
+niod:entity-Wageningen
+	skos:exactMatch <http://sws.geonames.org/2745088/> .
+
+niod:entity-Walcheren
+	skos:exactMatch <http://sws.geonames.org/2745077/> .
+
+niod:entity-Wamel
+	skos:exactMatch <http://sws.geonames.org/2745054/> .
+
+niod:entity-War
+	skos:exactMatch <http://sws.geonames.org/2745028/> .
+
+niod:entity-Warffum
+	skos:exactMatch <http://sws.geonames.org/2745024/> .
+
+niod:entity-Warga
+	skos:exactMatch <http://sws.geonames.org/2745018/> .
+
+niod:entity-Warmond
+	skos:exactMatch <http://sws.geonames.org/2745012/> .
+
+niod:entity-Watergraafsmeer
+	skos:exactMatch <http://sws.geonames.org/2744976/> .
+
+niod:entity-Wateringen
+	skos:exactMatch <http://sws.geonames.org/2744973/> .
+
+niod:entity-Waubach
+	skos:exactMatch <http://sws.geonames.org/2744950/> .
+
+niod:entity-Wel
+	skos:exactMatch <http://sws.geonames.org/2744865/> .
+
+niod:entity-Wellenstein
+	skos:exactMatch <http://sws.geonames.org/2744860/> .
+
+niod:entity-Welschap
+	skos:exactMatch <http://sws.geonames.org/2744849/> .
+
+niod:entity-Wemeldinge
+	skos:exactMatch <http://sws.geonames.org/2744839/> .
+
+niod:entity-Werkendam
+	skos:exactMatch <http://sws.geonames.org/2744827/> .
+
+niod:entity-Wessel
+	skos:exactMatch <http://sws.geonames.org/2744817/> .
+
+niod:entity-Wessem
+	skos:exactMatch <http://sws.geonames.org/2744815/> .
+
+niod:entity-Westdorpe
+	skos:exactMatch <http://sws.geonames.org/2744800/> .
+
+niod:entity-WesterSchelde
+	skos:exactMatch <http://sws.geonames.org/2744698/> .
+
+niod:entity-Westerbeek
+	skos:exactMatch <http://sws.geonames.org/2744771/> .
+
+niod:entity-Westerbork
+	skos:exactMatch <http://sws.geonames.org/2744769/> .
+
+niod:entity-Westerbouwing
+	skos:exactMatch <http://sws.geonames.org/2744765/> .
+
+niod:entity-Westerschelde
+	skos:exactMatch <http://sws.geonames.org/2744698/> .
+
+niod:entity-Westfalen
+	skos:exactMatch <http://sws.geonames.org/2744661/> .
+
+niod:entity-Westkapelle
+	skos:exactMatch <http://sws.geonames.org/2744642/> .
+
+niod:entity-Westmaas
+	skos:exactMatch <http://sws.geonames.org/2744631/> .
+
+niod:entity-Westwal
+	skos:exactMatch <http://sws.geonames.org/2744604/> .
+
+niod:entity-Wezel
+	skos:exactMatch <http://sws.geonames.org/2744581/> .
+
+niod:entity-Wezep
+	skos:exactMatch <http://sws.geonames.org/2744580/> .
+
+niod:entity-Wie
+	skos:exactMatch <http://sws.geonames.org/2744572/> .
+
+niod:entity-Wieldrecht
+	skos:exactMatch <http://sws.geonames.org/2744563/> .
+
+niod:entity-Wierden
+	skos:exactMatch <http://sws.geonames.org/2744549/> .
+
+niod:entity-Wieringermeer
+	skos:exactMatch <http://sws.geonames.org/2744537/> .
+
+niod:entity-Wijhe
+	skos:exactMatch <http://sws.geonames.org/2744489/> .
+
+niod:entity-Wijngaarden
+	skos:exactMatch <http://sws.geonames.org/2744467/> .
+
+niod:entity-Wijnhaven
+	skos:exactMatch <http://sws.geonames.org/2744463/> .
+
+niod:entity-Wilhelmina
+	skos:exactMatch <http://sws.geonames.org/6949744/> .
+
+niod:entity-Wilhelminakanaal
+	skos:exactMatch <http://sws.geonames.org/2744419/> .
+
+niod:entity-Willemsbrug
+	skos:exactMatch <http://sws.geonames.org/6950958/> .
+
+niod:entity-Willemsdorp
+	skos:exactMatch <http://sws.geonames.org/2744396/> .
+
+niod:entity-Winde
+	skos:exactMatch <http://sws.geonames.org/2744363/> .
+
+niod:entity-Winschoten
+	skos:exactMatch <http://sws.geonames.org/2744344/> .
+
+niod:entity-Winterswijk
+	skos:exactMatch <http://sws.geonames.org/2744332/> .
+
+niod:entity-Wisch
+	skos:exactMatch <http://sws.geonames.org/2744324/> .
+
+niod:entity-Wissel
+	skos:exactMatch <http://sws.geonames.org/2744318/> .
+
+niod:entity-Wittenberg
+	skos:exactMatch <http://sws.geonames.org/2744283/> .
+
+niod:entity-Woensel
+	skos:exactMatch <http://sws.geonames.org/2744251/> .
+
+niod:entity-Woeste_Hoeve
+	skos:exactMatch <http://sws.geonames.org/2744243/> .
+
+niod:entity-Wolvega
+	skos:exactMatch <http://sws.geonames.org/2744194/> .
+
+niod:entity-Wons
+	skos:exactMatch <http://sws.geonames.org/2744189/> .
+
+niod:entity-Wormerveer
+	skos:exactMatch <http://sws.geonames.org/2744171/> .
+
+niod:entity-Woubrugge
+	skos:exactMatch <http://sws.geonames.org/2744167/> .
+
+niod:entity-YPENBURG
+	skos:exactMatch <http://sws.geonames.org/6941548/> .
+
+niod:entity-Ypenburg
+	skos:exactMatch <http://sws.geonames.org/6941548/> .
+
+niod:entity-ZUID-BEVELAND
+	skos:exactMatch <http://sws.geonames.org/2743805/> .
+
+niod:entity-ZUID-HOLLAND
+	skos:exactMatch <http://sws.geonames.org/2743698/> .
+
+niod:entity-Zaamslag
+	skos:exactMatch <http://sws.geonames.org/2744122/> .
+
+niod:entity-Zaan
+	skos:exactMatch <http://sws.geonames.org/2744119/> .
+
+niod:entity-Zaandam
+	skos:exactMatch <http://sws.geonames.org/2744118/> .
+
+niod:entity-Zaandijk
+	skos:exactMatch <http://sws.geonames.org/2744116/> .
+
+niod:entity-Zaanstreek
+	skos:exactMatch <http://sws.geonames.org/7279859/> .
+
+niod:entity-Zaltbommel
+	skos:exactMatch <http://sws.geonames.org/2744102/> .
+
+niod:entity-Zeehaven
+	skos:exactMatch <http://sws.geonames.org/2744421/> .
+
+niod:entity-Zeeuws_Vlaanderen
+	skos:exactMatch <http://sws.geonames.org/2744000/> .
+
+niod:entity-Zevenaar
+	skos:exactMatch <http://sws.geonames.org/2743949/> .
+
+niod:entity-Zierikzee
+	skos:exactMatch <http://sws.geonames.org/2743913/> .
+
+niod:entity-Zijl
+	skos:exactMatch <http://sws.geonames.org/2743895/> .
+
+niod:entity-Zoelen
+	skos:exactMatch <http://sws.geonames.org/2743861/> .
+
+niod:entity-Zoutelande
+	skos:exactMatch <http://sws.geonames.org/2743822/> .
+
+niod:entity-Zuid
+	skos:exactMatch <http://sws.geonames.org/2743787/> .
+
+niod:entity-Zuid-Beveland
+	skos:exactMatch <http://sws.geonames.org/2743805/> .
+
+niod:entity-Zuid-Holland
+	skos:exactMatch <http://sws.geonames.org/2743698/> .
+
+niod:entity-Zuid-Limburg
+	skos:exactMatch <http://sws.geonames.org/2751596/> .
+
+niod:entity-Zuid-Willemsvaart
+	skos:exactMatch <http://sws.geonames.org/2743638/> .
+
+niod:entity-ZuidBeveland
+	skos:exactMatch <http://sws.geonames.org/2743804/> .
+
+niod:entity-ZuidHolland
+	skos:exactMatch <http://sws.geonames.org/2743698/> .
+
+niod:entity-ZuidLimburg
+	skos:exactMatch <http://sws.geonames.org/2751596/> .
+
+niod:entity-Zuiderzee
+	skos:exactMatch <http://sws.geonames.org/2753361/> .
+
+niod:entity-Zuiderzeewerken
+	skos:exactMatch <http://sws.geonames.org/2746711/> .
+
+niod:entity-Zuidlaren
+	skos:exactMatch <http://sws.geonames.org/2743680/> .
+
+niod:entity-Zurich
+	skos:exactMatch <http://sws.geonames.org/2743611/> .
+
+niod:entity-Zutfen
+	skos:exactMatch <http://sws.geonames.org/2743608/> .
+
+niod:entity-Zutphen
+	skos:exactMatch <http://sws.geonames.org/2743608/> .
+
+niod:entity-Zwartewaal
+	skos:exactMatch <http://sws.geonames.org/2743528/> .
+
+niod:entity-Zwartsluis
+	skos:exactMatch <http://sws.geonames.org/2743518/> .
+
+niod:entity-Zweelo
+	skos:exactMatch <http://sws.geonames.org/2743510/> .

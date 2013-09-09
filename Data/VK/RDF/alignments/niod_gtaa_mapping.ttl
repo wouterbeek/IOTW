@@ -1,0 +1,1843 @@
+@prefix     prov: <http://www.w3.org/ns/prov#> .
+@prefix     skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix      xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix     rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix      rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix     user: <http://victor-vu.few.vu.nl:3020/user/> .
+@prefix     doap: <http://usefulinc.com/ns/doap#> .
+@prefix amalgame: <http://purl.org/vocabularies/amalgame#> .
+@prefix     niod: <http://purl.org/collections/nl/niod/> .
+@prefix  version: <http://localhost/ns//ns/amalgame/version/> .
+@prefix    amexp: <http://localhost/ns/> .
+
+# exactmatch not ambiguous
+
+niod:Aansprakelijkheid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215409> .
+
+niod:Aardolie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215909> .
+
+niod:Accijnzen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215906> .
+
+niod:Adoptie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217432> .
+
+niod:Affiches
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216030> .
+
+niod:Agenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219190> .
+
+niod:Alcoholische_dranken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218079> .
+
+niod:Ambassades
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216074> .
+
+niod:Ambtenaren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217488> .
+
+niod:Ambulances
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218174> .
+
+niod:Amnestie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216070> .
+
+niod:Amusement
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219717> .
+
+niod:Anarchisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217514> .
+
+niod:Antifascisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220503> .
+
+niod:Antiquariaten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216952> .
+
+niod:Antisemitisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216057> .
+
+niod:Antropologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216125> .
+
+niod:Antroposofie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216124> .
+
+niod:Apotheken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216120> .
+
+niod:Arbeid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217726> .
+
+niod:Arbeiders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217508> .
+
+niod:Arbeidsbemiddeling
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216116> .
+
+niod:Arbeidsbureaus
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216115> .
+
+niod:Arbeidsinspectie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216114> .
+
+niod:Arbeidsvoorwaarden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217150> .
+
+niod:Archeologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216109> .
+
+niod:Archieven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216108> .
+
+niod:Architecten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215875> .
+
+niod:Architectuur
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215874> .
+
+niod:Armoede
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216106> .
+
+niod:Arrestaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216104> .
+
+niod:Artillerie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215873> .
+
+niod:Artsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215862> .
+
+niod:Astrologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216092> .
+
+niod:Atlassen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219837> .
+
+niod:Atoomwapens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217724> .
+
+niod:Auteurs
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217421> .
+
+niod:Avondklok
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216456> .
+
+niod:Bakkerijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216134> .
+
+niod:Ballingschap
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216129> .
+
+niod:Bankbiljetten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217449> .
+
+niod:Bankwezen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217014> .
+
+niod:Bedrijven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217480> .
+
+niod:Beeldhouwkunst
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217460> .
+
+niod:Begraafplaatsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217152> .
+
+niod:Begrafenissen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217456> .
+
+niod:Belastingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217484> .
+
+niod:Benoemingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216953> .
+
+niod:Betalingsverkeer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217815> .
+
+niod:Bevolkingsgroepen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215998> .
+
+niod:Bevrijding
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215996> .
+
+niod:Bewapening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215656> .
+
+niod:Bezetting
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215600> .
+
+niod:Bibliotheken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215717> .
+
+niod:Binnenvaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216009> .
+
+niod:Bioscoopjournaals
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216533> .
+
+niod:Bioscopen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216007> .
+
+niod:Bloembollen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216004> .
+
+niod:Blokkades
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217414> .
+
+niod:Boeddhisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217413> .
+
+niod:Boeken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217412> .
+
+niod:Boekverbrandingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217008> .
+
+niod:Boerderijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217410> .
+
+niod:Boeren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217409> .
+
+niod:Bomen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217406> .
+
+niod:Bommen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216052> .
+
+niod:Bommenwerpers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215993> .
+
+niod:Bordelen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215729> .
+
+niod:Borden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/223271> .
+
+niod:Bosbouw
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216055> .
+
+niod:Branden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215783> .
+
+niod:Brandstoffen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217722> .
+
+niod:Brandweer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217994> .
+
+niod:Brieven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217504> .
+
+niod:Brood
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217992> .
+
+niod:Bruggen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217991> .
+
+niod:Bruiloften
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215772> .
+
+niod:Bunkers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219700> .
+
+niod:Burgemeesters
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217995> .
+
+niod:Burgerlijke_stand
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218280> .
+
+niod:Burgeroorlogen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215761> .
+
+niod:Burgerwacht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218005> .
+
+niod:Cabaret
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218004> .
+
+niod:Calamiteiten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216553> .
+
+niod:Camouflage
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217998> .
+
+niod:Cavalerie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218037> .
+
+niod:Censuur
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218035> .
+
+niod:Christendom
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217506> .
+
+niod:Christenen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215843> .
+
+niod:Collaboratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215830> .
+
+niod:Collectes
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215439> .
+
+niod:Commissies
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217693> .
+
+niod:Communisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217513> .
+
+niod:Concerten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215880> .
+
+niod:Confectie-industrie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218708> .
+
+niod:Conservatisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216184> .
+
+niod:Consulaten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216180> .
+
+niod:Contracten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217968> .
+
+niod:Cooperaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218076> .
+
+niod:Corruptie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216173> .
+
+niod:Criminologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216994> .
+
+niod:Dagboeken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216225> .
+
+niod:Dagelijks_leven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220265> .
+
+niod:Daklozen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216223> .
+
+niod:Dekolonisatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216207> .
+
+niod:Delegaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217428> .
+
+niod:Delfstoffen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217957> .
+
+niod:Democratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217716> .
+
+niod:Demonstraties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220003> .
+
+niod:Deportaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217956> .
+
+niod:Diamanten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217954> .
+
+niod:Diefstal
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217952> .
+
+niod:Dienstplicht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216256> .
+
+niod:Dieren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218039> .
+
+niod:Dierenbescherming
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216251> .
+
+niod:Dierentuinen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218031> .
+
+niod:Dijken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218051> .
+
+niod:Diplomatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216240> .
+
+niod:Discriminatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216237> .
+
+niod:Dissidenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216236> .
+
+niod:Distributie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216234> .
+
+niod:Documentaires
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216229> .
+
+niod:Documenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218047> .
+
+niod:Doodstraf
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218059> .
+
+niod:Doop
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216990> .
+
+niod:Dorpen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218058> .
+
+niod:Douane
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216284> .
+
+niod:Dranken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218056> .
+
+niod:Drenkelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216275> .
+
+niod:Droppings
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218054> .
+
+niod:Drukkerijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216265> .
+
+niod:Duikboten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218187> .
+
+niod:Dwangarbeid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216323> .
+
+niod:Echtscheidingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218100> .
+
+niod:Economie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216316> .
+
+niod:Edelmetalen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218109> .
+
+niod:Effectenhandel
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217661> .
+
+niod:Elektriciteit
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218045> .
+
+niod:Elites
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/222426> .
+
+niod:Emancipatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216359> .
+
+niod:Emblemen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216358> .
+
+niod:Emigranten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216356> .
+
+niod:Emigratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216355> .
+
+niod:Emoties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218240> .
+
+niod:Energie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218046> .
+
+niod:Erfelijkheidsleer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218412> .
+
+niod:Essays
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216985> .
+
+niod:Euthanasie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216394> .
+
+niod:Evacuaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216393> .
+
+niod:Executies
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216387> .
+
+niod:Exercities
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218963> .
+
+niod:Explosieven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217566> .
+
+niod:Export
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216378> .
+
+niod:Extremisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220463> .
+
+niod:Faillissementen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218026> .
+
+niod:Fascisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217696> .
+
+niod:Feestdagen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218023> .
+
+niod:Feesten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218022> .
+
+niod:Film
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218065> .
+
+niod:Filosofie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218338> .
+
+niod:Financien
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219869> .
+
+niod:Folklore
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217298> .
+
+niod:Fotografie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218014> .
+
+niod:Fraude
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218387> .
+
+niod:Fundamentalisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218385> .
+
+niod:Gaarkeukens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219690> .
+
+niod:Gaskamers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/222465> .
+
+niod:Gebouwen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217803> .
+
+niod:Geestelijk_gehandicapten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217799> .
+
+niod:Geestelijken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217469> .
+
+niod:Geesteswetenschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218230> .
+
+niod:Geld
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217527> .
+
+niod:Gemeenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217679> .
+
+niod:Genealogie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218417> .
+
+niod:Geneeskunde
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217813> .
+
+niod:Genocide
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217810> .
+
+niod:Geografie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218214> .
+
+niod:Geschenken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217809> .
+
+niod:Geschut
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217795> .
+
+niod:Geslachtsziekten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218406> .
+
+niod:Gevangenen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217843> .
+
+niod:Gevangenissen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217842> .
+
+niod:Gevechtshandelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215976> .
+
+niod:Gewonden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217838> .
+
+niod:Gezinnen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216015> .
+
+niod:Gezinshereniging
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220044> .
+
+niod:Gijzelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217560> .
+
+niod:Gilden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218457> .
+
+niod:Goederenvervoer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217790> .
+
+niod:Goud
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217786> .
+
+niod:Grafische_industrie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218430> .
+
+niod:Grafschennis
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218429> .
+
+niod:Grammofoonplaten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217501> .
+
+niod:Graven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217770> .
+
+niod:Grensbewaking
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218426> .
+
+niod:Groenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217783> .
+
+niod:Grondstoffen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217035> .
+
+niod:Guerrilla_s
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218149> .
+
+niod:Handel
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216016> .
+
+niod:Havens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217727> .
+
+niod:Helikopters
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217760> .
+
+niod:Heraldiek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217769> .
+
+niod:Herdenkingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217697> .
+
+niod:Herinnering
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217806> .
+
+niod:Herinneringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216152> .
+
+niod:Hitlergroet
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220475> .
+
+niod:Homoseksuelen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220220> .
+
+niod:Honger
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217941> .
+
+niod:Hoogleraren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217939> .
+
+niod:Horeca
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217936> .
+
+niod:Hout
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217933> .
+
+niod:Huldigingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217947> .
+
+niod:Hulpverlening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217738> .
+
+niod:Humanisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218575> .
+
+niod:Humor
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218574> .
+
+niod:Identificatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215507> .
+
+niod:Identiteitspapieren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219986> .
+
+niod:Illustraties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217971> .
+
+niod:Immigratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217626> .
+
+niod:Import
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218616> .
+
+niod:Industrialisatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215470> .
+
+niod:Infanterie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217969> .
+
+niod:Inflatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218606> .
+
+niod:Infrastructuur
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218603> .
+
+niod:Ingenieurs
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218602> .
+
+niod:Inlichtingendiensten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217029> .
+
+niod:Integratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218662> .
+
+niod:Internationale_betrekkingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217922> .
+
+niod:Interneringskampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217921> .
+
+niod:Internet
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219927> .
+
+niod:Inundaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217886> .
+
+niod:Islam
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217826> .
+
+niod:Jacht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218007> .
+
+niod:Jazz
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218639> .
+
+niod:Jeugd
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217491> .
+
+niod:Jeugdliteratuur
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217025> .
+
+niod:Jeugdorganisaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217472> .
+
+niod:Jodendom
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217518> .
+
+niod:Journalistiek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217898> .
+
+niod:Justitie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215368> .
+
+niod:Kaartmateriaal
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215808> .
+
+niod:Kabinetten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217520> .
+
+niod:Kalenders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218688> .
+
+niod:Kampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217747> .
+
+niod:Kartelvorming
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217203> .
+
+niod:Kerken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217720> .
+
+niod:Kinderen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216650> .
+
+niod:Kindsoldaten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220023> .
+
+niod:Klederdrachten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216649> .
+
+niod:Klokken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216654> .
+
+niod:Kloosterorden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218766> .
+
+niod:Kloosters
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216661> .
+
+niod:Kluizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215782> .
+
+niod:Kolonialisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218758> .
+
+niod:Kolonien
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216656> .
+
+niod:Koningshuizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217326> .
+
+niod:Konvooien
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218754> .
+
+niod:Koopvaardij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217360> .
+
+niod:Kranten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217699> .
+
+niod:Krijgsgevangenen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219750> .
+
+niod:Kruisers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217367> .
+
+niod:Kunst
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217366> .
+
+niod:Kunstgeschiedenis
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217364> .
+
+niod:Kunsthandel
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220129> .
+
+niod:Kustvaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216662> .
+
+niod:Kustverdediging
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217015> .
+
+niod:Laboratoria
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216628> .
+
+niod:Landbouw
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216622> .
+
+niod:Landmacht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216636> .
+
+niod:Landschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215923> .
+
+niod:Lesmateriaal
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220389> .
+
+niod:Levensbeschouwingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218200> .
+
+niod:Levensmiddelen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217296> .
+
+niod:Liberalisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217511> .
+
+niod:Lichaamsverzorging
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216671> .
+
+niod:Lichamelijk_gehandicapten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216670> .
+
+niod:Liederen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218814> .
+
+niod:Liefde
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218813> .
+
+niod:Lijken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216666> .
+
+niod:Lonen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218233> .
+
+niod:Loopgraven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216617> .
+
+niod:Luchtmacht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216615> .
+
+niod:Luchtschepen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218861> .
+
+niod:Luchtvaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216613> .
+
+niod:Maaltijden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216675> .
+
+niod:Machines
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217216> .
+
+niod:Machtsovername
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219474> .
+
+niod:Maquettes
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217657> .
+
+niod:Marine
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217274> .
+
+niod:Mariniers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217225> .
+
+niod:Markten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217222> .
+
+niod:Marxisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217509> .
+
+niod:Massagraven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218887> .
+
+niod:Massamoorden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218886> .
+
+niod:Media
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218876> .
+
+niod:Medicijnen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217812> .
+
+niod:Metalen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217259> .
+
+niod:Meteorologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218916> .
+
+niod:Middenstand
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218904> .
+
+niod:Migratie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218967> .
+
+niod:Mijnbouw
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217264> .
+
+niod:Mijnenvegers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215404> .
+
+niod:Militarisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217072> .
+
+niod:Ministers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217686> .
+
+niod:Mishandeling
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217348> .
+
+niod:Mobilisatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217351> .
+
+niod:Modder
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/223073> .
+
+niod:Mode
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218946> .
+
+niod:Molens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217237> .
+
+niod:Monumenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217232> .
+
+niod:Moslims
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218994> .
+
+niod:Motorfietsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217227> .
+
+niod:Munitie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217737> .
+
+niod:Musea
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217217> .
+
+niod:Musici
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217184> .
+
+niod:Muziek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217672> .
+
+niod:Muziekinstrumenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218973> .
+
+niod:Nalatenschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216342> .
+
+niod:Nationaal-Socialisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217243> .
+
+niod:Nationalisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218082> .
+
+niod:Naturalisatie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219027> .
+
+niod:Natuurbescherming
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217175> .
+
+niod:Natuurrampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216581> .
+
+niod:Natuurwetenschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218131> .
+
+niod:Neofascisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220465> .
+
+niod:Neonazisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220464> .
+
+niod:Neutraliteit
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217063> .
+
+niod:Noodwoningen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219007> .
+
+niod:Occultisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219065> .
+
+niod:Officieren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216018> .
+
+niod:Omroep
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217525> .
+
+niod:Onderduikers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219044> .
+
+niod:Onderhandelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217494> .
+
+niod:Onderzoek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217355> .
+
+niod:Ontruimingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219101> .
+
+niod:Ontslagen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219100> .
+
+niod:Ontvluchtingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219099> .
+
+niod:Ontvoeringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219098> .
+
+niod:Ontwapening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219097> .
+
+niod:Oogsten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219095> .
+
+niod:Oorlogen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216561> .
+
+niod:Oorlogsgraven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216560> .
+
+niod:Oorlogspleegkinderen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219200> .
+
+niod:Oorlogsschade
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216576> .
+
+niod:Oorlogstrauma_s
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216419> .
+
+niod:Oorlogsvrijwilligers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216575> .
+
+niod:Oorlogsweduwen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216819> .
+
+niod:Openbaar_vervoer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217517> .
+
+niod:Opgravingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219951> .
+
+niod:Opleidingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215990> .
+
+niod:Oral_History
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217865> .
+
+niod:Organisaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215919> .
+
+niod:Orkesten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219138> .
+
+niod:Overtredingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215980> .
+
+niod:Overvallen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219739> .
+
+niod:Paarden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218278> .
+
+niod:Pacifisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218119> .
+
+niod:Padvinderij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216519> .
+
+niod:Paleizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216517> .
+
+niod:Pamfletten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220102> .
+
+niod:Pantservoertuigen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218137> .
+
+niod:Papier
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219119> .
+
+niod:Parachutisten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215979> .
+
+niod:Parapsychologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215970> .
+
+niod:Parken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215968> .
+
+niod:Pausen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217053> .
+
+niod:Pensioenen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218234> .
+
+niod:Periodieken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219550> .
+
+niod:Pers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217471> .
+
+niod:Persoonsbewijzen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217081> .
+
+niod:Persvrijheid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218040> .
+
+niod:Piloten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216559> .
+
+niod:Plattegronden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216592> .
+
+niod:Plunderingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219198> .
+
+niod:Poezie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219195> .
+
+niod:Polemologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219192> .
+
+niod:Politicologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216598> .
+
+niod:Politie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217629> .
+
+niod:Politiek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217512> .
+
+niod:Politieke_gevangenen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219189> .
+
+niod:Politieke_partijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218202> .
+
+niod:Politionele_acties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216597> .
+
+niod:Ponten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218143> .
+
+niod:Portretten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216644> .
+
+niod:Postduiven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219178> .
+
+niod:Posterijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217505> .
+
+niod:Postzegels
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220014> .
+
+niod:Predikanten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216641> .
+
+niod:Priesters
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216639> .
+
+niod:Processen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216556> .
+
+niod:Propaganda
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216584> .
+
+niod:Prostitutie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219230> .
+
+niod:Protestantisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217475> .
+
+niod:Provincies
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219225> .
+
+niod:Psychiatrie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216583> .
+
+niod:Psychologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216582> .
+
+niod:Rabbijnen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219214> .
+
+niod:Racisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219212> .
+
+niod:Radar
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216552> .
+
+niod:Radio
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217717> .
+
+niod:Radiotoestellen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219208> .
+
+niod:Radiozenders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219210> .
+
+niod:Raketten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219754> .
+
+niod:Recensies
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219267> .
+
+niod:Recht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217669> .
+
+niod:Rechts-extremisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216376> .
+
+niod:Rechtspraak
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217710> .
+
+niod:Reclassering
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219258> .
+
+niod:Rederijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219252> .
+
+niod:Redevoeringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217748> .
+
+niod:Referenda
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217108> .
+
+niod:Reizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218043> .
+
+niod:Rente
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215400> .
+
+niod:Repatriering
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216609> .
+
+niod:Repressie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219742> .
+
+niod:Reunies
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219288> .
+
+niod:Revoluties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215902> .
+
+niod:Rijksdiensten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215984> .
+
+niod:Rijwielen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218016> .
+
+niod:Roof
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215674> .
+
+niod:Rooms-katholicisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215945> .
+
+niod:Ruimtelijke_ordening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215934> .
+
+niod:Ruimtevaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217615> .
+
+niod:Sabotage
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215930> .
+
+niod:Scheepsrampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219724> .
+
+niod:Scheepswerven
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217597> .
+
+niod:Scheepvaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217606> .
+
+niod:Scheikunde
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215853> .
+
+niod:Schepen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217603> .
+
+niod:Schilderkunst
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217601> .
+
+niod:Scholen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217188> .
+
+niod:Schuilkelders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219371> .
+
+niod:Schuilplaatsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/223206> .
+
+niod:Schulden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219369> .
+
+niod:Seksualiteit
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217690> .
+
+niod:Sieraden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219358> .
+
+niod:Sinti_en_Roma
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216917> .
+
+niod:Slachten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219347> .
+
+niod:Slavernij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219409> .
+
+niod:Sleepvaart
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219406> .
+
+niod:Sluizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219401> .
+
+niod:Sociale_voorzieningen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219387> .
+
+niod:Socialisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217510> .
+
+niod:Sociologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219386> .
+
+niod:Soevereiniteitsoverdracht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219384> .
+
+niod:Speelgoed
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217621> .
+
+niod:Spionage
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219428> .
+
+niod:Spoorwegen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215864> .
+
+niod:Staatsbezoeken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217655> .
+
+niod:Staatshoofden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217401> .
+
+niod:Staatsinrichting
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217400> .
+
+niod:Staatsrecht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217399> .
+
+niod:Stadhuizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217397> .
+
+niod:Stakingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217483> .
+
+niod:Standbeelden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217343> .
+
+niod:Statenlozen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219463> .
+
+niod:Stations
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219462> .
+
+niod:Steden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217691> .
+
+niod:Stichtingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219513> .
+
+niod:Straatbeelden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219950> .
+
+niod:Straffen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217190> .
+
+niod:Strafrecht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217572> .
+
+niod:Stress
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219491> .
+
+niod:Studenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219486> .
+
+niod:Synagogen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219539> .
+
+niod:Taalgebruik
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217086> .
+
+niod:Tandartsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217389> .
+
+niod:Tanks
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217647> .
+
+niod:Tekeningen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219781> .
+
+niod:Telefonie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218205> .
+
+niod:Telegrafie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217639> .
+
+niod:Televisie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217708> .
+
+niod:Tentoonstellingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216551> .
+
+niod:Terrorisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217358> .
+
+niod:Testamenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219562> .
+
+niod:Textiel
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219560> .
+
+niod:Theater
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217650> .
+
+niod:Theologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219557> .
+
+niod:Theosofie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219556> .
+
+niod:Toerisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217633> .
+
+niod:Tolken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216736> .
+
+niod:Toneel
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216433> .
+
+niod:Trams
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217266> .
+
+niod:Transportvliegtuigen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217819> .
+
+niod:Treinen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217709> .
+
+niod:Tribunalen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216416> .
+
+niod:Tuinbouw
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217481> .
+
+niod:Uitgeverijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216455> .
+
+niod:Uitkeringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217489> .
+
+niod:Uitleveringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220494> .
+
+niod:Uniformen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218193> .
+
+niod:Universiteiten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217245> .
+
+niod:Vaandels
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218145> .
+
+niod:Vakantie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218144> .
+
+niod:Vakbeweging
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217701> .
+
+niod:Variete
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216521> .
+
+niod:Vechtpartijen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220458> .
+
+niod:Veeteelt
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217285> .
+
+niod:Veiligheidsbeleid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215579> .
+
+niod:Veilingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216703> .
+
+niod:Verblijfsvergunningen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216697> .
+
+niod:Verbrandingsovens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216167> .
+
+niod:Verdedigingswerken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217278> .
+
+niod:Verenigingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215918> .
+
+niod:Verhuizingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216686> .
+
+niod:Verkeer
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217349> .
+
+niod:Verkiezingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217521> .
+
+niod:Verkrachtingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218094> .
+
+niod:Verliezen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/223447> .
+
+niod:Verraad
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219804> .
+
+niod:Versperringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217339> .
+
+niod:Vertrek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220057> .
+
+niod:Vervalsingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216734> .
+
+niod:Verwarming
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217334> .
+
+niod:Verzekeringen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216730> .
+
+niod:Verzet
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217290> .
+
+niod:Verzuiling
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216727> .
+
+niod:Vestingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217309> .
+
+niod:Veteranen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215985> .
+
+niod:Visserij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218208> .
+
+niod:Vlaggen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218146> .
+
+niod:Vlammenwerpers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/223317> .
+
+niod:Vleeswaren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216772> .
+
+niod:Vliegdekschepen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217880> .
+
+niod:Vliegtuigen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217249> .
+
+niod:Vliegvelden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217734> .
+
+niod:Vluchtelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216761> .
+
+niod:Vluchtelingenkampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216759> .
+
+niod:Voeding
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217707> .
+
+niod:Voedseldroppings
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217294> .
+
+niod:Voedselvoorziening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218164> .
+
+niod:Volkenrecht
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217924> .
+
+niod:Volksliederen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217303> .
+
+niod:Vonnissen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216743> .
+
+niod:Voogdij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216809> .
+
+niod:Voorlichting
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217300> .
+
+niod:Vrede
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217745> .
+
+niod:Vredesonderhandelingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220198> .
+
+niod:Vreemdelingenhaat
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219987> .
+
+niod:Vrijmetselarij
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216799> .
+
+niod:Vrijwilligers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217191> .
+
+niod:Vrouwen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217479> .
+
+niod:Wapens
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216612> .
+
+niod:Waterschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216824> .
+
+niod:Waterwegen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217531> .
+
+niod:Wegen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217541> .
+
+niod:Werkgeversorganisaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216870> .
+
+niod:Werkloosheid
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216869> .
+
+niod:Wetgeving
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217474> .
+
+niod:Wethouders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217742> .
+
+niod:Winter
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217314> .
+
+niod:Wiskunde
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216911> .
+
+niod:Woordenboeken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216893> .
+
+niod:Wrakken
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217324> .
+
+niod:Zang
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217694> .
+
+niod:Zenders
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217319> .
+
+niod:Ziekenfondsen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216923> .
+
+niod:Ziekenhuizen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217740> .
+
+niod:Ziekten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217500> .
+
+niod:Zilver
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217554> .
+
+niod:Zionisme
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216913> .
+
+niod:Zomertijd
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216978> .
+
+niod:Zuivelproducten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217373> .
+
+niod:Zwarten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219019> .
+
+niod:Zweefvliegtuigen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217559> .
+
+# Ambiguous remapped with preflabel
+
+
+niod:Aanslagen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216048> .
+
+niod:Artiesten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217663> .
+
+niod:Bewaking
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215995> .
+
+niod:Bijeenkomsten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217749> .
+
+niod:Collecties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217982> .
+
+niod:Concentratiekampen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215881> .
+
+niod:Conferenties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217689> .
+
+niod:Criminaliteit
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217965> .
+
+niod:Ethiek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216334> .
+
+niod:Gezondheidszorg
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216017> .
+
+niod:Grenzen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218195> .
+
+niod:Huisvesting
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217949> .
+
+niod:Jodenvervolging
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217502> .
+
+niod:Kleding
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216647> .
+
+niod:Logistiek
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218806> .
+
+niod:Luchtaanvallen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218863> .
+
+niod:Medische_experimenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/220302> .
+
+niod:Mensenrechten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217666> .
+
+niod:Militaire_operaties
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217271> .
+
+niod:Militairen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217267> .
+
+niod:Ministeries
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217684> .
+
+niod:Onderscheidingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217718> .
+
+niod:Onderwijs
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217524> .
+
+niod:Oorlogsmisdaden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216569> .
+
+niod:Oorlogsslachtoffers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217189> .
+
+niod:Opstanden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219829> .
+
+niod:Opvoeding
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/215987> .
+
+niod:Plechtigheden
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216590> .
+
+niod:Proza
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218095> .
+
+niod:Reclame
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/219260> .
+
+niod:Rookwaren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217618> .
+
+niod:Sociale_wetenschappen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217093> .
+
+niod:Sport
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217628> .
+
+niod:Spotprenten
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217567> .
+
+niod:Technologie
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216403> .
+
+niod:Verhoren
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216687> .
+
+niod:Verlichting
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/218211> .
+
+niod:Vervoermiddelen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217336> .
+
+niod:Verwoestingen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217331> .
+
+niod:Watervoorziening
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217565> .
+
+niod:Wederopbouw
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/216820> .
+
+niod:Werknemers
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217627> .
+
+niod:Winkels
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217315> .
+
+niod:Woningen
+	skos:exactMatch <http://data.beeldengeluid.nl/gtaa/217732> .

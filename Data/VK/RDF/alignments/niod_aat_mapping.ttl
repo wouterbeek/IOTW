@@ -1,0 +1,1223 @@
+@prefix   skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix aatned: <http://purl.org/vocabularies/rkd/aatned/> .
+@prefix   niod: <http://purl.org/collections/nl/niod/> .
+
+# Named toplevel resources (405)
+# This mapping was consolidated from an amalgame effort and was previously known as 'dataset12.ttl' 
+# A sample was evaluated by NIOD experts. Individual experts rated the precision 91-93%, the combined precision is 88%
+
+
+niod:Aannemers
+	skos:exactMatch aatned:aannemers .
+
+niod:Aanslagen
+	skos:exactMatch aatned:aanslagen__politiek_ .
+
+niod:Affiches
+	skos:exactMatch aatned:affiches .
+
+niod:Agenten
+	skos:exactMatch aatned:agenten .
+
+niod:Allianties
+	skos:exactMatch aatned:allianties .
+
+niod:Ambassades
+	skos:exactMatch aatned:ambassades .
+
+niod:Ambulances
+	skos:exactMatch aatned:ambulances .
+
+niod:Anarchisme
+	skos:exactMatch aatned:anarchisme .
+
+niod:Antisemitisme
+	skos:exactMatch aatned:antisemitisme .
+
+niod:Antropologie
+	skos:exactMatch aatned:antropologie .
+
+niod:Antroposofie
+	skos:exactMatch aatned:antroposofie .
+
+niod:Apotheken
+	skos:exactMatch aatned:apotheken .
+
+niod:Arbeid
+	skos:exactMatch aatned:arbeid .
+
+niod:Arbeiders
+	skos:exactMatch aatned:arbeiders .
+
+niod:Arbeidsbureaus
+	skos:exactMatch aatned:arbeidsbureaus .
+
+niod:Archeologie
+	skos:exactMatch aatned:archeologie .
+
+niod:Archieven
+	skos:exactMatch aatned:archieven__ruimten_ .
+
+niod:Architecten
+	skos:exactMatch aatned:architecten .
+
+niod:Architectuur
+	skos:exactMatch aatned:architectuur__vakgebied_ .
+
+niod:Armoede
+	skos:exactMatch aatned:armoede .
+
+niod:Artsen
+	skos:exactMatch aatned:artsen .
+
+niod:Assimilatie
+	skos:exactMatch aatned:assimilatie .
+
+niod:Astrologie
+	skos:exactMatch aatned:astrologie .
+
+niod:Atlassen
+	skos:exactMatch aatned:atlassen .
+
+niod:Auteurs
+	skos:exactMatch aatned:auteurs .
+
+niod:Bakkerijen
+	skos:exactMatch aatned:bakkerijen .
+
+niod:Bankwezen
+	skos:exactMatch aatned:bankwezen .
+
+niod:Bedrijven
+	skos:exactMatch aatned:bedrijven .
+
+niod:Beeldende_kunst
+	skos:exactMatch aatned:beeldende_kunsten .
+
+niod:Begraafplaatsen
+	skos:exactMatch aatned:begraafplaatsen .
+
+niod:Begrafenissen
+	skos:exactMatch aatned:begrafenissen .
+
+niod:Beheer
+	skos:exactMatch aatned:beheren .
+
+niod:Bekendmakingen
+	skos:exactMatch aatned:bekendmaken .
+
+niod:Bestuur
+	skos:exactMatch aatned:bestuur .
+
+niod:Bijbel
+	skos:exactMatch aatned:bijbels .
+
+niod:Bijeenkomsten
+	skos:exactMatch aatned:bijeenkomsten .
+
+niod:Binnenvaart
+	skos:exactMatch aatned:binnenvaart .
+
+niod:Bioscopen
+	skos:exactMatch aatned:bioscopen .
+
+niod:Boeddhisme
+	skos:exactMatch aatned:boeddhisme .
+
+niod:Boeken
+	skos:exactMatch aatned:boeken .
+
+niod:Boekhandels
+	skos:exactMatch aatned:boekhandels .
+
+niod:Boerderijen
+	skos:exactMatch aatned:boerderijen__complexen_ .
+
+niod:Bommen
+	skos:exactMatch aatned:bommen__munitie_ .
+
+niod:Bommenwerpers
+	skos:exactMatch aatned:bommenwerpers .
+
+niod:Bordelen
+	skos:exactMatch aatned:bordelen .
+
+niod:Bosbouw
+	skos:exactMatch aatned:bosbouw .
+
+niod:Boycot
+	skos:exactMatch aatned:boycots .
+
+niod:Branden
+	skos:exactMatch aatned:branden .
+
+niod:Brieven
+	skos:exactMatch aatned:brieven .
+
+niod:Brochures
+	skos:exactMatch aatned:brochures .
+
+niod:Brood
+	skos:exactMatch aatned:brood .
+
+niod:Bruggen
+	skos:exactMatch aatned:bruggen .
+
+niod:Bruiloften
+	skos:exactMatch aatned:bruiloften .
+
+niod:Bunkers
+	skos:exactMatch aatned:bunkers .
+
+niod:Burgemeesters
+	skos:exactMatch aatned:burgemeesters .
+
+niod:Burgeroorlogen
+	skos:exactMatch aatned:burgeroorlogen .
+
+niod:Burgerrechten
+	skos:exactMatch aatned:burgerrechten .
+
+niod:Cabaret
+	skos:exactMatch aatned:cabarets .
+
+niod:Cartoons
+	skos:exactMatch aatned:cartoons .
+
+niod:Censuur
+	skos:exactMatch aatned:censuur .
+
+niod:Christendom
+	skos:exactMatch aatned:christendom .
+
+niod:Collecties
+	skos:exactMatch aatned:collecties .
+
+niod:Commissies
+	skos:exactMatch aatned:commissies .
+
+niod:Communisme
+	skos:exactMatch aatned:communisme .
+
+niod:Concentratiekampen
+	skos:exactMatch aatned:concentratiekampen .
+
+niod:Concerten
+	skos:exactMatch aatned:concerten .
+
+niod:Conferenties
+	skos:exactMatch aatned:conferenties .
+
+niod:Conservatisme
+	skos:exactMatch aatned:conservatisme .
+
+niod:Consulaten
+	skos:exactMatch aatned:consulaten .
+
+niod:Contracten
+	skos:exactMatch aatned:contracten .
+
+niod:Criminologie
+	skos:exactMatch aatned:criminologie .
+
+niod:Cultuur
+	skos:exactMatch aatned:cultuur .
+
+niod:Daklozen
+	skos:exactMatch aatned:daklozen .
+
+niod:Dans
+	skos:exactMatch aatned:dans .
+
+niod:Democratie
+	skos:exactMatch aatned:democratie .
+
+niod:Demonstraties
+	skos:exactMatch aatned:demonstraties__vertoningen_ .
+
+niod:Diamanten
+	skos:exactMatch aatned:diamant .
+
+niod:Dictaturen
+	skos:exactMatch aatned:dictatuur .
+
+niod:Diefstal
+	skos:exactMatch aatned:diefstal .
+
+niod:Dieren
+	skos:exactMatch aatned:dieren .
+
+niod:Dierentuinen
+	skos:exactMatch aatned:dierentuinen .
+
+niod:Dijken
+	skos:exactMatch aatned:dijken .
+
+niod:Diplomatie
+	skos:exactMatch aatned:diplomatie .
+
+niod:Discriminatie
+	skos:exactMatch aatned:discriminatie .
+
+niod:Documentaires
+	skos:exactMatch aatned:documentaires .
+
+niod:Documentatie
+	skos:exactMatch aatned:documentatie .
+
+niod:Documenten
+	skos:exactMatch aatned:documenten .
+
+niod:Dorpen
+	skos:exactMatch aatned:dorpen .
+
+niod:Dranken
+	skos:exactMatch aatned:drank .
+
+niod:Drenkelingen
+	skos:exactMatch aatned:drenkelingen .
+
+niod:Drukkerijen
+	skos:exactMatch aatned:drukkerijen .
+
+niod:Duikboten
+	skos:exactMatch aatned:duikboten .
+
+niod:Economie
+	skos:exactMatch aatned:economie .
+
+niod:Edelmetalen
+	skos:exactMatch aatned:edelmetaal .
+
+niod:Eerste_hulp
+	skos:exactMatch aatned:eerste_hulp .
+
+niod:Elektriciteit
+	skos:exactMatch aatned:elektriciteit .
+
+niod:Emancipatie
+	skos:exactMatch aatned:emancipatie .
+
+niod:Emigranten
+	skos:exactMatch aatned:emigranten .
+
+niod:Emigratie
+	skos:exactMatch aatned:emigratie .
+
+niod:Energie
+	skos:exactMatch aatned:energie .
+
+niod:Entartete_Kunst
+	skos:exactMatch aatned:entartete_Kunst .
+
+niod:Essays
+	skos:exactMatch aatned:essays .
+
+niod:Etniciteit
+	skos:exactMatch aatned:etniciteit .
+
+niod:Fascisme
+	skos:exactMatch aatned:fascisme .
+
+niod:Feestdagen
+	skos:exactMatch aatned:feestdagen .
+
+niod:Feesten
+	skos:exactMatch aatned:feesten .
+
+niod:Film
+	skos:exactMatch aatned:film__uitvoerende_kunsten_ .
+
+niod:Films
+	skos:exactMatch aatned:films .
+
+niod:Filosofie
+	skos:exactMatch aatned:filosofie .
+
+niod:Financien
+	skos:exactMatch aatned:financien .
+
+niod:Folklore
+	skos:exactMatch aatned:folklore .
+
+niod:Fotografie
+	skos:exactMatch aatned:fotografie .
+
+niod:Fraude
+	skos:exactMatch aatned:fraude .
+
+niod:Gaarkeukens
+	skos:exactMatch aatned:gaarkeukens .
+
+niod:Gebouwen
+	skos:exactMatch aatned:gebouwen .
+
+niod:Gedenkboeken
+	skos:exactMatch aatned:gedenkboeken .
+
+niod:Geestelijken
+	skos:exactMatch aatned:geestelijken .
+
+niod:Geinterneerden
+	skos:exactMatch aatned:geinterneerden .
+
+niod:Geld
+	skos:exactMatch aatned:geld .
+
+niod:Gender
+	skos:exactMatch aatned:gender .
+
+niod:Genealogie
+	skos:exactMatch aatned:genealogie__vakgebied_ .
+
+niod:Geneeskunde
+	skos:exactMatch aatned:geneeskunde .
+
+niod:Geografie
+	skos:exactMatch aatned:geografie .
+
+niod:Geopolitiek
+	skos:exactMatch aatned:geopolitiek .
+
+niod:Geschut
+	skos:exactMatch aatned:geschut .
+
+niod:Getuigenissen
+	skos:exactMatch aatned:getuigenissen .
+
+niod:Gevangenen
+	skos:exactMatch aatned:gevangenen .
+
+niod:Gevangenissen
+	skos:exactMatch aatned:gevangenissen .
+
+niod:Gevechtsvliegtuigen
+	skos:exactMatch aatned:gevechtsvliegtuigen .
+
+niod:Gijzelaars
+	skos:exactMatch aatned:gijzelaars .
+
+niod:Gilden
+	skos:exactMatch aatned:gilden .
+
+niod:Goud
+	skos:exactMatch aatned:goud .
+
+niod:Grammofoonplaten
+	skos:exactMatch aatned:grammofoonplaten .
+
+niod:Grenzen
+	skos:exactMatch aatned:grenzen .
+
+niod:Groepsportretten
+	skos:exactMatch aatned:groepsportretten .
+
+niod:Grondwet
+	skos:exactMatch aatned:grondwetten .
+
+niod:Hakenkruis
+	skos:exactMatch aatned:hakenkruisen .
+
+niod:Handel
+	skos:exactMatch aatned:handel .
+
+niod:Havens
+	skos:exactMatch aatned:havens .
+
+niod:Helikopters
+	skos:exactMatch aatned:helikopters .
+
+niod:Heraldiek
+	skos:exactMatch aatned:heraldiek .
+
+niod:Herdenkingen
+	skos:exactMatch aatned:herdenkingen .
+
+niod:Historiografie
+	skos:exactMatch aatned:historiografie .
+
+niod:Hout
+	skos:exactMatch aatned:hout .
+
+niod:Huisvesting
+	skos:exactMatch aatned:huisvesting .
+
+niod:Humanisme
+	skos:exactMatch aatned:humanisme .
+
+niod:Humor
+	skos:exactMatch aatned:humor .
+
+niod:Huwelijk
+	skos:exactMatch aatned:huwelijk .
+
+niod:Ideeengeschiedenis
+	skos:exactMatch aatned:ideeengeschiedenis .
+
+niod:Identiteit
+	skos:exactMatch aatned:identiteit .
+
+niod:Illustraties
+	skos:exactMatch aatned:illustraties .
+
+niod:Immigratie
+	skos:exactMatch aatned:immigratie .
+
+niod:Infrastructuur
+	skos:exactMatch aatned:infrastructuur .
+
+niod:Ingenieurs
+	skos:exactMatch aatned:ingenieurs .
+
+niod:Internationale_betrekkingen
+	skos:exactMatch aatned:internationale_betrekkingen .
+
+niod:Inventarissen
+	skos:exactMatch aatned:inventarissen .
+
+niod:Islam
+	skos:exactMatch aatned:islam .
+
+niod:Jacht
+	skos:exactMatch aatned:jachten__vaartuigen_ .
+
+niod:Jeugd
+	skos:exactMatch aatned:jeugd .
+
+niod:Jodendom
+	skos:exactMatch aatned:jodendom .
+
+niod:Journalistiek
+	skos:exactMatch aatned:journalistiek .
+
+niod:Kadaster
+	skos:exactMatch aatned:kadasters .
+
+niod:Kalenders
+	skos:exactMatch aatned:kalenders .
+
+niod:Kampen
+	skos:exactMatch aatned:kampen__tijdelijke_nederzettingen_ .
+
+niod:Kanonneerboten
+	skos:exactMatch aatned:kanonneerboten .
+
+niod:Karikaturen
+	skos:exactMatch aatned:karikaturen .
+
+niod:Kerken
+	skos:exactMatch aatned:kerken .
+
+niod:Kinderen
+	skos:exactMatch aatned:kinderen .
+
+niod:Kloosters
+	skos:exactMatch aatned:kloosters .
+
+niod:Kluizen
+	skos:exactMatch aatned:kluizen .
+
+niod:Kolen
+	skos:exactMatch aatned:kolen__groente_ .
+
+niod:Kolonien
+	skos:exactMatch aatned:kolonien .
+
+niod:Konvooien
+	skos:exactMatch aatned:konvooien .
+
+niod:Kookboeken
+	skos:exactMatch aatned:kookboeken .
+
+niod:Kranten
+	skos:exactMatch aatned:kranten .
+
+niod:Krijgsgevangenen
+	skos:exactMatch aatned:krijgsgevangenen .
+
+niod:Kruisers
+	skos:exactMatch aatned:kruisers .
+
+niod:Kunst
+	skos:exactMatch aatned:kunst .
+
+niod:Kunstenaars
+	skos:exactMatch aatned:kunstenaars .
+
+niod:Kunstgeschiedenis
+	skos:exactMatch aatned:kunstgeschiedenis .
+
+niod:Kustvaart
+	skos:exactMatch aatned:kustvaart .
+
+niod:Laboratoria
+	skos:exactMatch aatned:laboratoria .
+
+niod:Landbouw
+	skos:exactMatch aatned:landbouw .
+
+niod:Landingsvaartuigen
+	skos:exactMatch aatned:landingsvaartuigen .
+
+niod:Legerbases
+	skos:exactMatch aatned:legerbases .
+
+niod:Liberalisme
+	skos:exactMatch aatned:liberalisme .
+
+niod:Lichamelijk_gehandicapten
+	skos:exactMatch aatned:lichamelijk_gehandicapten .
+
+niod:Liederen
+	skos:exactMatch aatned:liederen .
+
+niod:Liefde
+	skos:exactMatch aatned:liefde .
+
+niod:Logistiek
+	skos:exactMatch aatned:logistiek .
+
+niod:Lonen
+	skos:exactMatch aatned:lonen .
+
+niod:Luchtfotografie
+	skos:exactMatch aatned:luchtfotografie .
+
+niod:Luchtmacht
+	skos:exactMatch aatned:luchtmachten .
+
+niod:Luchtschepen
+	skos:exactMatch aatned:luchtschepen .
+
+niod:Machinegeweren
+	skos:exactMatch aatned:machinegeweren .
+
+niod:Manifesten
+	skos:exactMatch aatned:manifesten .
+
+niod:Maquettes
+	skos:exactMatch aatned:maquettes .
+
+niod:Mariniers
+	skos:exactMatch aatned:mariniers .
+
+niod:Maritieme_geschiedenis
+	skos:exactMatch aatned:maritieme_geschiedenis .
+
+niod:Marxisme
+	skos:exactMatch aatned:marxisme .
+
+niod:Media
+	skos:exactMatch aatned:media__schilder__en_tekenmateriaal_ .
+
+niod:Medicijnen
+	skos:exactMatch aatned:medicijnen .
+
+niod:Metalen
+	skos:exactMatch aatned:metaal .
+
+niod:Meteorologie
+	skos:exactMatch aatned:meteorologie .
+
+niod:Migratie
+	skos:exactMatch aatned:migratie .
+
+niod:Mijnbouw
+	skos:exactMatch aatned:mijnbouw .
+
+niod:Mijnenleggers
+	skos:exactMatch aatned:mijnenleggers .
+
+niod:Mijnenvegers
+	skos:exactMatch aatned:mijnenvegers .
+
+niod:Militaire_geschiedenis
+	skos:exactMatch aatned:militaire_geschiedenis .
+
+niod:Minderheden
+	skos:exactMatch aatned:minderheden .
+
+niod:Ministeries
+	skos:exactMatch aatned:ministeries .
+
+niod:Mishandeling
+	skos:exactMatch aatned:mishandelen .
+
+niod:Modder
+	skos:exactMatch aatned:modder .
+
+niod:Mode
+	skos:exactMatch aatned:mode .
+
+niod:Modernisme
+	skos:exactMatch aatned:modernisme .
+
+niod:Monumenten
+	skos:exactMatch aatned:monumenten .
+
+niod:Motorfietsen
+	skos:exactMatch aatned:motorfietsen .
+
+niod:Munitie
+	skos:exactMatch aatned:munitie .
+
+niod:Musea
+	skos:exactMatch aatned:musea .
+
+niod:Musici
+	skos:exactMatch aatned:musici .
+
+niod:Muziek
+	skos:exactMatch aatned:muziek .
+
+niod:Muziekinstrumenten
+	skos:exactMatch aatned:muziekinstrumenten .
+
+niod:Nalatenschappen
+	skos:exactMatch aatned:nalatenschappen .
+
+niod:Nationalisme
+	skos:exactMatch aatned:nationalisme .
+
+niod:Naturalisatie
+	skos:exactMatch aatned:naturalisatie .
+
+niod:Natuurrampen
+	skos:exactMatch aatned:natuurrampen .
+
+niod:Natuurwetenschappen
+	skos:exactMatch aatned:natuurwetenschappen .
+
+niod:Neutraliteit
+	skos:exactMatch aatned:neutraliteit .
+
+niod:Noodwoningen
+	skos:exactMatch aatned:noodwoningen .
+
+niod:Occultisme
+	skos:exactMatch aatned:occultisme .
+
+niod:Officieren
+	skos:exactMatch aatned:officieren .
+
+niod:Onderhandelingen
+	skos:exactMatch aatned:onderhandelen .
+
+niod:Onderscheidingen
+	skos:exactMatch aatned:onderscheidingen .
+
+niod:Onderwijs
+	skos:exactMatch aatned:onderwijs .
+
+niod:Onroerend_goed
+	skos:exactMatch aatned:onroerend_goed .
+
+niod:Oorlogen
+	skos:exactMatch aatned:oorlogen .
+
+niod:Oorlogsmonumenten
+	skos:exactMatch aatned:oorlogsmonumenten .
+
+niod:Oorlogsschepen
+	skos:exactMatch aatned:oorlogsschepen .
+
+niod:Openbaar_vervoer
+	skos:exactMatch aatned:openbaar_vervoer .
+
+niod:Opera
+	skos:exactMatch aatned:opera__vakgebied_ .
+
+niod:Opgravingen
+	skos:exactMatch aatned:opgravingen .
+
+niod:Opleidingen
+	skos:exactMatch aatned:opleiden .
+
+niod:Opslag
+	skos:exactMatch aatned:opslag .
+
+niod:Opvoeding
+	skos:exactMatch aatned:opvoeden .
+
+niod:Oral_History
+	skos:exactMatch aatned:oral_history__vakgebied_ .
+
+niod:Overheden
+	skos:exactMatch aatned:overheid .
+
+niod:Paleizen
+	skos:exactMatch aatned:paleizen .
+
+niod:Pamfletten
+	skos:exactMatch aatned:pamfletten .
+
+niod:Papier
+	skos:exactMatch aatned:papier__vezelprodukt_ .
+
+niod:Partizanen
+	skos:exactMatch aatned:partizanen__wapens_ .
+
+niod:Pausen
+	skos:exactMatch aatned:pausen .
+
+niod:Pensioenen
+	skos:exactMatch aatned:pensioenen__vergoeding_ .
+
+niod:Personeel
+	skos:exactMatch aatned:personeel .
+
+niod:Piloten
+	skos:exactMatch aatned:piloten .
+
+niod:Poezie
+	skos:exactMatch aatned:poezie .
+
+niod:Politicologie
+	skos:exactMatch aatned:politicologie .
+
+niod:Politiek
+	skos:exactMatch aatned:politiek .
+
+niod:Portretten
+	skos:exactMatch aatned:portretten .
+
+niod:Postzegels
+	skos:exactMatch aatned:postzegels .
+
+niod:Predikanten
+	skos:exactMatch aatned:predikanten .
+
+niod:Preken
+	skos:exactMatch aatned:preken .
+
+niod:Priesters
+	skos:exactMatch aatned:priesters .
+
+niod:Proclamaties
+	skos:exactMatch aatned:proclamaties .
+
+niod:Propaganda
+	skos:exactMatch aatned:propaganda .
+
+niod:Prostitutie
+	skos:exactMatch aatned:prostitutie .
+
+niod:Protestantisme
+	skos:exactMatch aatned:protestantisme .
+
+niod:Provincies
+	skos:exactMatch aatned:provincies .
+
+niod:Psychiatrie
+	skos:exactMatch aatned:psychiatrie .
+
+niod:Psychiatrische_inrichtingen
+	skos:exactMatch aatned:psychiatrische_inrichtingen .
+
+niod:Psychologie
+	skos:exactMatch aatned:psychologie .
+
+niod:Rabbijnen
+	skos:exactMatch aatned:rabbijnen .
+
+niod:Radar
+	skos:exactMatch aatned:radar .
+
+niod:Radicalisme
+	skos:exactMatch aatned:radicalisme .
+
+niod:Radio
+	skos:exactMatch aatned:radio__telecommunicatiesysteem_ .
+
+niod:Raketten
+	skos:exactMatch aatned:raketten .
+
+niod:Recensies
+	skos:exactMatch aatned:recensies .
+
+niod:Reclame
+	skos:exactMatch aatned:reclame .
+
+niod:Recreatie
+	skos:exactMatch aatned:recreatie .
+
+niod:Rederijen
+	skos:exactMatch aatned:rederijen .
+
+niod:Redevoeringen
+	skos:exactMatch aatned:redevoeringen .
+
+niod:Regering
+	skos:exactMatch aatned:regeringen .
+
+niod:Registratie
+	skos:exactMatch aatned:registratie__informatieverzorging_ .
+
+niod:Republikeinen
+	skos:exactMatch aatned:republikeins .
+
+niod:Revoluties
+	skos:exactMatch aatned:revoluties .
+
+niod:Romans
+	skos:exactMatch aatned:romans .
+
+niod:Ruimtelijke_ordening
+	skos:exactMatch aatned:ruimtelijke_ordening .
+
+niod:Scheepswerven
+	skos:exactMatch aatned:scheepswerven .
+
+niod:Scheepvaart
+	skos:exactMatch aatned:scheepvaart .
+
+niod:Scholen
+	skos:exactMatch aatned:scholen .
+
+niod:Schuilkelders
+	skos:exactMatch aatned:schuilkelders .
+
+niod:Schuilplaatsen
+	skos:exactMatch aatned:schuilplaatsen .
+
+niod:Seksualiteit
+	skos:exactMatch aatned:seksualiteit .
+
+niod:Sieraden
+	skos:exactMatch aatned:sieraden .
+
+niod:Slagschepen
+	skos:exactMatch aatned:slagschepen .
+
+niod:Slagveld
+	skos:exactMatch aatned:slagvelden .
+
+niod:Slavernij
+	skos:exactMatch aatned:slavernij .
+
+niod:Sleepvaart
+	skos:exactMatch aatned:sleepvaart .
+
+niod:Sluizen
+	skos:exactMatch aatned:sluizen .
+
+niod:Smokkel
+	skos:exactMatch aatned:smokkelen .
+
+niod:Sociale_geschiedenis
+	skos:exactMatch aatned:sociale_geschiedenis .
+
+niod:Sociale_wetenschappen
+	skos:exactMatch aatned:sociale_wetenschappen .
+
+niod:Socialisme
+	skos:exactMatch aatned:socialisme .
+
+niod:Sociologie
+	skos:exactMatch aatned:sociologie .
+
+niod:Soldaten
+	skos:exactMatch aatned:soldaten .
+
+niod:Speelgoed
+	skos:exactMatch aatned:speelgoed .
+
+niod:Spellen
+	skos:exactMatch aatned:spellen__sets_ .
+
+niod:Spoorwegen
+	skos:exactMatch aatned:spoorwegen .
+
+niod:Spotprenten
+	skos:exactMatch aatned:spotprenten .
+
+niod:Stadhuizen
+	skos:exactMatch aatned:stadhuizen .
+
+niod:Stafkaarten
+	skos:exactMatch aatned:stafkaarten .
+
+niod:Stakingen
+	skos:exactMatch aatned:stakingen__gebeurtenissen_ .
+
+niod:Standbeelden
+	skos:exactMatch aatned:standbeelden .
+
+niod:Stations
+	skos:exactMatch aatned:stations .
+
+niod:Statistieken
+	skos:exactMatch aatned:statistiek .
+
+niod:Steden
+	skos:exactMatch aatned:steden .
+
+niod:Stempels
+	skos:exactMatch aatned:stempels .
+
+niod:Stichtingen
+	skos:exactMatch aatned:stichtingen__organisaties_ .
+
+niod:Straffen
+	skos:exactMatch aatned:straffen .
+
+niod:Strafrecht
+	skos:exactMatch aatned:strafrecht .
+
+niod:Strijdkrachten
+	skos:exactMatch aatned:strijdkrachten .
+
+niod:Stripverhalen
+	skos:exactMatch aatned:stripverhalen .
+
+niod:Studenten
+	skos:exactMatch aatned:studenten .
+
+niod:Sultanaten
+	skos:exactMatch aatned:sultanaten .
+
+niod:Symboliek
+	skos:exactMatch aatned:symboliek .
+
+niod:Tandartsen
+	skos:exactMatch aatned:tandartsen .
+
+niod:Tatoeering
+	skos:exactMatch aatned:tatoeeren .
+
+niod:Technologie
+	skos:exactMatch aatned:technologie .
+
+niod:Tekeningen
+	skos:exactMatch aatned:tekeningen .
+
+niod:Telefoonboeken
+	skos:exactMatch aatned:telefoonboeken .
+
+niod:Televisie
+	skos:exactMatch aatned:televisie .
+
+niod:Tentoonstellingen
+	skos:exactMatch aatned:tentoonstellingen .
+
+niod:Terrorisme
+	skos:exactMatch aatned:terrorisme .
+
+niod:Testamenten
+	skos:exactMatch aatned:testamenten__wilsbeschikkingen_ .
+
+niod:Textiel
+	skos:exactMatch aatned:textiel .
+
+niod:Theater
+	skos:exactMatch aatned:theater__vakgebied_ .
+
+niod:Theologie
+	skos:exactMatch aatned:theologie .
+
+niod:Theosofie
+	skos:exactMatch aatned:theosofie .
+
+niod:Toerisme
+	skos:exactMatch aatned:toerisme .
+
+niod:Tolken
+	skos:exactMatch aatned:tolken .
+
+niod:Toneel
+	skos:exactMatch aatned:tonelen .
+
+niod:Toneelstukken
+	skos:exactMatch aatned:toneelstukken .
+
+niod:Torpedoboten
+	skos:exactMatch aatned:torpedoboten .
+
+niod:Totalitarisme
+	skos:exactMatch aatned:totalitarisme .
+
+niod:Trams
+	skos:exactMatch aatned:trams .
+
+niod:Transportschepen
+	skos:exactMatch aatned:transportschepen .
+
+niod:Transportvliegtuigen
+	skos:exactMatch aatned:transportvliegtuigen .
+
+niod:Treinen
+	skos:exactMatch aatned:treinen .
+
+niod:Tribunalen
+	skos:exactMatch aatned:tribunals__platforms_ .
+
+niod:Tuinbouw
+	skos:exactMatch aatned:tuinbouw .
+
+niod:Uitgeverijen
+	skos:exactMatch aatned:uitgeverijen .
+
+niod:Uitleveringen
+	skos:exactMatch aatned:uitleveren .
+
+niod:Uitrusting
+	skos:exactMatch aatned:uitrusting .
+
+niod:Uitzetting
+	skos:exactMatch aatned:uitzetting .
+
+niod:Uniformen
+	skos:exactMatch aatned:uniformen .
+
+niod:Universiteiten
+	skos:exactMatch aatned:universiteiten .
+
+niod:Vaandels
+	skos:exactMatch aatned:vaandels .
+
+niod:Veeteelt
+	skos:exactMatch aatned:veeteelt .
+
+niod:Veilingen
+	skos:exactMatch aatned:veilingen .
+
+niod:Veldslagen
+	skos:exactMatch aatned:veldslagen .
+
+niod:Vennootschappen
+	skos:exactMatch aatned:vennootschappen .
+
+niod:Verdedigingswerken
+	skos:exactMatch aatned:verdedigingswerken .
+
+niod:Verdragen
+	skos:exactMatch aatned:verdragen .
+
+niod:Verenigingen
+	skos:exactMatch aatned:verenigingen .
+
+niod:Verkeer
+	skos:exactMatch aatned:verkeer .
+
+niod:Verkiezingen
+	skos:exactMatch aatned:verkiezingen .
+
+niod:Verlichting
+	skos:exactMatch aatned:Verlichting__stroming_ .
+
+niod:Verordeningen
+	skos:exactMatch aatned:verordeningen .
+
+niod:Vervalsingen
+	skos:exactMatch aatned:vervalsingen .
+
+niod:Verwarming
+	skos:exactMatch aatned:verwarming .
+
+niod:Verwerking
+	skos:exactMatch aatned:verwerken .
+
+niod:Vestingen
+	skos:exactMatch aatned:vestingen .
+
+niod:Veteranen
+	skos:exactMatch aatned:veteranen .
+
+niod:Vlaggen
+	skos:exactMatch aatned:vlaggen .
+
+niod:Vlammenwerpers
+	skos:exactMatch aatned:vlammenwerpers .
+
+niod:Vliegboten
+	skos:exactMatch aatned:vliegboten .
+
+niod:Vliegdekschepen
+	skos:exactMatch aatned:vliegdekschepen .
+
+niod:Vliegtuigen
+	skos:exactMatch aatned:vliegtuigen .
+
+niod:Vliegvelden
+	skos:exactMatch aatned:vliegvelden .
+
+niod:Vluchtelingen
+	skos:exactMatch aatned:vluchtelingen .
+
+niod:Vluchtelingenkampen
+	skos:exactMatch aatned:vluchtelingenkampen .
+
+niod:Volksgezondheid
+	skos:exactMatch aatned:volksgezondheid .
+
+niod:Vonnissen
+	skos:exactMatch aatned:vonnissen .
+
+niod:Voorschriften
+	skos:exactMatch aatned:voorschriften .
+
+niod:Vrede
+	skos:exactMatch aatned:vrede .
+
+niod:Vrijwilligers
+	skos:exactMatch aatned:vrijwilligers .
+
+niod:Vrouwen
+	skos:exactMatch aatned:vrouwen .
+
+niod:Wegen
+	skos:exactMatch aatned:wegen .
+
+niod:Werkloosheid
+	skos:exactMatch aatned:werkloosheid .
+
+niod:Wetboeken
+	skos:exactMatch aatned:wetboeken .
+
+niod:Wetgeving
+	skos:exactMatch aatned:wetgeving .
+
+niod:Winkels
+	skos:exactMatch aatned:winkels .
+
+niod:Winter
+	skos:exactMatch aatned:winter .
+
+niod:Wiskunde
+	skos:exactMatch aatned:wiskunde .
+
+niod:Woningen
+	skos:exactMatch aatned:woningen .
+
+niod:Woordenboeken
+	skos:exactMatch aatned:woordenboeken .
+
+niod:Zangbundels
+	skos:exactMatch aatned:zangbundels__kerkgezangen_ .
+
+niod:Zeeslagen
+	skos:exactMatch aatned:zeeslagen .
+
+niod:Zelfmoorden
+	skos:exactMatch aatned:zelfmoorden .
+
+niod:Zenders
+	skos:exactMatch aatned:zenders .
+
+niod:Ziekenhuizen
+	skos:exactMatch aatned:ziekenhuizen .
+
+niod:Ziekten
+	skos:exactMatch aatned:ziekte .
+
+niod:Zilver
+	skos:exactMatch aatned:zilver .
+
+niod:Zuivelproducten
+	skos:exactMatch aatned:zuivelproducten .
+
+niod:Zwarten
+	skos:exactMatch aatned:zwart .
+
+niod:Zweefvliegtuigen
+	skos:exactMatch aatned:zweefvliegtuigen .

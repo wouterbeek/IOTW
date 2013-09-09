@@ -1,0 +1,40 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix niod: <http://purl.org/collections/nl/niod/> .
+
+# Named toplevel resources (5)
+
+
+niod:EntityScheme
+	a skos:ConceptScheme ;
+	rdfs:label "VK Named Entities Scheme" .
+
+niod:NerClass
+	a rdfs:Class ;
+	rdfs:label "NerClass" .
+
+niod:nerClass
+	a rdf:Property ;
+	rdfs:domain skos:Concept ;
+	rdfs:label "nerClass" ;
+	rdfs:range niod:NerClass .
+
+niod:pRef
+	a rdf:Property ;
+	rdfs:domain skos:Concept ;
+	rdfs:label "pRef" ;
+	rdfs:range rdfs:Resource .
+
+niod:vol
+	a rdf:Property ;
+	rdfs:domain skos:Concept ;
+	rdfs:label "vol" ;
+	rdfs:range rdfs:Literal .
+
+niod:wikiLink
+	a rdf:Property ;
+	rdfs:domain skos:Concept ;
+	rdfs:label "wikiLink" ;
+	rdfs:range rdfs:Literal .
+		

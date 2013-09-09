@@ -1,0 +1,58 @@
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix lib:     <http://www.swi-prolog.org/rdf/library/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vvm: <http://purl.org/collections/nl/viervijfmei/> .
+
+<viervijfmeidata>
+  a void:Dataset ;
+  lib:source <ttp://purl.org/collections/nl/viervijfmei/> ;
+  dcterms:title "Vier en Vijf Mei Data"@nl ;
+  void:dataDump
+    <VVM/vvm_data.ttl> ,
+    <VVM/vvm_schema.ttl> ,
+    <VVM/vvm_thesaurus.ttl> ,
+    <VVM/vvm_memorialgroups.ttl> ,
+    <VVM/vvm_memorialtypes.ttl>.
+
+<niod-bb2>
+  a void:Dataset ;
+  lib:source <http://purl.org/collections/nl/niod/> ;
+  dcterms:title "Niod BeeldBankWO2"@nl ;
+  void:dataDump
+    <beeldbankwo2.ttl>.
+
+<niod-vk-botb>
+  a void:Dataset ;
+  lib:source <http://purl.org/collections/nl/niod/> ;
+  dcterms:title "Verrijkt Koninkrijk Back Of the Book index"@nl ;
+  void:dataDump
+    <botb.ttl>,
+    <botb_schema.ttl>,
+    <alignments/botb_niod_mapping.ttl>,
+    <alignments/botb_geonames_mapping_unamb.ttl>,
+    <alignments/botb_geonames_mapping_amb.ttl>.
+
+<niod-vk-entities>
+  a void:Dataset ;
+  lib:source <http://purl.org/collections/nl/niod/> ;
+  dcterms:title "Verrijkt Koninkrijk Named Entities"@nl ;
+  void:dataDump
+    <entities.ttl>,
+    <entities_schema.ttl>,
+    <alignments/ner_loc_to_geonames.ttl>,
+    <alignments/ner_loc_to_geonames_amb.ttl>,
+     <alignments/ner_rest_to_niod.ttl>,
+    <alignments/botb_to_ner.ttl>,
+    <alignments/ner_all_to_dbp_en.ttl>,
+    <alignments/ner_all_to_dbp_nl.ttl>.
+
+<niod-vk-pillars>
+  a void:Dataset ;
+  lib:source <http://purl.org/collections/nl/niod/> ;
+  dcterms:title "Verrijkt Koninkrijk Pillarization links"@nl ;
+  void:dataDump
+    <pillars.ttl>,
+    <pillars_expanded.ttl>.
+
