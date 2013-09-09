@@ -85,7 +85,7 @@ iimb(O, N, SVG):-
     A_File,
     [access(read),file_type(rdf),relative_to(SubDir)]
   ),
-  oaei_file_to_alignments(A_File, _A_Pairs, A_Sets),
+  oaei_file_to_alignments(A_File, A_Pairs),
 
-  run_experiment(O, OntologyGraph, A_Sets, SVG, _PDF_File).
+  run_experiment(O, OntologyGraph, A_Pairs, SVG, _PDF_File).
 

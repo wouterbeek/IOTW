@@ -3,7 +3,7 @@
   [
     run_experiment/5 % +Options:list(nvpair),
                      % +Graph:atom,
-                     % +IdentitySets:list(ordset(iri))
+                     % +IdentityPairs:list(pair(iri))
                      % -SVG:list
                      % -PDF_File:atom
   ]
@@ -17,13 +17,17 @@ IOTW experiments.
 @version 2013/05, 2013/08-2013/09
 */
 
+:- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
 :- use_module(iotw(inode_export)).
+:- use_module(library(debug)).
 :- use_module(library(option)).
 :- use_module(logic(rdf_axiom)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(xsd(xsd)).
+
+:- debug(iotw).
 
 
 
@@ -39,7 +43,7 @@ preload_rdfs_voc(_O, _G).
 %! run_experiment(
 %!   +Options:list(nvpair),
 %!   +Graph:atom,
-%!   +IdentitySets:list(ordset(iri)),
+%!   +IdentityPairs:list(pair(iri)),
 %!   -SVG:list,
 %!   -PDF_File:atom
 %! ) is det.
@@ -50,7 +54,39 @@ preload_rdfs_voc(_O, _G).
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 
-run_experiment(O, G, ISets, SVG, PDF_File):-
+run_experiment(O, G, IPairs, SVG, PDF_File):-
+  % Retrieve all alignment sets.
+  pairs_to_ord_sets(IPairs, ISets),
+
+  % DEB: Print the number of identity sets.
+  length(ISets, NumberOfISets),
+  aggregate_all(
+    sum(CardinalityOfISet),
+    (
+      member(ISet, ISets),
+      length(ISet, CardinalityOfISet)
+    ),
+    NumberOfResources
+  ),
+  debug(
+    iotw,
+    'There are ~w alignment sets over ~w resources.',
+    [NumberOfISets,NumberOfResources]
+  ),
+
+  % DEB: Print the number of non-pair identity sets.
+  %      This quantifies the usefulness of using sets instead of pairs.
+  forall(
+    (
+      member(ISet, ISets),
+      \+ length(ISet, 2),
+      flag(number_of_nonpair_identity_sets, Count, Count + 1)
+    ),
+    debug(iotw, '\tNon-pair identity set: ~w', [ISet])
+  ),
+  flag(number_of_nonpair_identity_sets, NumberOfNonpairISets, 0),
+  debug(iotw, 'Number of non-pair identity sets: ~w', [NumberOfNonpairISets]),
+
   % Pre-load the RDF(S) vocabulary.
   % This means that materialization has to make less deductions
   % (tested on 163 less), and there are some labels and comments

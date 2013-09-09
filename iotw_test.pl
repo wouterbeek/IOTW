@@ -41,12 +41,10 @@ test0:-
   
   rdf_assert(rdf:type, rdfs:subPropertyOf, rdf:typo, G),
   
-  list_to_ord_set([Andrea,Wouter,Boetje], ISet1),
-  list_to_ord_set([Amsterdam,Berlin], ISet2),
   run_experiment(
     [deduction(rdfs),granularity(po)],
     G,
-    [ISet1,ISet2],
+    [[Andrea,Wouter],[Andrea,Boetje],[Amsterdam,Berlin]],
     _SVG,
     PDF_File
   ),
