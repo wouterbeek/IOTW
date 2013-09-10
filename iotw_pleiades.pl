@@ -46,6 +46,9 @@
 :- xml_register_namespace(skos, 'http://www.w3.org/2004/02/skos/core#').
 :- xml_register_namespace(spatial, 'http://geovocab.org/spatial#').
 
+:- xml_register_namespace('pl-errata', 'http://pleiades.stoa.org/errata/').
+:- xml_register_namespace('pl-place', 'http://pleiades.stoa.org/places/').
+
 :- debug(iotw_pleiades).
 
 
@@ -54,7 +57,7 @@ iotw_pleiades(O1):-
   (
     option(data_status(fresh), O1, stale)
   ->
-    
+
     % Make a safe copy of the data to experiment with.
     absolute_file_name(
       home('Dropbox/pleiades'),
@@ -75,9 +78,9 @@ iotw_pleiades(O1):-
       [access(write),file_type(turtle),relative_to(ExperimentDir)]
     )
   ),
-  
+
   % Load the entire dataset by loading the VoID file.
   void_load_library(VoID_File, _, VoID_Graph),
-  
+
   void_save_library(VoID_Graph, VoID_File).
 
