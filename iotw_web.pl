@@ -1,6 +1,7 @@
 :- module(
   iotw_web,
   [
+    identity_pairs_web/1, % -DOM:list
     iimb_web/2 % +Integer:integer
                % -SVG:dom
   ]
@@ -19,6 +20,7 @@
 :- use_module(iotw(inode_update)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
+:- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_term)).
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
@@ -27,6 +29,7 @@
 :- initialization(start_dev_server, now).
 
 :- http_handler(root(inode), inode, []).
+:- http_handler(root(resource), resource, []).
 
 :- register_module(iotw_web).
 
@@ -43,17 +46,34 @@ inode(Request):-
   (
     memberchk(id=GAK_Hash, SearchParameters)
   ->
-    node(GAK_Hash)
+    update_identity_node(GAK_Hash),
+    export_inodes([], GAK_Hash, SVG, _PDF_File),
+    push(console_output, SVG)
   ;
     true
   ).
 
-node(GAK_Hash):-
-  update_identity_node(GAK_Hash),
-  export_inodes([], GAK_Hash, SVG, _PDF_File),
-  push(console_output, SVG).
+identity_pairs_web(DOM):-
+  identity_pairs(Rows),
+  list_to_table(
+    [caption('The currently loaded identity pairs.'),header(true)],
+    [['Resource A','Resource B','Triple location']|Rows],
+    DOM
+  ).
 
-%! pair_to_dom(+Pair:pair(uri), -Markup:list) is det.
+identity_pairs(Rows):-
+  findall(
+    [element(a,[href=URI2],[X]), Y, G],
+    (
+      rdf(X, owl:sameAs, Y, G),
+      http_absolute_uri(root(resource), URI1),
+      uri_components(URI1, Components1),
+      uri_query_components(QueryString, [q1=X,q2=Y]),
+      uri_data(search, Components1, QueryString, Components2),
+      uri_components(URI2, Components2)
+    ),
+    Rows
+  ).
 
 pair_to_dom(X-Y, Markup):-
   rdf_po_pairs(X, X_PO_Pairs),
@@ -110,4 +130,8 @@ pair_to_dom(X-Y, Markup):-
       X_Exclusive_P_Table,
       Y_Exclusive_P_Table
     ].
+
+resource(Request):-
+gtrace,
+  write(Request).
 

@@ -32,6 +32,7 @@ load_iotw:-
   ),
 
   % Identity on the Web.
-  use_module(project(iotw_web)),
-  use_module(project(iotw_niod)).
+  use_module(project(iotw_niod)),
+  use_module(project(iotw_pleiades)),
+  use_module(project(iotw_web)).
 
