@@ -1,7 +1,7 @@
 :- module(
   iotw_niod,
   [
-    iotw_niod/0
+    iotw_niod/1 % +Options:list(nvpair)
   ]
 ).
 
@@ -41,48 +41,45 @@
 
 
 
-iotw_niod:-
-  % Make a safe copy of the data to experiment with.
-  absolute_file_name(
-    home('Dropbox/VK/RDF'),
-    FromDir,
-    [access(read),file_type(directory)]
-  ),
-  safe_copy_experiment_data(FromDir, ToDir),
-  absolute_file_name(
-    void,
-    VoID_File,
-    [access(read),file_type(turtle),relative_to(ToDir)]
+%! iotw_niod(+Options:list(nvpair)) is det.
+% The following options are supported:
+%   * =|data_status(+Status:oneof([fresh,stale]))|=
+%     The data is either copied from the Dropbox to the experiment
+%     directory (`fresh`), or the already stored version in the experiment
+%     directory is used (if available).
+%
+% @tbd Add directory existence check as precondition for `stale`.
+
+iotw_niod(O):-
+  (
+    option(data_status(fresh), O, stale)
+  ->
+    % Make a safe copy of the data to experiment with.
+    absolute_file_name(
+      home('Dropbox/VK/RDF'),
+      FromDir,
+      [access(read),file_type(directory)]
+    ),
+    safe_copy_experiment_data(FromDir, ToDir),
+    absolute_file_name(
+      void,
+      VoID_File,
+      [access(read),file_type(turtle),relative_to(ToDir)]
+    )
+  ;
+    experiment_directory(ExperimentDir),
+    absolute_file_name(
+      'home/wbeek/Dropbox/VK/RDF/void',
+      VoID_File,
+      [access(read),file_type(turtle),relative_to(ExperimentDir)]
+    )
   ),
   
   % Load the entire dataset by loading the VoID file.
   void_load_library(VoID_File, _, VoID_Graph),
   
+  % Save statistics that were added/modified while loading.
+  void_save_library(VoID_Graph, VoID_File),
+  
   debug(iotw_niod, 'VoID graph ~w is loaded.', [VoID_Graph]).
-/*
-  rdf_attach_library(File),
-
-  rdf_load_library(viervijfmeidata, []),
-  rdf_load_library('niod-bb2', []),
-  rdf_load_library('niod-vk-botb', []),
-  rdf_load_library('niod-vk-entities', []),
-  rdf_load_library('niod-vk-pillars', []),
-
-  absolute_file_name(
-    vk_dbpedia(dbpedia_dump),
-    DBpediaFile,
-    [access(read), file_type(turtle)]
-  ),
-  rdf_load(
-    DBpediaFile,
-    [
-      cache(true),
-      format(turtle),
-      graph(dbpedia),
-      if(not_loaded),
-      register_namespaces(true),
-      silent(fail) % We like to get feedback.
-    ]
-  ).
-*/
 
