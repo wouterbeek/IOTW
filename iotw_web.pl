@@ -2,8 +2,11 @@
   iotw_web,
   [
     ipairs_web/1, % -DOM:list
-    iimb_web/2 % +Integer:integer
-               % -SVG:dom
+    iimb_web/2, % +Integer:integer
+                % -SVG:dom
+    print_ipair/2, % +Resource1:iri
+                   % +Resource2:iri
+    print_ipairs/0
   ]
 ).
 
@@ -15,11 +18,14 @@
 */
 
 :- use_module(generics(meta_ext)).
+:- use_module(generics(print_ext)).
+:- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
 :- use_module(iotw(iimb)).
 :- use_module(iotw(inode_export)).
 :- use_module(iotw(inode_update)).
 :- use_module(library(apply)).
+:- use_module(library(debug)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
@@ -37,6 +43,10 @@
 :- http_handler(root(resource), resource, []).
 
 :- register_module(iotw_web).
+
+:- dynamic(max/4).
+
+:- debug(iotw_web).
 
 
 
@@ -62,16 +72,6 @@ ipair(pair(X,R,Y,G)):-
   rdf(X, owl:sameAs, Y, G),
   rdf_global_id(owl:sameAs, R).
 
-%! ipairs(
-%!   +MaximumNumberOfPairs:nonneg,
-%!   -IdentityPairs:list(pair(iri)),
-%!   -MorePairsLeft:boolean
-%! ) is det.
-
-ipairs(Max, IPairs, Left):-
-  ord_empty(Hist),
-  ipairs(Max, Hist, IPairs, Left).
-
 ipair_to_row(
   pair(X1,_,Y1,G),
   [element(a,[href=URI2],[X2]),N1,element(a,[href=URI2],[Y2]),N2,G]
@@ -88,6 +88,16 @@ ipair_to_row(
   resource_rows(Y1, Rows2),
   length(Rows2, N2).
 
+%! ipairs(
+%!   +MaximumNumberOfPairs:nonneg,
+%!   -IdentityPairs:list(pair(iri)),
+%!   -MorePairsLeft:boolean
+%! ) is det.
+
+ipairs(Max, IPairs, Left):-
+  ord_empty(Hist),
+  ipairs(Max, Hist, IPairs, Left).
+
 % Maximum number of pairs reached.
 ipairs(0, IPairs, IPairs, Left):-
   boolean(
@@ -103,10 +113,37 @@ ipairs(Counter1, Hist1, IPairs, Left):-
   ipair(IPair),
   \+ memberchk(IPair, Hist1),
   ord_add_element(Hist1, IPair, Hist2),
-  Counter2 is Counter1 - 1,
+  minus_one(Counter1, Counter2),
   ipairs(Counter2, Hist2, IPairs, Left).
 % There are no more pairs.
 ipairs(_Counter, IPairs, IPairs, false).
+
+minus_one(inf, inf):- !.
+minus_one(X, Y):-
+  Y is X - 1.
+
+ipairs_top(_Sol):-
+  assert(max(0,0,_,_)),
+  ipairs_top.
+ipairs_top(N-X-Y):-
+  max(N, X, Y).
+
+ipairs_top:-
+  rdf(X, owl:sameAs, Y),
+  rdf_estimate_complexity(X, _, _, MX),
+  rdf_estimate_complexity(Y, _, _, MY),
+  max(NX,NY,_,_),
+  (
+    MX > NX,
+    MY > NY
+  ->
+    retract(max(_,_,_,_)),
+    assert(max(MX,MY,X,Y)),
+    debug(iotw_web, 'New max: [~w,~w] ~w -- ~w', [MX,MY,X,Y])
+  ;
+    true
+  ),
+  fail.
 
 ipairs_web(DOM):-
   ipairs(25, IPairs, _Left),
@@ -124,13 +161,29 @@ ipairs_web(DOM):-
   ).
 ipairs_web([element(p,[],['There are no identity pairs.'])]).
 
+print_ipair(X, Y):-
+  write('---'), write(X), write('---------'), nl,
+  setoff(XP-XO, rdf(X, XP, XO), Xs),
+  maplist(print_ipair, Xs),
+  write('---'), write(Y), write('---------'), nl,
+  setoff(YP-YO, rdf(Y, YP, YO), Ys),
+  maplist(print_ipair, Ys).
+print_ipair(P-O):-
+  rdf_term_name([], P, PN),
+  rdf_term_name([], O, ON),
+  print_tuple([], [PN,ON]),
+  nl.
+
+print_ipairs:-
+  ipairs_top(IPair),
+  write(IPair), nl.
+
 %! resource(+Request) is det.
 % Describes resources (query term `r1`)
 % or resource pairs (query terms `r1` and `r2`).
 
 % Describe resource pairs.
 resource(Request):-
-gtrace,
   option(search(Query), Request),
   option(r1(Resource1), Query),
   option(r2(Resource2), Query), !,
