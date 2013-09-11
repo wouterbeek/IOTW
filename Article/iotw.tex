@@ -22,21 +22,45 @@
 
 \section{Abstract}
 
-Identity relations are at the foundation of the Linked Open Data initiative and on the Semantic Web in general. They allow the interlinking of alternative descriptions of the same thing. However, the traditional notion of identity (owl:sameAs) is often problematic, e.g. when objects are considered the same in some contexts but not in others. The standing practice in such cases is to use weaker relations of relatedness (e.g. skos:related). Unfortunately, this limits reasoners in drawing inferences. 
+Identity relations are at the foundation of the Linked Open Data initiative
+  and on the Semantic Web in general.
+They allow the interlinking of alternative descriptions of the same thing.
+However, the traditional notion of identity (\texttt{owl:sameAs}) is often
+  problematic, e.g. when resources are considered the same in some contexts
+  but not in others.
+The standing practice in such cases is to use weaker relations of relatedness
+  (e.g., \texttt{skos:related}).
+Unfortunately, this limits reasoners in drawing inferences.
 
-We propose a method that treats a given identity relation as a collection of indiscernability pairs, assigning meaning to such relations in terms of shared properties/values. Reflexivity, symmetry and (in some cases) transitivity are preserved under indiscernability, allowing reasoners to infer new results.
+We propose a method that treats a given identity relation as a collection
+  of indiscernability pairs, assigning meaning to such relations in terms
+  of shared property-value pairs.
+Reflexivity, symmetry and (in some cases) transitivity are preserved under
+  indiscernability, allowing reasoners to infer new results.
 
-Reinterpreting identity in this way allows the calculation of upper and a lower bounds, turning crisp identity into rough indiscernability, based on the well-understood rough-set semantics. These rough sets can be used to provide automated assistance for finding false positive and false negative errors for existing linksets.
+Reinterpreting identity in this way allows the calculation of upper and
+  lower bounds, turning crisp identity into rough indiscernability, based
+  on the well-understood rough-set semantics.
+These rough sets can be used to provide automated assistance for finding
+  false positive and false negative errors for existing linksets.
 
-In a series of experiments we show that this method can indeed be used to improve on linksets that are the result of state of the art automated alignment mappings.
+In a series of experiments we show that this method can indeed be used to
+  improve on linksets that are the result of state of the art automated
+  alignment mappings for individual resources.
 
 \section{Introduction}
 
-Identity is a problem on the Web. It is a very strong notion when used in an open world context. Using non-identity relations to assert notions of similarity hampers reasoning and often does not explain the aspects with respect to which similarity is asserted.\footnote{There is an indeterminate number of ways which two objects can be considered similar.}
+Identity is a problem on the Web.
+It is a very strong notion when used in an open world context.
+Using non-identity relations to assert notions of similarity hampers
+  reasoning and often does not explain the aspects with respect to which
+  similarity is asserted, even though there is an indeterminate number of ways
+  in which two objects can be considered similar.
 
 \section{Identity}
 
-According to the standard definition, $a$ and $b$ are identical iff they co-designate [REF]. Co-designation is often cyclicly defined in terms of indiscernability. The principle of the indiscernability of identicals (also known as Leibniz's Law) is given in \ref{eq:leibniz_law}.
+According to the standard definition, $a$ and $b$ are identical iff
+  they co-designate [REF]. Co-designation is often cyclicly defined in terms of indiscernability. The principle of the indiscernability of identicals (also known as Leibniz's Law) is given in \ref{eq:leibniz_law}.
 
 \begin{formula}[Leibniz' Law]
 \label{eq:leibniz_law}
