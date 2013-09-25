@@ -33,6 +33,7 @@
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 :- use_module(rdf(rdf_name)).
+:- use_module(rdf(rdf_web)).
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
 
@@ -126,7 +127,7 @@ ipairs_top(_Sol):-
   assert(max(0,0,_,_)),
   ipairs_top.
 ipairs_top(N-X-Y):-
-  max(N, X, Y).
+  max(N, X, Y, _).
 
 ipairs_top:-
   rdf(X, owl:sameAs, Y),
