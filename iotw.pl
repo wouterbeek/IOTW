@@ -15,20 +15,21 @@ IOTW experiments.
 
 ## Changes in the 2013/08-2013/09 version w.r.t. the 2013/05 version
 
-  * Optimization (assoc AVL tree ordsets)
+  * Optimization using association lists implemented by AVL trees
+    containing ordered sets.
   * Identity sets i.o. identity pairs.
-  * RDF(S) materialization
-  * PO subpartitions
-  * Literal identity via canonical form.
-  * Predicate paths (extending predicates).
-  * Modular rewrite
-  * GV DCG reuse
+  * Simple, RDF, and RDFS entailment.
+  * Predicate/Object-pair subpartitions are calculated.
+  * Literal identity is established in terms of the value space
+    (used to be based on the lexical space).
+  * Modular rewrite of all IOTW code.
+  * GraphViz export was ported to the new DCG-based implementation.
 
 ## TODO
 
-  * JS callback (PO, quality)
-  * Multi-agent materialization
-  * SKOS, OWL identity reasoning
+  * JS callback  for predicate/object-pairs and rough set quality.
+  * Multi-agent materialization.
+  * SKOS and OWL identity reasoning.
 
 Recommendation sharing non-monotonic?
 
@@ -41,8 +42,8 @@ Recommendation sharing non-monotonic?
 :- use_module(iotw(inode_export)).
 :- use_module(library(debug)).
 :- use_module(library(option)).
-:- use_module(logic(rdf_axiom)).
 :- use_module(rdf(rdf_graph)).
+:- use_module(rdf(rdf_mat)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(xsd(xsd)).
 
@@ -55,7 +56,7 @@ preload_rdfs_voc(O, G2):-
   absolute_file_name(rdfs(rdfs), File, [access(read),file_type(rdf)]),
   rdf_new_graph(rdfs_voc, G1),
   rdf_load2(File, [graph(G1)]),
-  materialize(G1),
+  materialize(G1, rdfs),
   rdf_graph:rdf_graph_merge([G1], G2).
 preload_rdfs_voc(_O, _G).
 
@@ -116,10 +117,11 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
 
   % Materializing the graph reveals additional properties of existing
   % resources, and therefore may reveal additional shared properties.
+  option(deduction(Regime), O, none),
   (
-    option(deduction(none), O, none), !
+    Regime == none, !
   ;
-    materialize(G)
+    materialize(G, rdfs)
   ),
 
   % Returns the RDF graph and alignment pairs hash.
