@@ -20,6 +20,7 @@ IOTW experiments.
   * RDF(S) materialization
   * PO subpartitions
   * Literal identity via canonical form.
+  * Predicate paths (extending predicates).
   * Modular rewrite
   * GV DCG reuse
 
