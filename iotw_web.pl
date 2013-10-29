@@ -19,21 +19,21 @@
 
 :- use_module(generics(meta_ext)).
 :- use_module(generics(print_ext)).
+:- use_module(experiments(iotw_iimb)).
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
-:- use_module(iotw(iimb)).
 :- use_module(iotw(inode_export)).
 :- use_module(iotw(inode_update)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_path)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 :- use_module(rdf(rdf_name)).
-:- use_module(rdf(rdf_web)).
 :- use_module(server(dev_server)).
 :- use_module(server(web_console)).
 
@@ -51,8 +51,12 @@
 
 
 
+%! iimb_web(+Integer:between(1,80), -SVG:dom) is det.
+% Returns the identity hierarchy for the IIMB ontology alignment
+% with the given index.
+
 iimb_web(Integer, SVG):-
-  iimb([deduction(none),granularity(p)], Integer, SVG).
+  iotw_iimb([deduction(none),granularity(p)], Integer, SVG).
 
 %! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.

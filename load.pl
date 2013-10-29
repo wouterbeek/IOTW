@@ -18,8 +18,9 @@ load_iotw:-
   assert(user:file_search_path(iotw, ThisDirectory)),
 
   % Use a subdirectory for data files.
-  assert(user:file_search_path(data, project('Data'))),
-  assert(user:file_search_path(oaei2012, data('OAEI 2012'))),
+  assert(user:file_search_path(data,        iotw('Data')       )),
+  assert(user:file_search_path(oaei2012,    data('OAEI 2012')  )),
+  assert(user:file_search_path(experiments, iotw('Experiments'))),
 
   % Load the PGC.
   assert(user:file_search_path(pgc, project('PGC'))),
@@ -32,7 +33,5 @@ load_iotw:-
   ),
 
   % Identity on the Web.
-  use_module(project(iotw_niod)),
-  use_module(project(iotw_pleiades)),
   use_module(project(iotw_web)).
 

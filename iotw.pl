@@ -16,13 +16,14 @@ IOTW experiments.
 Recommendation sharing non-monotonic?
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09
+@version 2013/05, 2013/08-2013/10
 */
 
 :- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
 :- use_module(iotw(inode_export)).
 :- use_module(library(debug)).
+:- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_mat)).
@@ -39,7 +40,7 @@ preload_rdfs_voc(O, G2):-
   rdf_new_graph(rdfs_voc, G1),
   rdf_load2(File, [graph(G1)]),
   materialize(G1, rdfs),
-  rdf_graph:rdf_graph_merge([G1], G2).
+  rdf_graph_merge([G1], G2).
 preload_rdfs_voc(_O, _G).
 
 %! run_experiment(
@@ -49,6 +50,8 @@ preload_rdfs_voc(_O, _G).
 %!   -SVG:list,
 %!   -PDF_File:atom
 %! ) is det.
+% Runs an IOTW experiment.
+%
 % The following options are supported:
 %   * `deduction(+DeductionMode:oneof([none,rdfs])`
 %     The default is `none`.
@@ -62,6 +65,13 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
 
   % DEB: Print the number of identity sets.
   length(ISets, NumberOfISets),
+  debug(iotw, 'There are ~w identity sets.', [NumberOfISets]),
+  
+  % DEB: Print the number of identity pairs.
+  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  debug(iotw, 'There are ~w identity pairs.', [NumberOfIPairs]),
+  
+  % DEB: Print the number of resources.
   aggregate_all(
     sum(CardinalityOfISet),
     (
@@ -70,11 +80,7 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
     ),
     NumberOfResources
   ),
-  debug(
-    iotw,
-    'There are ~w alignment sets over ~w resources.',
-    [NumberOfISets,NumberOfResources]
-  ),
+  debug(iotw, 'There are ~w resources.', [NumberOfResources]),
 
   % DEB: Print the number of non-pair identity sets.
   %      This quantifies the usefulness of using sets instead of pairs.
@@ -95,16 +101,16 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
   % that deduction would not produce.
   preload_rdfs_voc(O, G),
 
+  % Make sure that all lexical values that occur in typed literals
+  % are canonical values.
+  % This makes it much cheaper to establish the identity of typed literals.
+gtrace,
   xsd_canonize_graph(G),
 
   % Materializing the graph reveals additional properties of existing
   % resources, and therefore may reveal additional shared properties.
   option(deduction(Regime), O, none),
-  (
-    Regime == none, !
-  ;
-    materialize(G, rdfs)
-  ),
+  materialize(G, [Regime]),
 
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O, G, ISets, GA_Hash),

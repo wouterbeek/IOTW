@@ -1,9 +1,9 @@
 :- module(
-  iimb,
+  iotw_iimb,
   [
-    iimb/3 % +Options:list(nvpair)
-           % +Number:nonneg
-           % -SVG:dom
+    iotw_iimb/3 % +Options:list(nvpair)
+                % +Number:nonneg
+                % -SVG:dom
   ]
 ).
 
@@ -25,27 +25,22 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).
 
-:- xml_register_namespace(
-  'IIMBTBOX',
-  'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
-).
+:- xml_register_namespace('IIMBTBOX', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 
 :- db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))).
-:- db_add_novel(
-  user:file_search_path(instance_matching, oaei2012('Instance matching'))
-).
+:- db_add_novel(user:file_search_path(instance_matching, oaei2012('Instance matching'))).
 
 
 
-%! iimb(+Options:list(nvpair), +Number:between(1,80), -SVG:list) is det.
+%! iotw_iimb(+Options:list(nvpair), +Number:between(1,80), -SVG:list) is det.
 % Loads a specific IIMB alignment into memory and exports the IOTW results.
 %
 % @param Options A list of name-value pairs.
 % @param Number The number of the IIMB dataset that is used.
 % @param SVG A list of compound terms describing an SVG DOM.
 
-iimb(O, N, SVG):-
-  % Typecheck.
+iotw_iimb(O, N, SVG):-
+  % Typecheck. There are 80 cases.
   between(1, 80, N),
 
   % Clear the temporary RDF graphs we use for graph merge.
@@ -56,7 +51,7 @@ iimb(O, N, SVG):-
   rdf_new_graph(GraphSuggestion, OntologyGraph),
 
   % Load the base ontology.
-  absolute_file_name(iimb(onto), BaseFile, [access(read), file_type(owl)]),
+  absolute_file_name(iimb(onto), BaseFile, [access(read),file_type(owl)]),
   rdf_load2(BaseFile, [graph(iotw_temp_1)]),
 
   % Load the aligned ontology.
@@ -64,18 +59,17 @@ iimb(O, N, SVG):-
   absolute_file_name(
     iimb(SubDirName),
     SubDir,
-    [access(read), file_type(directory)]
+    [access(read),file_type(directory)]
   ),
   absolute_file_name(
     onto,
     AlignedOntologyFile,
-    [access(read), file_type(owl), relative_to(SubDir)]
+    [access(read),file_type(owl),relative_to(SubDir)]
   ),
   rdf_load2(AlignedOntologyFile, [graph(iotw_temp_2)]),
 
   % Merge the two ontology graphs.
-  % @tbd Why is the module needed here?!
-  rdf_graph:rdf_graph_merge([iotw_temp_1,iotw_temp_2], OntologyGraph),
+  rdf_graph_merge([iotw_temp_1,iotw_temp_2], OntologyGraph),
   maplist(rdf_unload_graph, [iotw_temp_1, iotw_temp_2]),
 
   % Load the reference alignments between the base ontology and
@@ -86,6 +80,8 @@ iimb(O, N, SVG):-
     [access(read),file_type(rdf),relative_to(SubDir)]
   ),
   oaei_file_to_alignments(A_File, A_Pairs),
-
+  
+  % Now that all files are properly loaded,
+  % we can run the experiment.
   run_experiment(O, OntologyGraph, A_Pairs, SVG, _PDF_File).
 
