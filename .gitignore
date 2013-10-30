@@ -10,3 +10,4 @@ Data/*.xdot
 *.blg
 *.out
 *.dvi
+.Rhistory

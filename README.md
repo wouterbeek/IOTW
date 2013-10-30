@@ -15,9 +15,4 @@ and the Semantic Web.
   * Modular rewrite of all IOTW code.
   * GraphViz export was ported to the new DCG-based implementation.
 
-## TODO
-
-  * JS callback  for predicate/object-pairs and rough set quality.
-  * Multi-agent materialization.
-  * SKOS and OWL identity reasoning.
 
