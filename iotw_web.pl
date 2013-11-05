@@ -34,16 +34,13 @@
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 :- use_module(rdf(rdf_name)).
-:- use_module(server(dev_server)).
 :- use_module(server(web_console)).
-
-% First load the debug server.
-:- initialization(start_dev_server, now).
+:- use_module(server(web_modules)).
 
 :- http_handler(root(inode), inode, []).
 :- http_handler(root(resource), resource, []).
 
-:- register_module(iotw_web).
+:- web_module_add('IOTW', iotw_web, iotw).
 
 :- dynamic(max/4).
 

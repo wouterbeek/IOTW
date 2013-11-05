@@ -104,7 +104,6 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
   % This makes it much cheaper to establish the identity of typed literals.
-gtrace,
   xsd_canonize_graph(G),
 
   % Materializing the graph reveals additional properties of existing

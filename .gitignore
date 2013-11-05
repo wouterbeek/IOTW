@@ -11,3 +11,4 @@ Data/*.xdot
 *.out
 *.dvi
 .Rhistory
+*.db
