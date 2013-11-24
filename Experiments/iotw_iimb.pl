@@ -41,6 +41,7 @@ Runs IOTW experiments on the IIMB alignment data.
 % @param SVG A list of compound terms describing an SVG DOM.
 
 iotw_iimb(O, N, SVG):-
+gtrace,
   % Typecheck. There are 80 cases.
   between(1, 80, N),
 
