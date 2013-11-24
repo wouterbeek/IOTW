@@ -125,7 +125,7 @@ calculate_quality(IHierHash, Quality):-
 
 export_inodes(O, IHierHash, SVG2, PDF_File):-
   export_identity_nodes_(O, IHierHash, GIF),
-  graph_to_svg_dom([], GIF, dot, SVG1),
+  graph_to_svg_dom([method(dot)], GIF, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
 
   % DEB: Aslo export as PDF (in a persistent file).
@@ -138,7 +138,7 @@ export_inodes(O, IHierHash, SVG2, PDF_File):-
       PDF_File,
       [access(write),file_type(pdf)]
     ),
-    graph_to_gv_file([], GIF, dot, pdf, PDF_File)
+    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File)
   ;
     true
   ).

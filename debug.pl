@@ -2,5 +2,5 @@
 
 :- assert(user:debug_project).
 
-:- [load].
+:- [run].
 

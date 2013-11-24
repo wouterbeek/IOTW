@@ -27,8 +27,9 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- xml_register_namespace('IIMBTBOX', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 
-:- db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))).
+:- db_add_novel(user:file_search_path(oaei2012, iotw('OAEI2012'))).
 :- db_add_novel(user:file_search_path(instance_matching, oaei2012('Instance matching'))).
+:- db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))).
 
 
 

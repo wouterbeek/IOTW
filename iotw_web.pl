@@ -19,13 +19,14 @@
 
 :- use_module(generics(meta_ext)).
 :- use_module(generics(print_ext)).
-:- use_module(experiments(iotw_iimb)).
+:- use_module(iotw_exp(iotw_iimb)).
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
 :- use_module(iotw(inode_export)).
 :- use_module(iotw(inode_update)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
+:- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_path)).
 :- use_module(library(lists)).
@@ -37,6 +38,7 @@
 :- use_module(server(web_console)).
 :- use_module(server(web_modules)).
 
+:- http_handler(root(iotw), iotw, []).
 :- http_handler(root(inode), inode, []).
 :- http_handler(root(resource), resource, []).
 
@@ -69,6 +71,13 @@ inode(Request):-
   ;
     true
   ).
+
+iotw(_Request):-
+  iimb_web(1, SVG),
+  reply_html_page(app_style, \iotw_head, SVG).
+
+iotw_head -->
+  html(title('IOTW')).
 
 ipair(pair(X,R,Y,G)):-
   rdf(X, owl:sameAs, Y, G),
