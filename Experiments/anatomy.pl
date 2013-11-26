@@ -71,7 +71,7 @@ load_alignment_anatomy:-
     (
       oaei_file_to_alignment_pairs(AlignmentFile, Alignments),
       assert_inodes(_O, OntologyGraph, Alignments, GA_Hash),
-      export_inodes(O, GA_Hash, _SVG, _PDF_File)
+      export_inodes(O, GA_Hash, _SVG)
     )
   ).
 

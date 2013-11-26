@@ -1,10 +1,9 @@
 :- module(
   inode_export,
   [
-    export_inodes/4 % +Options:list(nvpair)
+    export_inodes/3 % +Options:list(nvpair)
                     % +IdentityHierarchyHash:atom
                     % -SVG:dom
-                    % -PDF_File:atom
   ]
 ).
 
@@ -13,7 +12,7 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09
+@version 2013/05, 2013/08-2013/09, 2013/11
 */
 
 :- use_module(generics(list_ext)).
@@ -25,6 +24,7 @@ by the predicates they share.
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(os(datetime_ext)).
+:- use_module(os(run_ext)). % DEB
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
 
@@ -114,8 +114,7 @@ calculate_quality(IHierHash, Quality):-
 %! export_inodes(
 %!   +Options:list(nvpair),
 %!   +IdentityHierarchyHash:atom,
-%!   -SVG:dom,
-%!   -PDF_File:atom
+%!   -SVG:dom
 %! ) is det.
 % Returns the SVG DOM representation of the hierarchy of predicate (sub)sets
 % annotated with the number of resource pairs that share those and only those
@@ -123,14 +122,14 @@ calculate_quality(IHierHash, Quality):-
 %
 % @tbd Add callback function injection.
 
-export_inodes(O, IHierHash, SVG2, PDF_File):-
-  export_identity_nodes_(O, IHierHash, GIF),
+export_inodes(O1, IHierHash, SVG2):-
+  export_identity_nodes_(O1, IHierHash, GIF),
   graph_to_svg_dom([method(dot)], GIF, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
 
   % DEB: Aslo export as PDF (in a persistent file).
   (
-    debug(iotw_export)
+    option(deb_pdf(true), O1, false)
   ->
     current_date_time(DT),
     absolute_file_name(
@@ -138,7 +137,8 @@ export_inodes(O, IHierHash, SVG2, PDF_File):-
       PDF_File,
       [access(write),file_type(pdf)]
     ),
-    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File)
+    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File),
+    open_pdf(PDF_File)
   ;
     true
   ).
@@ -167,7 +167,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
     ),
     RankNumbers
   ),
-  
+
   findall(
     rank(vertex(RankId,RankId,RankAttrs),P_V_Terms),
     (

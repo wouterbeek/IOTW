@@ -1,11 +1,10 @@
 :- module(
   iotw,
   [
-    run_experiment/5 % +Options:list(nvpair),
+    run_experiment/4 % +Options:list(nvpair),
                      % +Graph:atom,
                      % +IdentityPairs:list(pair(iri))
                      % -SVG:list
-                     % -PDF_File:atom
   ]
 ).
 
@@ -39,19 +38,18 @@ Recommendation sharing non-monotonic?
 %!   +Options:list(nvpair),
 %!   +Graph:atom,
 %!   +IdentityPairs:list(pair(iri)),
-%!   -SVG:list,
-%!   -PDF_File:atom
+%!   -SVG:list
 %! ) is det.
 % Runs an IOTW experiment.
 %
 % The following options are supported:
-%   * `deduction(+EntailmentRegime:oneof([none,rdf,rdfs])`
+%   * =|deduction(+EntailmentRegime:oneof([none,rdf,rdfs])|=
 %     The default is `none`.
-%   * `granularity(+LevelOfIdentityPartition:oneof([p,po]))`
+%   * =|granularity(+LevelOfIdentityPartition:oneof([p,po]))|=
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 
-run_experiment(O1, G, IPairs, SVG, PDF_File):-
+run_experiment(O1, G, IPairs, SVG):-
   % Retrieve all alignment sets.
   pairs_to_ord_sets(IPairs, ISets),
 
@@ -107,5 +105,5 @@ run_experiment(O1, G, IPairs, SVG, PDF_File):-
   assert_inodes(O1, G, ISets, GA_Hash),
 
   % Create an SVG representation for the given hash.
-  export_inodes(O1, GA_Hash, SVG, PDF_File).
+  export_inodes(O1, GA_Hash, SVG).
 

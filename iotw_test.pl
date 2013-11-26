@@ -10,13 +10,12 @@
 Simple tests for the IOTW codebase.
 
 @author Wouter Beek
-@version 2013/09
+@version 2013/09, 2013/11
 */
 
 :- use_module(iotw(iotw)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(os(run_ext)).
 
 
 
@@ -42,11 +41,9 @@ test0:-
   rdf_assert(rdf:type, rdfs:subPropertyOf, rdf:typo, G),
   
   run_experiment(
-    [deduction(rdfs),granularity(po)],
+    [deb_pdf(true),deduction(rdfs),granularity(po)],
     G,
     [[Andrea,Wouter],[Andrea,Boetje],[Amsterdam,Berlin]],
-    _SVG,
-    PDF_File
-  ),
-  open_pdf(PDF_File).
+    _SVG
+  ).
 

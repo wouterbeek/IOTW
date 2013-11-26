@@ -66,7 +66,7 @@ inode(Request):-
     memberchk(id=GAK_Hash, SearchParameters)
   ->
     update_identity_node(GAK_Hash),
-    export_inodes([], GAK_Hash, SVG, _PDF_File),
+    export_inodes([], GAK_Hash, SVG),
     push(console_output, SVG)
   ;
     true
