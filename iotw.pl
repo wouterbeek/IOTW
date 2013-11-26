@@ -16,7 +16,7 @@ IOTW experiments.
 Recommendation sharing non-monotonic?
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/10
+@version 2013/05, 2013/08-2013/11
 */
 
 :- use_module(generics(ordset_ext)).
@@ -28,20 +28,12 @@ Recommendation sharing non-monotonic?
 :- use_module(rdf(rdf_graph)).
 :- use_module(rdf(rdf_mat)).
 :- use_module(rdf(rdf_serial)).
+:- use_module(rdfs(rdfs_voc)).
 :- use_module(xsd(xsd)).
 
 :- debug(iotw).
 
 
-
-preload_rdfs_voc(O, G2):-
-  option(deduction(rdfs), O, none), !,
-  absolute_file_name(rdfs(rdfs), File, [access(read),file_type(rdf)]),
-  rdf_new_graph(rdfs_voc, G1),
-  rdf_load2(File, [graph(G1)]),
-  materialize(G1, rdfs),
-  rdf_graph_merge([G1], G2).
-preload_rdfs_voc(_O, _G).
 
 %! run_experiment(
 %!   +Options:list(nvpair),
@@ -53,13 +45,13 @@ preload_rdfs_voc(_O, _G).
 % Runs an IOTW experiment.
 %
 % The following options are supported:
-%   * `deduction(+DeductionMode:oneof([none,rdfs])`
+%   * `deduction(+EntailmentRegime:oneof([none,rdf,rdfs])`
 %     The default is `none`.
 %   * `granularity(+LevelOfIdentityPartition:oneof([p,po]))`
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 
-run_experiment(O, G, IPairs, SVG, PDF_File):-
+run_experiment(O1, G, IPairs, SVG, PDF_File):-
   % Retrieve all alignment sets.
   pairs_to_ord_sets(IPairs, ISets),
 
@@ -99,7 +91,7 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
   % This means that materialization has to make less deductions
   % (tested on 163 less), and there are some labels and comments
   % that deduction would not produce.
-  preload_rdfs_voc(O, G),
+  load_rdfs_vocabulary(G),
 
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
@@ -108,12 +100,12 @@ run_experiment(O, G, IPairs, SVG, PDF_File):-
 
   % Materializing the graph reveals additional properties of existing
   % resources, and therefore may reveal additional shared properties.
-  option(deduction(Regime), O, none),
-  materialize(G, [Regime]),
+  option(deduction(EntailmentRegime), O1, none),
+  materialize(G, [EntailmentRegime]),
 
   % Returns the RDF graph and alignment pairs hash.
-  assert_inodes(O, G, ISets, GA_Hash),
+  assert_inodes(O1, G, ISets, GA_Hash),
 
   % Create an SVG representation for the given hash.
-  export_inodes(O, GA_Hash, SVG, PDF_File).
+  export_inodes(O1, GA_Hash, SVG, PDF_File).
 

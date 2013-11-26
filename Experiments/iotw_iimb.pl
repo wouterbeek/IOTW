@@ -12,9 +12,11 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09
+@version 2013/05, 2013/08-2013/09, 2013/11
 */
 
+:- use_module(ap(ap)).
+:- use_module(ap(ap_act)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
 :- use_module(iotw(iotw)).
@@ -27,9 +29,7 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- xml_register_namespace('IIMBTBOX', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 
-:- db_add_novel(user:file_search_path(oaei2012, iotw('OAEI2012'))).
-:- db_add_novel(user:file_search_path(instance_matching, oaei2012('Instance matching'))).
-:- db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))).
+:- db_add_novel(user:prolog_file_type('tar.gz', archive)).
 
 
 
@@ -40,8 +40,7 @@ Runs IOTW experiments on the IIMB alignment data.
 % @param Number The number of the IIMB dataset that is used.
 % @param SVG A list of compound terms describing an SVG DOM.
 
-iotw_iimb(O, N, SVG):-
-gtrace,
+iotw_iimb(O1, N, SVG):-
   % Typecheck. There are 80 cases.
   between(1, 80, N),
 
@@ -51,6 +50,15 @@ gtrace,
   % Create a unique graph name.
   format(atom(GraphSuggestion), 'iimb_~w', [N]),
   rdf_new_graph(GraphSuggestion, OntologyGraph),
+
+  ap(
+    [process(iimb_cp),project(iotw)],
+    [ap_stage([from(input,'OAEI2012',archive)], ap_extract_archive)]
+  ),
+
+  db_add_novel(user:file_search_path(oaei2012, iotw('OAEI2012'))),
+  db_add_novel(user:file_search_path(instance_matching, oaei2012('Instance matching'))),
+  db_add_novel(user:file_search_path(iimb, instance_matching('IIMB'))),
 
   % Load the base ontology.
   absolute_file_name(iimb(onto), BaseFile, [access(read),file_type(owl)]),
@@ -82,8 +90,8 @@ gtrace,
     [access(read),file_type(rdf),relative_to(SubDir)]
   ),
   oaei_file_to_alignments(A_File, A_Pairs),
-  
+
   % Now that all files are properly loaded,
   % we can run the experiment.
-  run_experiment(O, OntologyGraph, A_Pairs, SVG, _PDF_File).
+  run_experiment(O1, OntologyGraph, A_Pairs, SVG, _PDF_File).
 

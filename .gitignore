@@ -1,6 +1,5 @@
 *~
-Data/*.dot
-Data/*.xdot
+ap/
 *.aux
 *.log
 *.svg
@@ -12,4 +11,4 @@ Data/*.xdot
 *.dvi
 .Rhistory
 *.db
-OAEI2012/
+
