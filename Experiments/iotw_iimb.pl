@@ -1,9 +1,7 @@
 :- module(
   iotw_iimb,
   [
-    iotw_iimb/3 % +Options:list(nvpair)
-                % +Number:nonneg
-                % -SVG:dom
+    iotw_iimb/0
   ]
 ).
 
@@ -17,39 +15,42 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(ap(ap)).
 :- use_module(ap(ap_act)). % Used in ap/2.
+:- use_module(ap(ap_stat)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
 :- use_module(iotw(iotw)).
 :- use_module(os(dir_ext)).
+:- use_module(os(file_ext)).
 :- use_module(rdf(rdf_ap)).
 :- use_module(standards(oaei)).
+:- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
 
 :- xml_register_namespace('IIMBTBOX', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 
+% DTD used for storing SVG DOM to files.
+:- db_add_novel(user:file_search_path(dtd, svg(.))).
+
 :- db_add_novel(user:prolog_file_type('tar.gz', archive)).
 :- db_add_novel(user:prolog_file_type(owl, owl)).
 
+%:- initialization(iotw_iimb).
 
 
-%! iotw_iimb(+Options:list(nvpair), +Number:between(1,80), -SVG:list) is det.
+
+%! iotw_iimb is det.
 % Loads a specific IIMB alignment into memory and exports the IOTW results.
-%
-% @param Options
-% @param Number The number of the IIMB dataset that is used.
-% @param SVG A list of compound terms describing an SVG DOM.
 
-iotw_iimb(O1, N, SVG):-
-gtrace,
+iotw_iimb:-
   ap(
     [process(iimb),project(iotw)],
     [
       ap_stage([from(input,'OAEI2012',archive)], ap_extract_archive),
-      ap_stage([args(O1, N,SVG),to(_,ontology,owl)], iimb_experiment)
+      ap_stage([between(1,80)], iimb_experiment)
     ]
   ).
 
-iimb_experiment(_StageAlias, FromDir, ToFile, O1, N, SVG):-
+iimb_experiment(StageAlias, FromDir, ToDir, N):-
   % Main directory.
   subdirectories_to_directory(
     [FromDir,'OAEI2012','Instance matching','IIMB'],
@@ -85,11 +86,29 @@ iimb_experiment(_StageAlias, FromDir, ToFile, O1, N, SVG):-
   ),
   oaei_file_to_alignments(A_File, A_Pairs),
 
+  % To file.
+  atomic_list_concat([iimb,N], '_', ToFileName),
+  absolute_file_name(
+    ToFileName,
+    ToFileOWL,
+    [access(write),file_type(owl),relative_to(ToDir)]
+  ),
+
   % Execute the goal on the two ontologies.
   rdf_setup_call_cleanup(
-    [to(ToFile)],
+    [to(ToFileOWL)],
     % Now that all files are properly loaded, we can run the experiment.
-    run_experiment(O1, A_Pairs, SVG),
+    run_experiment([deduction(none),granularity(p)], A_Pairs, SVG_DOM),
     [BaseFile,AlignedOntologyFile]
-  ).
+  ),
+  file_type_alternative(ToFileOWL, svg, ToFileSVG),
+  % Remove the file if it already exists.
+  safe_delete_file(ToFileSVG),
+  % Make sure there is write access.
+  access_file(ToFileSVG, write),
+  % Write the SVG DOM to file.
+  xml_dom_to_file([dtd(svg)], SVG_DOM, ToFileSVG),
+  
+  % Stats.
+  ap_stage_tick(StageAlias).
 

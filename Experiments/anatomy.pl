@@ -19,6 +19,7 @@ Runs IOTW experiments on the anatomy alignment data.
 :- use_module(library(apply)).
 :- use_module(library(lists)).
 :- use_module(os(filepath_ext)).
+:- use_module(rdf(rdf_graph_name)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_namespace)).

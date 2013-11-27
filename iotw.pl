@@ -36,9 +36,9 @@ Recommendation sharing non-monotonic?
 
 %! run_experiment(
 %!   +Options:list(nvpair),
-%!   +Graph:atom,
 %!   +IdentityPairs:list(pair(iri)),
-%!   -SVG:list
+%!   -SVG_DOM:list,
+%!   +Graph:atom
 %! ) is det.
 % Runs an IOTW experiment.
 %
@@ -49,18 +49,18 @@ Recommendation sharing non-monotonic?
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 
-run_experiment(O1, G, IPairs, SVG):-
+run_experiment(O1, IPairs, SVG, G):-
   % Retrieve all alignment sets.
   pairs_to_ord_sets(IPairs, ISets),
 
   % DEB: Print the number of identity sets.
   length(ISets, NumberOfISets),
   debug(iotw, 'There are ~w identity sets.', [NumberOfISets]),
-  
+
   % DEB: Print the number of identity pairs.
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
   debug(iotw, 'There are ~w identity pairs.', [NumberOfIPairs]),
-  
+
   % DEB: Print the number of resources.
   aggregate_all(
     sum(CardinalityOfISet),

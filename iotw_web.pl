@@ -54,8 +54,8 @@
 % Returns the identity hierarchy for the IIMB ontology alignment
 % with the given index.
 
-iimb_web(Integer, SVG):-
-  iotw_iimb([deduction(none),granularity(p)], Integer, SVG).
+iimb_web(_Integer, _SVG):-
+  iotw_iimb.
 
 %! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
