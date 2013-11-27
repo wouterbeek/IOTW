@@ -74,15 +74,15 @@ run_experiment(O1, IPairs, SVG, G):-
 
   % DEB: Print the number of non-pair identity sets.
   %      This quantifies the usefulness of using sets instead of pairs.
-  forall(
+  aggregate_all(
+    count,
     (
       member(ISet, ISets),
       \+ length(ISet, 2),
-      flag(number_of_nonpair_identity_sets, Count, Count + 1)
+      debug(iotw, '\tNon-pair identity set: ~w', [ISet])
     ),
-    debug(iotw, '\tNon-pair identity set: ~w', [ISet])
+    NumberOfNonpairISets
   ),
-  flag(number_of_nonpair_identity_sets, NumberOfNonpairISets, 0),
   debug(iotw, 'Number of non-pair identity sets: ~w', [NumberOfNonpairISets]),
 
   % Pre-load the RDF(S) vocabulary.

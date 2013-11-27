@@ -116,6 +116,7 @@ Possible extensions of the alignment pairs:
 %        RDF graph + equivalence relation combination.
 
 assert_inodes(O, G, ISets, IHierHash):-
+gtrace,
   % We need to establish the number of identity pairs based on
   % the collection of identity sets, because this can be larger
   % that the number of pairs.
