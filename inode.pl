@@ -122,10 +122,10 @@ assert_inodes(O, G, ISets, IHierHash):-
   % an identity set ${X,Y,Z}$ representing
   % 3 non-reflexive and non-symmetric identity pairs.
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfAllIdPairs),
-  
+
   % Clear data store.
   clear_db,
-  
+
   % Make sure the granularity mode is set.
   option(granularity(Mode), O, p),
 
@@ -136,7 +136,7 @@ assert_inodes(O, G, ISets, IHierHash):-
 
   % Assert the identity hierarchy based on the given identity sets.
   identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc),
-  
+
   % For every set of shared properties, we assert
   % an inode in the ihierarchy.
   assoc_to_keys(P_Assoc, SharedPs),
@@ -214,7 +214,7 @@ identity_sets_to_assocs(
 
   % Add the identity set as a value to the shared objects key of
   % the association list that is the value of the shared predicates key.
-  
+
   % (1/3) If the shared predicates have an entry in
   % the `po` association list, then this entry is reused.
   % Otherwise a new association list is created.
@@ -224,14 +224,14 @@ identity_sets_to_assocs(
   ;
     empty_assoc(PO_Assoc1)
   ),
-  
+
   % (2/3) Add the identity set as a value for
   % the shared predicate-object pairs key.
   put_assoc_ord_member(SharedPOs, PO_Assoc1, ISet, PO_Assoc2),
-  
+
   % (3/3) Now we must REPLACE the nested association list.
   put_assoc(SharedPs, PPO_Assoc1, PO_Assoc2, PPO_Assoc2),
-  
+
   identity_sets_to_assocs(
     Mode,
     G,
@@ -395,12 +395,11 @@ check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
 %        that share the given predicates.
 
 check_shares_predicates(G, SharedPs, ISets):-
-/*
   % We first order the predicates by probable occurrence.
   findall(
     Prob-Pred,
     (
-      member(Pred, Preds),
+      member(Pred, SharedPs),
       % We must first assure that something has been queried.
       % I have mailed JW about this.
       rdf_estimate_complexity(_, Pred, _, Prob)
@@ -409,8 +408,6 @@ check_shares_predicates(G, SharedPs, ISets):-
   ),
   keysort(Pairs1, Pairs2),
   pairs_values(Pairs2, [P1|Ps]),
-*/
-  SharedPs = [P1|Ps],
 
   % Two resources at least share the first, i.e. least probable, property.
   rdf(X, P1, O, G),
