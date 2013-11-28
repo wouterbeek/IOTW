@@ -68,7 +68,6 @@ Possible extensions of the alignment pairs:
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(ordset_ext)).
-:- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
@@ -116,23 +115,30 @@ Possible extensions of the alignment pairs:
 %        RDF graph + equivalence relation combination.
 
 assert_inodes(O, G, ISets, IHierHash):-
-gtrace,
   % We need to establish the number of identity pairs based on
-  % the collection of identity sets, because this can be larger
-  % that the number of pairs.
-  % For every two pairs `X-Y` and `Y-Z` we have an identity set ${X,Y,Z}$
-  % representing three non-reflexive and non-symmetric identity pairs.
+  % the collection of identity sets.
+  %
+  % For example, for every 2 pairs `X-Y` and `Y-Z` we have
+  % an identity set ${X,Y,Z}$ representing
+  % 3 non-reflexive and non-symmetric identity pairs.
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfAllIdPairs),
-
+  
+  % Clear data store.
   clear_db,
+  
+  % Make sure the granularity mode is set.
   option(granularity(Mode), O, p),
 
-  % We can identify this RDF graph and alignment pairs combination later
-  % using a hash.
+  % We can identify this combination of
+  % an RDF graph and a collection of identity sets
+  % later by using a hash.
   variant_sha1(G-ISets, IHierHash),
 
   % Assert the identity hierarchy based on the given identity sets.
   identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc),
+  
+  % For every set of shared properties, we assert
+  % an inode in the ihierarchy.
   assoc_to_keys(P_Assoc, SharedPs),
   maplist(assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
 
@@ -155,6 +161,7 @@ gtrace,
 %!   -GroupedBySharedPredicateObjectPairs:assoc
 %! ) is det.
 % @see See identity_sets_to_assocs/7 where the real work happens.
+%      This wrapper only adds empty assocs to store the `p` and `po` data.
 
 identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc):-
   empty_assoc(EmptyP_Assoc),
@@ -179,7 +186,7 @@ identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc):-
 %!   -NewGroupedBySharedPredicateObjectPairs:assoc
 %! ) is det.
 
-% No more identity sets. Done!
+% No more identity sets. We are done!
 identity_sets_to_assocs(
   _Mode,
   _G,
@@ -199,25 +206,32 @@ identity_sets_to_assocs(
   PPO_Assoc1,
   PPO_Assoc3
 ):-
-  % Take the predicates that the resources in the identity set share.
+  % Take the properties that the resources in the identity set share.
   rdf_shared(G, Mode, ISet, SharedPs, SharedPOs),
 
-  % Add to the ordered set under the `SharedPs` key.
+  % Add the identity set as a value for the shared properties key.
   put_assoc_ord_member(SharedPs, P_Assoc1, ISet, P_Assoc2),
 
-  % Add the alignment pair as a value to the shared objects key of the
-  % association list that is a value to the shared predicates key.
+  % Add the identity set as a value to the shared objects key of
+  % the association list that is the value of the shared predicates key.
+  
+  % (1/3) If the shared predicates have an entry in
+  % the `po` association list, then this entry is reused.
+  % Otherwise a new association list is created.
   (
     % Get the nested assoc.
     get_assoc(SharedPs, PPO_Assoc1, PO_Assoc1), !
   ;
     empty_assoc(PO_Assoc1)
   ),
-  % Add to the ordered set under the `SharedPOs` key of the nested assoc.
+  
+  % (2/3) Add the identity set as a value for
+  % the shared predicate-object pairs key.
   put_assoc_ord_member(SharedPOs, PO_Assoc1, ISet, PO_Assoc2),
-  % REPLACE the nested assoc.
+  
+  % (3/3) Now we must REPLACE the nested association list.
   put_assoc(SharedPs, PPO_Assoc1, PO_Assoc2, PPO_Assoc2),
-
+  
   identity_sets_to_assocs(
     Mode,
     G,
@@ -233,9 +247,11 @@ identity_sets_to_assocs(
 %!   +IdentityHierarchyHash:atom,
 %!   +Graph:atom,
 %!   +GroupedBySharedPredicates:assoc,
-%!   +GroupedBySharedProperties:assoc,
+%!   +GroupedBySharedPredicateObjectPairs:assoc,
 %!   +SharedPreds:ordset
 %! ) is det.
+% The association lists record all sets of shared predicates
+% and all sets of shared predicate-object pairs.
 
 assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
   (
@@ -306,7 +322,7 @@ clear_db:-
 %!   -SharedPredicates:ordset(iri),
 %!   -SharedProperties:ordset(iri)
 %! ) is det.
-% Returns the predicates that all the given resources possess.
+% Returns the properties that all the given resources share.
 %
 % Moves from sets of resources to the shared properties of those resources.
 %
@@ -319,23 +335,23 @@ rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
   % We assume a fully materialized graph.
   rdf(Res1, P, O, G),
 
-  % If we were looking for predicates only,
-  % the we can add the following restriction:
+  % If we are only looking for properties (granularity mode `p`),
+  % the we can add the following restriction.
   (Mode == p -> \+ memberchk(P, OldPs) ; \+ memberchk(P-O, OldPOs)),
 
-  % All subject terms in the set must share the same
-  % predicate-object pair / property (regardless of mode).
-  % Here we assume that all typed literals are using
-  % their canonical lexical form.
+  % All resources in the identity set must share the same
+  % predicate-object pair (regardless of mode).
+  % Here we assume that the typed literals are represented
+  % using their canonical lexical form.
   forall(member(Res2, Resources), rdf(Res2, P, O, G)), !,
 
   % Add a shared predicate.
   ord_add_element(OldPs, P, NewPs),
 
-  % Mode-dependent inclusion of predicate-object pair / property
+  % Mode-dependent inclusion of predicate-object pair.
   (Mode = p -> NewPOs = OldPOs ; ord_add_element(OldPOs, P-O, NewPOs)),
 
-  % Look for additional shared predicates (and properties).
+  % Look for additional shared predicates / predicate-object pairs.
   rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
 rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 
