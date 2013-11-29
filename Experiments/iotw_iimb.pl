@@ -21,7 +21,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(iotw(iotw)).
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
-:- use_module(rdf(rdf_ap)).
+:- use_module(rdf(rdf_meta)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
@@ -46,9 +46,13 @@ iotw_iimb:-
     [process(iimb),project(iotw)],
     [
       ap_stage([from(input,'OAEI2012',archive)], ap_extract_archive),
+      ap_stage([], ap_rdf_convert_directory(turtle)),
       ap_stage([between(1,80)], iimb_experiment)
     ]
   ).
+
+ap_rdf_convert_directory(_StageAlias, FromDir, ToFormat, ToDir):-
+  rdf_convert_directory(FromDir, ToFormat, ToDir).
 
 iimb_experiment(StageAlias, FromDir, ToDir, N):-
   % Main directory.
