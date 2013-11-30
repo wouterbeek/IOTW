@@ -41,7 +41,7 @@ test0:-
   rdf_assert(rdf:type, rdfs:subPropertyOf, rdf:typo, G),
   
   run_experiment(
-    [deb_pdf(true),deduction(rdfs),granularity(po)],
+    [deb_pdf(true),granularity(po)],
     G,
     [[Andrea,Wouter],[Andrea,Boetje],[Amsterdam,Berlin]],
     _SVG

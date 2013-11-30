@@ -120,7 +120,7 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
   rdf_setup_call_cleanup(
     [to(ToFileOWL)],
     % Now that all files are properly loaded, we can run the experiment.
-    run_experiment([deduction(none),granularity(p)], A_Pairs, SVG_DOM),
+    run_experiment([granularity(p)], A_Pairs, SVG_DOM),
     [BaseFile,AlignedOntologyFile]
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),

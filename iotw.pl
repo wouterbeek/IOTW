@@ -25,7 +25,6 @@ Recommendation sharing non-monotonic?
 :- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(rdf(rdf_graph)).
-:- use_module(rdf(rdf_mat)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdfs(rdfs_voc)).
 :- use_module(xsd(xsd)).
@@ -43,8 +42,6 @@ Recommendation sharing non-monotonic?
 % Runs an IOTW experiment.
 %
 % The following options are supported:
-%   * =|deduction(+EntailmentRegime:oneof([none,rdf,rdfs])|=
-%     The default is `none`.
 %   * =|granularity(+LevelOfIdentityPartition:oneof([p,po]))|=
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
@@ -89,11 +86,6 @@ run_experiment(O1, IPairs, SVG, G):-
   % are canonical values.
   % This makes it much cheaper to establish the identity of typed literals.
   xsd_canonize_graph(G),
-
-  % Materializing the graph reveals additional properties of existing
-  % resources, and therefore may reveal additional shared properties.
-  option(deduction(EntailmentRegime), O1, none),
-  materialize(G, [EntailmentRegime]),
 
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O1, G, ISets, GA_Hash),
