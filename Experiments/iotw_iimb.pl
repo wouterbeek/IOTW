@@ -6,7 +6,7 @@
 ).
 
 /** <module> IIMB
-
+http://oaei.ontologymatching.org/2012/IIMBDATA/authority/iso/3166-1/numeric/268
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
@@ -36,7 +36,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- db_add_novel(user:prolog_file_type('tar.gz', archive)).
 :- db_add_novel(user:prolog_file_type(owl, owl)).
 
-%:- initialization(iotw_iimb).
+:- initialization(iotw_iimb).
 
 
 
@@ -47,10 +47,22 @@ iotw_iimb:-
   ap(
     [process(iimb),project(iotw)],
     [
+      % Unpack the archive containing the original OAEI2012 data.
       ap_stage([from(input,'IIMB',archive)], ap_extract_archive),
+      
+      % Make sure all RDF data is stored in the Turtle serialization format.
       ap_stage([args([turtle])], ap_rdf_convert_directory),
+      
+      % A Java Maven project does the OWL materialization (using Jena).
       ap_stage([], ap_run_jar),
+      
+      % Although this step is not strictly needed,
+      % it does allow the materialized results to be easily
+      % compared on a per-file level
+      % (e.g. the comment counting the number of serialized triples).
       ap_stage([args([turtle])], ap_rdf_convert_directory),
+      
+      % Run the IOTW experiment.
       ap_stage([between(1,80)], iimb_experiment)
     ]
   ).
@@ -103,7 +115,7 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
     ToFileOWL,
     [access(write),file_type(turtle),relative_to(ToDir)]
   ),
-
+  
   % Execute the goal on the two ontologies.
   rdf_setup_call_cleanup(
     [to(ToFileOWL)],

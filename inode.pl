@@ -133,7 +133,7 @@ assert_inodes(O, G, ISets, IHierHash):-
   % an RDF graph and a collection of identity sets
   % later by using a hash.
   variant_sha1(G-ISets, IHierHash),
-
+  
   % Assert the identity hierarchy based on the given identity sets.
   identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc),
 

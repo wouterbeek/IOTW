@@ -85,12 +85,6 @@ run_experiment(O1, IPairs, SVG, G):-
   ),
   debug(iotw, 'Number of non-pair identity sets: ~w', [NumberOfNonpairISets]),
 
-  % Pre-load the RDF(S) vocabulary.
-  % This means that materialization has to make less deductions
-  % (tested on 163 less), and there are some labels and comments
-  % that deduction would not produce.
-  load_rdfs_vocabulary(G),
-
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
   % This makes it much cheaper to establish the identity of typed literals.
