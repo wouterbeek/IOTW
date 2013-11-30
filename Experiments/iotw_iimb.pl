@@ -21,7 +21,9 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(iotw(iotw)).
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
+:- use_module(os(run_ext)).
 :- use_module(rdf(rdf_meta)).
+:- use_module(rdf(rdf_serial_conv)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
@@ -45,27 +47,31 @@ iotw_iimb:-
   ap(
     [process(iimb),project(iotw)],
     [
-      ap_stage([from(input,'OAEI2012',archive)], ap_extract_archive),
-      ap_stage([], ap_rdf_convert_directory(turtle)),
+      ap_stage([from(input,'IIMB',archive)], ap_extract_archive),
+      ap_stage([args([turtle])], ap_rdf_convert_directory),
+      ap_stage([], ap_run_jar),
+      ap_stage([args([turtle])], ap_rdf_convert_directory),
       ap_stage([between(1,80)], iimb_experiment)
     ]
   ).
 
-ap_rdf_convert_directory(_StageAlias, FromDir, ToFormat, ToDir):-
+ap_rdf_convert_directory(_StageAlias, FromDir, ToDir, ToFormat):-
   rdf_convert_directory(FromDir, ToFormat, ToDir).
 
-iimb_experiment(StageAlias, FromDir, ToDir, N):-
-  % Main directory.
-  subdirectories_to_directory(
-    [FromDir,'OAEI2012','Instance matching','IIMB'],
-    IIMB_Dir
+ap_run_jar(_StageAlias, FromDir, ToDir):-
+  absolute_file_name(
+    iotw('iotw-0.0.1-SNAPSHOT'),
+    JAR_File,
+    [access(read),file_type(jar)]
   ),
+  run_jar(JAR_File, [file(FromDir),file(ToDir)]).
 
+iimb_experiment(StageAlias, FromDir, ToDir, N):-
   % The base ontology.
   absolute_file_name(
     onto,
     BaseFile,
-    [access(read),file_type(owl),relative_to(IIMB_Dir)]
+    [access(read),file_type(turtle),relative_to(FromDir)]
   ),
 
   % The aligned ontology.
@@ -73,12 +79,12 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
   absolute_file_name(
     SubDirName,
     SubDir,
-    [access(read),file_type(directory),relative_to(IIMB_Dir)]
+    [access(read),file_type(directory),relative_to(FromDir)]
   ),
   absolute_file_name(
     onto,
     AlignedOntologyFile,
-    [access(read),file_type(owl),relative_to(SubDir)]
+    [access(read),file_type(turtle),relative_to(SubDir)]
   ),
 
   % The reference alignments
@@ -86,7 +92,7 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
   absolute_file_name(
     refalign,
     A_File,
-    [access(read),file_type(rdf),relative_to(SubDir)]
+    [access(read),file_type(turtle),relative_to(SubDir)]
   ),
   oaei_file_to_alignments(A_File, A_Pairs),
 
@@ -95,7 +101,7 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
   absolute_file_name(
     ToFileName,
     ToFileOWL,
-    [access(write),file_type(owl),relative_to(ToDir)]
+    [access(write),file_type(turtle),relative_to(ToDir)]
   ),
 
   % Execute the goal on the two ontologies.
@@ -112,7 +118,7 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
   access_file(ToFileSVG, write),
   % Write the SVG DOM to file.
   xml_dom_to_file([dtd(svg)], SVG_DOM, ToFileSVG),
-  
+
   % Stats.
   ap_stage_tick(StageAlias).
 
