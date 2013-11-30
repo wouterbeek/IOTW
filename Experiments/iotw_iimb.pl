@@ -6,7 +6,7 @@
 ).
 
 /** <module> IIMB
-http://oaei.ontologymatching.org/2012/IIMBDATA/authority/iso/3166-1/numeric/268
+
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
