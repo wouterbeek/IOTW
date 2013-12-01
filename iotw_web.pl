@@ -2,11 +2,9 @@
   iotw_web,
   [
     ipairs_web/1, % -DOM:list
-    iimb_web/2, % +Integer:integer
-                % -SVG:dom
-    print_ipair/2, % +Resource1:iri
-                   % +Resource2:iri
-    print_ipairs/0
+    iimb_web/1, % -HTML_DOM:list
+    iimb_web/2 % +Integer:integer
+               % -SVG:list
   ]
 ).
 
@@ -14,12 +12,12 @@
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09
+@version 2013/05, 2013/08-2013/09, 2013/11
 */
 
 :- use_module(generics(meta_ext)).
-:- use_module(generics(print_ext)).
-:- use_module(iotw_exp(iotw_iimb)).
+:- use_module(generics(uri_ext)).
+:- use_module(iotw_exp(iotw_iimb)). % Make sure the results of the experiment are there.
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
 :- use_module(iotw(inode_export)).
@@ -34,9 +32,13 @@
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
+:- use_module(os(dir_ext)).
+:- use_module(os(file_ext)).
 :- use_module(rdf(rdf_name)).
+:- use_module(svg(svg_file)).
 :- use_module(server(web_console)).
 :- use_module(server(web_modules)).
+:- use_module(xml(xml_dom)).
 
 :- http_handler(root(iotw), iotw, []).
 :- http_handler(root(inode), inode, []).
@@ -50,12 +52,47 @@
 
 
 
+%! iimb_web(-HTML_DOM:list) is det.
+
+iimb_web([element(ol,[],HTML_List)]):-
+  absolute_file_name(
+    iotw_ap_iimb_output(.),
+    OutputDir,
+    [access(read),file_type(directory)]
+  ),
+  directory_files(
+    [
+      file_types([svg]),
+      include_directories(false),
+      order(lexicographic),
+      recursive(true)
+    ],
+    OutputDir,
+    SVG_Files
+  ),
+  findall(
+    element(li,[],[element(a,[href=IOTW_URL2],[SVG_Name])]),
+    (
+      nth1(N, SVG_Files, SVG_File),
+      http_absolute_uri(root(iotw), IOTW_URL1),
+      uri_query_add(IOTW_URL1, iimb, N, IOTW_URL2),
+      file_name(SVG_File, _Dir, SVG_Name, _Ext)
+    ),
+    HTML_List
+  ).
+
 %! iimb_web(+Integer:between(1,80), -SVG:dom) is det.
 % Returns the identity hierarchy for the IIMB ontology alignment
 % with the given index.
 
-iimb_web(_Integer, _SVG):-
-  iotw_iimb.
+iimb_web(N, SVG):-
+  atomic_list_concat([iimb,N], '_', FileName),
+  absolute_file_name(
+    iotw_ap_iimb_output(FileName),
+    File,
+    [access(read),file_type(svg)]
+  ),
+  file_to_svg(File, SVG).
 
 %! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
@@ -72,12 +109,34 @@ inode(Request):-
     true
   ).
 
+iotw(Request):-
+  option(search(Query), Request),
+  option(iimb(N), Query),
+  reply_html_page(app_style, \iotw_head, \iotw_body(iimb(N))).
 iotw(_Request):-
-  iimb_web(1, SVG),
-  reply_html_page(app_style, \iotw_head, SVG).
+  reply_html_page(app_style, \iotw_head, \iotw_body(_)).
+
+iotw_body(Content) -->
+  {iimb_web([HTML_DOM])},
+  html([
+    \iotw_content(Content),
+    HTML_DOM
+  ]).
+
+iotw_content(Var) -->
+  {var(Var)}, !.
+iotw_content(iimb(N)) --> !,
+  {
+    iimb_web(N, SVG),
+    xml_dom_to_atom([], SVG, XML)
+  },
+  % Insert the SVG XML in atomic form.
+  html(div([],\[XML])).
 
 iotw_head -->
   html(title('IOTW')).
+
+% ----------------------------------------------------------------------------
 
 ipair(pair(X,R,Y,G)):-
   rdf(X, owl:sameAs, Y, G),
@@ -171,23 +230,6 @@ ipairs_web(DOM):-
     DOM
   ).
 ipairs_web([element(p,[],['There are no identity pairs.'])]).
-
-print_ipair(X, Y):-
-  write('---'), write(X), write('---------'), nl,
-  setoff(XP-XO, rdf(X, XP, XO), Xs),
-  maplist(print_ipair, Xs),
-  write('---'), write(Y), write('---------'), nl,
-  setoff(YP-YO, rdf(Y, YP, YO), Ys),
-  maplist(print_ipair, Ys).
-print_ipair(P-O):-
-  rdf_term_name([], P, PN),
-  rdf_term_name([], O, ON),
-  print_tuple([], [PN,ON]),
-  nl.
-
-print_ipairs:-
-  ipairs_top(IPair),
-  write(IPair), nl.
 
 %! resource(+Request) is det.
 % Describes resources (query term `r1`)

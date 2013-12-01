@@ -63,7 +63,7 @@ iotw_iimb:-
       ap_stage([args([turtle])], ap_rdf_convert_directory),
       
       % Run the IOTW experiment.
-      ap_stage([between(1,80)], iimb_experiment)
+      ap_stage([between(1,80),to(output)], iimb_experiment)
     ]
   ).
 
