@@ -1,0 +1,150 @@
+\subsection{Approximation}
+\label{sec:approximation}
+
+In the previous section we partitioned a given identity relation $\sim$
+  into subrelations that can be distinguished in terms of schema predicates
+  (or $n$-depth paths of those predicates).
+In this section we create an approximation of the identity relation.
+This approximation will allow us to
+  (1) give suggestions about which pairs to in/exclude from
+      the identity relation, and
+  (2) give an indicator for the quality of the identity relation.
+
+For the approximation of the identity relation we use
+  rough set theory \cite{pawlak_1991} to represent an approximation of
+  a given identity relation $\sim$.
+The domain for our rough set approach is the Cartesian product of $S_G$.
+The set of predicates is the powerset of $P_G$.
+%\footnote{
+%  Relations are called `attributes' in rough set theory.
+%  They are functions that map to an arbitrary set of value labels.
+%  We only consider functions that map from binary input into
+%    the set of Boolean truth values, and therefore use the term
+%    `predicates' to denote these functions.
+%}
+%This means that we have a big number of primitives to work with
+%  (quadratic in the number of constants;
+%   exponential in the number of relations).
+
+For an arbitrary binary relation $\sim$ we can define
+  a higher (def. \ref{def:higher_approximation}) and
+  a lower (def. \ref{def:lower_approximation}) approximation
+  of that relation.
+In definitions \ref{def:higher_approximation} and
+  \ref{def:lower_approximation},
+  $\mathbb{R}$ characterizes a similarity relation between resource pairs.
+The intuition behind these definitions is that non-$\sim$-pairs
+  that are similar to $\sim$-pairs should be in the higher approximation,
+  whereas no $\sim$-pair that has a similar non-$\sim$-pair should be
+  in the lower approximation.
+
+\small
+\begin{definition}[Higher \& lower approximation]
+\begin{align}
+\label{def:higher_approximation}
+x \overline{\sim} y \, & \iff & \,
+  \exists u,v (\pair{u}{v} \mathbb{R} \pair{x}{y} \,\land\, u \sim v)
+\\
+\label{def:lower_approximation}
+x \underline{\sim} y \, & \iff & \,
+  \forall u,v (\pair{u}{v} \mathbb{R} \pair{x}{y} \,\rightarrow\, u \sim v)
+\end{align}
+\end{definition}
+\normalsize 
+
+\begin{comment}
+\small
+\begin{definition}[Higher \& lower approximation]
+\label{def:higher_lower_approximation}
+\begin{align}
+  y \in [x]_H
+\,\iff\,\\
+  \exists u (
+      \cardinality{[u]_{\sim}}>1
+    \,\land\,
+      \mathbb{P}([u]_{\sim})=\mathbb{P}(\set{x,y})
+  )\nonumber
+\\
+  y \in [x]_L
+\,\iff\,
+  \forall S \subseteq D (\\
+      (\cardinality{S}>1 \,\land\, \mathbb{P}(S) = \mathbb{P}(\set{x,y}))
+    \,\rightarrow\,
+      \exists s \in D (S=[s]_{\sim})
+  )\nonumber
+\end{align}
+\end{definition}
+\normalsize
+\end{comment}
+
+\noindent Since we want to stay close to the traditional notion of identity,
+  defined in terms of indiscernibility,
+  we choose $\mathit{IND}(\mathcal{P}(P_G^n))$ as our similarity relation.
+
+Figure 1 shows an example of the lower and higher
+  approximations for a linkset.
+Since in this figure a partition is only drawn when there is at least one
+  identity pair that is indiscernible with respect to some set of
+  predicates, the higher approximation amounts to the entire figure.
+The lower approximation only consists of those partition sets that contain
+  at least one identity pair, and that contain no non-identity pair.
+
+\subsection{Quality}
+\label{sec:quality}
+
+Given the rough set representation $\pair{\underline{\sim}}{\overline{\sim}}$
+  of identity relation $\sim$, we can calculate the accuracy of this
+  approximation with equation \ref{eq:accuracy}.
+
+\small
+\begin{equation}
+\label{eq:accuracy}
+  \alpha(\sim)
+\,=\,
+  \cardinality{\underline{\sim}} / {\cardinality{\overline{\sim}}}
+  %\dfrac{\cardinality{\underline{\sim}}}{\cardinality{\overline{\sim}}}
+\end{equation}
+\normalsize
+
+The intuition behind the usefulness of equation \ref{eq:accuracy}
+  is that the crispness of a set should be proportional to the quality
+  of the identity relation on which it is based.
+Since a consistently applied identity relation has relatively many
+  partition sets that contain either
+  no identity pairs (small value for $\overline{\sim}$) or
+  only identity pairs (big value for $\underline{\sim}$),
+  a more consistent identity relation has a higher accuracy.
+
+Now that we have a formal metric for identity relation quality,
+  we can define the characteristics of an ideal identity relation.
+Traditionally the ideal identity relation ensures indiscernibility
+  for all expressible properties in the language
+  (the principle of the indiscernibility of identicals).
+According to this traditional view an identity relation becomes of
+  higher quality by considering more predicates (or ppms)
+  according to which two resources are not allowed to be discernible.
+We give a different quality criterion.
+
+We observe that for a given equivalence relation $\sim$
+  defined over a domain of resources $S_G$ we can define the notion of
+  full discernibility:
+
+\small
+\begin{definition}[Discernible model]
+\label{def:fully_discernible}
+\begin{align}
+& \text{A domain $S_G$ is fully discernible w.r.t. a binary relation $\sim$ iff}
+\nonumber
+\\
+ & \forall x,y \in S_G (
+    [x]_{\sim}=[y]_{\sim}
+  \,\lor\,\,
+    \mathbb{P}([x]_{\sim}) \neq \mathbb{P}([y]_{\sim})
+  )
+\end{align}
+\end{definition}
+\normalsize
+
+\noindent From this definition it is clear that a domain of discourse
+  is fully discernable just in case there exists a binary relation $\sim$
+  such that \mbox{$\alpha(\sim) = 1.0$}.

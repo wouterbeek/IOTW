@@ -1,0 +1,72 @@
+\section{Experimental design}
+\label{sec:experimental_design}
+
+In section \ref{sec:research_goals} we enumerated three research goals.
+The first goal is met, since an indiscernibility partition characterizes
+  subrelations based on the ppms $P$ for which the pairs in that sets
+  are $cl_{\sim}(P)$-indiscernible.
+In this way we can distinguish between different types of identity
+  by treating $P$ as a description of a (sub)set of identity pairs.
+
+The second goal is met, since the notion of a rough set allows us to
+  distinguish between pairs that must be (lower approximation)
+  and those that may be (i.e., ``not must not'', higher approximation)
+  in the identity relation.
+If we want to add/remove pairs of the identity relation,
+  we should not consider pairs of the former but only pairs of
+  the latter kind.
+
+The third goal is met, since the measure for rough set accuracy
+  is based on the discernibility criteria of an identity set.
+The crispness of the set is proportional to the quality of the
+  identity relation, based on its semantic consistency.
+
+Our approach provides a new experimental design for evaluating
+  hypothesis regarding identity relations that have not been
+  evaluated before in terms of the semantics of the data.
+
+\subsection{Hypotheses}
+\label{sec:hypotheses}
+
+Using this new approach the following hypothesis can be validated:
+
+\begin{enumerate}
+\item Take an \verb|owl:sameAs| relation and a \verb|skos:related|
+        relation defined over the same domain.
+      Merge them into a new binary relation $\sim$.
+      Establishing the lower and higher approximation of $\sim$,
+        the hypothesis is that pairs from \verb|owl:sameAs| occur more
+        frequently in the lower boundary than pairs from \verb|skos:related|.
+\item Take a set of alignment pairs, each of which is associated with
+        a confidence measure between $0.0$ and $1.0$.
+      Choose an arbitrary cutoff point $0.0<c<1.0$.
+      The hypothesis is that alignments with a confidence larger than $c$
+        occur more frequently in the lower approximation than alignments
+        with a confidence smaller than $c$.
+\item Take a set of automatically generated alignment pairs with
+        associated confidence measures and take the gold standard or
+        reference alignment for the same dataset.
+      The hypothesis is that pairs that occur in the lower approximation
+        of the alignment appear relatively more often in the gold standard
+        than pairs that occur in the higher approximation of the alignment.
+\item The accuracy measure $\alpha$ of a reference alignment is generally
+        higher than the accuracy measure of an automatically generated
+        alignment for the same dataset.
+      Or, the accuracy measure is generally higher for identity relations
+        that are considered correct by domain experts.
+\end{enumerate}
+
+\subsection{Implementation}
+\label{sec:implementation}
+
+The implementation built for this paper is deployed as an extension pack
+  of the ClioPatria triple store \cite{schreiber_2006}.
+For RDF graphs that are loaded in ClioPatria this extension calculates
+  the discernibility partition, rough set approximation and accuracy.
+The results are visualized using GraphViz and are displayed in a
+  Web interface using SVG.
+Interactive Ajax code allows the user to click on nodes in the SVG graphic
+  to navigate to descriptions of the resource pairs that occur in
+  that partition set while not being in the identity relation.
+This implementation may facilitate the validation of hypotheses in this
+  new experimental setup.

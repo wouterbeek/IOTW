@@ -1,0 +1,48 @@
+\subsection{Related work}
+\label{sec:related_work}
+
+Existing research proposes six different solutions for
+the problem of identity on the Semantic Web.
+We now briefly discuss each of these.
+(1) Introduce weaker versions of \verb|owl:sameAs|
+  \cite{halpin_hayes_2010,mccusker_mcguinness_2010}
+  (e.g., \verb|skos:related|).
+(2) Restrict the applicability of identity relations to specific contexts.
+  Identities are expected to hold within a named graph or within a namespace,
+  but not necessarily outside of it \cite{halpin_hayes_2010,melo_2013}.
+(3) Introduce additional vocabulary that does not weaken but extend
+  the existing identity relation \cite{halpin_hayes_2010}.
+  For example, allow an explicit distinction to be made between mentioning
+  a term and using a term
+  (e.g., a car and a Web document describing that car).
+(4) Add domain-specific weaker versions of the identity relation
+  \cite{mccusker_mcguinness_2010} (e.g., ``have the same medical use''
+  is weaker than ``are the same molecule'').
+(5) Adapt the modeling practice, possibly in a (semi-)automated way
+  by adapting visualization and modeling toolkits to produce notifications
+  upon reading SW data, or by posing additional restrictions on the creation
+  and alteration of data. For example adding an RDF link could require
+  reciprocal confirmation from the maintainers of the respective datasets.
+  \cite{halpin_hayes_2010,ding_shinavier_finin_mcguinness_2010}
+
+Other related research focusses on the extraction of network properties of
+  \verb|owl:sameAs| datasets \cite{ding_shinavier_shangguan_mcguinness_2010},
+  but these endeavors are not yet related to the semantics of the
+  identity relation.
+
+What these approaches have is common is that quite some work has to be done
+  (adapting or creating standards, instructing modelers, converting existing
+  dataset) in order to resolve some of the problems of identity.
+Our approach provides a way of dealing with the heterogeneous real-world usage
+  of identity in the Semantic Web that is fully automated and that requires
+  no changes to standards, modeling practices, or existing datasets.
+
+In modeling the problem arises that identical resources allow reasoning
+
+Since all resources are related
+
+An example from the SW is the property \verb|skos:exactMatch|,
+which is used to indicate that two conceptual resources in
+different concept schemes are sufficiently similar that
+they can be used interchangeably
+in an information retrieval application.

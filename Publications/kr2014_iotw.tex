@@ -1,0 +1,50 @@
+\documentclass[letterpaper]{article}
+
+\usepackage{aaai}
+\usepackage{prasem}
+
+\begin{document}
+
+\title{Rough Set Semantics for Identity on the Web}
+\author{Wouter Beek \and Stefan Schlobach \and Frank van Harmelen\\
+Vrije Universiteit Amsterdam\\
+De Boelelaan 1081a\\
+1081HV Amsterdam\\
+The Netherlands}
+\maketitle
+\begin{abstract}
+\begin{quote}
+Identity relations are at the foundation of the Linked Open Data initiative
+  and on the Semantic Web in general.
+They allow the interlinking of alternative descriptions of the same thing.
+However, many practical uses of \verb|owl:sameAs| are known to violate its
+  formal semantics.
+We propose a method that assigns meaning to (the subrelations of)
+  an identity relation using the predicates of the dataset schema.
+Applications of this approach include automated suggestions for
+  asserting/retracting identity pairs and quality assessment.
+We also describe an experimental design for this approach.
+\end{quote}
+\end{abstract}
+
+% Section 1: Introduction
+\input{./tex/intro.tex}
+\input{./tex/relwork.tex}
+
+% Section 2: Approach
+\input{./tex/approach.tex}
+\input{./tex/ind.tex}
+\input{./tex/approx.tex}
+
+% Section 3: Experiments
+\input{./tex/exp.tex}
+
+% Section 4: Conclusion
+\input{./tex/concl.tex}
+%\input{./tex/futurework.tex}
+
+% Bibliography
+\bibliographystyle{aaai}
+\bibliography{kr2014_iotw}
+
+\end{document}
