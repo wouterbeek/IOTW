@@ -1,6 +1,15 @@
 \section{Experimental design}
 \label{sec:experimental_design}
 
+For illustrative purposes we use the IIMB dataset that is used in the
+  instance matching track of the 2012 Ontology Alignment Evaluation
+  Initiative (OAEI) \cite{oaei_2012}.
+This dataset consists of eighty ontologies $G_i$ (for $1 \leq i \leq 80$)
+  that are linked to a single base ontology $G_0$.
+A graph $G$ is the result of fully materializing the graph merge
+  of $G_i$ (for some $1 \leq i \leq 80$) and $G_0$.
+For each of these eighty linked ontologies a reference mapping is available.
+
 In section \ref{sec:research_goals} we enumerated three research goals.
 The first goal is met, since an indiscernibility partition characterizes
   subrelations based on the ppms $P$ for which the pairs in that sets
@@ -70,3 +79,12 @@ Interactive Ajax code allows the user to click on nodes in the SVG graphic
   that partition set while not being in the identity relation.
 This implementation may facilitate the validation of hypotheses in this
   new experimental setup.
+
+Existing SW libraries implement equivalence relations for common datatypes.
+Equivalence is not always in line with identity though.
+We have made exceptions for specific values that are known to have
+  equivalent non-identities (such as $0$ and $-0$)
+  non-equivalent identities (such as $NaN$ for \texttt{float}).\cite{XSD11}
+The latter even provides a rare instance of the violation of
+  definition \ref{def:identity}.
+

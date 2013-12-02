@@ -1,51 +1,8 @@
 \section{Approach}
 \label{sec:approach}
 
-In the following we consider an arbitrary,
-  materialized RDF graph $G$ and an identity relation $\sim$ over
-  the resources that occur in $G$.
-The subject terms of $G$ are denoted by $S_G$, the predicate terms by $P_G$
-  and the object terms by $O_G$.
+\input{./tex/prelim}
+\input{./tex/ind.tex}
+\input{./tex/approx.tex}
+\input{./tex/gen_props}
 
-For illustrative purposes we use the IIMB dataset that is used in the
-  instance matching track of the 2012 Ontology Alignment Evaluation
-  Initiative (OAEI) \cite{oaei_2012}.
-This dataset consists of eighty ontologies $G_i$ (for $1 \leq i \leq 80$)
-  that are linked to a single base ontology $G_0$.
-A graph $G$ is the result of fully materializing the graph merge
-  of $G_i$ (for some $1 \leq i \leq 80$) and $G_0$.
-For each of these eighty linked ontologies a reference mapping is available.
-
-In RDF a property consists of a single predicate term
-  (e.g., the property ``is spoken in'' is denoted by predicate term
-   \verb|IIMBTBOX:spoken_in| in the IIMB dataset).
-We generalize the notion of a property to consist of
-  an arbitrary number of predicate terms.
-For this we define a depth-$n$ \emph{predicate path map} (abbr. ppm)
-  that is characterized by a sequence of $n$ predicates
-  and denotes a (functional) mapping from subject terms
-  into sets of object terms
-  (def. \ref{def:predicate_path},
-   where $p_i \in P_G$ and $[p]_{\sim}$ is the identity set for $p$).
-%$f_{\tuple{\range{p_1}{p_n}}}: S_G \rightarrow \mathcal{P}(O_G)$
-
-\small
-\begin{definition}[Predicate path map (ppm)]
-\begin{align}
-\label{def:predicate_path}
-  f_{\tuple{\range{p_1}{p_n}}}(s)
-\,=\,
-  \bigsetdef{o \in O_G}{
-    \exists_{\range{x_1}{x_{n-1}}} \quad \quad \quad \quad \quad \quad\\
-      \bigwedge_{i=0}^{n-1}\nolimits
-          \pair{I(x_i)}{I(x_{i-1})}
-        \in
-          \bigcup_{p \in [p_{i+1}]_{\sim}}\nolimits \mathit{Ext}(I(p))
-  }\nonumber
-\end{align}
-\end{definition}
-\normalsize
-
-\noindent Examples of properties characterized by predicate path maps are
-  ``is spoken in'' (depth-$1$) and
-  ``is spoken in a country whose form of government is'' (depth-$2$).

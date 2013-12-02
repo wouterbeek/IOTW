@@ -1,0 +1,93 @@
+\subsection{Generic properties and property maps}
+
+\subsection{Motivation}
+
+We want to generalize the 
+
+When we look at concrete datasets we see that the resources that make up
+  an identity pair do not often share a lot of properties.
+The pragmatics reflects this, as identity statements are often used
+  to link to other resources and import statements
+  (i.e. properties asserted of a resources)
+  that are not asserted of the former resource.
+However, while there is not too much overlap in properties,
+  resources are oftentimes connected at a deeper level,
+  via a path that spans two or more properties.
+
+The reason for wanting to extend properties 
+
+\subsection{Conceptual}
+
+For instance the property ``is spoken in'' is denoted by
+  the predicate term \verb|IIMBTBOX:spoken_in| in the IIMB dataset.
+This relates natural languages to the countries in which they are spoken.
+
+We generalize the notion of a property,
+  so that is can be denoted by a sequence of predicate terms.
+For example the property ``is spoken in a country whose capital is''
+  is denoted by
+  $\tuple{\texttt{IIMBTBOX:spoken\_in},\texttt{IIMBTBOX:has\_capital}}$,
+  relating natural languages to the capitals of the countries in which
+  they are spoken.
+
+\subsection{Theoretical}
+
+For each sequence of predicate terms $\tuplerange{p_1}{p_n}$
+  we assume a functional mapping
+  $f_{\tuplerange{p_1}{p_n}} : S_G \rightarrow \powerset{O_G}$,
+  from subject terms into sets of object terms
+  (def. \ref{def:generalized_property_map}).
+
+%$f_{\tuple{\verb|IIMBTBOX:spoken_in|}}$
+%$f_{\tuple{\verb|IIMBTBOX:spoken_in|,\verb|IIMBTBOX:has_capital|}}$
+
+\small
+\begin{definition}[Generalized property map]
+\begin{align}
+\label{def:generalized_property_map}
+  f_{\tuple{\range{p_1}{p_n}}}(s)
+\,=\,
+  \bigsetdef{o \in O_G}{
+    \exists_{\range{x_0}{x_n}}(
+      x_0 = s \land x_n = o \land\nonumber\\
+      \bigwedge_{i=0}^{n-1}\nolimits
+          \pair{I(x_i)}{I(x_{i+1})}
+        \in
+          \bigcup_{p \in \equivset{p_{i+1}}}\nolimits \mathit{Ext}(I(p))
+    )
+  }\nonumber
+\end{align}
+\end{definition}
+\normalsize
+
+When in the following we talk about properties and property maps,
+  we mean generalized properties and generalized property maps
+  of arbitrary depth.
+
+The indiscernibility criteria for generic properties
+  are slightly more complex.
+
+\small
+\begin{definition}[Indiscernibility criteria]
+\label{def:indiscernibility_criteria}
+\begin{align}
+  \indp_{\approx}(\set{\range{x_1}{x_n}})
+=
+  \setdef{
+    \tuplerange{p_1}{p_n} \in P_G^n
+  }{\\
+    \exists_{
+        \range{p_{11}}{p_{1n}} \in \equivset{p_1},
+      \ldots,
+        \range{p_{m1}}{p_{mn}} \in \equivset{p_n}
+    }\nonumber\\
+      \equivset{f_{\tuplerange{p_{11},p_{m1}} (x_1)}}
+    =
+      \ldots
+    =
+      \equivset{f_{\tuplerange{p_{1n},p_{mn}} (x_n)}}
+  }\nonumber
+\end{align}
+\end{definition}
+\normalsize
+

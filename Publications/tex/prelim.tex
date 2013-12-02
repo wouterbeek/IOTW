@@ -1,0 +1,51 @@
+\subsection{Preliminaries}
+\label{sec:preliminaries}
+
+RDF terms that occur in the predicate position of an RDF triple are
+  \textbf{RDF predicate terms}.
+An example from the IIMB dataset is \verb|IIMBTBOX:spoken_in|.
+This is not the same as the terms that \emph{can} occur
+  in the predicate position of a triple,
+  since any URI can occur in this position,
+  but some URIs denote non-propery resources.
+
+The interpretation of an RDF predicate term is an \textbf{RDF property},
+  which is an RDF resource.
+
+The extension of an RDF property is a \textbf{binary FOL relation},
+  i.e. a subset of the cartesian product of the domain
+  \footnote{In RDF the domain is the set of RDF resources.}.
+
+A \textbf{FOL property} is a subset of the domain.
+
+The correlate of a FOL property in RDF is a pair
+  consisting of a predicate and an object term (in that order).
+We call this syntactic construct a \textbf{$PO$-sequence}.
+The extension of the interpretation of a $PO$-seq is
+  $Ext(I(p))(I(o))$, which is a set of RDF resources.
+
+\begin{itemize}
+\item RDF `graph' $G$.
+\item RDF subject terms $S_G$.
+\item RDF property terms $P_G$.
+\item RDF object terms $O_G$.
+\item The set of blank nodes $\mathcal{B}$ (definition \ref{def:blank_node}).
+\item The set of plain literals $\mathcal{LP}$ (definition \ref{def:plain_literal}).
+\item The set of typed literals $\mathcal{LT}$ (definition \ref{def:typed_literal}).
+\item The canonical mapping for a datatype $d$, $c_d : LEX_d \rightarrow V_d$.
+\item An interpretation function $\mathcal{I}$.
+\item Canonical projecting map
+  \[
+    \pi : (\mathcal{B} \union \mathcal{I})
+  \rightarrow
+    (\mathcal{B} \union \mathcal{I})/\sim
+  \].
+\item $\equivset{p}$ is the equivalence class for $p$ under $\approx$.
+\end{itemize}
+
+In the following we consider an arbitrary,
+  materialized RDF graph $G$ and an identity relation $\approx$ over
+  the resources that occur in $G$.
+The subject terms of $G$ are denoted by $S_G$, the predicate terms by $P_G$
+  and the object terms by $O_G$.
+

@@ -4,10 +4,14 @@
 Existing research proposes six different solutions for
 the problem of identity on the Semantic Web.
 We now briefly discuss each of these.
-(1) Introduce weaker versions of \verb|owl:sameAs|
+
+Introduce weaker versions of \text{owl:sameAs} and related predicates.
   \cite{halpin_hayes_2010,mccusker_mcguinness_2010}
-  (e.g., \verb|skos:related|).
-(2) Restrict the applicability of identity relations to specific contexts.
+For example the SKOS concepts \texttt{skos:related}
+  which is symmetric but not transitive.
+The downside to this approach is that it does not allow transitive inference.
+
+Restrict the applicability of identity relations to specific contexts.
   Identities are expected to hold within a named graph or within a namespace,
   but not necessarily outside of it \cite{halpin_hayes_2010,melo_2013}.
 (3) Introduce additional vocabulary that does not weaken but extend
@@ -46,3 +50,4 @@ which is used to indicate that two conceptual resources in
 different concept schemes are sufficiently similar that
 they can be used interchangeably
 in an information retrieval application.
+
