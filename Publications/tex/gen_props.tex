@@ -45,7 +45,7 @@ For each sequence of predicate terms $\tuplerange{p_1}{p_n}$
 \begin{definition}[Generalized property map]
 \begin{align}
 \label{def:generalized_property_map}
-  f_{\tuple{\range{p_1}{p_n}}}(s)
+  f_{\tuplerange{p_1}{p_n}}(s)
 \,=\,
   \bigsetdef{o \in O_G}{
     \exists_{\range{x_0}{x_n}}(
@@ -76,16 +76,16 @@ The indiscernibility criteria for generic properties
   \setdef{
     \tuplerange{p_1}{p_n} \in P_G^n
   }{\\
-    \exists_{
-        \range{p_{11}}{p_{1n}} \in \equivset{p_1},
-      \ldots,
-        \range{p_{m1}}{p_{mn}} \in \equivset{p_n}
-    }\nonumber\\
-      \equivset{f_{\tuplerange{p_{11},p_{m1}} (x_1)}}
-    =
-      \ldots
-    =
-      \equivset{f_{\tuplerange{p_{1n},p_{mn}} (x_n)}}
+      \exists_{\range{p_{11}}{p_{1n}} \in \equivset{p_1}},
+    \ldots,
+      \exists_{\range{p_{m1}}{p_{mn}} \in \equivset{p_n}}
+    (\nonumber\\
+        \equivset{f_{\tuplerange{p_{11}}{p_{m1}}} (x_1)}
+      =
+        \ldots
+      =
+        \equivset{f_{\tuplerange{p_{1n}}{p_{mn}}} (x_n)}
+    )
   }\nonumber
 \end{align}
 \end{definition}

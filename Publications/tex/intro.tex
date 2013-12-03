@@ -20,14 +20,20 @@ Practical uses of \verb|owl:sameAs| are known to violate this strict condition
 
 Identity is often thought of as having the exact same properies.
 This statement is known as the Principle of indiscernibility
-(see \ref{def:indiscernibility_of_identicals})
+(see \ref{principle:indiscernibility_of_identicals})
 and has been attributed to Leibniz.\cite{TODO}
 % Gottfried Wilhelm Leibniz, section 9, Discourse on Metaphysics.
 
-\begin{definition}[Indiscernibility of identicals]
-\label{def:indiscernibility_of_identicals}
-$a = b \rightarrow (\forall \phi \in \Phi) \phi(a) = \phi(b)$
-\end{definition}
+\small
+\begin{principle}[Indiscernibility of identicals]
+\label{principle:indiscernibility_of_identicals}
+\[
+    a = b
+  \rightarrow
+    \forall_{\phi \in \Phi} \phi(a) = \phi(b)
+\]
+\end{principle}
+\normalsize
 
 Although the principle provides necessary and sufficient conditions
   for identity, it does not point towards an automated procedure
@@ -86,7 +92,8 @@ For instance, when one SW contributor claims that
   this prohibits another SW contributor from stating that
   $a$ and $b$ are produced by different companies
   without her introducing an inconsistency.
-Formulated in terms of principle \ref{def:indiscernibility_of_identicals},
+Formulated in terms of
+  principle \ref{principle:indiscernibility_of_identicals},
   on the SW the set $\Phi$ contains
   all properties that can \emph{possibly} be expressed
   in the modeling language.
