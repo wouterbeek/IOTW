@@ -1,39 +1,11 @@
 \subsection{Shared properties and indiscernibility}
 \label{sec:indiscernibility}
 
-\footnote{
-  $P$ must be closed under the identity relation, i.e.,
-  \begin{equation*}
-    cl_{\sim}(P) = \bigcup_{\tuple{\range{p_1}{p_n}} \in P}\nolimits (
-      [p_1]_{\sim} \times \ldots \times [p_n]_{\sim}
-    )
-  \end{equation*}
-}
-
-\subsection{Outline of the approach}
-
-We say that two resources are \emph{indiscernible}
-  with respect to a set of properties,
-  if they share all and only those properties.
-We call the properties that a set $X$ of resources shares
-  the \emph{indiscernibility criteria} for $X$.
-Then we define a new equivalence relation between pairs of resources
-  that have the same indiscernibility criteria.
-The members of this indiscernibility partition
-  have a certain overlap with the original identity relation.
-The overlap between an indiscernibility subset and the identity relation
-  is called an \emph{identity subrelation}.
-For each identity subrelation we can determine the precision,
-  defined as the number of identity pairs in the subrelation
-  divided by the number of pairs in the subrelation.
-
-\subsubsection{Identity relation -> indiscernibility criteria}
-
 We assume that we are given an identity relation $\approx$,
-  which partitions the subject terms according to
+  which partitions the subject terms $S_G$ according to
   equation \ref{eq:equivalence_set}.
 
-\small
+%\small
 \begin{equation}
 \label{eq:equivalence_set}
   \equivset{x}
@@ -44,18 +16,102 @@ We assume that we are given an identity relation $\approx$,
     \equivpair{x}{y}
   }
 \end{equation}
-\normalsize
+%\normalsize
 
-Based on the identity relation, we can derive the properties
-  that are shared by a set of resources.
-We call the predicates that are shared by a set of identical resources $X$
-  the indiscenibility criteria for $X$
-  (def. \ref{def:indiscernibility_criteria}).
+%\subsection{Identity relation -> indiscernibility criteria}
 
-EXAMPLE HERE (PREFERABLY IIMB).
+Identity can be defined as the smallest equivalence relation,
+  i.e. the most fine-grained partition of $S_G$.
+For reasoning purposes, mainly the fact that $\approx$
+  is an equivalence relation counts.
+As we saw in principle \ref{principle:indiscernibility_of_identicals},
+  identity implies indiscernibility with respect to all properties.
 
-\begin{definition}[Indiscernibility criteria]
-\label{def:indiscernibility_criteria}
+We can generalize the notion of indiscernibility,
+  by parameterizing the set of properties with respect to which
+  indiscernibility is determined.
+According to this generalization,
+  resources $x$ and $y$ are indiscernible with respect to
+  a set of properties $P \subseteq P_G \times O_G$
+  iff $\forall_{p \in P}(p(x) \leftrightarrow p(y))$ is the case.
+
+It is important to note that every indiscernibility relation
+  is also an equivalence relation (reasoning!),
+  although not necessarily the smallest one.
+Moreover, every indiscernibility relation defined over the domain $S_G$
+  is also an identity relation,
+  only over a different domain \cite{Quine1950}.\footnote{
+    For instance, the set of properties
+      ``has an income of $x$ euro's a month''
+      for decimals $x$ do not identify people
+      (since two people may have the same income),
+      but it does identify income groups.
+    }
+
+We now reinterpret the identity relation $\approx$,
+  as if it were an indiscernibility relation
+  whose set of properties $P$ is implicit.
+Based on the identity relation,
+  we can make the set of properties explicit
+  so that $\approx$ becomes an indiscernibility relation.
+Definition \ref{def:indiscernibility_properties} makes
+  the properties relative to which terms $x_i$ are indiscernibile
+  explicit.
+
+\begin{definition}[Indiscernibility properties]
+\label{def:indiscernibility_properties}
+\begin{align}
+  \indpo_{\approx}(\set{\range{x_1}{x_n}})
+=
+  \setdef{
+    \pair{p}{o} \in P_G \times O_G
+  }{\nonumber\\
+    \bigwedge_{1 \leq i \leq n}
+      \exists p_i \in \equivset{p},
+        \exists o_i \in \equivset{o}(
+          \triple{x_i}{p_i}{o_i} \in G
+        )
+% Alternatively, we can place the quantifies outside the conjunction:
+%    \exists_{\range{p_1}{p_n} \in \equivset{p}},
+%      \exists_{\range{o_1}{o_n} \in \equivset{o}}
+%        \bigwedge_{1 \leq i \leq n} \triple{x_i}{p_i}{o_i} \in G
+  }\nonumber
+\end{align}
+\end{definition}
+
+\noindent Notice that in definition \ref{def:indiscernibility_properties}
+  we close both the predicate terms $p$ and the object terms $o$
+  under identity.
+This may be important,
+  since ``Berlin'' and ``Berlijn'' (i.e., the Dutch spelling of ``Berlin'')
+  may denote identical resources, as may ``lives in'' and ``woont in''
+  (i.e., the Dutch spelling of ``lives in'').
+When being given data stating that ``Person $a$ lives in Berlin''
+  ``Person $b$ woont in Berlijn'', $a = b$, $\text{Berlin} = \text{Berlijn}$,
+  and $\text{lives is} = \text{woont in}$,
+  we want to identify the permutations of
+  $\set{\text{lives in},\text{woont in}}$ and
+  $\set{\text{Berlin},\text{Berlijn}}$
+  as the indiscernibility properties.
+
+Using definition \ref{def:indiscernibility_properties},
+  we can deduce that the indiscernibility properties for
+  the identity pair $\pair{\text{Amsterdam}}{\text{Berlin}}$
+  would contain (amongst many others) the properties
+  ``is a city'', ``has more than 100,000 inhabitants'', and
+  ``is located in Europe''.
+
+But we are not only interested in the properties that resources share
+  with one other (e.g., being a city, having more than 500,000 inhabitants).
+We are also interested in the predicates that a set of resources share.
+This amounts to a simple abstraction of
+  definition \ref{def:indiscernibility_properties},
+  equating the sets of objects (closed under identity)
+  and only returning the set of shared RDF predicate terms
+  (see definition \ref{def:indiscernibility_predicates}).
+
+\begin{definition}[Indiscernibility predicates]
+\label{def:indiscernibility_predicates}
 \begin{align}
   \indp_{\approx}(\setrange{x_1}{x_n})
 =
@@ -85,9 +141,17 @@ EXAMPLE HERE (PREFERABLY IIMB).
 \end{align}
 \end{definition}
 
-Notice that in def. \ref{def:indiscernibility_criteria}
-  we close both the predicate and object terms under identity.
-This results in more shared properties.
+We are also interested in resource pairs that share their sharing properties.
+We can thus identify subsets of an identity relation based on differences
+  in the sets of predicate path maps relative to which they take resources
+  to be \emph{indiscernible} from one another.
+
+
+We call the predicates that are shared by a set of identical resources $X$
+  the indiscenibility criteria for $X$
+  (def. \ref{def:indiscernibility_criteria}).
+
+EXAMPLE HERE (PREFERABLY IIMB).
 
 \begin{comment}
 Drawing:
@@ -96,70 +160,6 @@ Drawing:
 <o1,=,o2>
 From IIMB data.
 \end{comment}
-
-\subsection{Identity of typed literals}
-
-In order to assertain that the sets of object terms denote
-  the same resources, identity does not suffice due to the special
-  conditions for typed literals.
-The case here is quite nuanced,
-  but typed literals are quite common in SW data,
-  so we elaborate on this nuance here.
-
-First we must assume a datatype map
-  $D : \mathcal{I} \rightarrow ICEXT(I(\texttt{rdfs:Datatype}))$,
-  where $ICEXT$ is the functional mapping from class resources
-  to those resources that are instances of that class.
-Second, for each datatype $d$ we must assume a lexical-to-value mapping
-  $L2V(d) : V(d) \rightarrow LEX(d)$,\cite{Hayes2004}
-  and a datatype-specific identity relation on the value space $V(d)$,
-  here denoted by $\sim_d$.\footnote{
-    Relation $\sim_d$ posed some problems to implement correctly,
-    see section \ref{sec:implementation}.}
-
-Suppose that two objects $o_1$ and $o_2$ are both typed literals,
-  with $o_1 = \pair{d_1}{x_1}$ and $o_2 = \pair{d_2}{x_2}$
-  for datatype names $d_1$ and $d_2$ and value names $x_1$ and $x_2$.
-Identity between $o_1$ and $o_2$ is then defined as in
-  \ref{def:identity_typed_literals}.
-
-\small
-\begin{definition}[Identity for typed literals]
-\label{def:identity_typed_literals}
-\begin{align}
-  o_1 \approx o_1
-\,\iff\,
-    D(d_1) = D(d_2)
-  &\land&\\
-    x_1 \in LEX(d_1)
-  &\land&\nonumber\\
-    x_2 \in LEX(d_2)
-  &\land&\nonumber\\
-    l2v(D(d_1))(x_1) = l2v(D(d_2))(x_2)\nonumber
-\end{align}
-\end{definition}
-\normalsize
-
-Notice that the datatype-specific lexical-to-value mapping
-  in definition \ref{def:identity_typed_literals} is relevant for
-  the identification of identity,
-  since two lexical expressions may map onto the same value
-  according to one datatype but onto different values
-  according to another datatype.
-An example of this are the lexical expressions $0.1$ and $0.10000000009$,
-  which map to the same value according to datatype \texttt{xsd:float}
-  but map to different values according to datatype \texttt{xsd:decimal}.
-
-In definition \ref{def:identity_typed_literals} the conjuncts
-  stating that the value names belong to the respective lexical spaces
-  are not superfluous.
-For ill-typed literals,
-  i.e. those whose value names do not belong to the lexical space of
-  the specified datatype,
-  the interpretation is not determined and they are only known to denote
-  some arbitrary non-literal value.\footnote{
-    From the practice of working with SW data, the authors can testify
-    that ill-typed literals do occur and are actually quite common.}
 
 \subsection{Indiscernibility criteria -> identity subrelation}
 
@@ -250,7 +250,7 @@ Identity of indiscernibility criteria provides
 \end{definition}
 \normalsize
 
-According to the standard definition,
+\noindent According to the standard definition,
   identical resources are indiscernible with respect to all properties.
 We take a given set of identity pairs and partition it into subsets which
   we can describe as being $cl_{\sim}(P)$-indiscernible,
@@ -278,4 +278,14 @@ Fig. 1 shows an example
     indicating that they contain only identity pairs.
   The higher approximation consists of all displayed nodes.}
 \end{figure*}
+
+\footnote{
+  $P$ must be closed under the identity relation, i.e.,
+  \begin{equation*}
+    cl_{\sim}(P) = \bigcup_{\tuple{\range{p_1}{p_n}} \in P}\nolimits (
+      [p_1]_{\sim} \times \ldots \times [p_n]_{\sim}
+    )
+  \end{equation*}
+}
 \end{comment}
+

@@ -1,0 +1,170 @@
+\section{Stating the problem}
+\label{sec:stating_the_problem}
+
+Identity is often thought of as having the exact same properies.
+This statement is known as the Principle of indiscernibility
+(see principle \ref{principle:indiscernibility_of_identicals})
+and has been attributed to Leibniz \cite{Forrest2010}.
+% According to Forrest2010 this can be found in Gottfried Wilhelm Leibniz,
+% Discourse on Metaphysics, section 9.
+% There I find the following passage:
+% \begin{quote}
+% That every individual substance expresses the whole universe
+%   in its own manner and that in its full concept is included
+%   all its experiences together with all the attendant circumstances
+%   and the whole sequence of exterior events.
+% \end{quote}
+
+%\small
+\begin{principle}[Indiscernibility of identicals]
+\label{principle:indiscernibility_of_identicals}
+\begin{equation}
+    a = b
+  \rightarrow
+    \forall_{\phi \in \Phi} \phi(a) = \phi(b)\nonumber
+\end{equation}
+\end{principle}
+%\normalsize
+
+\noindent Although the principle provides necessary and sufficient conditions
+  for identity, it does not point towards an automated procedure
+  for enumerating the extension of the identity relation,
+  since due to its circular nature the set of properties includes
+  ``being identical to $x$'' (for every resource $x$).
+But even though this priciple does not
+  allow a positive identification of identity pairs,
+  it does provide an exclusion condition,
+  namely resources that are known to not share some property
+  are also known to not be identical.
+
+\subsection{Generic problems of identity}
+
+Identity poses several problems which are not specific to the SW.
+Firstly, identity does not hold across (all) modal contexts,
+  allowing Louis Lane to believe that Superman saved her,
+  without her knowling that Clark Kent saved here.
+
+Secondly, identity seems to be a relative concept \cite{Geach1967},
+  allowing two medicines to be the same chemical \emph{substance}
+  while not being the same \emph{medicine}.
+
+Thirdly, identity over time poses problems,
+  since a ship may be considered the same
+  even though all the components from which it is built
+  have been changed over the course of time \cite{Lewis1986}.
+
+Lastly, there is the problem of identity under counterfactual assertions
+  such as ``If Obama would have been bron outside of the US,
+  then he would not have been president of the US today.''\cite{Kripke1980}
+
+\subsection{SW-specific problems of identity: Semantics}
+
+Besides the generic problems of identity,
+  there are problems that are specific to the SW.
+The first SW-specific problem follows from its semantics;
+  the second follows from its pragmatics.
+
+The semantics for SW identity are given in definition \ref{def:owl_sameAs}.
+
+%\small
+\begin{definition}[Semantics of \texttt{owl:sameAs}]
+\label{def:owl_sameAs}
+\begin{equation}
+    \langle a, b \rangle \in Ext(I(\texttt{owl:sameAs}))
+  \,\iff\,
+    a = b\nonumber
+\end{equation}
+\end{definition}
+%\normalsize
+
+\noindent In the context of the SW identity assertions are extra strong
+  because of the Open World Assumption.
+Stating that two resources are the same
+  implies that from now on no new property can be added
+  to only one of those resources
+  (this follows from definition \ref{def:owl_sameAs} in combination with
+  the principle of substitutivity \emph{salva veritate}).
+  % Look this one up in
+  % W.V.O. Quine, Quintessence, extensions, Reference and Modality, p. 378.
+For instance, when one SW contributor claims that
+  medicines $a$ and $b$ are the same
+  based on them having the same chemical composition,
+  this prohibits another SW contributor from stating that
+  $a$ and $b$ are produced by different companies
+  without her introducing an inconsistency.
+Formulated in terms of
+  principle \ref{principle:indiscernibility_of_identicals},
+  on the SW the set $\Phi$ contains
+  all properties that can \emph{possibly} be expressed
+  in the modeling language.
+This set is obviously much bigger than the actual vocabulary
+  of any in-use dataset.
+
+Moreover, whether or not two resources share the absence of a property
+  (i.e., a property of the form ``does not have the property $\phi$''),
+  cannot be concluded based on the absence of a property assertion.
+Such `negative knowledge' must be provided explicitly
+  using class restrictions.
+
+\subsection{SW-specific problems of identity: Pragmatics}
+
+When we take the social component of the SW into account as well,
+  we observe that modelers have different opinions about
+  whether two resources are identical or not.
+As a consequence, SW modelers are known not to conform to
+  the strict semantics of identity (def. \ref{def:owl_sameAs}),
+  resulting in situations where one person
+  claims two resources to be identical
+  whereas another considers them to be only (closely) related.
+It is indeed unlikely that all who contribute to the SW
+  are able to quantify over the entire realm of possible properties
+  (i.e., $\Phi$ in principle \ref{principle:indiscernibility_of_identicals}).
+
+The SW community recognizes this tension between
+  the semantics and pragmatics of identity.
+At the Semantics for Big Data track at the AAAI Fall Symposium 2013
+  \cite{SemanticsBigData2013}
+  the problem of identity was considered to be one of the most
+  pressing problems that are facing the Semantic Web today.
+
+The pragmatics of the SW are encoded in the open-ended collection of
+  common practices that effectuate the creation and usage of SW content.
+An example of such an encoded common practice are the five `stars'
+  of Linked Open Data (LOD) publishing \cite{Bernerslee2010}.
+These five `stars' are effectively five \emph{maxims} that specify
+  (part of) the pragmatics of LOD publishing,
+  much like the Gricean maxims specify
+  (part of) the pragmatics of natural language discourse \cite{Grice1989}.
+The fifth `star' or maxim is given in \ref{eq:data_linking_maxim}.
+\begin{principle}[Data linking maxim]
+  \label{eq:data_linking_maxim}
+  \begin{quote}
+    Link your data to other people's data to provide context.
+  \end{quote}
+\end{principle}
+
+\noindent Given that RDF links are often specified by using
+  the \texttt{owl:saveAs} predicate term \cite{Void2011}
+  % The VoID W3C Interest Group Note states that
+  % ``RDF links often have the \texttt{owl:sameAs} predicate.''
+  we conclude that the pragmatics of the SW are orthogonal to its semantics.
+
+[1] The pragmatics of the SW, observed in contemporary common practices,
+  states that by asserting identity between resources,
+  more context is added for those resources
+  (since linking results in more triples being asserted
+  about the same resource).
+At the same time we see that the strict semantics of identity
+  gets violated once the context in which a resource was created
+  is extended (by identity assertions) beyond this original context
+  (see the section on the generic problems of identity).
+This is true regardless of whether `context' is defined in terms of
+  `intended use', `domain', `time', or `modality'.
+
+[2] From the social point of view,
+  we see that the requirements on SW modelers
+  are unreasonably high when they are required to
+  assert identity links in accordance with the semantics.
+At the same time the pragmatics states that modelers should
+  make those links in order to place their knowledge into context.
+

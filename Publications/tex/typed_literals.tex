@@ -1,0 +1,69 @@
+\subsection{Identity of typed literals}
+
+In defining the indiscernibility criteria
+  (def. \ref{def:indiscernibility_criteria}),
+  identity does not suffice in order to assertain that
+  the sets of object terms denote the same resources.
+The reason for this is that typed literals have special identity conditions.
+The case here is quite nuanced,
+  but then again typed literals are quite common in SW data,
+  so we elaborate on this nuance here.
+
+First we assume a datatype map
+  $D : \mathcal{I} \rightarrow ICEXT(I(\texttt{rdfs:Datatype}))$,
+  where $ICEXT$ is the functional mapping from class resources
+  to those resources that are instances of that class.
+Second, for each datatype $d$ we assume a lexical-to-value mapping
+  $L2V(d) : V(d) \rightarrow LEX(d)$,\cite{Hayes2004},
+  where $V$ denotes the value space and $LEX$ denotes the lexical space.
+Finally, for each datatype $d$ we assume a datatype-specific identity relation
+  $\sim_d$ partitioning $V(d)$.\footnote{
+    Relation $\sim_d$ posed some problems to implement correctly,
+      see the implementation (sec. \ref{sec:implementation}) for details.
+    }
+
+Suppose that two objects $o_1$ and $o_2$ are both typed literals,
+  with $o_1 = \pair{d_1}{x_1}$ and $o_2 = \pair{d_2}{x_2}$
+  for datatype names $d_1$ and $d_2$ and value names $x_1$ and $x_2$.
+Identity between $o_1$ and $o_2$ is then defined as in
+  \ref{def:identity_typed_literals}.
+
+\small
+\begin{definition}[Identity for typed literals]
+\label{def:identity_typed_literals}
+\begin{align}
+  o_1 \approx o_1
+\,\iff\,
+    D(d_1) = D(d_2)
+  &\land&\\
+    x_1 \in LEX(d_1)
+  &\land&\nonumber\\
+    x_2 \in LEX(d_2)
+  &\land&\nonumber\\
+    l2v(D(d_1))(x_1) = l2v(D(d_2))(x_2)\nonumber
+\end{align}
+\end{definition}
+\normalsize
+
+\noindent Notice that the datatype-specific lexical-to-value mapping
+  in definition \ref{def:identity_typed_literals} is relevant for
+  the identification of identity,
+  since two lexical expressions may map onto the same value
+  according to one datatype but onto different values
+  according to another.
+An example of this are the lexical expressions $0.1$ and $0.10000000009$,
+  which map to the same value according to datatype \texttt{xsd:float}
+  but to different values according to datatype \texttt{xsd:decimal}
+  \cite{Goldberg1991}.
+
+In definition \ref{def:identity_typed_literals}
+  the conjuncts stating that the value names belong to
+  the respective lexical spaces are not superfluous.
+For ill-typed literals,
+  i.e. those whose value names do not belong to the lexical space of
+  the specified datatype,
+  the interpretation is not determined and they are only known to denote
+  some arbitrary non-literal value.\footnote{
+    From the practice of working with SW data, the authors can testify
+    that ill-typed literals do occur and are actually quite common.}
+

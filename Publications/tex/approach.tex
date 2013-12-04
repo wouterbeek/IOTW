@@ -1,7 +1,39 @@
 \section{Approach}
 \label{sec:approach}
 
-\input{./tex/prelim}
+Here we first give a short outline of our approach and then
+  provide a more detailed description of the individual steps.
+
+\subsection{Outline of the approach}
+
+We assume that we are given an identity relation.
+Based on this identity relation we say that
+  the resources in a set $X$ are \emph{indiscernible}
+  with respect to a set of properties,
+  if the resources in $X$ share all and only those properties.
+We call the properties that a set $X$ of resources shares
+  the \emph{indiscernibility criteria} for $X$.
+
+Then we define a new relation between pairs of resources,
+  based on them sharing the same indiscernibility criteria.
+This new relation induces a parition which we call
+  the indiscernibility partition.
+It partitions the set of resource pairs.
+
+The members of the indiscernibility partition
+  have a certain overlap with the original identity relation.
+The overlap between an indiscernibility subset and the identity relation
+  is called an \emph{identity subrelation}.
+For each identity subrelation we can determine whether it is in
+  the lower or higher approximation (or neither),
+  and we can alos determine its precision.
+
+The precision of an identity subrelation is defined as
+    the number of identity pairs in the subrelation
+  divided by
+    the number of pairs in the subrelation.
+
+\input{./tex/prelim.tex}
 \input{./tex/ind.tex}
 \input{./tex/approx.tex}
 

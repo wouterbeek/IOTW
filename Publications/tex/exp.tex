@@ -65,26 +65,3 @@ Using this new approach the following hypothesis can be validated:
         that are considered correct by domain experts.
 \end{enumerate}
 
-\subsection{Implementation}
-\label{sec:implementation}
-
-The implementation built for this paper is deployed as an extension pack
-  of the ClioPatria triple store \cite{schreiber_2006}.
-For RDF graphs that are loaded in ClioPatria this extension calculates
-  the discernibility partition, rough set approximation and accuracy.
-The results are visualized using GraphViz and are displayed in a
-  Web interface using SVG.
-Interactive Ajax code allows the user to click on nodes in the SVG graphic
-  to navigate to descriptions of the resource pairs that occur in
-  that partition set while not being in the identity relation.
-This implementation may facilitate the validation of hypotheses in this
-  new experimental setup.
-
-Existing SW libraries implement equivalence relations for common datatypes.
-Equivalence is not always in line with identity though.
-We have made exceptions for specific values that are known to have
-  equivalent non-identities (such as $0$ and $-0$)
-  non-equivalent identities (such as $NaN$ for \texttt{float}).\cite{XSD11}
-The latter even provides a rare instance of the violation of
-  definition \ref{def:identity}.
-
