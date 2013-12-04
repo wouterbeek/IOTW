@@ -1,5 +1,45 @@
-\subsection{Approximation}
+\subsection{Quality \& Approximation}
 \label{sec:approximation}
+
+Not all identity sub-relations have the same quality.
+Indeed, when we look at the subdivision into three `categories' above,
+  we are able to distinguish between:
+  \begin{enumerate}
+  \item identity sub-relations that only consist of pairs in $\approx$, and
+  \item identity sub-relations that also consist of pairs not in $\approx$.
+  \end{enumerate}
+\noindent We now define the union of the former as
+  the identity lower approximation
+  (definition \ref{def:identity_lower_approximation})
+  and the union of the latter as
+  the identity higher approximation
+  (definition \ref{def:identity_higher_approximation}).
+
+\begin{definition}
+\label{def:identity_lower_approximation}
+\begin{align}
+  x \in \lowerapprox
+\, \iff \,
+    \setdef{y}{x \equiv_{\indp} y}
+  \, \subseteq \,
+    \approx
+\end{align}
+\end{definition}
+
+\begin{definition}
+\label{def:identity_higher_approximation}
+\begin{align}
+  x \in \higherapprox
+\, \iff \,
+      \setdef{y}{x \equiv_{\indp} y}
+    \cap
+      \approx
+  \, \neq \,
+    \emptyset
+\end{align}
+\end{definition}
+
+END END END
 
 In the previous section we partitioned a given identity relation $\sim$
   into subrelations that can be distinguished in terms of schema predicates
