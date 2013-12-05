@@ -10,11 +10,10 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11
+@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
 */
 
 :- use_module(ap(ap)).
-:- use_module(ap(ap_act)). % Used in ap/2.
 :- use_module(ap(ap_stat)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
@@ -22,6 +21,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
 :- use_module(os(run_ext)).
+:- use_module(owl(owl_mat)).
 :- use_module(rdf(rdf_meta)).
 :- use_module(rdf(rdf_serial_conv)).
 :- use_module(standards(oaei)).
@@ -32,9 +32,6 @@ Runs IOTW experiments on the IIMB alignment data.
 
 % DTD used for storing SVG DOM to files.
 :- db_add_novel(user:file_search_path(dtd, svg(.))).
-
-:- db_add_novel(user:prolog_file_type('tar.gz', archive)).
-:- db_add_novel(user:prolog_file_type(owl, owl)).
 
 :- initialization(iotw_iimb).
 
@@ -48,37 +45,26 @@ iotw_iimb:-
     [process(iimb),project(iotw)],
     [
       % Unpack the archive containing the original OAEI2012 data.
-      ap_stage([from(input,'IIMB',archive)], ap_extract_archive),
+      ap_stage([from(input,'IIMB',archive)], extract_archive),
       
       % Make sure all RDF data is stored in the Turtle serialization format.
-      ap_stage([args([turtle])], ap_rdf_convert_directory),
+      ap_stage([args([turtle])], rdf_convert_directory),
       
       % A Java Maven project does the OWL materialization (using Jena).
-      ap_stage([], ap_run_jar),
+      ap_stage([], owl_materialize),
       
       % Although this step is not strictly needed,
       % it does allow the materialized results to be easily
       % compared on a per-file level
       % (e.g. the comment counting the number of serialized triples).
-      ap_stage([args([turtle])], ap_rdf_convert_directory),
+      ap_stage([args([turtle])], rdf_convert_directory),
       
       % Run the IOTW experiment.
       ap_stage([between(1,80),to(output)], iimb_experiment)
     ]
   ).
 
-ap_rdf_convert_directory(_StageAlias, FromDir, ToDir, ToFormat):-
-  rdf_convert_directory(FromDir, ToFormat, ToDir).
-
-ap_run_jar(_StageAlias, FromDir, ToDir):-
-  absolute_file_name(
-    iotw('iotw-0.0.1-SNAPSHOT'),
-    JAR_File,
-    [access(read),file_type(jar)]
-  ),
-  run_jar(JAR_File, [file(FromDir),file(ToDir)]).
-
-iimb_experiment(StageAlias, FromDir, ToDir, N):-
+iimb_experiment(FromDir, ToDir, N):-
   % The base ontology.
   absolute_file_name(
     onto,
@@ -124,13 +110,16 @@ iimb_experiment(StageAlias, FromDir, ToDir, N):-
     [BaseFile,AlignedOntologyFile]
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),
+  
   % Remove the file if it already exists.
   safe_delete_file(ToFileSVG),
+  
   % Make sure there is write access.
   access_file(ToFileSVG, write),
+  
   % Write the SVG DOM to file.
   xml_dom_to_file([dtd(svg)], SVG_DOM, ToFileSVG),
 
-  % Stats.
-  ap_stage_tick(StageAlias).
+  % STATS
+  ap_stage_tick.
 
