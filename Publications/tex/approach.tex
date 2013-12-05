@@ -6,32 +6,29 @@ Here we first give a short outline of our approach and then
 
 \subsection{Outline of the approach}
 
-We assume that we are given an identity relation.
-Based on this identity relation we say that
-  the resources in a set $X$ are \emph{indiscernible}
-  with respect to a set of properties,
-  if the resources in $X$ share all and only those properties.
-We call the properties that a set $X$ of resources shares
-  the \emph{indiscernibility criteria} for $X$.
-
-Then we define a new relation between pairs of resources,
-  based on them sharing the same indiscernibility criteria.
-This new relation induces a parition which we call
-  the indiscernibility partition.
-It partitions the set of resource pairs.
-
+We start by assuming that we are given an identity relation $\approx$.
+We will then reinterpret this relation as an indiscernibility relation
+  relative to different sets of predicates $P \subseteq P_G$.
+Pairs that have the same indiscernibility predicates
+  are simi-discernible, i.e. they discern resources
+  based on the same criteria.
+Simi-discernibility is an equivalence relation $\equiv_{\indp_{\approx}}$
+  which partitions all pairs and thus also the identity relation $\approx$.
 The members of the indiscernibility partition
   have a certain overlap with the original identity relation.
 The overlap between an indiscernibility subset and the identity relation
   is called an \emph{identity subrelation}.
-For each identity subrelation we can determine whether it is in
-  the lower or higher approximation (or neither),
-  and we can alos determine its precision.
-
-The precision of an identity subrelation is defined as
-    the number of identity pairs in the subrelation
-  divided by
-    the number of pairs in the subrelation.
+Each identity subrelation is characterized in terms of predicates
+  from the domain vocabulary.
+Different forms of identity can therefore be distinguished
+  and meaningfully described.
+Based on whether there is a complete or a partial overlap
+  between the simi-discernible partition members and
+  the identity subrelations,
+  these partition members belong either to the lower ($\lowerapprox$)
+  or to the higher approximation ($\higherapprox$) of $\approx$.
+Besides setting a lower and a higher bound to the identity relation,
+  we can also calculate the precision for each identity subrelation.
 
 \input{./tex/prelim.tex}
 \input{./tex/ind.tex}

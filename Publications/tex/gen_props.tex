@@ -1,51 +1,49 @@
-\subsection{Generic properties}
+\subsection{Generic properties and predicates}
 \label{sec:generic_properties}
 
-\subsection{Motivation}
+The indiscernibility predicates in
+  definition \ref{def:indiscernibility_predicates}
+  were assumed to consist of single RDF predicate terms.
+This restriction is rather arbitrary.
+For instance,
+  it may be the case that resources {\small \texttt{dbpedia:Amsterdam}}
+  and {\small \texttt{openei:Amsterdam}} may not share a single property,
+  even though the format is located in {\small \texttt{dbpedia:Netherlands}}
+  and the latter is located in {\small \texttt{openei:Netherlands}}
+  (but these are not asserted as being the same country).
+However, suppose that {\small \texttt{dbpedia:Netherlands}}
+  borders {\small \texttt{dbpedia:Germany}}
+  and {\small \texttt{openei:Netherlands}}
+  borders {\small \texttt{openei:Germany}},
+  where {\small \texttt{dbpedia:Germany}} and
+  {\small \texttt{openei:Germany}} are asserted to be identical.
+If we generalize the notion of a predicate,
+  then {\small \texttt{dbpedia:Amsterdam}} and
+  {\small \texttt{openei:Amsterdam}} will share the property
+  of being located in a country that borders Germany.
+Obviously, Brussels and Brno share this propery as well,
+  so Brussels, Brno and Amsterdam will be indiscernible with respect to
+  this predicate (taken in isolation), but the property is at least
+  able to discern Brussels, Brno and Amsterdam from
+  Stuttgart, Portland, and The Netherlands.
 
-We want to generalize the 
-
-When we look at concrete datasets we see that the resources that make up
-  an identity pair do not often share a lot of properties.
-The pragmatics reflects this, as identity statements are often used
-  to link to other resources and import statements
-  (i.e. properties asserted of a resources)
-  that are not asserted of the former resource.
-However, while there is not too much overlap in properties,
-  resources are oftentimes connected at a deeper level,
-  via a path that spans two or more properties.
-
-The reason for wanting to extend properties 
-
-\subsection{Conceptual}
-
-For instance the property ``is spoken in'' is denoted by
-  the predicate term \verb|IIMBTBOX:spoken_in| in the IIMB dataset.
-This relates natural languages to the countries in which they are spoken.
-
-We generalize the notion of a property,
-  so that is can be denoted by a sequence of predicate terms.
-For example the property ``is spoken in a country whose capital is''
-  is denoted by
-  $\tuple{\texttt{IIMBTBOX:spoken\_in},\texttt{IIMBTBOX:has\_capital}}$,
+We generalize the notion of a predicate,
+  so that is can be denoted by a sequence of RDF predicate terms.
+For example, in the IIMB dataset the property
+  ``is spoken in a country whose capital is'' is denoted by
+  {\small $\pair{\texttt{IIMBTBOX:spoken\_in}}{\texttt{IIMBTBOX:has\_capital}}$},
   relating natural languages to the capitals of the countries in which
   they are spoken.
-
-\subsection{Theoretical}
 
 For each sequence of predicate terms $\tuplerange{p_1}{p_n}$
   we assume a functional mapping
   $f_{\tuplerange{p_1}{p_n}} : S_G \rightarrow \powerset{O_G}$,
-  from subject terms into sets of object terms
-  (def. \ref{def:generalized_property_map}).
+  called the property sequence mapping
+  \mbox{(definition \ref{def:generalized_property_map})}.
 
-%$f_{\tuple{\verb|IIMBTBOX:spoken_in|}}$
-%$f_{\tuple{\verb|IIMBTBOX:spoken_in|,\verb|IIMBTBOX:has_capital|}}$
-
-\small
-\begin{definition}[Generalized property map]
-\begin{align}
+\begin{definition}[Property sequence map]
 \label{def:generalized_property_map}
+\begin{align}
   f_{\tuplerange{p_1}{p_n}}(s)
 \,=\,
   \bigsetdef{o \in O_G}{
@@ -59,16 +57,11 @@ For each sequence of predicate terms $\tuplerange{p_1}{p_n}$
   }\nonumber
 \end{align}
 \end{definition}
-\normalsize
 
-\noindent When in the following we talk about properties and property maps,
-  we mean generalized properties and generalized property maps
-  of arbitrary depth.
+By using property sequence maps,
+  the definition for generalized indiscernibility predicates
+  is only slightly more complex than its simplified version.
 
-The indiscernibility criteria for generic properties
-  are slightly more complex.
-
-\small
 \begin{definition}[Indiscernibility criteria]
 \label{def:indiscernibility_criteria}
 \begin{align}
@@ -76,19 +69,18 @@ The indiscernibility criteria for generic properties
 =
   \setdef{
     \tuplerange{p_1}{p_n} \in P_G^n
-  }{\\
-      \exists_{\range{p_{11}}{p_{1n}} \in \equivset{p_1}},
+  }{\nonumber\\
+      \exists \range{p_1^1}{p_1^n} \in \equivset{p_1},
     \ldots,
-      \exists_{\range{p_{m1}}{p_{mn}} \in \equivset{p_n}}
+      \exists \range{p_m^1}{p_m^n} \in \equivset{p_n}
     (\nonumber\\
-        \equivset{f_{\tuplerange{p_{11}}{p_{m1}}} (x_1)}
+        \equivset{f_{\tuplerange{p_1^1}{p_m^1}} (x_1)}
       =
         \ldots
       =
-        \equivset{f_{\tuplerange{p_{1n}}{p_{mn}}} (x_n)}
+        \equivset{f_{\tuplerange{p_1^n}{p_m^n}} (x_n)}
     )
   }\nonumber
 \end{align}
 \end{definition}
-\normalsize
 

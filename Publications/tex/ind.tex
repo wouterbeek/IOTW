@@ -1,10 +1,9 @@
 \subsection{Reinterpreting identity as indiscernibility}
 
-We assume that we are given an identity relation $\approx$,
+We start by assuming that we are given an identity relation $\approx$,
   which partitions the subject terms $S_G$ according to
-  equation \ref{eq:equivalence_set}.
+  \mbox{equation} \ref{eq:equivalence_set}.
 
-%\small
 \begin{equation}
 \label{eq:equivalence_set}
   \equivset{x}
@@ -15,44 +14,51 @@ We assume that we are given an identity relation $\approx$,
     \equivpair{x}{y}
   }
 \end{equation}
-%\normalsize
 
 Identity can be defined as the smallest equivalence relation,
   i.e. the most fine-grained partition of $S_G$.
-For reasoning purposes, mainly the fact that $\approx$
-  is an equivalence relation counts.
+For reasoning purposes, the fact that $\approx$ is an equivalence relation
+  is important, since this allows for both symmetrical
+  and transitive inference.
 As we saw in principle \ref{principle:indiscernibility_of_identicals},
   identity implies indiscernibility with respect to all properties.
 
-We can generalize the notion of indiscernibility,
+We can generalize the notion of indiscernibility
   by parameterizing the set of properties with respect to which
   indiscernibility is determined.
 According to this generalization,
   resources $x$ and $y$ are indiscernible with respect to
   a set of properties $PO \subseteq P_G \times O_G$
-  iff $\forall_{p \in P}(p(x) \leftrightarrow p(y))$ is the case.
+  iff $\forall po \in PO (po(x) \leftrightarrow po(y))$ is the case.
 
 It is important to note that every indiscernibility relation
-  is also an equivalence relation (reasoning!),
-  although not necessarily the smallest one.
+  is also an equivalence relation, although not necessarily the smallest one.
 Moreover, every indiscernibility relation defined over the domain $S_G$
   is also an identity relation,
   only over a different domain \cite{Quine1950}.\footnote{
     For instance, the set of properties
       ``has an income of $x$ euro's a month''
-      for decimals $x$ do not identify people
+      with $x$ a decimal number, does not uniquely identify people
       (since two people may have the same income),
-      but it does identify income groups.
+      but does uniquely identify income groups.
     }
 
 We now reinterpret the identity relation $\approx$,
   as if it were an indiscernibility relation
   whose set of properties $PO$ is implicit.
-Based on the identity relation,
-  we can make the set of properties explicit
-  so that $\approx$ becomes an indiscernibility relation.
+Based on the extensional specification of the identity relation,
+  we can make the set of properties with respect to which
+  it is indiscernible explicit.\footnote{
+    In Formal Concept Analysis (FCA) literature this set of properties
+    is called the intension. The relation between extension and intension
+    in FCA is similar to the relation between subject terms and properties,
+    but the similarity becomes less apparent when we extend our approach
+    to pairs of subject terms (as the `extension') and sets of
+    shared predicate terms (as the `intension') later in this section.
+    Our thanks go to Cliff Joslyn for pointing this out.
+  }
 Definition \ref{def:indiscernibility_properties} makes
-  the properties relative to which terms $x_i$ are indiscernibile
+  the properties relative to which the terms $x_i$ are indiscernibile
   explicit.
 
 \begin{definition}[Indiscernibility properties]
@@ -76,30 +82,64 @@ Definition \ref{def:indiscernibility_properties} makes
 \end{align}
 \end{definition}
 
-\noindent Notice that in definition \ref{def:indiscernibility_properties}
-  we close both the predicate terms $p$ and the object terms $o$
-  under identity.
-Performing these closured is important,
-  since ``Berlin'' and ``Berlijn'' (i.e., the Dutch spelling of ``Berlin'')
-  may denote identical resources, as may ``lives in'' and ``woont in''
-  (i.e., the Dutch spelling of ``lives in'').
-When being given data stating that ``Person $a$ lives in Berlin''
-  ``Person $b$ woont in Berlijn'', $a = b$, $\text{Berlin} = \text{Berlijn}$,
-  and $\text{lives is} = \text{woont in}$,
-  we want to identify the permutations of
-  $\set{\text{lives in},\text{woont in}}$ and
-  $\set{\text{Berlin},\text{Berlijn}}$
-  as the indiscernibility properties.
-
-Using definition \ref{def:indiscernibility_properties},
+\noindent Using definition \ref{def:indiscernibility_properties},
   we can deduce that the indiscernibility properties for
-  the identity pair $\pair{\text{Amsterdam}}{\text{Berlin}}$
+  the identity pair
+  {\small $\pair{\texttt{dbpedia:Amsterdam}}{\texttt{dbpedia:Berlin}}$}
   would contain (amongst many others) the properties
-  ``is a city'', ``has more than 100,000 inhabitants'', and
-  ``is located in Europe''.
+  ``is a city'' and ``is located in Europe''.
 
-In the above, we were interested in the properties that resources share
-  with one other (e.g., being a city, having more than 500,000 inhabitants).
+Notice that in definition \ref{def:indiscernibility_properties}
+  we close both the predicate terms $p$ and the object terms $o$
+  under identity.\footnote{
+    It is a common modeling practive in OWL to use equivalence
+      instead of identity statements between RDF properties
+      (i.e. \texttt{owl:equivalentProperty})
+      and OWL classes
+      (i.e. \texttt{owl:equivalentClass}).
+  }
+Performing these closures is important in order to identify
+  the relevant indiscernibility properties.
+Suppose that the RDF resources {\small \texttt{dbpedia:Berlin}}
+  and {\small \texttt{freebase:m.0156q}} are identical,
+  as are the RDF properties {\small \texttt{schema:containedIn}} and
+  {\small \texttt{dbpedia-owl:locatedInArea}}.
+If the database also contains the triples in
+  example \ref{ex:triple1} and \ref{ex:triple2},
+  we want to be able to identify the pairs in
+  {\small $\set{\texttt{schema:containedIn},\texttt{dbpedia-owl:locatedInArea}}$}
+  {\small $\times \set{\texttt{dbpedia:Berlin},\texttt{freebase:m.0156q}}$}
+  as indiscernibility properties.
+
+\small
+\begin{example}[Triple 1]
+\label{ex:triple1}
+\begin{align}
+\langle
+  \texttt{freebase:Teufelsberg},\\
+  \texttt{schema:containedIn},\nonumber\\
+  \texttt{dbpedia:Berlin}
+\rangle\nonumber
+\end{align}
+\end{example}
+\normalsize
+
+\small
+\begin{example}[Triple 2]
+\label{ex:triple2}
+\begin{align}
+\langle
+  \texttt{dbpedia:Teufelsberg},\\
+  \texttt{dbpedia-owl:locatedInArea},\nonumber\\
+  \texttt{freebase:m.0156q}
+\rangle\nonumber
+\end{align}
+\end{example}
+\normalsize
+
+\noindent In the above, we were interested in the properties
+  that resources share with one other
+  (e.g., being a city, being located in Europe).
 But we are also interested in the predicates that a set of resources shares.
 This amounts to a simple abstraction of
   definition \ref{def:indiscernibility_properties},
@@ -140,40 +180,40 @@ This amounts to a simple abstraction of
 \end{definition}
 \normalsize
 
-\noindent For the earlier example, we have the identity closure of
-  ``lives in'' as the set of indiscernibility predicates
-  for persons $a$ and $b$,
-  and the identity closure of ``is a'', ``has more than $x$ inhabitants'',
-  and ``is located in'' as the set of indiscernibility predicates for
-  $\texttt{Amsterdam}$ and $\texttt{Berlin}$.
+\noindent Taking the same example as before, the identity pair
+  {\small $\pair{\texttt{dbpedia:Amsterdam}}{\texttt{dbpedia:Berlin}}$}
+  has the identity closure of
+  ``is a'' and ``has more than $x$ inhabitants''
+  as its indiscernibility predicates.
 
 
 
 \subsection{Discerning the same}
 
-In the previous section we saw that resources are \emph{indiscernible}
+In the previous section we saw that resources are \mbox{\emph{indiscernible}}
   with respect to $PO$ iff they cannot be told appart
   in a language that only contains the properties denoted by $PO$
   (the so-called indiscernibility properties).
 In the same vein,
   and builing upon definition \ref{def:indiscernibility_predicates},
   we say that two pairs of resources are \emph{simi-discernible}
-  iff their indiscernibility predicates $P \subseteq P_G$ are the same.
+  iff their \mbox{indiscernibility} predicates $P \subseteq P_G$ are the same.
 
-For example, the pair $\pair{\texttt{Amsterdam}}{\texttt{Berlin}}$
-  is simi-discernible to the pair $\pair{\texttt{Nanjing}}{\texttt{Dalian}}$
+For example, the pair {\small $\pair{\texttt{Amsterdam}}{\texttt{Berlin}}$}
+  is simi-discernible to the pair
+  {\small $\pair{\texttt{Nanjing}}{\texttt{Dalian}}$},
   because both pairs have the same set of discernibility predicates,
-  namely $\set{\texttt{is a},\texttt{has more than } x \texttt{ inhabitants},$
-  $\texttt{is located in}}$.
+  namely ``is a'' and ``is located in''.
 
 When we look at the pairs that constitute (the extension of)
-  an identity relation, we see that all identity assertions look the same.
+  an identity relation, all identity assertions look the same.
 But when we take the considerations of the previous section into account,
   we see that within a given identity relation
-  there are pairs with different discernibility predicates.
+  there are pairs that assert indiscernibility
+  based on different domain predicates.
 Stating this formally,
   simi-discernibility is an equivalence relation on pairs of resources,
-  and induces a partition of the cartesian product of the domain.
+  which induces a partition of the cartesian product of the domain.
 Definition \ref{def:simidiscernibility_relation} makes this concrete
   in terms of the earlier definitions.
 
@@ -197,53 +237,53 @@ Definition \ref{def:simidiscernibility_relation} makes this concrete
 The members of the partition induced by $\equiv_{\indp_{\approx}}$
   are sets of resource pairs that share the same sharing properties.\footnote{
     We briefly reflect on our wording here.
-    Within a pair, what is shared are properties,
-      denoted by a pair of an RDF predicate term and an RDF object term
-      (in that order).
-    Between pairs, what is shared -- if something is shared -- are predicates,
-      denoted by RDF predicate terms.
+    \emph{Within} a resource pair, what is shared are properties
+      (denoted by a pair of an RDF predicate term and an RDF object term,
+      in that order).
+    \emph{Between} pairs, what is shared -- if something is shared --
+      are predicates, denoted by RDF predicate terms.
     So it is indeed correct to state that
-      resource pairs which are simi-discernible,
-      are themselves sharing properties.
+      simi-discernible resource pairs share properties.
   }
-
 Notice that the partitioned pairs contain but are not limited to
   the identity pairs.
-Therefore, for sets of simi-discernible pairs
+Therefore, for sets of pairs closed under simi-discernibility
   we have the following three possibilities:
-  \begin{itemize}
+  \begin{enumerate}
     \item All pairs are identity pairs.
-          This characterizes a consistently portion of the identity relation,
+          This characterizes a consistent portion of the identity relation,
           since no simi-discernible pair is left out of this set.
     \item Some pairs are identity pairs.
           This characterizes a portion of the identity relation which is not
-          applied consistently with respect to the simi-discernibility relation.
+          applied consistently with respect to
+          the simi-discernibility relation.
     \item No pairs are identity pairs.
           This charactizes a portion of the collection of pairs
           that is consistently kept out of the identity relation.
-  \end{itemize}
+  \end{enumerate}
 
 \noindent Each member of the simi-discernibility partition that is not
   of the third kind, i.e. every set of pairs that contains some identity pair,
   can be though of as an identity sub-relation.
-The simi-discernibility partition therefore gives us
-  a partitioning of the identity relation
+The simi-discernibility partition also partitions the identity relation
   into \emph{identity sub-relations}.
 Each identity sub-relation can be described in terms of
   its discernibility predicates,
-  i.e. in meaningful term that come from the domain vocabulary.
+  i.e. in meaningful terms drawn from the domain vocabulary.
 
 For instance, in the IIMB dataset there are some identical resources that
-  share the property \verb|IIMBTBOX:spoken_in|, while other pairs share
-  the property \verb|IIMBTBOX:form_of_government|.
+  share the property {\small \texttt{IIMBTBOX:spoken\_in}},
+  while other pairs share the property
+  {\small \texttt{IIMBTBOX:form\_of\_government}}.
 As a matter of fact, the set of pairs of resources that are spoken in
-  the same language are disjoint from the set of pairs of resources
-  that have the same form of government,
-  indicating identity according to different criteria.
+  the same language (i.e. movies) are disjoint from
+  the set of pairs of resources that have the same form of government
+  (i.e. countries), indicating identity according to
+  different indiscernibility criteria.
 In this example, one subset of the identity relation does not discern
-  resources that are spoken in the same language, whereas another subset
-  of the identity relation does not discern resources that have the same
-  form of government.
+  resources that are spoken in the same language,
+  whereas another does not discern resources that have
+  the same form of government.
 
 
 

@@ -28,7 +28,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
 
-:- xml_register_namespace('IIMBTBOX', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
+:- xml_register_namespace('IIMB', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 
 % DTD used for storing SVG DOM to files.
 :- db_add_novel(user:file_search_path(dtd, svg(.))).

@@ -10,16 +10,16 @@ The case here is quite nuanced,
   so we elaborate on this nuance here.
 
 First we assume a datatype map
-  $D : \mathcal{I} \rightarrow ICEXT(I(\texttt{rdfs:Datatype}))$,
-  where $ICEXT$ is the functional mapping from class resources
-  to those resources that are instances of that class.
+  \mbox{$D : \mathcal{I} \rightarrow ICEXT(I({\small \texttt{rdfs:Datatype}}))$},
+  where $ICEXT$ is the functional map from classes onto their instances.
 Second, for each datatype $d$ we assume a lexical-to-value mapping
-  $L2V(d) : V(d) \rightarrow LEX(d)$,\cite{Hayes2004},
-  where $V$ denotes the value space and $LEX$ denotes the lexical space.
+  $L2V(d)$,\cite{Hayes2004},
+  %: V(d) \rightarrow LEX(d)
+  which assigns a value to each lexical expression.
 Finally, for each datatype $d$ we assume a datatype-specific identity relation
-  $\sim_d$ partitioning $V(d)$.\footnote{
-    Relation $\sim_d$ posed some problems to implement correctly,
-      see the implementation (sec. \ref{sec:implementation}) for details.
+  $\sim_d$ partitioning the datatype's value space $V(d)$.\footnote{
+    Relation $\sim_d$ poses some problems to implement correctly,
+      see section \ref{sec:implementation} for details.
     }
 
 Suppose that two objects $o_1$ and $o_2$ are both typed literals,
@@ -28,22 +28,20 @@ Suppose that two objects $o_1$ and $o_2$ are both typed literals,
 Identity between $o_1$ and $o_2$ is then defined as in
   \ref{def:identity_typed_literals}.
 
-\small
 \begin{definition}[Identity for typed literals]
 \label{def:identity_typed_literals}
 \begin{align}
   o_1 \approx o_1
 \,\iff\,
     D(d_1) = D(d_2)
-  &\land&\\
+  & \; \land \; &\nonumber\\
     x_1 \in LEX(d_1)
-  &\land&\nonumber\\
+  & \; \land \; &\nonumber\\
     x_2 \in LEX(d_2)
-  &\land&\nonumber\\
-    l2v(D(d_1))(x_1) = l2v(D(d_2))(x_2)\nonumber
+  & \; \land \; &\nonumber\\
+    l2v(D(d_1))(x_1) \sim_d l2v(D(d_2))(x_2)\nonumber
 \end{align}
 \end{definition}
-\normalsize
 
 \noindent Notice that the datatype-specific lexical-to-value mapping
   in definition \ref{def:identity_typed_literals} is relevant for
@@ -52,18 +50,19 @@ Identity between $o_1$ and $o_2$ is then defined as in
   according to one datatype but onto different values
   according to another.
 An example of this are the lexical expressions $0.1$ and $0.10000000009$,
-  which map to the same value according to datatype \texttt{xsd:float}
-  but to different values according to datatype \texttt{xsd:decimal}
-  \cite{Goldberg1991}.
+  which map to the same value according to datatype
+  {\small \texttt{xsd:float}}
+  but to different values according to datatype
+  {\small \texttt{xsd:decimal}} \cite{Goldberg1991}.
 
 In definition \ref{def:identity_typed_literals}
-  the conjuncts stating that the value names belong to
-  the respective lexical spaces are not superfluous.
-For ill-typed literals,
+  the conjuncts which state that the value names belong to
+  the respective lexical spaces may seem superfluous at first.
+But for ill-typed literals,
   i.e. those whose value names do not belong to the lexical space of
   the specified datatype,
   the interpretation is not determined and they are only known to denote
-  some arbitrary non-literal value.\footnote{
+  some arbitrary non-literal value \cite{Hayes2004}.\footnote{
     From the practice of working with SW data, the authors can testify
-    that ill-typed literals do occur and are actually quite common.}
+    that ill-typed literals do occur and are actually quite common!}
 

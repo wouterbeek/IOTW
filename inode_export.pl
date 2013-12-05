@@ -79,7 +79,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel),
   format(
     atom(V_Label),
-    '~w~w identity~w',
+    '~w\n~w identity~w',
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
@@ -124,6 +124,7 @@ calculate_quality(IHierHash, Quality):-
 
 export_inodes(O1, IHierHash, SVG2):-
   export_identity_nodes_(O1, IHierHash, GIF),
+  graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File),
   graph_to_svg_dom([method(dot)], GIF, SVG1),
   xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
 
