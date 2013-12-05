@@ -337,21 +337,36 @@ rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
 
   % If we are only looking for properties (granularity mode `p`),
   % the we can add the following restriction.
-  (Mode == p -> \+ memberchk(P, OldPs) ; \+ memberchk(P-O, OldPOs)),
+  (
+    Mode == p
+  ->
+    \+ memberchk(P, OldPs)
+  ;
+    \+ memberchk(P-O, OldPOs)
+  ),
 
   % All resources in the identity set must share the same
   % predicate-object pair (regardless of mode).
   % Here we assume that the typed literals are represented
   % using their canonical lexical form.
-  forall(member(Res2, Resources), rdf(Res2, P, O, G)), !,
+  forall(
+    member(Res2, Resources),
+    rdf(Res2, P, O, G)
+  ),
 
-  % Add a shared predicate.
+  % Add a shared predicate term.
   ord_add_element(OldPs, P, NewPs),
 
-  % Mode-dependent inclusion of predicate-object pair.
-  (Mode = p -> NewPOs = OldPOs ; ord_add_element(OldPOs, P-O, NewPOs)),
+  % Mode-dependent inclusion of predicate-object term pairs.
+  (
+    Mode = p
+  ->
+    NewPOs = OldPOs
+  ;
+    ord_add_element(OldPOs, P-O, NewPOs)
+  ),
 
-  % Look for additional shared predicates / predicate-object pairs.
+  % Look for additional shared predicate terms or predicate-object term pairs.
   rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
 rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 
@@ -413,7 +428,7 @@ check_shares_predicates(G, SharedPs, ISets):-
   rdf(X, P1, O, G),
   rdf(Y, P1, O, G),
 
-  % We discarding symmetric results.
+  % We discard symmetric results.
   X @< Y,
 
   % They are not in any of the identity sets.
