@@ -13,7 +13,7 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11
+@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
 */
 
 :- use_module(generics(list_ext)).
@@ -59,11 +59,9 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   ->
     Color = green
   ;
-    Approx = higher
+    Approx == higher
   ->
     Color = red
-  ;
-    gtrace
   ),
 
   % Vertex style.
@@ -210,7 +208,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
     ),
     PO_V_Terms
   ),
-
+  
   % Edges between the identity nodes of the _same_ mode.
   findall(
     edge(FromHash,ToHash,E_Attrs),

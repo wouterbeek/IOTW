@@ -96,8 +96,11 @@ run_experiment(O1, IPairs, SVG, G):-
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O1, G, ISets, GA_Hash),
 
-  evaluate_inodes(O1, GA_Hash, Recalls),
-  assert(result(GA_Hash, Recalls)),
-  
   % Create an SVG representation for the given hash.
-  export_inodes(O1, GA_Hash, SVG).
+  export_inodes(O1, GA_Hash, SVG),
+  
+  % Run the evaluation.
+  %%evaluate_inodes(O1, GA_Hash, Recalls),
+  %%assert(result(GA_Hash, Recalls)),
+  
+  true.

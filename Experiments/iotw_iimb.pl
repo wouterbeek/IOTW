@@ -25,8 +25,10 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
 :- use_module(os(run_ext)).
+:- use_module(owl(owl_build)).
 :- use_module(owl(owl_mat)).
 :- use_module(rdf(rdf_meta)).
+:- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_serial_conv)).
 :- use_module(standards(oaei)).
 :- use_module(xml(xml_dom)).
@@ -69,7 +71,7 @@ iotw_iimb:-
       ap_stage([between(1,80),to(output)], iimb_experiment)
     ]
   ),
-gtrace,
+  
   once(iotw:result(_, L)),
   length(L, Length),
   findall(
@@ -158,3 +160,46 @@ iimb_experiment(FromDir, ToDir, N):-
 
   % STATS
   ap_stage_tick.
+
+iotw_iimb_load(N):-
+  absolute_file_name(
+    '/home/wbeek/Git/PraSem/IOTW/ap/iimb/stage4/',
+    FromDir,
+    [access(read),file_type(directory)]
+  ),
+  
+  % The base ontology.
+  absolute_file_name(
+    onto,
+    BaseFile,
+    [access(read),file_type(turtle),relative_to(FromDir)]
+  ),
+
+  % The aligned ontology.
+  format_integer(N, 3, SubDirName),
+  absolute_file_name(
+    SubDirName,
+    SubDir,
+    [access(read),file_type(directory),relative_to(FromDir)]
+  ),
+  absolute_file_name(
+    onto,
+    AlignedOntologyFile,
+    [access(read),file_type(turtle),relative_to(SubDir)]
+  ),
+  
+  rdf_loads([BaseFile,AlignedOntologyFile], iimb),
+  
+  % The reference alignments
+  % (between the base ontology and the aligned ontology).
+  absolute_file_name(
+    refalign,
+    A_File,
+    [access(read),file_type(turtle),relative_to(SubDir)]
+  ),
+  oaei_file_to_alignments(A_File, A_Pairs),
+  
+  forall(
+    member(X-Y, A_Pairs),
+    owl_assert_resource_identity(X, Y, iimb)
+  ).

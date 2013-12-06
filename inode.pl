@@ -303,8 +303,8 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
   % belong to the identity relation.
   check_shares(Mode, G, Shared, ISets)
 */
-  AlphaL = 0.90,
-  AlphaH = 0.10,
+  AlphaL = 1.00,
+  AlphaH = 0.00,
   shared_predicates_to_pairs(G, Shared, Pairs),
   length(Pairs, NumberOfPairs),
   IPerc is NumberOfIPairs / NumberOfPairs,
@@ -314,16 +314,20 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
   ->
     Approx = lower
   ;
-    IPerc >= AlphaH
+    IPerc > AlphaH
   ->
     Approx = higher
   ;
     Approx = none
   ),
 
-  % -- say it --
-  assert(
-    inode(Mode,Hash2,Hash1,Shared,Approx,NumberOfIPairs,NumberOfPairs,Pairs)
+  (
+    Approx == none, !
+  ;
+    % -- say it --
+    assert(
+      inode(Mode,Hash2,Hash1,Shared,Approx,NumberOfIPairs,NumberOfPairs,Pairs)
+    )
   ).
 
 %! clear_db is det.
