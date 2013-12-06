@@ -15,9 +15,13 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(ap(ap)).
 :- use_module(ap(ap_stat)).
+:- use_module(generics(archive_ext)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
 :- use_module(iotw(iotw)).
+:- use_module(library(aggregate)).
+:- use_module(library(debug)).
+:- use_module(library(lists)).
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
 :- use_module(os(run_ext)).
@@ -33,7 +37,9 @@ Runs IOTW experiments on the IIMB alignment data.
 % DTD used for storing SVG DOM to files.
 :- db_add_novel(user:file_search_path(dtd, svg(.))).
 
-:- initialization(iotw_iimb).
+:- debug(iotw_iimb).
+
+%:- initialization(iotw_iimb).
 
 
 
@@ -45,7 +51,7 @@ iotw_iimb:-
     [process(iimb),project(iotw)],
     [
       % Unpack the archive containing the original OAEI2012 data.
-      ap_stage([from(input,'IIMB',archive)], extract_archive),
+      ap_stage([from(input,'IIMB',archive)], archive_extract),
       
       % Make sure all RDF data is stored in the Turtle serialization format.
       ap_stage([args([turtle])], rdf_convert_directory),
@@ -62,6 +68,36 @@ iotw_iimb:-
       % Run the IOTW experiment.
       ap_stage([between(1,80),to(output)], iimb_experiment)
     ]
+  ),
+gtrace,
+  once(iotw:result(_, L)),
+  length(L, Length),
+  findall(
+    AverageRecall,
+    (
+      between(1, Length, I),
+      aggregate_all(
+        sum(AverageRecall),
+        (
+          iotw:result(_, Recalls),
+          nth1(I, Recalls, Recall)
+        ),
+        Recall
+      )
+    ),
+    AverageRecalls
+  ),
+  Step is 1.0 / Length,
+  forall(
+    nth1(I, AverageRecalls, AverageRecall),
+    (
+      Prec is 1.0 - Step * I,
+      debug(
+        iotw_iimb,
+        'Precision: ~2f\tAverage recall: ~2f',
+        [Prec,AverageRecall]
+      )
+    )
   ).
 
 iimb_experiment(FromDir, ToDir, N):-
@@ -122,4 +158,3 @@ iimb_experiment(FromDir, ToDir, N):-
 
   % STATS
   ap_stage_tick.
-

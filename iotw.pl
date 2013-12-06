@@ -15,11 +15,12 @@ IOTW experiments.
 Recommendation sharing non-monotonic?
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/11
+@version 2013/05, 2013/08-2013/12
 */
 
 :- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
+:- use_module(iotw(inode_evaluate)).
 :- use_module(iotw(inode_export)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
@@ -29,7 +30,9 @@ Recommendation sharing non-monotonic?
 :- use_module(rdfs(rdfs_voc)).
 :- use_module(xsd(xsd)).
 
-:- debug(iotw).
+:- dynamic(result/2).
+
+:- nodebug(iotw).
 
 
 
@@ -47,6 +50,9 @@ Recommendation sharing non-monotonic?
 %     shared predicates, or on the level of shared predicate-object pairs.
 
 run_experiment(O1, IPairs, SVG, G):-
+  % Clear data store.
+  inode:clear_db,
+
   % Retrieve all alignment sets.
   pairs_to_ord_sets(IPairs, ISets),
 
@@ -90,6 +96,8 @@ run_experiment(O1, IPairs, SVG, G):-
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O1, G, ISets, GA_Hash),
 
+  evaluate_inodes(O1, GA_Hash, Recalls),
+  assert(result(GA_Hash, Recalls)),
+  
   % Create an SVG representation for the given hash.
   export_inodes(O1, GA_Hash, SVG).
-

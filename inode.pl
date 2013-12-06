@@ -11,13 +11,14 @@
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
              % ?NumberOfAllIdentityPairs:nonneg
-    inode/7 % ?Mode:oneof([p,po])
+    inode/8 % ?Mode:oneof([p,po])
             % ?NodeHash:atom
             % ?ParentHash:atom
             % ?Shared:ordset(or([iri,pair(iri)]))
-            % ?InHigherApproximation:boolean
+            % ?Approximation:oneof([higher,lower,none])
             % ?NumberOfIdentityPairs:nonneg
             % ?NumberOfPairs:nonneg
+            % ?Pairs:orset(pair(iri))
   ]
 ).
 
@@ -67,8 +68,10 @@ Possible extensions of the alignment pairs:
 
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
+:- use_module(generics(meta_ext)).
 :- use_module(generics(ordset_ext)).
 :- use_module(library(apply)).
+:- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
@@ -89,13 +92,16 @@ Possible extensions of the alignment pairs:
 %!   ?Mode:oneof([p,po]),
 %!   ?NodeHash:atom,
 %!   ?ParentHash:atom,
-%!   ?Shared:ordset(or([iri,pair(iri)])),
-%!   ?InHigherApproximation:boolean,
+%!   ?SharedPredicates:ordset(or([iri,pair(iri)])),
+%!   ?Approximation:oneof([higher,lower,none]),
 %!   ?NumberOfIdentityPairs:nonneg,
-%!   ?NumberOfPairs:nonneg
+%!   ?NumberOfPairs:nonneg,
+%!   ?Pairs:ordset(pair(iri))
 %! ) is nondet.
 
-:- dynamic(inode/7).
+:- dynamic(inode/8).
+
+:- debug(inode).
 
 
 
@@ -114,7 +120,16 @@ Possible extensions of the alignment pairs:
 % @param IdentityHierarchyHash The atomic hash of the
 %        RDF graph + equivalence relation combination.
 
-assert_inodes(O, G, ISets, IHierHash):-
+assert_inodes(O1, G, ISets, IHierHash):-
+  % We can identify this combination of
+  % an RDF graph and a collection of identity sets
+  % later by using a hash.
+  variant_sha1(G-ISets, IHierHash),
+  assert_inodes_(O1, G, ISets, IHierHash).
+
+assert_inodes_(_O1, _G, _ISets, IHierHash):-
+  ihier(IHierHash, _, _, _, _, _), !.
+assert_inodes_(O1, G, ISets, IHierHash):-
   % We need to establish the number of identity pairs based on
   % the collection of identity sets.
   %
@@ -123,17 +138,9 @@ assert_inodes(O, G, ISets, IHierHash):-
   % 3 non-reflexive and non-symmetric identity pairs.
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfAllIdPairs),
 
-  % Clear data store.
-  clear_db,
-
   % Make sure the granularity mode is set.
-  option(granularity(Mode), O, p),
+  option(granularity(Mode), O1, p),
 
-  % We can identify this combination of
-  % an RDF graph and a collection of identity sets
-  % later by using a hash.
-  variant_sha1(G-ISets, IHierHash),
-  
   % Assert the identity hierarchy based on the given identity sets.
   identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc),
 
@@ -272,7 +279,6 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
       assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
     )
   ),
-
   get_assoc(SharedPs, P_Assoc, IdSets2),
   assert_node_(p, G, IHierHash, SharedPs, IdSets2).
 
@@ -289,23 +295,35 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
 
+/*
   % Check whether this identity node belongs to the lower or to the
   % higher approximation.
-  % It belongs to the lower approximation if there is
+  % It belongs to the higher approximation if there is
   % at least one member that shares the given properties but does not
   % belong to the identity relation.
+  check_shares(Mode, G, Shared, ISets)
+*/
+  AlphaL = 0.90,
+  AlphaH = 0.10,
+  shared_predicates_to_pairs(G, Shared, Pairs),
+  length(Pairs, NumberOfPairs),
+  IPerc is NumberOfIPairs / NumberOfPairs,
+  debug(inode, 'IPerc:~2f', [IPerc]),
   (
-    check_shares(Mode, G, Shared, ISets)
+    IPerc >= AlphaL
   ->
-    InHigher = false
+    Approx = lower
   ;
-    InHigher = true,
-    NumberOfPairs = NumberOfIPairs
+    IPerc >= AlphaH
+  ->
+    Approx = higher
+  ;
+    Approx = none
   ),
 
   % -- say it --
   assert(
-    inode(Mode,Hash2,Hash1,Shared,InHigher,NumberOfIPairs,NumberOfPairs)
+    inode(Mode,Hash2,Hash1,Shared,Approx,NumberOfIPairs,NumberOfPairs,Pairs)
   ).
 
 %! clear_db is det.
@@ -313,7 +331,7 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
 
 clear_db:-
   retractall(ihier(_,_,_,_,_,_)),
-  retractall(inode(_,_,_,_,_,_,_)).
+  retractall(inode(_,_,_,_,_,_,_,_)).
 
 %! rdf_shared(
 %!   +Graph:atom,
@@ -425,8 +443,8 @@ check_shares_predicates(G, SharedPs, ISets):-
   pairs_values(Pairs2, [P1|Ps]),
 
   % Two resources at least share the first, i.e. least probable, property.
-  rdf(X, P1, O, G),
-  rdf(Y, P1, O, G),
+  rdf(X, P1, O1, G),
+  rdf(Y, P1, O1, G),
 
   % We discard symmetric results.
   X @< Y,
@@ -446,3 +464,25 @@ check_shares_predicates(G, SharedPs, ISets):-
     )
   ), !.
 
+shared_predicates_to_pairs(G, [P1|Ps], Pairs):-
+  setoff(
+    X-Y,
+    (
+      rdf(X, P1, O1, G),
+      rdf(Y, P1, O1, G),
+      %X @< Y,
+      forall(
+        member(P2, Ps),
+        (
+          rdf(X, P2, O2, G),
+          rdf(Y, P2, O2, G)
+        )
+      ),
+      \+ ((
+        rdf(X, Pn, On, G),
+	rdf(Y, Pn, On, G),
+	\+ member(Pn, [P1|Ps])
+      ))
+    ),
+    Pairs
+  ).

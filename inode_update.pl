@@ -79,9 +79,10 @@ update_identity_node(INodeHash):-
       INodeHash,
       IHierHash,
       SharedPs,
-      InHigher,
+      Approx,
       NumberOfIdPairs,
-      NumberOfPairs1
+      NumberOfPairs1,
+      _
     )
   ),
   once(ihier(IHierHash,G,IdSets,_,_,_)),
@@ -101,17 +102,20 @@ update_identity_node(INodeHash):-
       INodeHash,
       IHierHash,
       SharedPs,
-      InHigher,
+      Approx,
       NumberOfIdPairs,
-      NumberOfPairs1),
+      NumberOfPairs1,
+      _
+    ),
     inode(
       Mode,
       INodeHash,
       IHierHash,
       SharedPs,
-      InHigher,
+      Approx,
       NumberOfIdPairs,
-      NumberOfPairs2
+      NumberOfPairs2,
+      _
     )
   ).
 

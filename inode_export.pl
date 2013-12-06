@@ -8,6 +8,7 @@
 ).
 
 /** <module> Export of identity nodes
+
 Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
@@ -28,7 +29,7 @@ by the predicates they share.
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
 
-:- debug(iotw_export).
+:- nodebug(iotw_export).
 
 
 
@@ -43,16 +44,27 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
     NodeHash,
     ParentHash,
     Shared,
-    InHigher,
+    Approx,
     NumberOfIdPairs,
-    NumberOfPairs
+    NumberOfPairs,
+    _
   ),
 
   % Retrieve the number of identity pairs in the parent entity.
   number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
 
   % Vertex color.
-  (InHigher == true -> Color = green ; Color = red),
+  (
+    Approx == lower
+  ->
+    Color = green
+  ;
+    Approx = higher
+  ->
+    Color = red
+  ;
+    gtrace
+  ),
 
   % Vertex style.
   (Mode == p -> Style = solid ; Style = dashed),
@@ -85,22 +97,16 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
 
   V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
 
-calculate(IHierHash, InHigher, NumberOfPairs):-
+calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
     sum(NumberOfPairs_),
-    inode(_, _, IHierHash, _, InHigher, _, NumberOfPairs_),
+    inode(_, _, IHierHash, _, Approx, _, NumberOfPairs_, _),
     NumberOfPairs
   ).
 
-calculate_higher(IHierHash, Cardinality):-
-  calculate(IHierHash, true, Cardinality).
-
-calculate_lower(IHierHash, Cardinality):-
-  calculate(IHierHash, _, Cardinality).
-
 calculate_quality(IHierHash, Quality):-
-  calculate_higher(IHierHash, HigherCardinality),
-  calculate_lower(IHierHash, LowerCardinality),
+  calculate(IHierHash, higher, HigherCardinality),
+  calculate(IHierHash, lower, LowerCardinality),
 
   % Make sure we never divide by zero.
   (
@@ -163,7 +169,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
   setoff(
     RankNumber,
     (
-      inode(Mode_, _, IHierHash, SharedPs, _, _, _),
+      inode(Mode_, _, IHierHash, SharedPs, _, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
@@ -183,7 +189,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
       findall(
         P_V_Term,
         (
-          inode(p, INodeHash, IHierHash, SharedPs, _, _, _),
+          inode(p, INodeHash, IHierHash, SharedPs, _, _, _, _),
           build_vertex(INodeHash, P_V_Term)
         ),
         P_V_Terms
@@ -198,8 +204,8 @@ export_identity_nodes_(O, IHierHash, GIF):-
     (
       % No vertices for `po` nodes are created in `p`-mode.
       Mode \== p,
-      inode(p, INodeHash, IHierHash, _, _, _, _),
-      inode(po, ISubnodeHash, INodeHash, _, _, _, _),
+      inode(p, INodeHash, IHierHash, _, _, _, _, _),
+      inode(po, ISubnodeHash, INodeHash, _, _, _, _, _),
       build_vertex(ISubnodeHash, PO_V_Term)
     ),
     PO_V_Terms
@@ -210,14 +216,14 @@ export_identity_nodes_(O, IHierHash, GIF):-
     edge(FromHash,ToHash,E_Attrs),
     (
       % Find two nodes that are either directly or indirectly related.
-      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _),
-      inode(Mode_, ToHash, ParentHash, ToShared, _, _, _),
+      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _, _),
+      inode(Mode_, ToHash, ParentHash, ToShared, _, _, _, _),
       ord_strict_subset(FromShared, ToShared),
 
       % There must be no node in between:
       % We only display edges between _directly_ related vertices.
       \+ ((
-        inode(Mode_, _, ParentHash, MiddleShared, _, _, _),
+        inode(Mode_, _, ParentHash, MiddleShared, _, _, _, _),
         ord_strict_subset(FromShared, MiddleShared),
         ord_strict_subset(MiddleShared, ToShared)
       )),
@@ -234,8 +240,8 @@ export_identity_nodes_(O, IHierHash, GIF):-
   findall(
     edge(SubnodeHash,NodeHash,E_Atts),
     (
-      inode(p, NodeHash, _, _, _, _, _),
-      inode(po, SubnodeHash, NodeHash, _, _, _, _),
+      inode(p, NodeHash, _, _, _, _, _, _),
+      inode(po, SubnodeHash, NodeHash, _, _, _, _, _),
       E_Atts = [color(black),style(dashed)]
     ),
     Es2
@@ -261,7 +267,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
 number_of_parent_identity_pairs(p, ParentHash, NumberOfParentIdPairs):- !,
   ihier(ParentHash, _, _, _, _, NumberOfParentIdPairs).
 number_of_parent_identity_pairs(po, ParentHash, NumberOfParentIdPairs):-
-  inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _).
+  inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _, _).
 
 ord_strict_subset(Sub, Super):-
   ord_subset(Sub, Super),
@@ -283,21 +289,15 @@ percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel):-
     [NumberOfIdPairs,NumberOfParentIdPairs,Percentage]
   ).
 
-possible_to_calculate(IHierHash, InHigher):-
+possible_to_calculate(IHierHash, Approx):-
   forall(
-    inode(_, _, IHierHash, _, InHigher, _, NumberOfPairs),
+    inode(_, _, IHierHash, _, Approx, _, NumberOfPairs, _),
     nonvar(NumberOfPairs)
   ).
 
-possible_to_calculate_higher(IHierHash):-
-  possible_to_calculate(IHierHash, true).
-
-possible_to_calculate_lower(IHierHash):-
-  possible_to_calculate(IHierHash, _).
-
 possible_to_calculate_quality(IHierHash):-
-  possible_to_calculate_higher(IHierHash),
-  possible_to_calculate_lower(IHierHash).
+  possible_to_calculate(IHierHash, higher),
+  possible_to_calculate(IHierHash, lower).
 
 %! precision_label(
 %!   +NumberOfIdentityPairs:nonneg,
