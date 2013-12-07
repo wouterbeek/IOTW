@@ -63,13 +63,12 @@ Possible extensions of the alignment pairs:
   2. Non-identity pairs in proper supersets of the lower approximation.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/10
+@version 2013/05, 2013/08-2013/12
 */
 
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(ordset_ext)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
@@ -136,7 +135,7 @@ assert_inodes_(O1, G, ISets, IHierHash):-
   % For example, for every 2 pairs `X-Y` and `Y-Z` we have
   % an identity set ${X,Y,Z}$ representing
   % 3 non-reflexive and non-symmetric identity pairs.
-  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfAllIdPairs),
+  iotw:equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfAllIdPairs),
 
   % Make sure the granularity mode is set.
   option(granularity(Mode), O1, p),
@@ -147,7 +146,7 @@ assert_inodes_(O1, G, ISets, IHierHash):-
   % For every set of shared properties, we assert
   % an inode in the ihierarchy.
   assoc_to_keys(P_Assoc, SharedPs),
-  maplist(assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
+  maplist(assert_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
 
   assert(
     ihier(
@@ -249,7 +248,7 @@ identity_sets_to_assocs(
     PPO_Assoc3
   ).
 
-%! assert_node(
+%! assert_inode(
 %!   +Mode:oneof([p,po]),
 %!   +IdentityHierarchyHash:atom,
 %!   +Graph:atom,
@@ -260,7 +259,7 @@ identity_sets_to_assocs(
 % The association lists record all sets of shared predicates
 % and all sets of shared predicate-object pairs.
 
-assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
+assert_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
   (
     % Skip the assertion of isubnodes.
     Mode == p, !
@@ -276,13 +275,13 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
     assoc_to_list(PO_Assoc, Pairs),
     forall(
       member(SharedPOs-IdSets1, Pairs),
-      assert_node_(po, G, INodeHash, SharedPOs, IdSets1)
+      assert_inode_(po, G, INodeHash, SharedPOs, IdSets1)
     )
   ),
   get_assoc(SharedPs, P_Assoc, IdSets2),
-  assert_node_(p, G, IHierHash, SharedPs, IdSets2).
+  assert_inode_(p, G, IHierHash, SharedPs, IdSets2).
 
-%! assert_node_(
+%! assert_inode_(
 %!   +Mode:oneof([p,po]),
 %!   +Graph:atom,
 %!   +Hash:atom,
@@ -291,9 +290,9 @@ assert_node(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 %! ) is det.
 % This works for both inodes (mode `p`) and isubnodes (mode `po`).
 
-assert_node_(Mode, G, Hash1, Shared, ISets):-
+assert_inode_(Mode, G, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
-  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  iotw:equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
 
 /*
   % Check whether this identity node belongs to the lower or to the
@@ -303,18 +302,18 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
   % belong to the identity relation.
   check_shares(Mode, G, Shared, ISets)
 */
-  AlphaL = 1.00,
-  AlphaH = 0.00,
   shared_predicates_to_pairs(G, Shared, Pairs),
   length(Pairs, NumberOfPairs),
   IPerc is NumberOfIPairs / NumberOfPairs,
   debug(inode, 'IPerc:~2f', [IPerc]),
   (
-    IPerc >= AlphaL
+    % Alpha lower
+    IPerc >= 1.0
   ->
     Approx = lower
   ;
-    IPerc > AlphaH
+    % Alpha higher
+    IPerc > 0.0
   ->
     Approx = higher
   ;
@@ -329,68 +328,6 @@ assert_node_(Mode, G, Hash1, Shared, ISets):-
       inode(Mode,Hash2,Hash1,Shared,Approx,NumberOfIPairs,NumberOfPairs,Pairs)
     )
   ).
-
-%! clear_db is det.
-% Clears the data store.
-
-clear_db:-
-  retractall(ihier(_,_,_,_,_,_)),
-  retractall(inode(_,_,_,_,_,_,_,_)).
-
-%! rdf_shared(
-%!   +Graph:atom,
-%!   +Mode:oneof([p,po]),
-%!   +Resources:ordset(iri),
-%!   -SharedPredicates:ordset(iri),
-%!   -SharedProperties:ordset(iri)
-%! ) is det.
-% Returns the properties that all the given resources share.
-%
-% Moves from sets of resources to the shared properties of those resources.
-%
-% @see See rdf_shared/7 for the real work.
-
-rdf_shared(G, Mode, Set, SolPs, SolPOs):-
-  rdf_shared(G, Mode, Set, [], SolPs, [], SolPOs).
-
-rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
-  % We assume a fully materialized graph.
-  rdf(Res1, P, O, G),
-
-  % If we are only looking for properties (granularity mode `p`),
-  % the we can add the following restriction.
-  (
-    Mode == p
-  ->
-    \+ memberchk(P, OldPs)
-  ;
-    \+ memberchk(P-O, OldPOs)
-  ),
-
-  % All resources in the identity set must share the same
-  % predicate-object pair (regardless of mode).
-  % Here we assume that the typed literals are represented
-  % using their canonical lexical form.
-  forall(
-    member(Res2, Resources),
-    rdf(Res2, P, O, G)
-  ),
-
-  % Add a shared predicate term.
-  ord_add_element(OldPs, P, NewPs),
-
-  % Mode-dependent inclusion of predicate-object term pairs.
-  (
-    Mode = p
-  ->
-    NewPOs = OldPOs
-  ;
-    ord_add_element(OldPOs, P-O, NewPOs)
-  ),
-
-  % Look for additional shared predicate terms or predicate-object term pairs.
-  rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
-rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 
 check_shares(p, G, SharedPs, ISets):- !,
   check_shares_predicates(G, SharedPs, ISets).
@@ -468,6 +405,68 @@ check_shares_predicates(G, SharedPs, ISets):-
     )
   ), !.
 
+%! clear_db is det.
+% Clears the data store.
+
+clear_db:-
+  retractall(ihier(_,_,_,_,_,_)),
+  retractall(inode(_,_,_,_,_,_,_,_)).
+
+%! rdf_shared(
+%!   +Graph:atom,
+%!   +Mode:oneof([p,po]),
+%!   +Resources:ordset(iri),
+%!   -SharedPredicates:ordset(iri),
+%!   -SharedProperties:ordset(iri)
+%! ) is det.
+% Returns the properties that all the given resources share.
+%
+% Moves from sets of resources to the shared properties of those resources.
+%
+% @see See rdf_shared/7 for the real work.
+
+rdf_shared(G, Mode, Set, SolPs, SolPOs):-
+  rdf_shared(G, Mode, Set, [], SolPs, [], SolPOs).
+
+rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
+  % We assume a fully materialized graph.
+  rdf(Res1, P, O, G),
+
+  % If we are only looking for properties (granularity mode `p`),
+  % the we can add the following restriction.
+  (
+    Mode == p
+  ->
+    \+ memberchk(P, OldPs)
+  ;
+    \+ memberchk(P-O, OldPOs)
+  ),
+
+  % All resources in the identity set must share the same
+  % predicate-object pair (regardless of mode).
+  % Here we assume that the typed literals are represented
+  % using their canonical lexical form.
+  forall(
+    member(Res2, Resources),
+    rdf(Res2, P, O, G)
+  ),
+
+  % Add a shared predicate term.
+  ord_add_element(OldPs, P, NewPs),
+
+  % Mode-dependent inclusion of predicate-object term pairs.
+  (
+    Mode = p
+  ->
+    NewPOs = OldPOs
+  ;
+    ord_add_element(OldPOs, P-O, NewPOs)
+  ),
+
+  % Look for additional shared predicate terms or predicate-object term pairs.
+  rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
+rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
+
 shared_predicates_to_pairs(G, [P1|Ps], Pairs):-
   setoff(
     X-Y,
@@ -484,8 +483,8 @@ shared_predicates_to_pairs(G, [P1|Ps], Pairs):-
       ),
       \+ ((
         rdf(X, Pn, On, G),
-	rdf(Y, Pn, On, G),
-	\+ member(Pn, [P1|Ps])
+        rdf(Y, Pn, On, G),
+        \+ member(Pn, [P1|Ps])
       ))
     ),
     Pairs

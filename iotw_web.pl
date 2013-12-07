@@ -21,7 +21,6 @@
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
 :- use_module(iotw(inode_export)).
-:- use_module(iotw(inode_update)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(library(http/html_write)).

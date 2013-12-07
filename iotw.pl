@@ -20,19 +20,14 @@ Recommendation sharing non-monotonic?
 
 :- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
-:- use_module(iotw(inode_evaluate)).
 :- use_module(iotw(inode_export)).
+:- use_module(library(apply)).
 :- use_module(library(debug)).
-:- use_module(library(lists)).
-:- use_module(library(option)).
-:- use_module(rdf(rdf_graph)).
-:- use_module(rdf(rdf_serial)).
-:- use_module(rdfs(rdfs_voc)).
 :- use_module(xsd(xsd)).
 
 :- dynamic(result/2).
 
-:- nodebug(iotw).
+:- debug(iotw).
 
 
 
@@ -48,45 +43,69 @@ Recommendation sharing non-monotonic?
 %   * =|granularity(+LevelOfIdentityPartition:oneof([p,po]))|=
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
+%
+% @param Options A list of name-value pairs.
+% @param IdentityPairs A list of alignment pairs,
+%        thus excluding (possibly) the reflexive cases.
+% @param SVG The DOM of an ihierarchy.
+% @param Graph The atomic name of an RDF graph.
 
-run_experiment(O1, IPairs, SVG, G):-
+run_experiment(O1, IPairs1, SVG, G):-
+  % Make sure there are no reflexive pairs.
+  % In the absence of another pair this would result in
+  % a singleton identity sets.
+  % This could result in many inodes that are
+  % particular to a single resource
+  % (since something shares all its properties with itself).
+  exclude(is_reflexive_pair, IPairs1, IPairs2),
+
   % Clear data store.
   inode:clear_db,
 
   % Retrieve all alignment sets.
-  pairs_to_ord_sets(IPairs, ISets),
+  % Does not include singleton sets (due to reflexivity).
+  pairs_to_ord_sets(IPairs2, ISets),
 
-  % DEB: Print the number of identity sets.
-  length(ISets, NumberOfISets),
-  debug(iotw, 'There are ~w identity sets.', [NumberOfISets]),
+  (
+    debugging(iotw, false), !
+  ;
+    % DEB: Print the number of identity sets.
+    length(ISets, NumberOfISets),
+    debug(iotw, 'There are ~d identity sets.', [NumberOfISets]),
 
-  % DEB: Print the number of identity pairs.
-  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
-  debug(iotw, 'There are ~w identity pairs.', [NumberOfIPairs]),
+    % DEB: Print the number of identity pairs.
+    %      Note that not all identity pairs may have been explicit
+    %      in the original collection of pairs.
+    equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+    debug(iotw, 'There are ~d identity pairs.', [NumberOfIPairs]),
 
-  % DEB: Print the number of resources.
-  aggregate_all(
-    sum(CardinalityOfISet),
-    (
-      member(ISet, ISets),
-      length(ISet, CardinalityOfISet)
+    % DEB: Print the number of resources.
+    aggregate_all(
+      sum(CardinalityOfISet),
+      (
+        member(ISet, ISets),
+        length(ISet, CardinalityOfISet)
+      ),
+      NumberOfResources
     ),
-    NumberOfResources
-  ),
-  debug(iotw, 'There are ~w resources.', [NumberOfResources]),
+    debug(iotw, 'There are ~d resources.', [NumberOfResources]),
 
-  % DEB: Print the number of non-pair identity sets.
-  %      This quantifies the usefulness of using sets instead of pairs.
-  aggregate_all(
-    count,
-    (
-      member(ISet, ISets),
-      \+ length(ISet, 2),
-      debug(iotw, '\tNon-pair identity set: ~w', [ISet])
+    % DEB: Print the number of non-pair identity sets.
+    %      This quantifies the usefulness of using sets instead of pairs.
+    aggregate_all(
+      count,
+      (
+        member(ISet, ISets),
+        \+ length(ISet, 2)
+      ),
+      NumberOfNonpairISets
     ),
-    NumberOfNonpairISets
+    debug(
+      iotw,
+      'Number of non-pair identity sets: ~d',
+      [NumberOfNonpairISets]
+    )
   ),
-  debug(iotw, 'Number of non-pair identity sets: ~w', [NumberOfNonpairISets]),
 
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
@@ -98,9 +117,35 @@ run_experiment(O1, IPairs, SVG, G):-
 
   % Create an SVG representation for the given hash.
   export_inodes(O1, GA_Hash, SVG),
-  
+
   % Run the evaluation.
   %%evaluate_inodes(O1, GA_Hash, Recalls),
   %%assert(result(GA_Hash, Recalls)),
-  
+
   true.
+
+%! equivalence_sets_to_number_of_equivalence_pairs(
+%!   +EquivalenceSets:list(ordset),
+%!   +NumberOfEquivalencePairs:nonneg
+%! ) is det.
+% Returns the number of equivalence pairs that are encoded in
+% the given collection of equivalence sets.
+%
+% We do not count reflexive cases.
+% We do count symmetric cases.
+%
+% @tbd Should this predicate really be here?
+
+equivalence_sets_to_number_of_equivalence_pairs(EqSets, NumberOfEqPairs):-
+  aggregate_all(
+    sum(NumberOfEqPairs__),
+    (
+      member(EqSet, EqSets),
+      length(EqSet, NumberOfMembers),
+      % No reflexive cases.
+      NumberOfEqPairs__ is NumberOfMembers * (NumberOfMembers - 1)
+    ),
+    NumberOfEqPairs
+  ).
+
+is_reflexive_pair(X-X).

@@ -17,14 +17,9 @@ Evaluates results from identity experiments.
 
 :- use_module(generics(ordset_ext)).
 :- use_module(generics(set_theory)).
-:- use_module(library(assoc)).
 :- use_module(library(debug)).
-:- use_module(library(lists)).
 :- use_module(library(ordsets)).
-:- use_module(library(semweb/rdf_db)).
-:- use_module(math(math_ext)).
 :- use_module(iotw(inode)).
-:- use_module(rdf(rdf_stat)).
 
 :- set_prolog_stack(global, limit(2*10**9)).
 
