@@ -1,335 +1,155 @@
-:- module(
-  iotw_web,
-  [
-    ipairs_web/1, % -DOM:list
-    iimb_web/1, % -HTML_DOM:list
-    iimb_web/2 % +Integer:integer
-               % -SVG:list
-  ]
-).
+:- module(iotw_web, []).
 
 /** <module> IOTW Web
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09, 2013/11
+@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
 */
 
-:- use_module(generics(meta_ext)).
+:- use_module(generics(db_ext)).
+:- use_module(generics(print_ext)).
 :- use_module(generics(uri_ext)).
-:- use_module(iotw_exp(iotw_iimb)). % Make sure the results of the experiment are there.
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
-:- use_module(iotw(inode_export)).
-:- use_module(library(apply)).
+:- use_module(iotw(inode)).
+:- use_module(iotw_exp(iotw_iimb)).
 :- use_module(library(debug)).
+:- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_path)).
 :- use_module(library(lists)).
-:- use_module(library(option)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(library(uri)).
-:- use_module(os(dir_ext)).
-:- use_module(os(file_ext)).
 :- use_module(rdf(rdf_name)).
-:- use_module(svg(svg_file)).
-:- use_module(server(web_console)).
 :- use_module(server(web_modules)).
 :- use_module(xml(xml_dom)).
 
 :- http_handler(root(iotw), iotw, []).
-:- http_handler(root(inode), inode, []).
-:- http_handler(root(resource), resource, []).
 
 :- web_module_add('IOTW', iotw_web, iotw).
 
+% /js
+:- db_add_novel(http:location(js, root(js), [])).
+:- db_add_novel(user:file_search_path(js, iotw(js))).
+:- http_handler(js(.), serve_files_in_directory(js), [prefix]).
+:- html_resource(js('iotw.js'), []).
+
+:- dynamic(iimb_current/1).
 :- dynamic(max/4).
 
 :- debug(iotw_web).
 
 
 
-%! iimb_web(-HTML_DOM:list) is det.
-
-iimb_web([element(ol,[],HTML_List)]):-
-  absolute_file_name(
-    iotw_ap_iimb_output(.),
-    OutputDir,
-    [access(read),file_type(directory)]
-  ),
-  directory_files(
-    [
-      file_types([svg]),
-      include_directories(false),
-      order(lexicographic),
-      recursive(true)
-    ],
-    OutputDir,
-    SVG_Files
-  ),
-  findall(
-    element(li,[],[element(a,[href=IOTW_URL2],[SVG_Name])]),
-    (
-      nth1(N, SVG_Files, SVG_File),
-      http_absolute_uri(root(iotw), IOTW_URL1),
-      uri_query_add(IOTW_URL1, iimb, N, IOTW_URL2),
-      file_name(SVG_File, _Dir, SVG_Name, _Ext)
-    ),
-    HTML_List
-  ).
-
-%! iimb_web(+Integer:between(1,80), -SVG:dom) is det.
-% Returns the identity hierarchy for the IIMB ontology alignment
-% with the given index.
-
-iimb_web(N, SVG):-
-  atomic_list_concat([iimb,N], '_', FileName),
-  absolute_file_name(
-    iotw_ap_iimb_output(FileName),
-    File,
-    [access(read),file_type(svg)]
-  ),
-  file_to_svg(File, SVG).
-
-%! inode(+Request:list(nvpair)) is det.
 % Callback HTTP handler reaction on a click action on an identity node.
-
-inode(Request):-
-  member(search(SearchParameters), Request),
-  (
-    memberchk(id=GAK_Hash, SearchParameters)
-  ->
-    update_identity_node(GAK_Hash),
-    export_inodes([], GAK_Hash, SVG),
-    push(console_output, SVG)
-  ;
-    true
-  ).
-
 iotw(Request):-
-  option(search(Query), Request),
-  option(iimb(N), Query),
+  memberchk(search(Search), Request),
+  memberchk(inode=GAK_Hash, Search), !,
+  reply_html_page(
+    app_style,
+    \iotw_head,
+    \iotw_body(inode(GAK_Hash))
+  ).
+% Show IIMB SVG graphic.
+iotw(Request):-
+  memberchk(search(Search), Request),
+  memberchk(iimb=N, Search), !,
   reply_html_page(app_style, \iotw_head, \iotw_body(iimb(N))).
+% Normal Web page.
 iotw(_Request):-
   reply_html_page(app_style, \iotw_head, \iotw_body(_)).
 
 iotw_body(Content) -->
-  {iimb_web([HTML_DOM])},
-  html([
-    \iotw_content(Content),
-    HTML_DOM
-  ]).
+  {
+    findall(
+      element(li,[],[element(a,[href=IOTW_URL2],[Name])]),
+      (
+        between(1, 80, N),
+        http_absolute_uri(root(iotw), IOTW_URL1),
+        uri_query_add(IOTW_URL1, iimb, N, IOTW_URL2),
+        atomic_list_concat([iimb,N], '_', Name)
+      ),
+      HTML_DOM
+    )
+  },
+  html([\iotw_content(Content),div(id=index,ol([],HTML_DOM))]).
 
 iotw_content(Var) -->
   {var(Var)}, !.
+iotw_content(inode(GAK_Hash)) --> !,
+  {iimb_current(N)},
+  html([
+    \iotw_content(iimb(N)),
+    \iotw_table(GAK_Hash)
+  ]).
 iotw_content(iimb(N)) --> !,
   {
-    iimb_web(N, SVG),
-    xml_dom_to_atom([], SVG, XML)
+    db_replace_novel(iimb_current(N), [r]),
+    iimb_experiment(N, SVG_DOM),
+    xml_dom_to_atom([], SVG_DOM, SVG_Atom)
   },
-  % Insert the SVG XML in atomic form.
-  html(div([],\[XML])).
+  html(div([id=ihier],\[SVG_Atom])).
 
 iotw_head -->
-  html(title('IOTW')).
+  html([
+    \html_requires(js('iotw.js')),
+    title('IOTW')
+  ]).
 
-% ----------------------------------------------------------------------------
-
-ipair(pair(X,R,Y,G)):-
-  rdf(X, owl:sameAs, Y, G),
-  rdf_global_id(owl:sameAs, R).
-
-ipair_to_row(
-  pair(X1,_,Y1,G),
-  [element(a,[href=URI2],[X2]),N1,element(a,[href=URI2],[Y2]),N2,G]
-):-
-  http_absolute_uri(root(resource), URI1),
-  uri_components(URI1, Components1),
-  uri_query_components(QueryString, [r1=X1,r2=Y1]),
-  uri_data(search, Components1, QueryString, Components2),
-  uri_components(URI2, Components2),
-  rdf_term_name([], X1, X2),
-  rdf_term_name([], Y1, Y2),
-  resource_rows(X1, Rows1),
-  length(Rows1, N1),
-  resource_rows(Y1, Rows2),
-  length(Rows2, N2).
-
-%! ipairs(
-%!   +MaximumNumberOfPairs:nonneg,
-%!   -IdentityPairs:list(pair(iri)),
-%!   -MorePairsLeft:boolean
-%! ) is det.
-
-ipairs(Max, IPairs, Left):-
-  ord_empty(Hist),
-  ipairs(Max, Hist, IPairs, Left).
-
-% Maximum number of pairs reached.
-ipairs(0, IPairs, IPairs, Left):-
-  boolean(
-    (
-      ipair(IPair),
-      \+ memberchk(IPair, IPairs)
+iotw_table(GAK_Hash) -->
+  {
+    once(
+      inode(
+        _Mode,
+        GAK_Hash,
+        _IHierHash,
+        SharedPs,
+        _Approx,
+        NumberOfIPairs,
+        IPairs,
+        NumberOfPairs,
+        Pairs
+      )
     ),
-    Left
-  ).
-% Another pair is found and can be added
-% (the maximum number of pairs is not reached yet).
-ipairs(Counter1, Hist1, IPairs, Left):-
-  ipair(IPair),
-  \+ memberchk(IPair, Hist1),
-  ord_add_element(Hist1, IPair, Hist2),
-  minus_one(Counter1, Counter2),
-  ipairs(Counter2, Hist2, IPairs, Left).
-% There are no more pairs.
-ipairs(_Counter, IPairs, IPairs, false).
-
-minus_one(inf, inf):- !.
-minus_one(X, Y):-
-  Y is X - 1.
-
-ipairs_top(_Sol):-
-  assert(max(0,0,_,_)),
-  ipairs_top.
-ipairs_top(N-X-Y):-
-  max(N, X, Y, _).
-
-ipairs_top:-
-  rdf(X, owl:sameAs, Y),
-  rdf_estimate_complexity(X, _, _, MX),
-  rdf_estimate_complexity(Y, _, _, MY),
-  max(NX,NY,_,_),
-  (
-    MX > NX,
-    MY > NY
-  ->
-    retract(max(_,_,_,_)),
-    assert(max(MX,MY,X,Y)),
-    debug(iotw_web, 'New max: [~w,~w] ~w -- ~w', [MX,MY,X,Y])
-  ;
-    true
-  ),
-  fail.
-
-ipairs_web(DOM):-
-  ipairs(25, IPairs, _Left),
-  length(IPairs, L),
-  L > 0, !,
-  maplist(ipair_to_row, IPairs, Rows),
-  html_table(
-    [
-      caption('The currently loaded identity pairs.'),
-      header(true),
-      indexed(true)
-    ],
-    [['Resource A','#A','Resource B','#B','Triple location']|Rows],
-    DOM
-  ).
-ipairs_web([element(p,[],['There are no identity pairs.'])]).
-
-%! resource(+Request) is det.
-% Describes resources (query term `r1`)
-% or resource pairs (query terms `r1` and `r2`).
-
-% Describe resource pairs.
-resource(Request):-
-  option(search(Query), Request),
-  option(r1(Resource1), Query),
-  option(r2(Resource2), Query), !,
-  resource_table(Resource1, Table1),
-  resource_table(Resource2, Table2),
-  push(console_output, [Table1,Table2]).
-% Describe a single resource.
-resource(Request):-
-  option(search(Query), Request),
-  option(r1(Resource), Query), !,
-  resource_table(Resource, Table),
-  push(console_output, [Table]).
-
-%! resource_rows(+Resource:iri, -Rows:list(atom)) is det.
-
-resource_rows(Resource, Rows):-
-  findall(
-    [P2,O2],
-    (
-      rdf(Resource, P1, O1),
-      rdf_term_name([], P1, P2),
-      rdf_term_name([], O1, O2)
+    with_output_to(
+      atom(SharedLabel),
+      print_set([write_method(rdf_term_name)], SharedPs)
     ),
-    Rows
-  ).
-
-%! resource_table(+Resource:iri, -Table) is det.
-
-resource_table(Resource, Table):-
-  resource_rows(Resource, Rows),
-  rdf_term_name([], Resource, ResourceName),
-  format(atom(Caption), 'Description of resource ~w.', [ResourceName]),
-  Header = ['Predicate','Object'],
-  html_table(
-    [caption(Caption),header(true),indexed(true)],
-    [Header|Rows],
-    Table
-  ).
-
-/*
-pair_to_dom(X-Y, Markup):-
-  rdf_po_pairs(X, X_PO_Pairs),
-  rdf_po_pairs(Y, Y_PO_Pairs),
-
-  % The table of shared predicates and objects.
-  rdf_shared_po_pairs(
-    X_PO_Pairs,
-    Y_PO_Pairs,
-    Shared_PO_Pairs,
-    X_Exclusive_PO_Pairs,
-    Y_Exclusive_PO_Pairs
-  ),
-  html_table(
-    [caption('Table showing the shared properties.'),header(true)],
-    [['Predicate','Object']|Shared_PO_Pairs],
-    Shared_PO_Table
-  ),
-
-  % The table of shared predicates and different objects.
-  rdf_shared_p_triples(
-    X_Exclusive_PO_Pairs,
-    Y_Exclusive_PO_Pairs,
-    Shared_P_Triples,
-    X_Exclusive_P_Pairs,
-    Y_Exclusive_P_Pairs
-  ),
-  html_table(
-    [caption('Table showing the shared predicates.'),header(true)],
-    [['Predicate','X-Object','Y-Object']|Shared_P_Triples],
-    Shared_P_Table
-  ),
-
-  % The table of exclusive X-properties.
-  html_table(
-    [caption('Table showing the exclusive X predicates.'),header(true)],
-    [['X-Predicate','X-Object']|X_Exclusive_P_Pairs],
-    X_Exclusive_P_Table
-  ),
-
-  % The table of exclusive Y-properties.
-  html_table(
-    [caption('Table showing the exclusive Y predicates.'),header(true)],
-    [['Y-Predicate','Y-Object']|Y_Exclusive_P_Pairs],
-    Y_Exclusive_P_Table
-  ),
-
-  Markup =
-    [
-      element(h1,[],['X: ',X]),
-      element(h1,[],['Y: ',Y]),
-      Shared_PO_Table,
-      Shared_P_Table,
-      X_Exclusive_P_Table,
-      Y_Exclusive_P_Table
-    ].
-*/
-
+    format(
+      atom(Description),
+      'Enumeration of non-identity pairs sharing ~w (Pairs:~d;Identity pairs:~d)',
+      [SharedLabel,NumberOfIPairs,NumberOfPairs]
+    ),
+    ord_subtract(Pairs, IPairs, NonIPairs),
+    findall(
+      HTML_Table,
+      (
+        member(S1-S2, NonIPairs),
+        format(
+          atom(Caption),
+          'Overview of non-identity pair <~w,~w>.',
+          [S1,S2]
+        ),
+        findall(
+          [S1,P1,O1],
+          rdf(S1, P1, O1),
+          L1
+        ),
+        findall(
+          [S2,P2,O2],
+          rdf(S2, P2, O2),
+          L2
+        ),
+        append([[['Subject','Predicate','Object']],L1,L2], L),
+        html_table(
+          [caption(Caption),header(true),indexed(true)],
+          L,
+          HTML_Table
+        )
+      ),
+      HTML_Tables
+    )
+  },
+  html([p([],[Description]),div([id=resources],HTML_Tables)]).

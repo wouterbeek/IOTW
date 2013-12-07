@@ -3,6 +3,8 @@
 :- multifile(user:project_name/1).
 user:project_name('IOTW').
 
+:- set_prolog_stack(global, limit(2*10**9)).
+
 :- initialization(load_iotw).
 
 load_iotw:-

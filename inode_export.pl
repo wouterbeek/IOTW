@@ -46,6 +46,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
     Shared,
     Approx,
     NumberOfIdPairs,
+    _,
     NumberOfPairs,
     _
   ),
@@ -98,7 +99,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
 calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
     sum(NumberOfPairs_),
-    inode(_, _, IHierHash, _, Approx, _, NumberOfPairs_, _),
+    inode(_, _, IHierHash, _, Approx, _, _, NumberOfPairs_, _),
     NumberOfPairs
   ).
 
@@ -167,7 +168,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
   setoff(
     RankNumber,
     (
-      inode(Mode_, _, IHierHash, SharedPs, _, _, _, _),
+      inode(Mode_, _, IHierHash, SharedPs, _, _, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
@@ -187,7 +188,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
       findall(
         P_V_Term,
         (
-          inode(p, INodeHash, IHierHash, SharedPs, _, _, _, _),
+          inode(p, INodeHash, IHierHash, SharedPs, _, _, _, _, _),
           build_vertex(INodeHash, P_V_Term)
         ),
         P_V_Terms
@@ -202,26 +203,26 @@ export_identity_nodes_(O, IHierHash, GIF):-
     (
       % No vertices for `po` nodes are created in `p`-mode.
       Mode \== p,
-      inode(p, INodeHash, IHierHash, _, _, _, _, _),
-      inode(po, ISubnodeHash, INodeHash, _, _, _, _, _),
+      inode(p, INodeHash, IHierHash, _, _, _, _, _, _),
+      inode(po, ISubnodeHash, INodeHash, _, _, _, _, _, _),
       build_vertex(ISubnodeHash, PO_V_Term)
     ),
     PO_V_Terms
   ),
-  
+
   % Edges between the identity nodes of the _same_ mode.
   findall(
     edge(FromHash,ToHash,E_Attrs),
     (
       % Find two nodes that are either directly or indirectly related.
-      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _, _),
-      inode(Mode_, ToHash, ParentHash, ToShared, _, _, _, _),
+      inode(Mode_, FromHash, ParentHash, FromShared, _, _, _, _, _),
+      inode(Mode_, ToHash, ParentHash, ToShared, _, _, _, _, _),
       ord_strict_subset(FromShared, ToShared),
 
       % There must be no node in between:
       % We only display edges between _directly_ related vertices.
       \+ ((
-        inode(Mode_, _, ParentHash, MiddleShared, _, _, _, _),
+        inode(Mode_, _, ParentHash, MiddleShared, _, _, _, _, _),
         ord_strict_subset(FromShared, MiddleShared),
         ord_strict_subset(MiddleShared, ToShared)
       )),
@@ -238,8 +239,8 @@ export_identity_nodes_(O, IHierHash, GIF):-
   findall(
     edge(SubnodeHash,NodeHash,E_Atts),
     (
-      inode(p, NodeHash, _, _, _, _, _, _),
-      inode(po, SubnodeHash, NodeHash, _, _, _, _, _),
+      inode(p, NodeHash, _, _, _, _, _, _, _),
+      inode(po, SubnodeHash, NodeHash, _, _, _, _, _, _),
       E_Atts = [color(black),style(dashed)]
     ),
     Es2
@@ -247,9 +248,9 @@ export_identity_nodes_(O, IHierHash, GIF):-
   append(Es1, Es2, Es),
 
   % Graph attributes.
-  %quality_label(IHierHash, Q_Label),
+  quality_label(IHierHash, Q_Label),
   rdf_statistics(triples_by_graph(G,Triples)),
-  format(atom(G_Label), 'Graph: ~w.  Triples:~w', [G,Triples]),
+  format(atom(G_Label), 'Graph:~w\tTriples:~d~w', [G,Triples,Q_Label]),
   G_Attrs =
     [
       colorscheme(svg),
@@ -265,7 +266,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
 number_of_parent_identity_pairs(p, ParentHash, NumberOfParentIdPairs):- !,
   ihier(ParentHash, _, _, _, _, NumberOfParentIdPairs).
 number_of_parent_identity_pairs(po, ParentHash, NumberOfParentIdPairs):-
-  inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _, _).
+  inode(p, ParentHash, _, _, _, NumberOfParentIdPairs, _, _, _).
 
 ord_strict_subset(Sub, Super):-
   ord_subset(Sub, Super),
@@ -289,7 +290,7 @@ percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel):-
 
 possible_to_calculate(IHierHash, Approx):-
   forall(
-    inode(_, _, IHierHash, _, Approx, _, NumberOfPairs, _),
+    inode(_, _, IHierHash, _, Approx, _, _, NumberOfPairs, _),
     nonvar(NumberOfPairs)
   ).
 
@@ -329,6 +330,6 @@ precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel):-
 quality_label(IHierHash, Q_Label):-
   possible_to_calculate_quality(IHierHash), !,
   calculate_quality(IHierHash, Q),
-  format(atom(Q_Label), '   Quality: ~e', [Q]).
+  format(atom(Q_Label), '\tQuality:~2f', [Q]).
 quality_label(_IHierHash, '').
 

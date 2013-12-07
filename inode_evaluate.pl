@@ -21,8 +21,6 @@ Evaluates results from identity experiments.
 :- use_module(library(ordsets)).
 :- use_module(iotw(inode)).
 
-:- set_prolog_stack(global, limit(2*10**9)).
-
 :- debug(inodes_evaluate).
 
 
@@ -86,7 +84,7 @@ assoc_to_pairs(GA_Hash, Approx1, Pairs2):-
     Pairs1,
     (
       approx(Approx1, Approx2),
-      inode(_, _, GA_Hash, _, Approx2, _, _, Pairs1)
+      inode(_, _, GA_Hash, _, Approx2, _, _, _, Pairs1)
     ),
     Pairss
   ),

@@ -18,9 +18,11 @@ Recommendation sharing non-monotonic?
 @version 2013/05, 2013/08-2013/12
 */
 
+:- use_module(generics(deb_ext)).
 :- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
 :- use_module(iotw(inode_export)).
+:- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(xsd(xsd)).
@@ -59,70 +61,83 @@ run_experiment(O1, IPairs1, SVG, G):-
   % (since something shares all its properties with itself).
   exclude(is_reflexive_pair, IPairs1, IPairs2),
 
-  % Clear data store.
-  inode:clear_db,
-
   % Retrieve all alignment sets.
   % Does not include singleton sets (due to reflexivity).
-  pairs_to_ord_sets(IPairs2, ISets),
+  ordset_ext:pairs_to_ord_sets(IPairs2, ISets),
 
-  (
-    debugging(iotw, false), !
-  ;
-    % DEB: Print the number of identity sets.
-    length(ISets, NumberOfISets),
-    debug(iotw, 'There are ~d identity sets.', [NumberOfISets]),
-
-    % DEB: Print the number of identity pairs.
-    %      Note that not all identity pairs may have been explicit
-    %      in the original collection of pairs.
-    equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
-    debug(iotw, 'There are ~d identity pairs.', [NumberOfIPairs]),
-
-    % DEB: Print the number of resources.
-    aggregate_all(
-      sum(CardinalityOfISet),
-      (
-        member(ISet, ISets),
-        length(ISet, CardinalityOfISet)
-      ),
-      NumberOfResources
-    ),
-    debug(iotw, 'There are ~d resources.', [NumberOfResources]),
-
-    % DEB: Print the number of non-pair identity sets.
-    %      This quantifies the usefulness of using sets instead of pairs.
-    aggregate_all(
-      count,
-      (
-        member(ISet, ISets),
-        \+ length(ISet, 2)
-      ),
-      NumberOfNonpairISets
-    ),
-    debug(
-      iotw,
-      'Number of non-pair identity sets: ~d',
-      [NumberOfNonpairISets]
-    )
-  ),
+  % DEB
+  if_debug(iotw, begin_experiment(ISets, NumberOfIPairs)),
 
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
   % This makes it much cheaper to establish the identity of typed literals.
   xsd_canonize_graph(G),
-
+  
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O1, G, ISets, GA_Hash),
 
   % Create an SVG representation for the given hash.
   export_inodes(O1, GA_Hash, SVG),
 
+  % DEB
+  if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)).
+
   % Run the evaluation.
   %%evaluate_inodes(O1, GA_Hash, Recalls),
   %%assert(result(GA_Hash, Recalls)),
 
-  true.
+begin_experiment(ISets, NumberOfIPairs):-
+  % Print the number of identity sets.
+  length(ISets, NumberOfISets),
+  debug(iotw, 'There are ~d identity sets.', [NumberOfISets]),
+
+  % Print the number of identity pairs.
+  % Note that not all identity pairs may have been explicit
+  % in the original collection of pairs.
+  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  debug(iotw, 'There are ~d identity pairs.', [NumberOfIPairs]),
+
+  % Print the number of resources.
+  aggregate_all(
+    sum(CardinalityOfISet),
+    (
+      member(ISet, ISets),
+      length(ISet, CardinalityOfISet)
+    ),
+    NumberOfResources
+  ),
+  debug(iotw, 'There are ~d resources.', [NumberOfResources]),
+
+  % Print the number of non-pair identity sets.
+  % This quantifies the usefulness of using sets instead of pairs.
+  aggregate_all(
+    count,
+    (
+      member(ISet, ISets),
+      \+ length(ISet, 2)
+    ),
+    NumberOfNonpairISets
+  ),
+  debug(iotw, 'Number of non-pair identity sets: ~d', [NumberOfNonpairISets]).
+
+end_experiment(GA_Hash, NumberOfAllIPairs1):-
+  aggregate_all(
+    sum(NumberOfIPairs),
+    inode(_, _, GA_Hash, _, _, NumberOfIPairs, _, _, _),
+    NumberOfAllIPairs2
+  ),
+  (
+    NumberOfAllIPairs1 =:= NumberOfAllIPairs1
+  ->
+    debug(iotw, 'The number of ipairs matches.', [])
+  ;
+    gtrace,
+    debug(
+      iotw,
+      'Number of ipairs does not match: ~d and ~d.',
+      [NumberOfAllIPairs1,NumberOfAllIPairs2]
+    )
+  ).
 
 %! equivalence_sets_to_number_of_equivalence_pairs(
 %!   +EquivalenceSets:list(ordset),

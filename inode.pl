@@ -11,12 +11,13 @@
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
              % ?NumberOfAllIdentityPairs:nonneg
-    inode/8 % ?Mode:oneof([p,po])
+    inode/9 % ?Mode:oneof([p,po])
             % ?NodeHash:atom
             % ?ParentHash:atom
             % ?Shared:ordset(or([iri,pair(iri)]))
             % ?Approximation:oneof([higher,lower,none])
             % ?NumberOfIdentityPairs:nonneg
+            % ?IdentityPairs:orset(pair(iri))
             % ?NumberOfPairs:nonneg
             % ?Pairs:orset(pair(iri))
   ]
@@ -94,11 +95,12 @@ Possible extensions of the alignment pairs:
 %!   ?SharedPredicates:ordset(or([iri,pair(iri)])),
 %!   ?Approximation:oneof([higher,lower,none]),
 %!   ?NumberOfIdentityPairs:nonneg,
+%!   ?IdentityPairs:ordset(pair(iri)),
 %!   ?NumberOfPairs:nonneg,
 %!   ?Pairs:ordset(pair(iri))
 %! ) is nondet.
 
-:- dynamic(inode/8).
+:- dynamic(inode/9).
 
 :- debug(inode).
 
@@ -292,7 +294,9 @@ assert_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 
 assert_inode_(Mode, G, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
-  iotw:equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  
+  ordset_ext:ord_sets_to_pairs(ISets, IPairs),
+  length(IPairs, NumberOfIPairs),
 
 /*
   % Check whether this identity node belongs to the lower or to the
@@ -325,7 +329,17 @@ assert_inode_(Mode, G, Hash1, Shared, ISets):-
   ;
     % -- say it --
     assert(
-      inode(Mode,Hash2,Hash1,Shared,Approx,NumberOfIPairs,NumberOfPairs,Pairs)
+      inode(
+        Mode,
+        Hash2,
+        Hash1,
+        Shared,
+        Approx,
+        NumberOfIPairs,
+        IPairs,
+        NumberOfPairs,
+        Pairs
+      )
     )
   ).
 
@@ -410,7 +424,7 @@ check_shares_predicates(G, SharedPs, ISets):-
 
 clear_db:-
   retractall(ihier(_,_,_,_,_,_)),
-  retractall(inode(_,_,_,_,_,_,_,_)).
+  retractall(inode(_,_,_,_,_,_,_,_,_)).
 
 %! rdf_shared(
 %!   +Graph:atom,
