@@ -104,7 +104,7 @@ iotw_table(GAK_Hash) -->
       inode(
         _Mode,
         GAK_Hash,
-        _IHierHash,
+        IHierHash,
         SharedPs,
         _Approx,
         NumberOfIPairs,
@@ -113,6 +113,7 @@ iotw_table(GAK_Hash) -->
         Pairs
       )
     ),
+    once(ihier(IHierHash, G, _, _, _, _)),
     with_output_to(
       atom(SharedLabel),
       print_set([write_method(rdf_term_name)], SharedPs)
@@ -134,12 +135,12 @@ iotw_table(GAK_Hash) -->
         ),
         findall(
           [S1,P1,O1],
-          rdf(S1, P1, O1),
+          rdf(S1, P1, O1, G),
           L1
         ),
         findall(
           [S2,P2,O2],
-          rdf(S2, P2, O2),
+          rdf(S2, P2, O2, G),
           L2
         ),
         append([[['Subject','Predicate','Object']],L1,L2], L),

@@ -11,6 +11,40 @@
 
 Runs IOTW experiments on the IIMB alignment data.
 
+# Temporary
+
+~~~{.pl}
+  once(iotw:result(_, L)),
+  length(L, Length),
+  findall(
+    AverageRecall,
+    (
+      between(1, Length, I),
+      aggregate_all(
+        sum(AverageRecall),
+        (
+          iotw:result(_, Recalls),
+          nth1(I, Recalls, Recall)
+        ),
+        Recall
+      )
+    ),
+    AverageRecalls
+  ),
+  Step is 1.0 / Length,
+  forall(
+    nth1(I, AverageRecalls, AverageRecall),
+    (
+      Prec is 1.0 - Step * I,
+      debug(
+        iotw_iimb,
+        'Precision: ~2f\tAverage recall: ~2f',
+        [Prec,AverageRecall]
+      )
+    )
+  ).
+~~~
+
 @author Wouter Beek
 @version 2013/05, 2013/08-2013/09, 2013/11-2013/12
 */
@@ -70,36 +104,6 @@ iimb_experiment:-
       % Run the IOTW experiment.
       ap_stage([between(1,80),to(output)], iimb_experiment)
     ]
-  ),
-
-  once(iotw:result(_, L)),
-  length(L, Length),
-  findall(
-    AverageRecall,
-    (
-      between(1, Length, I),
-      aggregate_all(
-        sum(AverageRecall),
-        (
-          iotw:result(_, Recalls),
-          nth1(I, Recalls, Recall)
-        ),
-        Recall
-      )
-    ),
-    AverageRecalls
-  ),
-  Step is 1.0 / Length,
-  forall(
-    nth1(I, AverageRecalls, AverageRecall),
-    (
-      Prec is 1.0 - Step * I,
-      debug(
-        iotw_iimb,
-        'Precision: ~2f\tAverage recall: ~2f',
-        [Prec,AverageRecall]
-      )
-    )
   ).
 
 %! iimb_experiment(+Number:between(1,80), SVG_DOM:list) is det.

@@ -21,13 +21,12 @@ Recommendation sharing non-monotonic?
 :- use_module(generics(deb_ext)).
 :- use_module(generics(ordset_ext)).
 :- use_module(iotw(inode)).
+:- use_module(iotw(inode_evaluate)).
 :- use_module(iotw(inode_export)).
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(xsd(xsd)).
-
-:- dynamic(result/2).
 
 :- debug(iotw).
 
@@ -80,11 +79,13 @@ run_experiment(O1, IPairs1, SVG, G):-
   export_inodes(O1, GA_Hash, SVG),
 
   % DEB
-  if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)).
-
+  if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)),
+  
   % Run the evaluation.
-  %%evaluate_inodes(O1, GA_Hash, Recalls),
-  %%assert(result(GA_Hash, Recalls)),
+  evaluate_inodes(O1, GA_Hash),
+  
+  % Done!
+  inode:clear_db.
 
 begin_experiment(ISets, NumberOfIPairs):-
   % Print the number of identity sets.
@@ -129,9 +130,9 @@ end_experiment(GA_Hash, NumberOfAllIPairs1):-
   (
     NumberOfAllIPairs1 =:= NumberOfAllIPairs1
   ->
-    debug(iotw, 'The number of ipairs matches.', [])
+    true
+    %debug(iotw, 'The number of ipairs matches.', [])
   ;
-    gtrace,
     debug(
       iotw,
       'Number of ipairs does not match: ~d and ~d.',

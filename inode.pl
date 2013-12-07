@@ -312,12 +312,12 @@ assert_inode_(Mode, G, Hash1, Shared, ISets):-
   debug(inode, 'IPerc:~2f', [IPerc]),
   (
     % Alpha lower
-    IPerc >= 1.0
+    IPerc >= 0.95
   ->
     Approx = lower
   ;
     % Alpha higher
-    IPerc > 0.0
+    IPerc > 0.05
   ->
     Approx = higher
   ;
