@@ -15,7 +15,7 @@ We start by assuming that we are given an identity relation $\approx$,
   }
 \end{equation}
 
-Identity can be defined as the smallest equivalence relation,
+\noindent Identity can be defined as the smallest equivalence relation,
   i.e. the most fine-grained partition of $S_G$.
 For reasoning purposes, the fact that $\approx$ is an equivalence relation
   is important, since this allows for both symmetrical
@@ -35,7 +35,7 @@ It is important to note that every indiscernibility relation
   is also an equivalence relation, although not necessarily the smallest one.
 Moreover, every indiscernibility relation defined over the domain $S_G$
   is also an identity relation,
-  only over a different domain \cite{Quine1950}.\footnote{
+  just over a different domain \cite{Quine1950}.\footnote{
     For instance, the set of properties
       ``has an income of $x$ euro's a month''
       with $x$ a decimal number, does not uniquely identify people
@@ -57,9 +57,9 @@ Based on the extensional specification of the identity relation,
     shared predicate terms (as the `intension') later in this section.
     Our thanks go to Cliff Joslyn for pointing this out.
   }
-Definition \ref{def:indiscernibility_properties} makes
+Definition \ref{def:indiscernibility_properties} makes explicit
   the properties relative to which the terms $x_i$ are indiscernibile
-  explicit.
+  .
 
 %TODO Define for sets or for pairs?
 \begin{definition}[Indiscernibility properties]
@@ -86,8 +86,8 @@ Definition \ref{def:indiscernibility_properties} makes
 \noindent Using definition \ref{def:indiscernibility_properties},
   we can deduce that the indiscernibility properties for
   the identity pair
-  {\small $\pair{\texttt{dbpedia:Amsterdam}}{\texttt{dbpedia:Berlin}}$}
-  would contain (amongst many others) the properties
+  {\small $\pair{\texttt{dbp:Amsterdam}}{\texttt{dbp:Berlin}}$}
+  would contain the properties
   ``is a city'' and ``is located in Europe''.
 
 Notice that in definition \ref{def:indiscernibility_properties}
@@ -95,44 +95,35 @@ Notice that in definition \ref{def:indiscernibility_properties}
   under identity.\footnote{
     It is a common modeling practive in OWL to use equivalence
       instead of identity statements between RDF properties
-      (i.e. \texttt{owl:equivalentProperty})
+      (i.e. {\small \texttt{owl:equivalentProperty}})
       and OWL classes
-      (i.e. \texttt{owl:equivalentClass}).
+      (i.e. {\small \texttt{owl:equivalentClass}}).
   }
 Performing these closures is important in order to identify
   the relevant indiscernibility properties.
-Suppose that the RDF resources {\small \texttt{dbpedia:Berlin}}
-  and {\small \texttt{freebase:m.0156q}} are identical,
+Suppose that the RDF resources {\small \texttt{dbp:Berlin}}
+  and {\small \texttt{fb:m.0156q}} are identical,
   as are the RDF properties {\small \texttt{schema:containedIn}} and
-  {\small \texttt{dbpedia-owl:locatedInArea}}.
+  {\small \texttt{dbp-owl:locatedInArea}}.
 If the database also contains the triples in
   example \ref{ex:triple1} and \ref{ex:triple2},
   we want to be able to identify the pairs in
-  {\small $\set{\texttt{schema:containedIn},\texttt{dbpedia-owl:locatedInArea}}$}
-  {\small $\times \set{\texttt{dbpedia:Berlin},\texttt{freebase:m.0156q}}$}
+  {\small $\set{\texttt{schema:containedIn},\texttt{dbp-owl:locatedInArea}}$}
+  {\small $\times \set{\texttt{dbp:Berlin},\texttt{fb.0156q}}$}
   as indiscernibility properties.
 
 \small
-\begin{example}[Triple 1]
-\label{ex:triple1}
+\begin{example}[Triples]
 \begin{align}
 \langle
-  \texttt{freebase:Teufelsberg},\\
-  \texttt{schema:containedIn},\nonumber\\
-  \texttt{dbpedia:Berlin}
-\rangle\nonumber
-\end{align}
-\end{example}
-\normalsize
-
-\small
-\begin{example}[Triple 2]
-\label{ex:triple2}
-\begin{align}
+  \texttt{fb:Teufelsberg},\label{ex:triple1}\\
+  \texttt{schema:containedIn},\,
+  \texttt{dbp:Berlin}
+\rangle\nonumber\\
 \langle
-  \texttt{dbpedia:Teufelsberg},\\
-  \texttt{dbpedia-owl:locatedInArea},\nonumber\\
-  \texttt{freebase:m.0156q}
+  \texttt{dbp:Teufelsberg},\label{ex:triple2}\\
+  \texttt{dbp-owl:locatedInArea},\,
+  \texttt{fb.0156q}
 \rangle\nonumber
 \end{align}
 \end{example}
@@ -141,7 +132,8 @@ If the database also contains the triples in
 \noindent In the above, we were interested in the properties
   that resources share with one other
   (e.g., being a city, being located in Europe).
-But we are also interested in the predicates that a set of resources shares.
+But we are also interested in the predicates that are shared by
+  a set of resources.
 This amounts to a simple abstraction of
   definition \ref{def:indiscernibility_properties},
   equating the sets of objects (closed under identity)
@@ -182,7 +174,7 @@ This amounts to a simple abstraction of
 \normalsize
 
 \noindent Taking the same example as before, the identity pair
-  {\small $\pair{\texttt{dbpedia:Amsterdam}}{\texttt{dbpedia:Berlin}}$}
+  {\small $\pair{\texttt{dbp:Amsterdam}}{\texttt{dbp:Berlin}}$}
   has the identity closure of ``is a'' and ``is located in''
   as its indiscernibility predicates.
 
