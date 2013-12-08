@@ -8,44 +8,31 @@ higher_recall <- c(1.0,0.976185052819561,0.9600384749021372,0.9425765362723856,0
 quality <- c(0.5190405227795084,0.23261438049447705,0.1904353344556299,0.18505145463363135,0.17658153004935476,0.17387635867899948,0.17168948193128328,0.17017370794837366,0.16844506704419984,0.1677780567227606)
 plot(
   lower_recall,
-  col=darkgreen,
+  cex=.6,
+  cex.lab=0.95,
+  col="darkgreen",
   pch=22,
-  type=o,
-  xaxt=n,
+  type="o",
+  xaxt="n",
   xlab="Perc. of removed identity pairs",
   ylab="Recall in percent",
   ylim=c(0.0,1.0)
 )
 lines(
   higher_recall,
-  col=darkred,
-  type=o
+  col="darkred",
+  type="o"
 )
 lines(
   quality,
-  col=black,
+  col="black",
   lty=2,
-  type=o
+  type="o"
 )
 axis(
   1,
-  at=1:10,
-  cex.axis=0.7,
-  labels=seq(0.0, 0.9, by=0.1)
-)
-axis(
-  2,
-  at=1:10,
-  cex.axis=0.7,
-  labels=seq(0.0, 0.9, by=0.1)
-)
-legend(
-  c(4, 6, 8),
-  fill=terrain.colors(3),
-  horiz=TRUE
-  inset=.05,
-  title="Legend",
-  topright
+  at=1:11,
+  labels=seq(0.0, 1.0, by=0.1)
 )
 ~~~
 
@@ -53,23 +40,19 @@ legend(
 in_higher <- c(1.0,0.5877680311890837,0.5747530425162004,0.572660333493667,0.5831761670185315,0.5799385908868745,0.5701984042084377,0.5692284399224807,0.558405393333526,0.5051324217787632)
 plot(
   in_higher,
-  type=o,
-  xaxt=n,
+  cex=.6,
+  cex.lab=0.95,
+  type="o",
+  xaxt="n",
   xlab="Percentage of removed identity pairs",
-  ylab="Perc. of removed identity pairs in higher approx.",
+  ylab="Perc. of rem. id. pairs in higher approx.",
   ylim=c(0.1,1.0)
 )
 axis(
   1,
   at=1:10,
-  cex.axis=0.7,
-  labels=seq(0.0, 0.9, by=0.1)
-)
-axis(
-  2,
-  at=1:10,
-  cex.axis=0.7,
-  labels=seq(0.0, 0.9, by=0.1)
+  labels=seq(0.0, 0.9, by=0.1),
+  font=0.5
 )
 ~~~
 
