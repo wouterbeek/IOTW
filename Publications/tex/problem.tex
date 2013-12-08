@@ -1,10 +1,16 @@
 \section{Stating the problem}
 \label{sec:stating_the_problem}
 
-Identity is often thought of as having the exact same properies.
+Identity is often thought of as the sharing of all properties between
+two objects with different names. 
 This statement is known as the Principle of indiscernibility
 (see principle \ref{principle:indiscernibility_of_identicals})
 and has been attributed to Leibniz \cite{Forrest2010}.
+%\footnote{
+%  Inverting the implication in
+%    principle \ref{principle:indiscernibility_of_identicals}
+%    results in the identity of indiscernibles.
+%}
 % According to Forrest2010 this can be found in Gottfried Wilhelm Leibniz,
 % Discourse on Metaphysics, section 9.
 % There I find the following passage:
@@ -15,7 +21,7 @@ and has been attributed to Leibniz \cite{Forrest2010}.
 %   and the whole sequence of exterior events.
 % \end{quote}
 
-%\small
+\marginpar{double\\arrow?}
 \begin{principle}[Indiscernibility of identicals]
 \label{principle:indiscernibility_of_identicals}
 \begin{equation}
@@ -24,17 +30,16 @@ and has been attributed to Leibniz \cite{Forrest2010}.
     \forall_{\phi \in \Phi} \phi(a) = \phi(b)\nonumber
 \end{equation}
 \end{principle}
-%\normalsize
 
 \noindent Although the principle provides necessary and sufficient conditions
   for identity, it does not point towards an automated procedure
   for enumerating the extension of the identity relation,
   since due to its circular nature the set of properties includes
-  ``being identical to $x$'' (for every resource $x$).
+  ``being identical to $x$'' (for every object $x$).
 But even though this priciple does not
   allow a positive identification of identity pairs,
   it does provide an exclusion condition,
-  namely resources that are known to not share some property
+  namely objects that are known to not share some property
   are also known to not be identical.
 
 \subsection{Generic problems of identity}
@@ -42,11 +47,11 @@ But even though this priciple does not
 Identity poses several problems which are not specific to the SW.
 Firstly, identity does not hold across (all) modal contexts,
   allowing Louis Lane to believe that Superman saved her,
-  without her knowling that Clark Kent saved here.
+  without her knowing that Clark Kent saved her.
 
-Secondly, identity seems to be a relative concept \cite{Geach1967},
+Secondly, identity seems to be a context-specific concept \cite{Geach1967},
   allowing two medicines to be the same chemical \emph{substance}
-  while not being the same \emph{medicine}.
+  while not being the same \emph{commercial drug}.
 
 Thirdly, identity over time poses problems,
   since a ship may be considered the same
@@ -77,9 +82,9 @@ The semantics for SW identity are given in definition \ref{def:owl_sameAs}.
 
 \noindent In the context of the SW identity assertions are extra strong
   because of the Open World Assumption.
-Stating that two resources are the same
-  implies that from now on no new property can be added
-  to only one of those resources
+Stating that two objects are the same
+  implies that from now on no new property can be stated about
+  only one of those objects
   (this follows from definition \ref{def:owl_sameAs} in combination with
   the principle of substitutivity \emph{salva veritate}).
   % Look this one up in
@@ -98,7 +103,7 @@ Formulated in terms of
 This set is obviously much bigger than the actual vocabulary
   of any in-use dataset.
 
-Moreover, whether or not two resources share the absence of a property
+Moreover, whether or not two objects share the absence of a property
   (i.e., a property of the form ``does not have the property $\phi$''),
   cannot be concluded based on the absence of a property assertion.
 Such `negative knowledge' must be provided explicitly
@@ -108,13 +113,17 @@ Such `negative knowledge' must be provided explicitly
 
 When we take the social component of the SW into account as well,
   we observe that modelers have different opinions about
-  whether two resources are identical or not.
+  whether two objects are identical or not,
+  because they operate in different contexts.
+This is unlike many traditional uses of knowledge-bases,
+  where a knowledge-base is rarely re-used outside its original
+  context of construction.
 As a consequence, SW modelers are known not to conform to
-  the strict semantics of identity (def. \ref{def:owl_sameAs}),
+  the strict semantics of identity (definition \ref{def:owl_sameAs}),
   resulting in situations where one person
-  claims two resources to be identical
+  claims two objects to be identical
   whereas another considers them to be only (closely) related.
-It is indeed unlikely that all who contribute to the SW
+It is indeed unrealistic that all who contribute to the SW
   are able to quantify over the entire realm of possible properties
   (i.e., $\Phi$ in principle \ref{principle:indiscernibility_of_identicals}).
 
@@ -145,24 +154,42 @@ The fifth `star' or maxim is given in \ref{eq:data_linking_maxim}.
   the {\small \texttt{owl:saveAs}} predicate term \cite{Void2011}
   % The VoID W3C Interest Group Note states that
   % ``RDF links often have the \texttt{owl:sameAs} predicate.''
-  we conclude that the pragmatics of the SW are orthogonal to its semantics.
+  we conclude that the pragmatics of the SW
+aggravate the already problematic semantics of identity.
 
-[1] The pragmatics of the SW, observed in contemporary common practices,
-  states that by asserting identity between resources,
-  more context is added for those resources
-  (since linking results in more triples being asserted
+The pragmatics of the SW, observed in contemporary common practices,
+  states that by asserting identity between objects,
+  more context is added for those objects
+  (since such identity links result in more facts being asserted
   about the same resource).
 At the same time we see that the strict semantics of identity
-  gets violated once the context in which a resource was created
+  gets violated once the context in which an object was created
   is extended (by identity assertions) beyond this original context
   (see the section on the generic problems of identity).
 This is true regardless of whether `context' is defined in terms of
   `intended use', `domain', `time', or `modality'.
 
-[2] From the social point of view,
+Concluding, from the social point of view
   we see that the requirements on SW modelers
   are unreasonably high when they are required to
-  assert identity links in accordance with the semantics.
-At the same time the pragmatics states that modelers should
+  assert identity links in accordance with the semantics, while
+at the same time the pragmatics states that modelers should
   make those links in order to place their knowledge into context.
 
+
+
+\subsection{Research goals}
+\label{sec:research_goals}
+
+Based on the above analysis, we can state the following desiderata for 
+an identity relation that does not suffer from the problems stated above: 
+
+\begin{enumerate}
+\item In an identity relation the pairs all look the same.
+      We want to characterize subrelations of an identity relation in terms
+      of the predicates that are important in a particular context.
+\item Based on an existing identity relation we want to give semantically
+      motivated suggestions for extending or limiting the identity relation.
+\item We want to assess the quality of an identity relation based on
+      the consistency with which it is applied to the data.
+\end{enumerate}

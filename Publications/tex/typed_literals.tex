@@ -1,14 +1,23 @@
 \subsection{Identity of typed literals}
 
-In defining the indiscernibility criteria
-  (def. \ref{def:indiscernibility_criteria}),
-  identity does not suffice in order to assertain that
-  the sets of object terms denote the same resources.
+In order to deal with predefined datatypes such as integers, dates, etc,
+  RDF introduces the notion of ``typed literals''.
+For such typed literals, identity does not suffice in order to assertain
+  that the sets of object terms denote the same resources
+  (definition \ref{def:indiscernibility_properties}).
 The reason for this is that typed literals have special identity conditions.
-The case here is quite nuanced,
-  but then again typed literals are quite common in SW data,
-  so we elaborate on this nuance here.
+Since typed literals are quite common in SW data, we elaborate on this here.
+Roughly speaking, for typed literals we assume a lexical-to-value mapping
+  \cite{Hayes2004}, which assigns a value to each lexical expression,
+  and four each datatype we assume a datatype-specific identity relation
+  partitioning the datatype's value space. 
+Identity between typed literals is then defined
+  as the datatype-specific identity between the values of the literals
+  under the lexical-to-value mapping). 
+This extension was already used to perform the computational
+  experiment of section \ref{sec:experiment}. 
 
+\begin{comment}
 First we assume a datatype map
   \mbox{$D : \mathcal{I} \rightarrow ICEXT(I({\small \texttt{rdfs:Datatype}}))$},
   where $ICEXT$ is the functional map from classes onto their instances.
@@ -65,4 +74,4 @@ But for ill-typed literals,
   some arbitrary non-literal value \cite{Hayes2004}.\footnote{
     From the practice of working with SW data, the authors can testify
     that ill-typed literals do occur and are actually quite common!}
-
+\end{comment}

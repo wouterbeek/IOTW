@@ -1,5 +1,5 @@
-\subsection{Generic properties and predicates}
-\label{sec:generic_properties}
+\subsection{Path-expressions}
+\label{sec:path_expressions}
 
 The indiscernibility predicates in
   definition \ref{def:indiscernibility_predicates}
@@ -27,14 +27,12 @@ Obviously, Brussels and Brno share this propery as well,
   able to discern Brussels, Brno and Amsterdam from
   Stuttgart, Portland, and The Netherlands.
 
-We generalize the notion of a predicate,
+The notion of a predicate,
+can be easily generalised 
   so that is can be denoted by a sequence of RDF predicate terms.
-For example, in the IIMB dataset the property
-  ``is spoken in a country whose capital is'' is denoted by
-  {\small $\pair{\texttt{IIMBTBOX:spoken\_in}}{\texttt{IIMBTBOX:has\_capital}}$},
-  relating natural languages to the capitals of the countries in which
-  they are spoken.
+Such sequences are called \emph{path-expressions} in RDF. 
 
+\begin{comment}
 For each sequence of predicate terms $\tuplerange{p_1}{p_n}$
   we assume a functional mapping
   $f_{\tuplerange{p_1}{p_n}} : S_G \rightarrow \powerset{O_G}$,
@@ -83,4 +81,4 @@ By using property sequence maps,
   }\nonumber
 \end{align}
 \end{definition}
-
+\end{comment}

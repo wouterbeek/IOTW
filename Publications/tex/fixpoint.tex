@@ -11,11 +11,11 @@ We will illustrate this with the example depicted
 \begin{figure}
 \label{fig:fixpoint}
 \centering
-\includegraphics{./img/fixpoint_example}%[width=\columnwidth]
+\includegraphics[width=0.25\columnwidth]{./img/fixpoint_example_cropped}
 \caption{
   An illustrative example in which we show that defining
-  $\lowerapprox$ in terms of $\indp_{\approx}$ may not be optimal.
-  The identity relation is represented by double-lined edges.
+  $\lowerapprox$ in terms of $\higherapprox$ may not be optimal.
+  The identity relation is represented with double-lined edges.
   $s_i$, $p$, and $o_i$ are subject, predicate, and object terms respectively.
   The directed edges represent triples.
 }
@@ -43,7 +43,7 @@ It seems more correct, however, to base the indiscernibility criteria
   for calculating the lower approximation on $\lowerapprox$ itself
   (and similarly for the higher approximation).
 The resulting definition \ref{def:identity_lower_approximation_fixpoint}
-  is circular.
+  is recursive.
 It affects the closure operations over the predicate and object terms
   in definition \ref{def:indiscernibility_predicates}.
 

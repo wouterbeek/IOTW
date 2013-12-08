@@ -61,6 +61,7 @@ Definition \ref{def:indiscernibility_properties} makes
   the properties relative to which the terms $x_i$ are indiscernibile
   explicit.
 
+\marginpar{define for\\pairs only?}
 \begin{definition}[Indiscernibility properties]
 \label{def:indiscernibility_properties}
 \begin{align}
@@ -182,8 +183,7 @@ This amounts to a simple abstraction of
 
 \noindent Taking the same example as before, the identity pair
   {\small $\pair{\texttt{dbpedia:Amsterdam}}{\texttt{dbpedia:Berlin}}$}
-  has the identity closure of
-  ``is a'' and ``has more than $x$ inhabitants''
+  has the identity closure of ``is a'' and ``is located in''
   as its indiscernibility predicates.
 
 
@@ -191,9 +191,10 @@ This amounts to a simple abstraction of
 \subsection{Discerning the same}
 
 In the previous section we saw that resources are \mbox{\emph{indiscernible}}
-  with respect to $PO$ iff they cannot be told appart
+  with respect to $PO$ iff they cannot be told apart
   in a language that only contains the properties denoted by $PO$
-  (the so-called indiscernibility properties).
+  (the so-called indiscernibility properties):
+
 In the same vein,
   and builing upon definition \ref{def:indiscernibility_predicates},
   we say that two pairs of resources are \emph{simi-discernible}
@@ -242,9 +243,8 @@ The members of the partition induced by $\equiv_{\indp_{\approx}}$
       in that order).
     \emph{Between} pairs, what is shared -- if something is shared --
       are predicates, denoted by RDF predicate terms.
-    So it is indeed correct to state that
-      simi-discernible resource pairs share properties.
   }
+
 Notice that the partitioned pairs contain but are not limited to
   the identity pairs.
 Therefore, for sets of pairs closed under simi-discernibility

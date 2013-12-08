@@ -21,6 +21,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage{times}
 \usepackage{verbatim}
+\usepackage{changebar}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\newcommand{\URL}[1]{{\small \url{#1}}}
 
 % Operator macros.
 \newcommand{\absolute}[1]{\lvert#1\rvert}
@@ -84,18 +88,35 @@
 
 \maketitle
 \begin{abstract}
-\begin{quote}
-Identity relations are at the foundation of the Linked Open Data initiative
-  and on the Semantic Web in general.
-They allow the interlinking of alternative descriptions of the same thing.
-However, many practical uses of \verb|owl:sameAs| are known to violate its
-  formal semantics.
-We propose a method that assigns meaning to (the subrelations of)
-  an identity relation using the predicates of the dataset schema.
-Applications of this approach include automated suggestions for
-  asserting/retracting identity pairs and quality assessment.
-We also describe an experimental design for this approach.
-\end{quote}
+Identity relations are at the foundation of many logic-based knowledge representations.
+We argue that the traditional notion of equality, based on Leibniz' principle of indiscernability,
+is unsuited in many realistic knowledge representation settings. The classical  interpretation of equality
+is simply too strong when the equality statements are being re-used outside their original context. 
+
+The most prominent modern example of such re-use of knowledge across contexts is the 
+Linked Open Data initiative, and the Semantic Web in general. On the Semantic Web,
+equality statements are used to interlink multiple descriptions of the same object, 
+using \verb|owl:sameAs| assertions. And indeed, many practical uses 
+of \verb|owl:sameAs| are known to violate the formal Leibniz-style semantics.
+
+We first survey the problems with the classical definition of identity, both in general, 
+and on the Semantic Web in particular. 
+In order to provide a more flexible semantics to identity, 
+we then propose a method that assigns meaning to the subrelations of
+an identity relation using the predicates that are used in a knowledge-base.
+Using these indiscernability-predicates, we define upper and lower approximations 
+of equality in the style of rought-set theory, and resulting in a quality-measure for the identity relation. 
+
+We illustrate our approach on a realistic Semantic Web dataset, and we
+verify experimentally that our approach yields the intuitively desired
+results on this dataset. 
+
+The full code and results of our experiments are available at
+\URL{wouterbeek.com/identity-on-the-web} and
+\URL{github.com/wouterbeek/IOTW}.
+
+
+
 \end{abstract}
 
 \input{./tex/intro.tex}
@@ -103,11 +124,12 @@ We also describe an experimental design for this approach.
 \input{./tex/relwork.tex}
 
 \input{./tex/approach.tex}
-\input{./tex/extensions.tex}
 
 \input{./tex/applications.tex}
 \input{./tex/implementation.tex}
 \input{./tex/exp.tex}
+
+\input{./tex/extensions.tex}
 
 \input{./tex/concl.tex}
 %\input{./tex/futurework.tex}

@@ -1,14 +1,16 @@
 \subsection{Preliminaries}
 \label{sec:preliminaries}
 
-$G$ denotes an RDF graph, which is a set of triples.
-We assume that graphs are always materialized under
+$G$ denotes an RDF graph. It consists of a set of ground binary
+predicates $p(s,o)$, called ``triples'' in Semantic Web jargon, and often
+written as $\triple{s}{p}{o}$. These triples form a graph with all
+subjects $s$ and objects $o$ as nodes, and 
+each assertion $p(s,o)$ corresponding to a directed edge labelled $p$
+between $s$ and $o$. 
+
+We assume that graphs are always closed under
   RDFS and OWL-DL entailment
   (see section \ref{sec:implementation} for details).
-A triple consists of a subject, predicate, and object term.
-Subject terms can be blank nodes or URIs, predicate terms can only be URIs,
-  and object terms can be blank nodes, URIs,
-  or literals \cite{KlyneCarroll2004}.
 
 We identify subsets of RDF terms based on
   their positional occurrence in triples in $G$:
@@ -34,7 +36,7 @@ An RDF property is a resource (i.e., a member of the domain)
     Every URI \emph{could} occur in the predicate position of a triple,
       but some URIs are known to denote non-property resources.
   }
-As exampled above, the extension of an RDF property is
+As the example above shows, the extension of an RDF property is
   a binary \emph{FOL relation},
   i.e. a subset of the cartesian product of the domain.\footnote{
     In RDF the domain is the set of RDF resources.}
@@ -45,11 +47,11 @@ The correlate of a FOL property in RDF is a pair that consists of
 The extension of the interpretation of such a pair $\pair{p}{o}$
   is $Ext(I(p))(I(o))$, which is -- indeed -- a set of RDF resources.
 
-In section \ref{sec:generic_properties} we will generalize
+In section \ref{sec:path_expressions} we will generalize
   both the concept of a property and the concept of a relation.
-Generalized properties are still be similar to FOL properties
-  and generalized binary relations are still similar to binary FOL relations.
-The latter will no longer correspond to a (single) RDF property.
+Generalized properties will still be similar to FOL properties
+  and generalized binary relations will still similar to binary FOL relations,
+  but the latter will no longer correspond to a (single) RDF property.
 
 \begin{comment}
 $\equivset{x}$ is the equivalence class for $x$

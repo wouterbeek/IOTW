@@ -18,23 +18,6 @@ Our code also supports the loading of alignment files that are formatted in
   format \cite{DavidEzenatScharffeTrojahn2011}.
 This allows OAEI datasets to be loaded easily.
 
-% AJAX, PRECISION
-Interactive Ajax code allows the user to click on nodes in the SVG graphic
-  to navigate to descriptions of the resource pairs that occur in
-  that partition set while not being in the identity relation.
-This implementation may facilitate the validation of hypotheses in this
-  new experimental setup.
-
-% PROLOG
-The code is written in SWI-Prolog 7.1.1 \cite{Wielemaker2003}
-  and is deployed as an extension pack
-  of the ClioPatria triple store \cite{Schreiber2006}.
-% GRAPHVIZ DOT
-For visualizing the results we use GraphViz 2.30.1 Dot.
-% SVG
-For ease of use the visualizations are displayed in a Web interface
-  using SVG for the sub-relation hierarchy.
-
 % COMPLEXITY: EASY
 Calculating the identity sub-relations, i.e. the higher approximation,
   does not require a partitioning of the cartesian product of the domain.
@@ -102,12 +85,24 @@ Since canonical mappings are one-to-one \cite{XmlSchema2012},
   canonical lexical expression comparison,
   requiring only a linear number of lexical expression parses.
 
-% XML DATATYPES
 Existing SW libraries implement equivalence relations for common datatypes.
 Equivalence is not always in line with identity though.
 We have made exceptions for specific values that are known to have
   equivalent non-identities (such as $0$ and $-0$)
-  non-equivalent identities (such as $NaN$ for \texttt{float}) \cite{XSD11}.
+  non-equivalent identities (such as $NaN$ for {\small \texttt{float}})
+  \cite{XSD11}.
+\begin{comment}
 The latter even provides a rare instance of the violation of
   definition \ref{def:identity}.
+\end{comment}
 
+% PROLOG,GRAPHVIZ,AJAX
+The implementation built for this paper is deployed as an extension pack
+  of the ClioPatria triple store\URL{cliopatria.swi-prolog.org}.
+For RDF graphs that are loaded in ClioPatria this extension calculates
+  the discernibility partition, rough set approximation and accuracy.
+The results are visualized using GraphViz and are displayed in a
+  Web interface using SVG.
+Interactive Ajax code allows the user to click on nodes in the SVG graphic
+  to navigate to descriptions of the resource pairs that occur in
+  that partition set while not being in the identity relation.

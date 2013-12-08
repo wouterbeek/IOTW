@@ -1,18 +1,20 @@
-\section{Experimental design}
+\section{Experiment}
 \label{sec:experimental_design}
 
 For illustrative purposes we use the IIMB dataset that is used in the
   instance matching track of the 2012 Ontology Alignment Evaluation
-  Initiative (OAEI) \cite{oaei_2012}.
+  Initiative (OAEI\footnote{\URL{oaei.ontologymatching.org}}).
 This dataset consists of eighty ontologies $G_i$ (for $1 \leq i \leq 80$)
   that are linked to a single base ontology $G_0$.
+The identity links between $G_0$ and $G_i$ are annotated with a
+  confidence measure between 0 and 1.
 A graph $G$ is the result of fully materializing the graph merge
   of $G_i$ (for some $1 \leq i \leq 80$) and $G_0$.
 For each of these eighty linked ontologies a reference mapping is available.
 
 In section \ref{sec:research_goals} we enumerated three research goals.
 The first goal is met, since an indiscernibility partition characterizes
-  subrelations based on the ppms $P$ for which the pairs in that sets
+  subrelations based on the predicates $P$ for which the pairs in that sets
   are $cl_{\sim}(P)$-indiscernible.
 In this way we can distinguish between different types of identity
   by treating $P$ as a description of a (sub)set of identity pairs.
@@ -31,13 +33,13 @@ The crispness of the set is proportional to the quality of the
   identity relation, based on its semantic consistency.
 
 Our approach provides a new experimental design for evaluating
-  hypothesis regarding identity relations that have not been
+  hypotheses regarding identity relations that have not been
   evaluated before in terms of the semantics of the data.
 
 \subsection{Hypotheses}
 \label{sec:hypotheses}
 
-Using this new approach the following hypothesis can be validated:
+Using this new approach the following hypotheses can be validated:
 
 \begin{enumerate}
 \item Take an \verb|owl:sameAs| relation and a \verb|skos:related|
