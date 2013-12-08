@@ -5,9 +5,9 @@
 
 In order to subject our theory to an experimental test,
   we use the IIMB dataset\footnote{\URL{islab.di.unimi.it/iimb}}
-  that is used in the
-  instance matching track of the 2012 Ontology Alignment Evaluation
-  Initiative (OAEI\footnote{\URL{oaei.ontologymatching.org}}).
+  used in the instance matching track of the
+  2012 Ontology Alignment Evaluation Initiative
+  (OAEI)\footnote{\URL{oaei.ontologymatching.org}}.
 This dataset consists of eighty ontologies $G_i$ (for $1 \leq i \leq 80$)
   that are linked to a single base ontology $G_0$.
 The identity links between $G_0$ and $G_i$ are annotated with a
@@ -20,22 +20,22 @@ In our experiment we ran separate tests for each of the $80$ datasets
   and took the average values for incremental reductions of
   random parts of the identity relations between $G_0$ and the $80$
   different $G_i$'s.
-In other words we deliberate make the identity relation incomplete.
+In other words: we deliberately make the identity relation incomplete.
 We then calculate the rough set representation using this altered relation.
-We then evaluate how many of the removed identity pairs occur in
+Subsequently ,we evaluate how many of the removed identity pairs occur in
   the higher approximation.
-Our hypothesis is that the percentage of removed identity pairs
-  in the higher approximation is larger than the percentage of pairs
+Our hypothesis is that the percentage of removed \emph{identity pairs}
+  in the higher approximation is larger than the percentage of \emph{pairs}
   in the higher approximation.
 If the hypothesis is validated, this indicates that
   calculating the rough set representation for a partial identity relation
   would indeed improve suggestions for extending that identity relation.
 
 Since the data may contain noise, using precision degrees $0.0$ and $1.0$
-  may be too strict. For this experiment we have set these boundaries
+  may be too strict. For this experiment we have set the boundaries
   to $0.05$ and $0.95$ respectively.
 
-Figure \ref{fig:recall_quality} shows the different behaviours of the
+Figure \ref{fig:recall_quality} shows the different behaviors of the
   upper and lower approximations, with the upper approximation indeed
   having a dramatically higher recall than the lower approximation.
 
@@ -44,7 +44,7 @@ Figure \ref{fig:recall_quality} shows the different behaviours of the
 \includegraphics[width=0.8\linewidth]{./img/recall_quality}
 \caption{
   The recall of the lower and higher approximation
-    are shown by the green line (circles) and red line (boxes) respectively.
+    is shown by the green line (circles) and red line (boxes) respectively.
   The quality metric (definition \ref{def:quality})
     is shown by the dashed line.
 }
@@ -95,8 +95,8 @@ Space limitations do not allow us to describe the results of further
         the hypothesis is that pairs from {\small \texttt{owl:sameAs}}
         occur more frequently in the lower boundary than pairs from
         {\small \texttt{skos:related}},
-\item Take a set of alignment pairs, each of which is associated with
-        a confidence measure between $0.0$ and $1.0$.
+\item Take a set of alignment pairs, each associated with a confidence measure
+        between $0.0$ and $1.0$.
       Choose an arbitrary cutoff point $0.0 < c < 1.0$.
       The hypothesis is that alignments with a confidence larger than $c$
         occur more frequently in the lower approximation than alignments
@@ -116,5 +116,5 @@ Space limitations do not allow us to describe the results of further
 
 \noindent Finally, the IIMB datasets are quite small
   (tens of thousands of triples).
-We will have the verify whether the current implementation is able to scale
+We will have to verify whether the current implementation is able to scale
   to bigger datasets.

@@ -1,13 +1,9 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper we have given an new approach for characterizing,
-  extending/retracting, and assessing identity relations.
+In this paper we presented a new approach for characterizing,
+  extending, retracting, and assessing identity relations.
 Our approach does this in purely qualitative terms, using schema semantics.
-In contemporary ontology alignment and data linking activities nonsemantic
-  aspects of resources play a role as well.
-For instance similarity assessment for natural language labels is often
-  used in data linking.
 
 In section \ref{sec:research_goals} we enumerated three research goals.
 The first goal is met, since an indiscernibility partition characterizes
@@ -32,25 +28,35 @@ The crispness of the set is proportional to the quality of the
 
 Our approach provides a new experimental design for evaluating
   hypotheses regarding identity relations that have not been
-  evaluated before in terms of the semantics of the data.
-
-We think that the qualitative means of characterizing an identity relation
-  are a useful addition to existing quantitative means.
+  evaluated before, in terms of the semantics of the data.
+We think that qualitative means of characterizing an identity relation
+  is a useful addition to existing quantitative means.
 Also, we think that it is more useful and viable to enrich existing
-  identity relations in the LOD based on the semantics of the datasets
-  in which they occur, than to introduce new relationships into SW languages.
+  identity relations in LOD based on the semantics of the datasets
+  in which they occur,
+  rather than introducing new relationships into SW languages.
 Apart from the practical difficulties of teaching practitioners
   and transforming/enriching existing datasets, we suggest that the
-  meaning of an identity (sub)relation is partially defined in its use,
+  meaning of an identity relation and its subrelations
+  is partially defined in its use,
   i.e., in the indiscernibility criteria it embodies.
 
 For our approach it is not necessary to pose additional restrictions
   on a binary relation $\approx$.
 The definitions in this paper apply to {\small \texttt{owl:sameAs}} relations
-  in the same way in which they apply to any other binary relation
+  in the same way in which they apply to other binary relations
   (e.g., {\small \texttt{skos:related}}).
 
-We are currently in the process of validating the above enumerated hypotheses.
-The results of these evaluations are continuously being published on
-  \URL{wouterbeek.com/identity-on-the-web} and
-\URL{github.com/wouterbeek/IOTW}.
+In contemporary ontology alignment and data linking activities,
+  non-semantic aspects of resources play a role as well.
+For instance, similarity assessment for natural language labels is often
+  used in data linking.
+We have purposefully not taken such non-semantic aspects into account here,
+  also because data linking is not the main focus of our research.
+We do see possibilities for future hybrid approaches.
+
+%We are currently in the process of validating the hypotheses
+%  enumerated in section \ref{sec:hypotheses}.
+%The results of these evaluations are continuously being published on
+%  \URL{wouterbeek.com/identity-on-the-web} and
+%\URL{github.com/wouterbeek/IOTW}.

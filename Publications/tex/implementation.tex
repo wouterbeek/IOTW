@@ -29,8 +29,8 @@ Since in this figure a partition is only drawn when there is at least one
 The lower approximation only consists of those partition sets that contain
   at least one identity pair, and that contain no non-identity pair;
   these are distinguished by green borders.
-For each box the precision has been calculated
-  according to definition \ref{def:precision}.
+For each box the precision is calculated according to
+  definition \ref{def:precision}.
 
 \begin{definition}[Precision]
 \label{def:precision}
@@ -64,15 +64,13 @@ If we also use the precision of each partition member,
 
 Alternatively, a low precision may indicate that objects are not
   discernible in terms of the currently asserted predicates.
-This is also a relevant form of feedback,
-  since if a modeler has though of two objects as being identical
-  without them sharing any properties, ...
-
+%This is also a relevant form of feedback,
+%  for if a modeler has though of two objects as being identical
+%  without them sharing any properties, ...
 This often happens when the (natural language) contents of non-typed labels
   are used in order to characterize objects.
-For example, two objects that have 
 
-Finally, the difference between higher and lower approximation
+Also, the difference between higher and lower approximation
   gives an indication of the quality of the identity relation.
 
 
@@ -111,8 +109,8 @@ Since in real-world data the number of identity pairs
   subrelations is cheap.
 Even calculating this using the path-expressions extension
   (section \ref{sec:path_expressions})
-  is cheap, since the number of edge types in RDF data is relatively large
-  (so there are not many sequences of identical predicates).
+  is cheap, since the number of edge types in RDF data is relatively large;
+  so there are not many sequences of identical predicates.
 It is also cheap to calculate the predicate sets that characterize
   the lower approximation, plus its extensions,
   since there are relatively few subrelations that belong to it,
@@ -120,10 +118,11 @@ It is also cheap to calculate the predicate sets that characterize
 
 % COMPLEXITY: DIFFICULT
 It is more costly to calculate the extension of the subrelations that are
-  in the higher approximation (and that are not in the lower approximation).
+  in the higher approximation and that are not in the lower approximation.
 This requires an inverse search, starting from sets of
-  indiscernibility predicates, and ending with (identical and non-identical)
-  pairs of objects sharing (all and only) those predicates.
+  indiscernibility predicates, and ending with
+  -- identical and non-identical --
+  pairs of objects sharing all and only those predicates.
 The extension of subrelations is, however, necessary in order to
   calculate the quality of the identity relation
   as well as the precision (definition \ref{def:precision})
@@ -137,8 +136,8 @@ Firstly, we optimize the search by restricting the number of pairs
   for which we have to check whether they share a given set of predicates.
 We do this by ordering the predicates based on their
   estimated complexity \cite{Wielemaker2005},
-  allowing us to match triples that contain rarely occuring predicates
-  before matching frequently occuring predicates.
+  allowing us to match triples that contain rarely occurring predicates
+  before matching frequently occurring predicates.
 Additionally, by using an arbitrary strict order on terms
   (e.g. lexicographically),
   only half the search space needs to be taken into account
@@ -147,23 +146,23 @@ Additionally, by using an arbitrary strict order on terms
 \textbf{[2] Datastructures.}
 Secondly, we use an AVL tree-based association list
   in order to store the indiscernibility predicates.
-The storage of indiscernibility properties uses a similar, but nested
-  association list (mapping sets of predicate terms onto
-  onto sets of subject term pairs).
+The storage of indiscernibility properties uses a similar -- but nested --
+  association list mapping sets of predicate terms onto
+  sets of subject term pairs.
 This means that operations on datastructures are at most $O(\log(n))$.
 
 \textbf{[3] Canonical forms for XML datatypes.}
-Thridly, it is expensive to determine whether lexical expressions
+Thirdly, it is expensive to determine whether lexical expressions
   of the same datatype are identical or not,
   due to time spent on parsing those expressions
   in order to determine their value.
-In the worst case. the number of such parses is quadratic
+The -- worst case -- number of such parses is quadratic
   in the number of same-typed literals.
 Since canonical mappings are one-to-one \cite{XmlSchema2012},
   it is possible to determine value identity by comparing
   canonical lexical expressions,
   requiring only a linear number of lexical expression parses.
-This is acchieved by converting all lexical expressions
+This is achieved by converting all lexical expressions
   to their canonical lexical form prior to running the main algorithm.
 
 \begin{comment}
