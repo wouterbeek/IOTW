@@ -90,7 +90,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel),
   format(
     atom(V_Label),
-    '~w\n~w identity~w',
+    '~w\n~w\nidentity~w',
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
@@ -113,7 +113,7 @@ calculate_quality(IHierHash, Quality):-
   ->
     Quality = 1.0
   ;
-    Quality = HigherCardinality / LowerCardinality
+    Quality = LowerCardinality / HigherCardinality
   ).
 
 %! export_inodes(

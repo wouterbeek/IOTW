@@ -82,7 +82,7 @@ run_experiment(O1, IPairs1, SVG, G):-
   if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)),
   
   % Run the evaluation.
-  evaluate_inodes(O1, GA_Hash),
+  %evaluate_inodes(O1, GA_Hash),
   
   % Done!
   inode:clear_db.

@@ -9,6 +9,31 @@ In contemporary ontology alignment and data linking activities nonsemantic
 For instance similarity assessment for natural language labels is often
   used in data linking.
 
+In section \ref{sec:research_goals} we enumerated three research goals.
+The first goal is met, since an indiscernibility partition characterizes
+  identity sub-relations based on the predicates $P$ (closed under identity)
+  for which the pairs in that sets are indiscernible.
+In this way we can distinguish between different types of identity
+  by treating $P$ as a description of a (sub)set of identity pairs.
+
+The second goal is met, since the notion of a rough set allows us to
+  distinguish between pairs that must be (lower approximation)
+  and those that may be (higher approximation)
+  % 'may' = 'not must not'
+  in the identity relation.
+If we want to add/remove pairs of the identity relation,
+  we should not consider pairs of the former but only pairs of
+  the latter kind.
+
+The third goal is met, since the measure for rough set accuracy
+  is based on the discernibility criteria of an identity set.
+The crispness of the set is proportional to the quality of the
+  identity relation, based on its semantic consistency.
+
+Our approach provides a new experimental design for evaluating
+  hypotheses regarding identity relations that have not been
+  evaluated before in terms of the semantics of the data.
+
 We think that the qualitative means of characterizing an identity relation
   are a useful addition to existing quantitative means.
 Also, we think that it is more useful and viable to enrich existing
@@ -20,20 +45,12 @@ Apart from the practical difficulties of teaching practitioners
   i.e., in the indiscernibility criteria it embodies.
 
 For our approach it is not necessary to pose additional restrictions
-  on a binary relation $\sim$.
-The definitions in this paper apply to \verb|owl:sameAs| relations
+  on a binary relation $\approx$.
+The definitions in this paper apply to {\small \texttt{owl:sameAs}} relations
   in the same way in which they apply to any other binary relation
-  (e.g., \verb|skos:related|).
+  (e.g., {\small \texttt{skos:related}}).
 
 We are currently in the process of validating the above enumerated hypotheses.
 The results of these evaluations are continuously being published on
   \URL{wouterbeek.com/identity-on-the-web} and
 \URL{github.com/wouterbeek/IOTW}.
-
-
-The website currently contains the automated results of all eighty IIMB
-  alignments, drawn from the instance matching track of the
-  OAEI 2012.
-The website also refers to the publicly available Git repository
-  \verb|github.com/wouterbeek/IOTW| where the implementation
-  discussed in section \ref{sec:implementation} can be found.

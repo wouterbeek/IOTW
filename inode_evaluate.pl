@@ -27,7 +27,7 @@ Evaluates results from identity experiments.
 
 
 evaluate_inodes(O1, GA_Hash):-
-  DeltaPerc = 0.1,
+  DeltaPerc = 0.05,
   absolute_file_name(iotw(stats), File, [access(write)]),
   setup_call_cleanup(
     open(File, append, OutStream),

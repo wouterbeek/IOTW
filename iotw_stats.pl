@@ -5,52 +5,63 @@
 :- use_module(library(lists)).
 :- use_module(library(prolog_pack)).
 :- catch(use_module(library(real)), _, ignore(pack_install(real))).
-:- use_module(library(sgml)).
 
 :- initialization(iotw_stats).
 
 iotw_stats:-
   absolute_file_name(
-    '/home/wbeek/Git/PraSem/IOTW/stats_test',
+    '/home/wbeek/Git/PraSem/IOTW/stats_smoothing_5',
     File,
     [access(read)]
   ),
   csv_read_file(File, Rows, [arity(6)]),
   
-  NumberOfSteps = 10,
-  length(Rows, NumberOfRows),
-  NumberOfExperiments is NumberOfRows / NumberOfSteps,
-  
   findall(
-    Pairs,
+    I-Triples,
     (
+      % Argument
       between(1, 5, I),
       findall(
-        Avg,
+        J-Values-Avg,
         (
-          member(Perc, [1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]),
-          aggregate_all(
-            sum(Value),
+          % Precision
+          between(0, 9, J),
+          findall(
+            Value,
             (
-              member(Row, Rows),
-              Row =.. [row,Perc|Args],
-              nth1(I, Args, Value)
+              nth0(K, Rows, Row),
+              Row =.. [row|Args],
+              J =:= (K mod 10),
+              nth0(I, Args, Value)
             ),
-            Sum
+            Values
           ),
-          Avg is Sum / NumberOfExperiments
+          avgerage(Values, Avg)
         ),
-        Pairs
+        Triples
       )
     ),
-    [LRecalls,HRecalls,Q2s,HCovers,H_IPairs3_Percs]
+    Results
   ),
-  
-  writeln(LRecalls),
-  writeln(HRecalls),
-  writeln(Q2s),
-  writeln(HCovers),
-  writeln(H_IPairs3_Percs).
+  forall(
+    member(I-Triples, Results),
+    (
+      argument(I, ArgLabel),
+      write('Argument:'), write(I), write(' ('), write(ArgLabel), write(')'), nl,
+      forall(
+        member(J-_-Avg, Triples),
+        (write('Stage:'), write(J), write('::'), write(Avg), nl)
+      )
+    )
+  ),
+  halt.
+
+argument(0, 'Percentage').
+argument(1, 'Lower recall').
+argument(2, 'Higher recall').
+argument(3, 'Quality').
+argument(4, 'Higher cover').
+argument(5, 'Removed identity pairs in higher').
 
 plot(Coords):-
   absolute_file_name(
@@ -62,3 +73,8 @@ plot(Coords):-
   coords <- Coords,
   <- plot(coords),
   <- dev..off(.).
+
+avgerage(Numbers, Average):-
+  sum_list(Numbers, Sum),
+  length(Numbers, NumberOfNumbers),
+  Average is Sum / NumberOfNumbers.

@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1461.25"
+   height="405"
+   viewBox="0 0 1169 324"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="iimb_16_2.pdf">
+  <metadata
+     id="metadata411">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs409" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1032"
+     id="namedview407"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="1.0391588"
+     inkscape:cx="779.94137"
+     inkscape:cy="193.87094"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="graph0" />
+  <g
+     id="graph0"
+     class="graph"
+     transform="translate(-99.5,344)">
+    <title
+       id="title5">noname</title>
+    <g
+       onclick="clickme('ceebb93dc941c2975a2590654a3fa8c2fc177a72')"
+       id="node2"
+       class="node">
+      <title
+         id="title27">ceebb93dc941c2975a2590654a3fa8c2fc177a72</title>
+      <polygon
+         points="753,-290.5 753,-343.5 753,-343.5 577,-343.5 577,-290.5 "
+         id="polygon29"
+         style="fill:none;stroke:#ff0000" />
+      <text
+         x="665"
+         y="-328.29999"
+         font-size="14.00"
+         id="text31"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{rdf:type}</text>
+      <text
+         x="665"
+         y="-313.29999"
+         font-size="14.00"
+         id="text33"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[234/809514=0.00]</text>
+      <text
+         x="665"
+         y="-298.29999"
+         font-size="14.00"
+         id="text35"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[234/734=0.32]</text>
+    </g>
+    <g
+       onclick="clickme('617037aa403e8b5ee44fdac72212460ce6f82f28')"
+       id="node4"
+       class="node">
+      <title
+         id="title38">617037aa403e8b5ee44fdac72212460ce6f82f28</title>
+      <polygon
+         points="252,-200.5 252,-253.5 252,-253.5 100,-253.5 100,-200.5 "
+         id="polygon40"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="176"
+         y="-238.3"
+         font-size="14.00"
+         id="text42"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:amount,rdf:type}</text>
+      <text
+         x="176"
+         y="-223.3"
+         font-size="14.00"
+         id="text44"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[14/14=1.00]</text>
+      <text
+         x="176"
+         y="-208.3"
+         font-size="14.00"
+         id="text46"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[14/734=0.02]</text>
+    </g>
+    <g
+       id="edge40"
+       class="edge">
+      <title
+         id="title49">ceebb93dc941c2975a2590654a3fa8c2fc177a72--617037aa403e8b5ee44fdac72212460ce6f82f28</title>
+      <path
+         d="M 576.832,-306.197 C 494.521,-296.168 368.572,-278.571 261,-254 c -2.858,0.653 -5.761,1.352 -8.685,2.087"
+         id="path51"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('32eee6bf5f2730bc60ecb1687755370bce889212')"
+       id="node5"
+       class="node">
+      <title
+         id="title54">32eee6bf5f2730bc60ecb1687755370bce889212</title>
+      <polygon
+         points="428,-200.5 428,-253.5 428,-253.5 270,-253.5 270,-200.5 "
+         id="polygon56"
+         style="fill:none;stroke:#ff0000" />
+      <text
+         x="349"
+         y="-238.3"
+         font-size="14.00"
+         id="text58"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:currency,rdf:type}</text>
+      <text
+         x="349"
+         y="-223.3"
+         font-size="14.00"
+         id="text60"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[2/174=0.01]</text>
+      <text
+         x="349"
+         y="-208.3"
+         font-size="14.00"
+         id="text62"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[2/734=0.00]</text>
+    </g>
+    <g
+       id="edge41"
+       class="edge">
+      <title
+         id="title65">ceebb93dc941c2975a2590654a3fa8c2fc177a72--32eee6bf5f2730bc60ecb1687755370bce889212</title>
+      <path
+         d="M 576.906,-292.524 C 534.544,-281.113 483.074,-267.069 437,-254 c -2.912,0.826 -5.876,1.673 -8.869,2.532"
+         id="path67"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('7402aef6b5c4aa5e121334fbb68bd2c57d66e069')"
+       id="node6"
+       class="node">
+      <title
+         id="title70">7402aef6b5c4aa5e121334fbb68bd2c57d66e069</title>
+      <polygon
+         points="1050,-200.5 1050,-253.5 1050,-253.5 866,-253.5 866,-200.5 "
+         id="polygon72"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="958"
+         y="-238.3"
+         font-size="14.00"
+         id="text74"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:date_of_birth,rdf:type}</text>
+      <text
+         x="958"
+         y="-223.3"
+         font-size="14.00"
+         id="text76"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[136/136=1.00]</text>
+      <text
+         x="958"
+         y="-208.3"
+         font-size="14.00"
+         id="text78"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[136/734=0.19]</text>
+    </g>
+    <g
+       id="edge42"
+       class="edge">
+      <title
+         id="title81">ceebb93dc941c2975a2590654a3fa8c2fc177a72--7402aef6b5c4aa5e121334fbb68bd2c57d66e069</title>
+      <path
+         d="m 750.141,-290.429 c 38.608,11.596 84.156,25.276 122.759,36.87"
+         id="path83"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058')"
+       id="node7"
+       class="node">
+      <title
+         id="title86">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058</title>
+      <polygon
+         points="674,-200.5 674,-253.5 674,-253.5 446,-253.5 446,-200.5 "
+         id="polygon88"
+         style="fill:none;stroke:#ff0000" />
+      <text
+         x="560"
+         y="-238.3"
+         font-size="14.00"
+         id="text90"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:form_of_government,rdf:type}</text>
+      <text
+         x="560"
+         y="-223.3"
+         font-size="14.00"
+         id="text92"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[24/5108=0.00]</text>
+      <text
+         x="560"
+         y="-208.3"
+         font-size="14.00"
+         id="text94"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[24/734=0.03]</text>
+    </g>
+    <g
+       id="edge43"
+       class="edge">
+      <title
+         id="title97">ceebb93dc941c2975a2590654a3fa8c2fc177a72--c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058</title>
+      <path
+         d="m 634.347,-290.31 c -13.801,11.567 -30.054,25.188 -43.838,36.74"
+         id="path99"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('1a1ac66a257f0765ca31d36bcbf641fa419e0c19')"
+       id="node8"
+       class="node"
+       transform="translate(-220.94795,-66.207397)">
+      <title
+         id="title102">1a1ac66a257f0765ca31d36bcbf641fa419e0c19</title>
+      <polygon
+         points="1068,-253.5 1068,-200.5 1268,-200.5 1268,-253.5 1268,-253.5 "
+         id="polygon104"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="1168"
+         y="-238.3"
+         font-size="14.00"
+         id="text106"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:iso_639_1_code,rdf:type}</text>
+      <text
+         x="1168"
+         y="-223.3"
+         font-size="14.00"
+         id="text108"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[2/2=1.00]</text>
+      <text
+         x="1168"
+         y="-208.3"
+         font-size="14.00"
+         id="text110"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[2/734=0.00]</text>
+    </g>
+    <g
+       onclick="clickme('6175789c17e397dd9bb4644a00c4debb8f6c7099')"
+       id="node9"
+       class="node">
+      <title
+         id="title118">6175789c17e397dd9bb4644a00c4debb8f6c7099</title>
+      <polygon
+         points="847.25,-200.5 847.25,-253.5 847.25,-253.5 692.75,-253.5 692.75,-200.5 "
+         id="polygon120"
+         style="fill:none;stroke:#ff0000" />
+      <text
+         x="770"
+         y="-238.3"
+         font-size="14.00"
+         id="text122"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:name,rdf:type}</text>
+      <text
+         x="770"
+         y="-223.3"
+         font-size="14.00"
+         id="text124"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[248/272=0.91]</text>
+      <text
+         x="770"
+         y="-208.3"
+         font-size="14.00"
+         id="text126"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[248/734=0.34]</text>
+    </g>
+    <g
+       id="edge45"
+       class="edge">
+      <title
+         id="title129">ceebb93dc941c2975a2590654a3fa8c2fc177a72--6175789c17e397dd9bb4644a00c4debb8f6c7099</title>
+      <path
+         d="m 695.653,-290.31 c 13.801,11.567 30.054,25.188 43.838,36.74"
+         id="path131"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge46"
+       class="edge">
+      <title
+         id="title134">ceebb93dc941c2975a2590654a3fa8c2fc177a72--617037aa403e8b5ee44fdac72212460ce6f82f28</title>
+      <path
+         d="M 576.832,-306.197 C 494.521,-296.168 368.572,-278.571 261,-254 c -2.858,0.653 -5.761,1.352 -8.685,2.087"
+         id="path136"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge47"
+       class="edge">
+      <title
+         id="title139">ceebb93dc941c2975a2590654a3fa8c2fc177a72--32eee6bf5f2730bc60ecb1687755370bce889212</title>
+      <path
+         d="M 576.906,-292.524 C 534.544,-281.113 483.074,-267.069 437,-254 c -2.912,0.826 -5.876,1.673 -8.869,2.532"
+         id="path141"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge48"
+       class="edge">
+      <title
+         id="title144">ceebb93dc941c2975a2590654a3fa8c2fc177a72--7402aef6b5c4aa5e121334fbb68bd2c57d66e069</title>
+      <path
+         d="m 750.141,-290.429 c 38.608,11.596 84.156,25.276 122.759,36.87"
+         id="path146"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge49"
+       class="edge">
+      <title
+         id="title149">ceebb93dc941c2975a2590654a3fa8c2fc177a72--c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058</title>
+      <path
+         d="m 634.347,-290.31 c -13.801,11.567 -30.054,25.188 -43.838,36.74"
+         id="path151"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge50"
+       class="edge"
+       transform="matrix(0.29547393,0,0,0.54656442,530.35046,-153.83443)">
+      <title
+         id="title154">ceebb93dc941c2975a2590654a3fa8c2fc177a72--1a1ac66a257f0765ca31d36bcbf641fa419e0c19</title>
+      <path
+         d="m 753.37,-304.107 c 80.081,11.254 201.187,29.466 305.63,50.107 2.96,0.585 5.96,1.194 8.98,1.822"
+         id="path156"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge51"
+       class="edge">
+      <title
+         id="title159">ceebb93dc941c2975a2590654a3fa8c2fc177a72--6175789c17e397dd9bb4644a00c4debb8f6c7099</title>
+      <path
+         d="m 695.653,-290.31 c 13.801,11.567 30.054,25.188 43.838,36.74"
+         id="path161"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('47bd0f39ae9cb3e91acf91e6e4797b894d422a0f')"
+       id="node11"
+       class="node">
+      <title
+         id="title174">47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <polygon
+         points="446,-110.5 446,-163.5 446,-163.5 132,-163.5 132,-110.5 "
+         id="polygon176"
+         style="fill:none;stroke:#ff0000" />
+      <text
+         x="289"
+         y="-148.3"
+         font-size="14.00"
+         id="text178"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:currency,IIMB:form_of_government,rdf:type}</text>
+      <text
+         x="289"
+         y="-133.3"
+         font-size="14.00"
+         id="text180"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[4/78=0.05]</text>
+      <text
+         x="289"
+         y="-118.3"
+         font-size="14.00"
+         id="text182"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[4/734=0.01]</text>
+    </g>
+    <g
+       id="edge8"
+       class="edge">
+      <title
+         id="title185">32eee6bf5f2730bc60ecb1687755370bce889212--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 331.323,-200.073 c -7.813,11.458 -16.974,24.895 -24.772,36.331"
+         id="path187"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('4f9e184b9872388ad4ca95554d68e5c035c78947')"
+       id="node12"
+       class="node">
+      <title
+         id="title190">4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <polygon
+         points="691.25,-110.5 691.25,-163.5 691.25,-163.5 464.75,-163.5 464.75,-110.5 "
+         id="polygon192"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="578"
+         y="-148.3"
+         font-size="14.00"
+         id="text194"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:currency,IIMB:name,rdf:type}</text>
+      <text
+         x="578"
+         y="-133.3"
+         font-size="14.00"
+         id="text196"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[2/2=1.00]</text>
+      <text
+         x="578"
+         y="-118.3"
+         font-size="14.00"
+         id="text198"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[2/734=0.00]</text>
+    </g>
+    <g
+       id="edge9"
+       class="edge">
+      <title
+         id="title201">32eee6bf5f2730bc60ecb1687755370bce889212--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 415.544,-200.429 c 30.109,11.571 65.617,25.216 95.746,36.794"
+         id="path203"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge10"
+       class="edge">
+      <title
+         id="title206">32eee6bf5f2730bc60ecb1687755370bce889212--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 331.323,-200.073 c -7.813,11.458 -16.974,24.895 -24.772,36.331"
+         id="path208"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge11"
+       class="edge">
+      <title
+         id="title211">32eee6bf5f2730bc60ecb1687755370bce889212--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 415.544,-200.429 c 30.109,11.571 65.617,25.216 95.746,36.794"
+         id="path213"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge26"
+       class="edge">
+      <title
+         id="title216">32eee6bf5f2730bc60ecb1687755370bce889212--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 331.323,-200.073 c -7.813,11.458 -16.974,24.895 -24.772,36.331"
+         id="path218"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge27"
+       class="edge">
+      <title
+         id="title221">32eee6bf5f2730bc60ecb1687755370bce889212--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 415.544,-200.429 c 30.109,11.571 65.617,25.216 95.746,36.794"
+         id="path223"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge28"
+       class="edge">
+      <title
+         id="title226">32eee6bf5f2730bc60ecb1687755370bce889212--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 331.323,-200.073 c -7.813,11.458 -16.974,24.895 -24.772,36.331"
+         id="path228"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge29"
+       class="edge">
+      <title
+         id="title231">32eee6bf5f2730bc60ecb1687755370bce889212--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 415.544,-200.429 c 30.109,11.571 65.617,25.216 95.746,36.794"
+         id="path233"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge14"
+       class="edge">
+      <title
+         id="title236">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 481.252,-200.429 c -35.631,11.571 -77.653,25.216 -113.307,36.794"
+         id="path238"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('257569423270186c5d8881bd26a4bf393803031a')"
+       id="node13"
+       class="node">
+      <title
+         id="title241">257569423270186c5d8881bd26a4bf393803031a</title>
+      <polygon
+         points="1006,-110.5 1006,-163.5 1006,-163.5 710,-163.5 710,-110.5 "
+         id="polygon243"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="858"
+         y="-148.3"
+         font-size="14.00"
+         id="text245"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:form_of_government,IIMB:name,rdf:type}</text>
+      <text
+         x="858"
+         y="-133.3"
+         font-size="14.00"
+         id="text247"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[66/64=1.03]</text>
+      <text
+         x="858"
+         y="-118.3"
+         font-size="14.00"
+         id="text249"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[66/734=0.09]</text>
+    </g>
+    <g
+       id="edge15"
+       class="edge">
+      <title
+         id="title252">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 646.594,-200.429 c 39.267,11.596 85.592,25.276 124.854,36.87"
+         id="path254"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge16"
+       class="edge">
+      <title
+         id="title257">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 481.252,-200.429 c -35.631,11.571 -77.653,25.216 -113.307,36.794"
+         id="path259"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge17"
+       class="edge">
+      <title
+         id="title262">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 646.594,-200.429 c 39.267,11.596 85.592,25.276 124.854,36.87"
+         id="path264"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge32"
+       class="edge">
+      <title
+         id="title267">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 481.252,-200.429 c -35.631,11.571 -77.653,25.216 -113.307,36.794"
+         id="path269"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge33"
+       class="edge">
+      <title
+         id="title272">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 646.594,-200.429 c 39.267,11.596 85.592,25.276 124.854,36.87"
+         id="path274"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge34"
+       class="edge">
+      <title
+         id="title277">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--47bd0f39ae9cb3e91acf91e6e4797b894d422a0f</title>
+      <path
+         d="m 481.252,-200.429 c -35.631,11.571 -77.653,25.216 -113.307,36.794"
+         id="path279"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge35"
+       class="edge">
+      <title
+         id="title282">c267ac8ebd2e427fefe1ba2ec0a5b210c16b0058--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 646.594,-200.429 c 39.267,11.596 85.592,25.276 124.854,36.87"
+         id="path284"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge18"
+       class="edge">
+      <title
+         id="title287">6175789c17e397dd9bb4644a00c4debb8f6c7099--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 714.208,-200.429 c -25.244,11.571 -55.016,25.216 -80.277,36.794"
+         id="path289"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge19"
+       class="edge">
+      <title
+         id="title292">6175789c17e397dd9bb4644a00c4debb8f6c7099--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 795.927,-200.073 c 11.458,11.458 24.895,24.895 36.331,36.331"
+         id="path294"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge20"
+       class="edge">
+      <title
+         id="title297">6175789c17e397dd9bb4644a00c4debb8f6c7099--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 714.208,-200.429 c -25.244,11.571 -55.016,25.216 -80.277,36.794"
+         id="path299"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge21"
+       class="edge">
+      <title
+         id="title302">6175789c17e397dd9bb4644a00c4debb8f6c7099--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 795.927,-200.073 c 11.458,11.458 24.895,24.895 36.331,36.331"
+         id="path304"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge36"
+       class="edge">
+      <title
+         id="title307">6175789c17e397dd9bb4644a00c4debb8f6c7099--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 714.208,-200.429 c -25.244,11.571 -55.016,25.216 -80.277,36.794"
+         id="path309"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge37"
+       class="edge">
+      <title
+         id="title312">6175789c17e397dd9bb4644a00c4debb8f6c7099--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 795.927,-200.073 c 11.458,11.458 24.895,24.895 36.331,36.331"
+         id="path314"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge38"
+       class="edge">
+      <title
+         id="title317">6175789c17e397dd9bb4644a00c4debb8f6c7099--4f9e184b9872388ad4ca95554d68e5c035c78947</title>
+      <path
+         d="m 714.208,-200.429 c -25.244,11.571 -55.016,25.216 -80.277,36.794"
+         id="path319"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge39"
+       class="edge">
+      <title
+         id="title322">6175789c17e397dd9bb4644a00c4debb8f6c7099--257569423270186c5d8881bd26a4bf393803031a</title>
+      <path
+         d="m 795.927,-200.073 c 11.458,11.458 24.895,24.895 36.331,36.331"
+         id="path324"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       onclick="clickme('277a60a21a77b0f75e2f16b04cb68dca5bb71734')"
+       id="node15"
+       class="node">
+      <title
+         id="title337">277a60a21a77b0f75e2f16b04cb68dca5bb71734</title>
+      <polygon
+         points="769,-20.5 769,-73.5 769,-73.5 387,-73.5 387,-20.5 "
+         id="polygon339"
+         style="fill:none;stroke:#008000" />
+      <text
+         x="578"
+         y="-58.299999"
+         font-size="14.00"
+         id="text341"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">{IIMB:currency,IIMB:form_of_government,IIMB:name,rdf:type}</text>
+      <text
+         x="578"
+         y="-43.299999"
+         font-size="14.00"
+         id="text343"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">precision[2/2=1.00]</text>
+      <text
+         x="578"
+         y="-28.299999"
+         font-size="14.00"
+         id="text345"
+         style="font-size:14px;text-anchor:middle;font-family:'Times,serif'">identity[2/734=0.00]</text>
+    </g>
+    <g
+       id="edge5"
+       class="edge">
+      <title
+         id="title353">47bd0f39ae9cb3e91acf91e6e4797b894d422a0f--277a60a21a77b0f75e2f16b04cb68dca5bb71734</title>
+      <path
+         d="m 366.785,-110.429 c 37.339,11.596 82.265,25.2758 121.084,36.8699"
+         id="path355"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge7"
+       class="edge">
+      <title
+         id="title373">4f9e184b9872388ad4ca95554d68e5c035c78947--277a60a21a77b0f75e2f16b04cb68dca5bb71734</title>
+      <path
+         d="m 571.784,-110.073 c -0.716,11.4579 -0.712,24.8949 0.012,36.3314"
+         id="path375"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+    <g
+       id="edge12"
+       class="edge">
+      <title
+         id="title388">257569423270186c5d8881bd26a4bf393803031a--277a60a21a77b0f75e2f16b04cb68dca5bb71734</title>
+      <path
+         d="m 758.056,-110.429 c -39.036,11.5707 -82.457,25.2159 -117.082,36.7938"
+         id="path390"
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#000000" />
+    </g>
+  </g>
+</svg>
