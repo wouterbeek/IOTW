@@ -46,7 +46,7 @@ test0:-
   rdf_assert(rdf:type, rdfs:subPropertyOf, rdf:typo, G),
 
   run_experiment(
-    [granularity(p)],
+    [evaluate(true),granularity(p)],
     [Andrea-Wouter,Andrea-Boetje,Amsterdam-Berlin],
     _SVG,
     G

@@ -1,7 +1,11 @@
-\section{Experimental design}
+\section{Experimental Validation}
+\label{sec:experiment}
 \label{sec:experimental_design}
+\label{sec:experimental_validation}
 
-For illustrative purposes we use the IIMB dataset that is used in the
+In order to subject our theory to an experimental test,
+  we use the IIMB dataset\footnote{\URL{islab.di.unimi.it/iimb}}
+  that is used in the
   instance matching track of the 2012 Ontology Alignment Evaluation
   Initiative (OAEI\footnote{\URL{oaei.ontologymatching.org}}).
 This dataset consists of eighty ontologies $G_i$ (for $1 \leq i \leq 80$)
@@ -12,16 +16,16 @@ A graph $G$ is the result of fully materializing the graph merge
   of $G_i$ (for some $1 \leq i \leq 80$) and $G_0$.
 For each of these eighty linked ontologies a reference mapping is available.
 
-
-
-\subsection{Experimental results}
-
-In this experiment we incrementally remove part of the identity relation.
+In our experiment we ran separate tests for each of the $80$ datasets
+  and took the average values for incremental reductions of
+  random parts of the identity relations between $G_0$ and the $80$
+  different $G_i$'s.
+In other words we deliberate make the identity relation incomplete.
 We then calculate the rough set representation using this altered relation.
 We then evaluate how many of the removed identity pairs occur in
   the higher approximation.
 Our hypothesis is that the percentage of removed identity pairs
-  in the higher approximation is higher than the percentage of pairs
+  in the higher approximation is larger than the percentage of pairs
   in the higher approximation.
 If the hypothesis is validated, this indicates that
   calculating the rough set representation for a partial identity relation
@@ -31,31 +35,35 @@ Since the data may contain noise, using precision degrees $0.0$ and $1.0$
   may be too strict. For this experiment we have set these boundaries
   to $0.05$ and $0.95$ respectively.
 
+Figure \ref{fig:recall_quality} shows the different behaviours of the
+  upper and lower approximations, with the upper approximation indeed
+  having a dramatically higher recall than the lower approximation.
+
 \begin{figure}
-\label{fig:recall_quality}
 \centering
 \includegraphics[width=0.8\linewidth]{./img/recall_quality}
 \caption{
   The recall of the lower and higher approximation
-    are shown by the green and red line respectively.
+    are shown by the green line (circles) and red line (boxes) respectively.
   The quality metric (definition \ref{def:quality})
     is shown by the dashed line.
 }
-\end{figure}
-
-\begin{figure}
-\label{fig:in_higher}
-\centering
-\includegraphics[width=0.8\linewidth]{./img/in_higher}
-\caption{
-  The percentage of the removed identity pairs that are in the higher approximation
-}
+\label{fig:recall_quality}
 \end{figure}
 
 In figure \ref{fig:in_higher}
   we see that the randomly removed identity pairs are often
   in the higher approximation, even when large parts of
   the identity relation are removed.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{./img/in_higher}
+\caption{
+  The percentage of the removed identity pairs that are in the higher approximation
+}
+\label{fig:in_higher}
+\end{figure}
 
 \begin{comment}
 Lower recall
@@ -71,12 +79,13 @@ Removed identity pairs in higher
 \end{comment}
 
 
-\subsection{Hypotheses}
+
+\subsection{Future Experiments}
 \label{sec:hypotheses}
 
-Since this paper focusses on our novel approach and not on evaluation,
-  we will enumerate some of the hypotheses which can be evaluated
-  using the here described approach:
+Space limitations do not allow us to describe the results of further
+  experiments. Instead, we will describe some of the other hypotheses
+  that can be evaluated using our approach:
 \begin{enumerate}
 \item Take an {\small \texttt{owl:sameAs}} relation and
         a {\small \texttt{skos:related}}
@@ -105,6 +114,7 @@ Since this paper focusses on our novel approach and not on evaluation,
         that domain experts consider to be correct.
 \end{enumerate}
 
-Also, the IIMB datasets are quite small (tens of thousands of triples).
+\noindent Finally, the IIMB datasets are quite small
+  (tens of thousands of triples).
 We will have the verify whether the current implementation is able to scale
   to bigger datasets.

@@ -41,6 +41,9 @@ Recommendation sharing non-monotonic?
 % Runs an IOTW experiment.
 %
 % The following options are supported:
+%   * =|evaluate(+RunEvaluation:boolean)|=
+%     Whether the evaluation is run on the data or not.
+%     See module IOTW_EVALUATE.
 %   * =|granularity(+LevelOfIdentityPartition:oneof([p,po]))|=
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
@@ -82,7 +85,11 @@ run_experiment(O1, IPairs1, SVG, G):-
   if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)),
   
   % Run the evaluation.
-  %evaluate_inodes(O1, GA_Hash),
+  (
+   option(evaluate(false), O1, false), !
+  ;
+    evaluate_inodes(O1, GA_Hash)
+  ),
   
   % Done!
   inode:clear_db.

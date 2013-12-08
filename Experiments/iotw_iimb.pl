@@ -84,7 +84,7 @@ iimb_experiment(N, SVG_DOM):-
   iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
   atomic_list_concat([iimb,N], '_', G),
   rdf_loads([O_File1,O_File2], G),
-  run_experiment([granularity(p)], A_Pairs, SVG_DOM, G).
+  run_experiment([evaluate(true),granularity(p)], A_Pairs, SVG_DOM, G).
 
 iimb_experiment(FromDir, ToDir, N):-
   iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
@@ -101,7 +101,7 @@ iimb_experiment(FromDir, ToDir, N):-
   rdf_setup_call_cleanup(
     [to(ToFileOWL)],
     % Now that all files are properly loaded, we can run the experiment.
-    run_experiment([granularity(p)], A_Pairs, SVG_DOM),
+    run_experiment([evaluate(true),granulaity(p)], A_Pairs, SVG_DOM),
     [O_File1,O_File2]
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),

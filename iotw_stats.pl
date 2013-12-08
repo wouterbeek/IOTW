@@ -1,5 +1,82 @@
 :- module(iotw_stats, []).
 
+/** <module IOTW statistics
+
+~~~{.R}
+lower_recall <- c(1.0,0.37172100183246687,0.24123550044617229,0.23375413992878838,0.19251810221158194,0.1916729296953922,0.1790536768898471,0.17912482945205316,0.1696252362320524,0.17011849853438268)
+higher_recall <- c(1.0,0.976185052819561,0.9600384749021372,0.9425765362723856,0.9297564861502547,0.9239282325982691,0.9288077551757412,0.900878631549093,0.886987450993775,0.8005503359226204)
+quality <- c(0.5190405227795084,0.23261438049447705,0.1904353344556299,0.18505145463363135,0.17658153004935476,0.17387635867899948,0.17168948193128328,0.17017370794837366,0.16844506704419984,0.1677780567227606)
+plot(
+  lower_recall,
+  col=darkgreen,
+  pch=22,
+  type=o,
+  xaxt=n,
+  xlab="Perc. of removed identity pairs",
+  ylab="Recall in percent",
+  ylim=c(0.0,1.0)
+)
+lines(
+  higher_recall,
+  col=darkred,
+  type=o
+)
+lines(
+  quality,
+  col=black,
+  lty=2,
+  type=o
+)
+axis(
+  1,
+  at=1:10,
+  cex.axis=0.7,
+  labels=seq(0.0, 0.9, by=0.1)
+)
+axis(
+  2,
+  at=1:10,
+  cex.axis=0.7,
+  labels=seq(0.0, 0.9, by=0.1)
+)
+legend(
+  c(4, 6, 8),
+  fill=terrain.colors(3),
+  horiz=TRUE
+  inset=.05,
+  title="Legend",
+  topright
+)
+~~~
+
+~~~{.R}
+in_higher <- c(1.0,0.5877680311890837,0.5747530425162004,0.572660333493667,0.5831761670185315,0.5799385908868745,0.5701984042084377,0.5692284399224807,0.558405393333526,0.5051324217787632)
+plot(
+  in_higher,
+  type=o,
+  xaxt=n,
+  xlab="Percentage of removed identity pairs",
+  ylab="Perc. of removed identity pairs in higher approx.",
+  ylim=c(0.1,1.0)
+)
+axis(
+  1,
+  at=1:10,
+  cex.axis=0.7,
+  labels=seq(0.0, 0.9, by=0.1)
+)
+axis(
+  2,
+  at=1:10,
+  cex.axis=0.7,
+  labels=seq(0.0, 0.9, by=0.1)
+)
+~~~
+
+@author Wouter Beek
+@version 2013/12
+*/
+
 :- use_module(library(aggregate)).
 :- use_module(library(csv)).
 :- use_module(library(lists)).
@@ -14,13 +91,13 @@ iotw_stats:-
     File,
     [access(read)]
   ),
-  csv_read_file(File, Rows, [arity(6)]),
+  csv_read_file(File, Rows, [arity(7)]),
   
   findall(
     I-Triples,
     (
       % Argument
-      between(1, 5, I),
+      between(1, 6, I),
       findall(
         J-Values-Avg,
         (
@@ -62,6 +139,7 @@ argument(2, 'Higher recall').
 argument(3, 'Quality').
 argument(4, 'Higher cover').
 argument(5, 'Removed identity pairs in higher').
+argument(6, 'Removed identity pairs in higher (corrected)').
 
 plot(Coords):-
   absolute_file_name(

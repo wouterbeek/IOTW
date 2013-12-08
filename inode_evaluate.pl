@@ -81,15 +81,17 @@ evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   
   % DEB
   RemPerc is 1.0 - Perc,
-  debug(inodes_evaluate, '~2f of alignments removed.', [RemPerc]),
-  debug(inodes_evaluate, '~2f of removed alignments are in higher.', [H_IPairs3_Perc]),
-  debug(inodes_evaluate, '~2f of all pairs are in higher.', [HCover]),
-  debug(inodes_evaluate, 'Recall::\tLow:~2f\tHigh:~2f', [LRecall,HRecall]),
-  debug(inodes_evaluate, 'Quality::\t~4f->~4f', [Q1,Q2]),
+  debug(inodes_evaluate, '~6f of alignments removed.', [RemPerc]),
+  debug(inodes_evaluate, '~6f of removed alignments are in higher.', [H_IPairs3_Perc]),
+  debug(inodes_evaluate, '~6f of all pairs are in higher.', [HCover]),
+  H_IPairs3_Perc_Corrected is H_IPairs3_Perc - HCover,
+  debug(inodes_evaluate, '~6f of all pairs are in higher (corrected).', [H_IPairs3_Perc_Corrected]),
+  debug(inodes_evaluate, 'Recall::\tLow:~6f\tHigh:~6f', [LRecall,HRecall]),
+  debug(inodes_evaluate, 'Quality::\t~6f->~6f', [Q1,Q2]),
   
   csv_write_stream(
     OutStream,
-    [row(Perc,LRecall,HRecall,Q2,HCover,H_IPairs3_Perc)],
+    [row(Perc,LRecall,HRecall,Q2,HCover,H_IPairs3_Perc,H_IPairs3_Perc_Corrected)],
     []
   ),
   flush_output(OutStream).
