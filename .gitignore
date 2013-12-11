@@ -3,6 +3,8 @@ lib/
 *#
 *~
 ap/
+*.cb
+*.cb2
 *.aux
 *.log
 *.svg
