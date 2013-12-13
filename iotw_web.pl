@@ -27,7 +27,6 @@
 :- use_module(xml(xml_dom)).
 
 :- http_handler(root(iotw), iotw, []).
-
 :- web_module_add('IOTW', iotw_web, iotw).
 
 % /js
