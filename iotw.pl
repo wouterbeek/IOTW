@@ -19,7 +19,7 @@ Recommendation sharing non-monotonic?
 */
 
 :- use_module(generics(deb_ext)).
-:- use_module(generics(ordset_ext)).
+:- use_module(generics(pair_ext)).
 :- use_module(iotw(inode)).
 :- use_module(iotw(inode_evaluate)).
 :- use_module(iotw(inode_export)).
@@ -65,7 +65,7 @@ run_experiment(O1, IPairs1, SVG, G):-
 
   % Retrieve all alignment sets.
   % Does not include singleton sets (due to reflexivity).
-  ordset_ext:pairs_to_ord_sets(IPairs2, ISets),
+  pairs_to_ord_sets(IPairs2, ISets),
 
   % DEB
   if_debug(iotw, begin_experiment(ISets, NumberOfIPairs)),

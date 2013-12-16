@@ -70,6 +70,7 @@ Possible extensions of the alignment pairs:
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
+:- use_module(generics(pair_ext)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
@@ -295,7 +296,7 @@ assert_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 assert_inode_(Mode, G, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
   
-  ordset_ext:ord_sets_to_pairs(ISets, IPairs),
+  ord_sets_to_pairs(ISets, IPairs),
   length(IPairs, NumberOfIPairs),
 
 /*

@@ -14,7 +14,7 @@ Evaluates results from identity experiments.
 @version 2013/12
 */
 
-:- use_module(generics(ordset_ext)).
+:- use_module(generics(pair_ext)).
 :- use_module(generics(set_theory)).
 :- use_module(library(csv)).
 :- use_module(library(debug)).
@@ -68,7 +68,7 @@ evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   maplist(divide, [L1,L2], [H1,H2], [Q1,Q2]),
 
   % Can the extracted alignments be found?
-  ordset_ext:ord_sets_to_pairs(ISets3, IPairs3),
+  ord_sets_to_pairs(ISets3, IPairs3),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
