@@ -48,11 +48,11 @@ Recommendation sharing non-monotonic?
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
 %
-% @param Options A list of name-value pairs.
-% @param IdentityPairs A list of alignment pairs,
+% @arg Options A list of name-value pairs.
+% @arg IdentityPairs A list of alignment pairs,
 %        thus excluding (possibly) the reflexive cases.
-% @param SVG The DOM of an ihierarchy.
-% @param Graph The atomic name of an RDF graph.
+% @arg SVG The DOM of an ihierarchy.
+% @arg Graph The atomic name of an RDF graph.
 
 run_experiment(O1, IPairs1, SVG, G):-
   % Make sure there are no reflexive pairs.

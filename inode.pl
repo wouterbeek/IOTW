@@ -115,11 +115,11 @@ Possible extensions of the alignment pairs:
 %! ) is det.
 % Asserts identity nodes for the given alignment sets.
 %
-% @param Options A list of name-value pairs.
-% @param Graph The atomic name of an RDF graph.
-% @param IdentitySets A collections of equivalence sets that represent
+% @arg Options A list of name-value pairs.
+% @arg Graph The atomic name of an RDF graph.
+% @arg IdentitySets A collections of equivalence sets that represent
 %        a given identity relation.
-% @param IdentityHierarchyHash The atomic hash of the
+% @arg IdentityHierarchyHash The atomic hash of the
 %        RDF graph + equivalence relation combination.
 
 assert_inodes(O1, G, ISets, IHierHash):-
@@ -380,7 +380,7 @@ check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
 % Returns a single pair that shares the given predicates,
 % but that does not belong to the given identity set.
 %
-% @param IdentitySets Only the identity sets formed by resources
+% @arg IdentitySets Only the identity sets formed by resources
 %        that share the given predicates.
 
 check_shares_predicates(G, SharedPs, ISets):-
