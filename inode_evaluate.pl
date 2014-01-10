@@ -22,8 +22,6 @@ Evaluates results from identity experiments.
 :- use_module(iotw(inode)).
 :- use_module(rdf(rdf_stat)).
 
-:- debug(inodes_evaluate).
-
 
 
 evaluate_inodes(O1, GA_Hash):-

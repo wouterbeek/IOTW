@@ -12,7 +12,6 @@
 */
 
 :- use_module(generics(db_ext)).
-:- use_module(library(debug)).
 :- use_module(library(http/http_open)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(semweb/rdf_library)).
@@ -48,8 +47,6 @@
 
 :- xml_register_namespace('pl-errata', 'http://pleiades.stoa.org/errata/').
 :- xml_register_namespace('pl-place', 'http://pleiades.stoa.org/places/').
-
-:- debug(iotw_pleiades).
 
 
 

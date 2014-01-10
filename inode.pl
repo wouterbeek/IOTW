@@ -103,8 +103,6 @@ Possible extensions of the alignment pairs:
 
 :- dynamic(inode/9).
 
-:- debug(inode).
-
 
 
 %! assert_inodes(

@@ -37,8 +37,6 @@
 :- xml_register_namespace(schema, 'http://schema.org/').
 :- xml_register_namespace(vk, 'http://www.wouterbeek.com/vk.owl#').
 
-:- debug(iotw_niod).
-
 
 
 %! iotw_niod(+Options:list(nvpair)) is det.

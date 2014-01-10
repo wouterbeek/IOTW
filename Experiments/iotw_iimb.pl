@@ -22,7 +22,6 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(generics(db_ext)).
 :- use_module(iotw(iotw)).
 :- use_module(library(aggregate)).
-:- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
@@ -40,8 +39,6 @@ Runs IOTW experiments on the IIMB alignment data.
 
 % DTD used for storing SVG DOM to files.
 :- db_add_novel(user:file_search_path(dtd, svg(.))).
-
-:- debug(iotw_iimb).
 
 
 

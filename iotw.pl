@@ -28,8 +28,6 @@ Recommendation sharing non-monotonic?
 :- use_module(library(debug)).
 :- use_module(xsd(xsd)).
 
-:- debug(iotw).
-
 
 
 %! run_experiment(

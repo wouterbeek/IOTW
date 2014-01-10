@@ -14,7 +14,6 @@
 :- use_module(html(html_table)).
 :- use_module(iotw(inode)).
 :- use_module(iotw_exp(iotw_iimb)).
-:- use_module(library(debug)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
@@ -37,8 +36,6 @@
 
 :- dynamic(iimb_current/1).
 :- dynamic(max/4).
-
-:- debug(iotw_web).
 
 
 
