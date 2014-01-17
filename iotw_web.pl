@@ -26,7 +26,7 @@
 :- use_module(xml(xml_dom)).
 
 :- http_handler(root(iotw), iotw, []).
-:- web_module_add('IOTW', iotw_web, iotw).
+:- initialization(web_module_add('IOTW', iotw_web)).
 
 % /js
 :- db_add_novel(http:location(js, root(js), [])).
