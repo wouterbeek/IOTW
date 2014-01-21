@@ -50,7 +50,7 @@ iimb_experiment:-
     [process(iimb),project(iotw)],
     [
       % Unpack the archive containing the original OAEI2012 data.
-      ap_stage([from(input,'IIMB',archive)], archive_extract),
+      ap_stage([from(input,'IIMB',archive)], extract_archive),
 
       % Make sure all RDF data is stored in the Turtle serialization format.
       ap_stage([args([turtle])], rdf_convert_directory),
