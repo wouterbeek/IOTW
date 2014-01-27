@@ -24,9 +24,9 @@ iotw_rdft:-
     [
       ap_stage([from(input,'RDFT',archive)], extract_archive),
       ap_stage([], tsv_convert_directory),
-      ap_stage([args([turtle])], rdf_convert_directory),
+      ap_stage([], rdf_convert_directory),
       ap_stage([], owl_materialize),
-      ap_stage([args([turtle])], rdf_convert_directory),
+      ap_stage([], rdf_convert_directory),
       ap_stage([between(1,5),to(output)], rdft_experiment)
     ]
   ).

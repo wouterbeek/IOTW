@@ -12,10 +12,11 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
 */
 
 :- use_module(ap(ap)).
+:- use_module(ap(ap_methods)).
 :- use_module(ap(ap_stat)).
 :- use_module(generics(archive_ext)).
 :- use_module(generics(atom_ext)).
@@ -28,7 +29,6 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(os(run_ext)).
 :- use_module(owl(owl_build)).
 :- use_module(owl(owl_mat)).
-:- use_module(rdf(rdf_meta)).
 :- use_module(rdf(rdf_serial)).
 :- use_module(rdf(rdf_serial_conv)).
 :- use_module(standards(oaei)).
@@ -53,7 +53,7 @@ iimb_experiment:-
       ap_stage([from(input,'IIMB',archive)], extract_archive),
 
       % Make sure all RDF data is stored in the Turtle serialization format.
-      ap_stage([args([turtle])], rdf_convert_directory),
+      ap_stage([], rdf_convert_directory),
 
       % A Java Maven project does the OWL materialization (using Jena).
       ap_stage([], owl_materialize),
@@ -62,7 +62,7 @@ iimb_experiment:-
       % it does allow the materialized results to be easily
       % compared on a per-file level
       % (e.g. the comment counting the number of serialized triples).
-      ap_stage([args([turtle])], rdf_convert_directory),
+      ap_stage([], rdf_convert_directory),
 
       % Run the IOTW experiment.
       ap_stage([between(1,80),to(output)], iimb_experiment)
