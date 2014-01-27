@@ -29,8 +29,6 @@ by the predicates they share.
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
 
-:- nodebug(iotw_export).
-
 
 
 %! build_vertex(+IdentityNodeHash:atom, -VertexTerm:compound) is det.
