@@ -4,11 +4,12 @@
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
 */
 
+:- use_module(dcg(dcg_content)).
+:- use_module(dcg(dcg_generics)).
 :- use_module(generics(db_ext)).
-:- use_module(generics(print_ext)).
 :- use_module(generics(uri_ext)).
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
@@ -110,10 +111,8 @@ iotw_table(GAK_Hash) -->
       )
     ),
     once(ihier(IHierHash, G, _, _, _, _)),
-    with_output_to(
-      atom(SharedLabel),
-      print_set([write_method(rdf_term_name)], SharedPs)
-    ),
+    phrase(set([], rdf_term_name, SharedPs), Codes),
+    atom_codes(SharedLabel, Codes),
     format(
       atom(Description),
       'Enumeration of non-identity pairs sharing ~w (Pairs:~d;Identity pairs:~d)',
@@ -121,14 +120,9 @@ iotw_table(GAK_Hash) -->
     ),
     ord_subtract(Pairs, IPairs, NonIPairs),
     findall(
-      HTML_Table,
+      S1-S2-L,
       (
         member(S1-S2, NonIPairs),
-        format(
-          atom(Caption),
-          'Overview of non-identity pair <~w,~w>.',
-          [S1,S2]
-        ),
         findall(
           [S1,P1,O1],
           rdf(S1, P1, O1, G),
@@ -139,14 +133,29 @@ iotw_table(GAK_Hash) -->
           rdf(S2, P2, O2, G),
           L2
         ),
-        append([[['Subject','Predicate','Object']],L1,L2], L),
-        html_table(
-          [caption(Caption),header(true),indexed(true)],
-          L,
-          HTML_Table
-        )
+        append([[['Subject','Predicate','Object']],L1,L2], L)
       ),
-      HTML_Tables
+      Triples
     )
   },
-  html([p([],[Description]),div([id=resources],HTML_Tables)]).
+  html([
+    p(Description),
+    div(id=resources, \generate_triples(Triples))
+  ]).
+
+generate_triples([S1-S2-Rows|Triples]) -->
+  html_table(
+    [header(true),indexed(true)],
+    \caption(S1, S2),
+    html_pl_term,
+    Rows
+  ),
+  generate_triples(Triples).
+generate_triples([]) --> [].
+
+caption(S1, S2) -->
+  html([
+    'Overview of non-identity pair ',
+    \pair([], pl_term, [S1,S2]),
+    '.'
+  ]).

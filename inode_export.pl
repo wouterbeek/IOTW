@@ -13,12 +13,12 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2013/12
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
 */
 
+:- use_module(dcg(dcg_collection)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(generics(print_ext)).
 :- use_module(gv(gv_file)).
 :- use_module(iotw(inode)).
 :- use_module(library(debug)).
@@ -73,16 +73,11 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   (
     Mode == p
   ->
-    with_output_to(
-      atom(SharedLabel),
-      print_set([write_method(rdf_term_name)], Shared)
-    )
+    phrase(set(rdf_term_name, Shared), Codes)
   ;
-    with_output_to(
-      atom(SharedLabel),
-      print_set([write_method(rdf_pair_name)], Shared)
-    )
+    phrase(set(rdf_term_pair, Shared), Codes)
   ),
+  atom_codes(SharedLabel, Codes),
 
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
@@ -95,6 +90,8 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   ),
 
   V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
+rdf_term_pair([X,Y]) -->
+  pair(html, rdf_term_name, X, Y).
 
 calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
