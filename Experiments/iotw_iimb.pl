@@ -100,7 +100,7 @@ iimb_experiment(FromDir, ToDir, N):-
     [O_File1,O_File2],
     % Now that all files are properly loaded, we can run the experiment.
     run_experiment([evaluate(true),granulaity(p)], A_Pairs, SVG_DOM),
-    turtle,
+    [format(turtle)],
     ToFileOWL,
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),
