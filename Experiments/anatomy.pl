@@ -49,7 +49,7 @@ load_alignment_anatomy:-
     HumanFile,
     [access(read), file_type(owl)]
   ),
-  rdf_load2(HumanFile, [graph(human)]),
+  rdf_load([], human, HumanFile),
   
   % Load the mouse ontology.
   absolute_file_name(
@@ -57,7 +57,7 @@ load_alignment_anatomy:-
     MouseFile,
     [access(read), file_type(owl)]
   ),
-  rdf_load2(MouseFile, [graph(mouse)]),
+  rdf_load([], mouse, MouseFile),
   rdf_graph_merge([human, mouse], OntologyGraph),
   
   % Process the various alignments.

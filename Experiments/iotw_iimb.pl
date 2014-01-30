@@ -96,10 +96,12 @@ iimb_experiment(FromDir, ToDir, N):-
 
   % Execute the goal on the two ontologies.
   rdf_setup_call_cleanup(
-    [to(ToFileOWL)],
+    [],
+    [O_File1,O_File2],
     % Now that all files are properly loaded, we can run the experiment.
     run_experiment([evaluate(true),granulaity(p)], A_Pairs, SVG_DOM),
-    [O_File1,O_File2]
+    turtle,
+    ToFileOWL,
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),
 
