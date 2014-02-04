@@ -19,10 +19,8 @@
 :- use_module(library(semweb/rdf_turtle)).
 :- use_module(library(xpath)).
 :- use_module(os(dir_ext)).
-:- use_module(vocabularies(void)).
+:- use_module(void(void_file)).
 :- use_module(xml(xml_namespace)).
-
-:- db_add_novel(user:prolog_file_type(ttl, turtle)).
 
 :- rdf_meta(rdf_literal(r,r,?)).
 :- rdf_meta(rdf_literal(r,r,?,?)).
@@ -62,7 +60,7 @@ iotw_niod(O):-
     absolute_file_name(
       void,
       VoID_File,
-      [access(read),file_type(turtle),relative_to(ToDir)]
+      [access(read),file_type('text/turtle'),relative_to(ToDir)]
     )
   ;
     experiment_directory(ExperimentDir),

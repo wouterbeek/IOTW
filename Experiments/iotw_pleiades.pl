@@ -23,8 +23,6 @@
 :- use_module(vocabularies(void)).
 :- use_module(xml(xml_namespace)).
 
-:- db_add_novel(user:prolog_file_type(ttl, turtle)).
-
 :- register_module(rdf_deb).
 
 :- rdf_meta(rdf_literal(r,r,?)).
