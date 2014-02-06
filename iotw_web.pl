@@ -145,7 +145,7 @@ iotw_table(GAK_Hash) -->
 
 generate_triples([S1-S2-Rows|Triples]) -->
   html_table(
-    [header(true),indexed(true)],
+    [header_row(true),indexed(true)],
     \caption(S1, S2),
     html_pl_term,
     Rows
