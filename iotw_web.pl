@@ -115,7 +115,7 @@ iotw_table(GAK_Hash) -->
     atom_codes(SharedLabel, Codes),
     format(
       atom(Description),
-      'Enumeration of non-identity pairs sharing ~w (Pairs:~d;Identity pairs:~d)',
+      'Enumeration of non-identity pairs sharing ~w (Pairs:~:d;Identity pairs:~:d)',
       [SharedLabel,NumberOfIPairs,NumberOfPairs]
     ),
     ord_subtract(Pairs, IPairs, NonIPairs),

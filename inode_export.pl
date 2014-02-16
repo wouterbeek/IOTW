@@ -245,7 +245,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
   % Graph attributes.
   quality_label(IHierHash, Q_Label),
   rdf_statistics(triples_by_graph(G,Triples)),
-  format(atom(G_Label), 'Graph:~w\tTriples:~d~w', [G,Triples,Q_Label]),
+  format(atom(G_Label), 'Graph:~w\tTriples:~:d~w', [G,Triples,Q_Label]),
   G_Attrs =
     [
       colorscheme(svg),
@@ -279,7 +279,7 @@ percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel):-
   Percentage is NumberOfIdPairs / NumberOfParentIdPairs,
   format(
     atom(PercentageLabel),
-    '[~d/~d=~2f]',
+    '[~:d/~:d=~2f]',
     [NumberOfIdPairs,NumberOfParentIdPairs,Percentage]
   ).
 
@@ -315,7 +315,7 @@ precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel):-
   Precision is NumberOfIdPairs / NumberOfPairs,
   format(
     atom(PrecisionLabel),
-    ' precision[~d/~d=~2f]',
+    ' precision[~:d/~:d=~2f]',
     [NumberOfIdPairs,NumberOfPairs,Precision]
   ).
 

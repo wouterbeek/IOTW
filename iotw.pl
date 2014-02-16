@@ -95,13 +95,13 @@ run_experiment(O1, IPairs1, SVG, G):-
 begin_experiment(ISets, NumberOfIPairs):-
   % Print the number of identity sets.
   length(ISets, NumberOfISets),
-  debug(iotw, 'There are ~d identity sets.', [NumberOfISets]),
+  debug(iotw, 'There are ~:d identity sets.', [NumberOfISets]),
 
   % Print the number of identity pairs.
   % Note that not all identity pairs may have been explicit
   % in the original collection of pairs.
   equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
-  debug(iotw, 'There are ~d identity pairs.', [NumberOfIPairs]),
+  debug(iotw, 'There are ~:d identity pairs.', [NumberOfIPairs]),
 
   % Print the number of resources.
   aggregate_all(
@@ -112,7 +112,7 @@ begin_experiment(ISets, NumberOfIPairs):-
     ),
     NumberOfResources
   ),
-  debug(iotw, 'There are ~d resources.', [NumberOfResources]),
+  debug(iotw, 'There are ~:d resources.', [NumberOfResources]),
 
   % Print the number of non-pair identity sets.
   % This quantifies the usefulness of using sets instead of pairs.
@@ -124,7 +124,7 @@ begin_experiment(ISets, NumberOfIPairs):-
     ),
     NumberOfNonpairISets
   ),
-  debug(iotw, 'Number of non-pair identity sets: ~d', [NumberOfNonpairISets]).
+  debug(iotw, 'Number of non-pair identity sets: ~:d', [NumberOfNonpairISets]).
 
 end_experiment(GA_Hash, NumberOfAllIPairs1):-
   aggregate_all(
@@ -140,7 +140,7 @@ end_experiment(GA_Hash, NumberOfAllIPairs1):-
   ;
     debug(
       iotw,
-      'Number of ipairs does not match: ~d and ~d.',
+      'Number of ipairs does not match: ~:d and ~:d.',
       [NumberOfAllIPairs1,NumberOfAllIPairs2]
     )
   ).
