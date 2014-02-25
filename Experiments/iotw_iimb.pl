@@ -18,12 +18,12 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(ap(ap)).
 :- use_module(ap(ap_methods)).
 :- use_module(ap(ap_stat)).
-:- use_module(generics(archive_ext)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
 :- use_module(iotw(iotw)).
 :- use_module(library(aggregate)).
 :- use_module(library(lists)).
+:- use_module(os(archive_ext)).
 :- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
 :- use_module(os(run_ext)).
