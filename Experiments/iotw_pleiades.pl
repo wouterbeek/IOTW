@@ -25,9 +25,6 @@
 
 :- register_module(rdf_deb).
 
-:- rdf_meta(rdf_literal(r,r,?)).
-:- rdf_meta(rdf_literal(r,r,?,?)).
-:- rdf_meta(rdf_literal(r,r,?,?,?)).
 :- rdf_meta(top_messages(+,r)).
 
 :- xml_register_namespace(cito, 'http://purl.org/spar/cito/').

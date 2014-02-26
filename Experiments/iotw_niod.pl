@@ -22,9 +22,6 @@
 :- use_module(void(void_file)).
 :- use_module(xml(xml_namespace)).
 
-:- rdf_meta(rdf_literal(r,r,?)).
-:- rdf_meta(rdf_literal(r,r,?,?)).
-:- rdf_meta(rdf_literal(r,r,?,?,?)).
 :- rdf_meta(top_messages(+,r)).
 
 :- xml_register_namespace('category-nl', 'http://nl.dbpedia.org/resource/').

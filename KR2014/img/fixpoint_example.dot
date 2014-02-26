@@ -1,0 +1,33 @@
+graph fixpoint_example {
+  node [shape="plaintext"];
+  
+  {
+    rank=same;
+    s1;
+    o1;
+  }
+  {
+    rank=same;
+    s2;
+    o2;
+  }
+  {
+    rank=same;
+    s3;
+    o3;
+  }
+  
+  // Relation P.
+  s1 -- o1 [dir="both",label="p"];
+  s2 -- o2 [dir="both",label="p"];
+  s3 -- o3 [dir="forward",label="p"];
+  
+  // Identity relation.
+  s1 -- s2 [color="black:black",dir="none"];
+  o1 -- o2 [color="black:black",dir="none"];
+  o2 -- o3 [color="black:black",dir="none"];
+  
+  charset="UTF-8";
+  overlap="false";
+}
+
