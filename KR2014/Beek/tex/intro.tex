@@ -8,7 +8,7 @@ They allow to state and relate properties of an object
 
 Identity relations are
   at the foundation of the Linked Open Data initiative
-  and the Semantic Web (SW) in general \cite{BizerCyganiakHeath2007}.
+  and the Semantic Web (SW) in general.
 The SW consists of sets of assertions that are published on the Web
   by different authors operating in different contexts,
   often using different names for the same object.
@@ -16,19 +16,9 @@ Identity relations allow the interlinking of these multiple descriptions
   of the same thing.
 
 Identity is often understood as the sharing of all properties between
-  two objects with different names (principle of indiscernibility),
-  see Principle \ref{principle:indiscernibility_of_identicals}.
+  two objects with different names (principle of indiscernibility).
 In the SW this traditional notion of identity is expressed by
-  the \texttt{owl:sameAs} property.\cite{MotikPaterschneiderGrau2012}
-
-\begin{principle}[Indiscernibility of identicals]
-\label{principle:indiscernibility_of_identicals}
-\begin{equation}
-    a = b
-  \rightarrow
-    \forall \phi \in \Phi (\phi(a) = \phi(b)\nonumber)
-\end{equation}
-\end{principle}
+  the \texttt{owl:sameAs} property.
 
 \noindent According to the traditional semantics of the identity relation,
   identical terms can be replaced for one another in all non-modal contexts
@@ -56,16 +46,4 @@ Improving on the existing semantics of identity,
 \item We want to assess the quality of an identity relation based on
       the consistency with which it is applied to the data.
 \end{enumerate}
-
-
-
-\subsection{Outline}
-
-In the following section we survey existing work
-  on the problem of identity on the SW.
-In Section \ref{sec:approach} we present our approach;
-  first at a very high level and then in more formal detail.
-We illustrate the results of applying our formalism to
-  a real-world dataset.
-Section \ref{sec:conclusion} concludes.
 

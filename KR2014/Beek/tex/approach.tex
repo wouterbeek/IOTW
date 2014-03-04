@@ -35,36 +35,3 @@ Besides setting a lower and a higher bound to the identity relation,
 \input{./tex/ind.tex}
 \input{./tex/approx.tex}
 
-\subsection{Example}
-
-\begin{figure*}
-\label{fig:ihierarchy}
-\centering
-\includegraphics[width=\textwidth]{./img/iimb_16_2}
-\caption{
-  Example of the identity subrelations for a given dataset (IIMB).
-  Each box represents such a subrelation.
-  The lower and higher approximation are colored in green and red
-    respectively.
-  Each box shows the shared predicate terms in curly braces.
-  The precision is calculated as
-    the number of identity pairs in the subrelation
-  divided by
-    the number of pairs in the subrelation.
-  The identity figure indicates the number of identity pairs in each box,
-    divided by the number of identity pairs overall.
-}
-\end{figure*}
-
-Our approach allows the subrelation hierarchy of a given identity relation
-  to be calculated.
-Figure \ref{fig:ihierarchy} shows an example of the lower and higher
-  approximations for a data- and linkset combination of the IIMB database.
-Each rectangular box represents an identity subrelation.
-Since in this figure a partition is only drawn when there is at least one
-  identity pair that is indiscernible with respect to some set of
-  predicates, the higher approximation amounts to the entire figure.
-The lower approximation only consists of those partition sets that contain
-  at least one identity pair, and that contain no non-identity pair;
-  these are distinguished by green borders.
-

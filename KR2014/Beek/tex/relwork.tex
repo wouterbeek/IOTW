@@ -8,14 +8,12 @@ Existing research suggests six different solutions for
   \cite{HalpinHayes2010,MccuskerMcguinness2010}.
 Candidates for replacement are
   the SKOS concepts
-  {\small \texttt{skos:related}} and {\small \texttt{skos:exactMatch}}
-  \cite{MilesBechhofer2009}.
+  {\small \texttt{skos:related}} and {\small \texttt{skos:exactMatch}}.
 The former is not transitive,
   thereby limiting the possibilities for reasoning.
 The latter is transitive,
   but can only be used in certain contexts.
-It is not defined in what contexts it can be used
-  \cite{MilesBechhofer2009}.
+It is not defined in what contexts it can be used.
 
 \textbf{[2] Restrict the applicability of identity relations}
   to specific contexts.
@@ -35,38 +33,19 @@ Other possible extensions of {\small \texttt{owl:sameAs}} take
 
 \textbf{[4] Use domain-specific identity relations}
   \cite{MccuskerMcguinness2010}.
-For instance
-    ``$x$ and $y$ have the same medical use''
-  replaces
-    identity in the domain of medicine,
-and
-    ``$x$ and $y$ are the same molecule''
-  replaces
-    identity in the domain of chemistry.
 Such domain-specific links are only locally valid,
   thereby limiting knowledge reuse.
 
-\textbf{[5] Change the modeling practice}, possibly in a (semi-)automated way
-  by adapting visualization and modeling toolkits to produce notifications
-  upon reading SW data, or by posing additional restrictions on the creation
-  and alteration of data
+\textbf{[5] Change the modeling practice}
   \cite{HalpinHayes2010,DingShinavierFininMcguinness2010}.
 Introducing checks on editing operations violates
   one of the fundamental underpinnings of the SW:
   that anybody is allowed to say anything about anything
   \cite{AntoniouGrothHarmelenHoekstra2012}.
 
-We also mention \cite{DingShinavierShangguanMcguinness2010} who show that
+\cite{DingShinavierShangguanMcguinness2010} who show that
   network analysis of the occurrence of {\small \texttt{owl:sameAs}}
   in datasets can provide insights into the ways in which identity is used.
 These latter endeavors have not yet been related to the semantics of
   identity.
-
-%What the existing approaches have in common is
-%  that quite some work has to be done --
-%  adapting or creating standards, instructing modelers, converting existing
-%  datasets -- in order to resolve only some of the problems of identity.
-%Our approach provides a way of dealing with the heterogeneous real-world
-%  usage of identity in the SW that is fully automated and requires
-%  no changes to standards, modeling practices, or existing datasets.
 
