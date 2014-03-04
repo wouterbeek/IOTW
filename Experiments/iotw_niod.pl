@@ -69,10 +69,10 @@ iotw_niod(O):-
   ),
   
   % Load the entire dataset by loading the VoID file.
-  void_load_library(VoID_File, _, VoID_Graph),
+  void_load(VoID_File, _, VoID_Graph),
   
   % Save statistics that were added/modified while loading.
-  void_save_library(VoID_Graph, VoID_File),
+  void_save(VoID_Graph, VoID_File),
   
   debug(iotw_niod, 'VoID graph ~w is loaded.', [VoID_Graph]).
 

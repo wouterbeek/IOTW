@@ -72,7 +72,7 @@ iotw_pleiades(O1):-
   ),
 
   % Load the entire dataset by loading the VoID file.
-  void_load_library(VoID_File, _, VoID_Graph),
+  void_load(VoID_File, _, VoID_Graph),
 
-  void_save_library(VoID_Graph, VoID_File).
+  void_save(VoID_Graph, VoID_File).
 

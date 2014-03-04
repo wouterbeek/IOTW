@@ -36,15 +36,7 @@ Indeed, when we look at the subdivision into three `categories' above,
 
 \noindent Based on these approximations we can give
   the rough set representation $\pair{\lowerapprox}{\higherapprox}$
-  of identity relation $\approx$ \cite{Pawlak1991}.\footnote{
-    Relations are called `attributes' in rough set theory.
-    They are functions that map to an arbitrary set of value labels.
-    We only consider functions that map from binary input into
-      the set of Boolean truth values, and therefore use the term
-     `predicates' to denote these functions.
-    We recognize that extensions to multi-valued logics
-      would require a richer set of value labels.
-  }
+  of identity relation $\approx$ \cite{Pawlak1991}.
 The quality of a rough set representation is given in
   definition \ref{def:quality}.
 The intuition behind this quality measure is that the crispness
@@ -102,25 +94,3 @@ A domain $S_G$ is fully discernible with respect to
   there exists a binary relation $\approx$
   for which \mbox{$\alpha(\approx) = 1.0$}.
 
-\begin{comment}
-\begin{definition}[Higher \& lower approximation]
-\label{def:higher_lower_approximation}
-\begin{align}
-  y \in [x]_H
-\,\iff\,\\
-  \exists u (
-      \card{[u]_{\sim}}>1
-    \,\land\,
-      \mathbb{P}([u]_{\sim})=\mathbb{P}(\set{x,y})
-  )\nonumber
-\\
-  y \in [x]_L
-\,\iff\,
-  \forall S \subseteq D (\\
-      (\card{S}>1 \,\land\, \mathbb{P}(S) = \mathbb{P}(\set{x,y}))
-    \,\rightarrow\,
-      \exists s \in D (S=[s]_{\sim})
-  )\nonumber
-\end{align}
-\end{definition}
-\end{comment}
