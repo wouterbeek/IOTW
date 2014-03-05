@@ -53,7 +53,7 @@ iimb_experiment:-
       ap_stage([from(input,'IIMB',archive)], extract_archive),
 
       % Make sure all RDF data is stored in the Turtle serialization format.
-      ap_stage([], rdf_convert_directory),
+      ap_stage([], ap_rdf_convert_directory),
 
       % A Java Maven project does the OWL materialization (using Jena).
       ap_stage([], owl_materialize),
@@ -62,7 +62,7 @@ iimb_experiment:-
       % it does allow the materialized results to be easily
       % compared on a per-file level
       % (e.g. the comment counting the number of serialized triples).
-      ap_stage([], rdf_convert_directory),
+      ap_stage([], ap_rdf_convert_directory),
 
       % Run the IOTW experiment.
       ap_stage([between(1,80),to(output)], iimb_experiment)
