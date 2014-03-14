@@ -147,7 +147,7 @@ generate_triples([S1-S2-Rows|Triples]) -->
   html_table(
     [header_row(true),indexed(true)],
     \caption(S1, S2),
-    html_pl_term,
+    pl_term_html,
     Rows
   ),
   generate_triples(Triples).
