@@ -76,7 +76,7 @@ Possible extensions of the alignment pairs:
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_term)). % Used in meta-options.
+:- use_module(rdf_term(rdf_term)). % Used in meta-options.
 
 %! ihier(
 %!   ?IdentityHierarchyHash:atom,

@@ -10,45 +10,51 @@
 Simple tests for the IOTW codebase.
 
 @author Wouter Beek
-@version 2013/09, 2013/11-2013/12
+@version 2013/09, 2013/11-2013/12, 2014/03
 */
 
 :- use_module(iotw(iotw)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_lit_build)).
+:- use_module(rdf(rdf_build)).
+:- use_module(rdf_term(rdf_literal)).
+:- use_module(rdfs(rdfs_build)).
+:- use_module(rdfs(rdfs_label_ext)).
+:- use_module(xml(xml_namespace)).
+
+:- xml_register_namespace(ex, 'http://www.example.com/').
 
 
 
 test0:-
   G = iotw_test,
-  rdf_global_id(rdf:'Amsterdam', Amsterdam),
-  rdf_global_id(rdf:'Andrea', Andrea),
-  rdf_global_id(rdf:'Berlin', Berlin),
-  rdf_global_id(rdf:'Boetje', Boetje),
-  rdf_global_id(rdf:'Wouter', Wouter),
+  rdf_global_id(ex:'Amsterdam', Amsterdam),
+  rdf_global_id(ex:'Andrea', Andrea),
+  rdf_global_id(ex:'Berlin', Berlin),
+  rdf_global_id(ex:'Boetje', Boetje),
+  rdf_global_id(ex:'Wouter', Wouter),
 
-  rdf_assert(Andrea, rdf:type, rdf:'Person', G),
-  rdf_assert_literal(Andrea, rdfs:label, 'Andrea', G),
-  rdf_assert(Wouter, rdf:type, rdf:'Person', G),
-  rdf_assert_literal(Wouter, rdfs:label, 'Wouter', G),
-  rdf_assert(Boetje, rdf:type, rdf:'Person', G),
-  rdf_assert_literal(Boetje, rdfs:label, 'Boetje', G),
+  rdf_assert_individual(Andrea, ex:'Person', G),
+  rdfs_assert_label(Andrea, 'Andrea', G),
+  rdf_assert_individual(Wouter, ex:'Person', G),
+  rdfs_assert_label(Wouter, 'Wouter', G),
+  rdf_assert_individual(Boetje, ex:'Person', G),
+  rdfs_assert_label(Boetje, 'Boetje', G),
 
-  rdf_assert(Amsterdam, rdf:type, rdf:'Capital', G),
-  rdf_assert(Amsterdam, rdf:type, rdf:'City', G),
-  rdf_assert(Amsterdam, rdf:type, rdf:'GeoLocation', G),
-  rdf_assert_literal(Amsterdam, rdfs:label, 'Amsterdam', G),
-  rdf_assert(Berlin, rdf:type, rdf:'Capital', G),
-  rdf_assert(Berlin, rdf:type, rdf:'City', G),
-  rdf_assert(Berlin, rdf:type, rdf:'GeoLocation', G),
-  rdf_assert_literal(Berlin, rdfs:label, 'Berlin', G),
+  rdf_assert_individual(Amsterdam, ex:'Capital', G),
+  rdf_assert_individual(Amsterdam, ex:'City', G),
+  rdf_assert_individual(Amsterdam, ex:'GeoLocation', G),
+  rdfs_assert_label(Amsterdam, 'Amsterdam', G),
+  rdf_assert_individual(Berlin, ex:'Capital', G),
+  rdf_assert_individual(Berlin, ex:'City', G),
+  rdf_assert_individual(Berlin, ex:'GeoLocation', G),
+  rdfs_assert_label(Berlin, 'Berlin', G),
   
-  rdf_assert(rdf:type, rdfs:subPropertyOf, rdf:typo, G),
+  rdfs_assert_subproperty(rdf:type, ex:typo, G),
 
   run_experiment(
     [evaluate(true),granularity(p)],
     [Andrea-Wouter,Andrea-Boetje,Amsterdam-Berlin],
-    _SVG,
+    _,
     G
   ).
 
