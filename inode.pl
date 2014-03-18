@@ -293,8 +293,8 @@ assert_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 
 assert_inode_(Mode, G, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
-  
-  ord_sets_to_pairs(ISets, IPairs),
+
+  ordsets_to_pairs(ISets, IPairs),
   length(IPairs, NumberOfIPairs),
 
 /*
@@ -341,11 +341,6 @@ assert_inode_(Mode, G, Hash1, Shared, ISets):-
       )
     )
   ).
-
-check_shares(p, G, SharedPs, ISets):- !,
-  check_shares_predicates(G, SharedPs, ISets).
-check_shares(po, G, SharedPOs, ISets):-
-  check_shares_predicate_object_pairs(G, SharedPOs, ISets).
 
 check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
   % Two resources at least share the first, i.e. least probable, property.

@@ -26,14 +26,14 @@ Recommendation sharing non-monotonic?
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
-:- use_module(xsd(xsd)).
+:- use_module(xsd(xsd_clean)).
 
 
 
 %! run_experiment(
 %!   +Options:list(nvpair),
 %!   +IdentityPairs:list(pair(iri)),
-%!   -SVG_DOM:list,
+%!   -SvgDom:list,
 %!   +Graph:atom
 %! ) is det.
 % Runs an IOTW experiment.
@@ -63,7 +63,7 @@ run_experiment(O1, IPairs1, SVG, G):-
 
   % Retrieve all alignment sets.
   % Does not include singleton sets (due to reflexivity).
-  pairs_to_ord_sets(IPairs2, ISets),
+  pairs_to_ordsets(IPairs2, ISets),
 
   % DEB
   if_debug(iotw, begin_experiment(ISets, NumberOfIPairs)),
@@ -72,7 +72,7 @@ run_experiment(O1, IPairs1, SVG, G):-
   % are canonical values.
   % This makes it much cheaper to establish the identity of typed literals.
   xsd_canonize_graph(G),
-  
+
   % Returns the RDF graph and alignment pairs hash.
   assert_inodes(O1, G, ISets, GA_Hash),
 
@@ -81,14 +81,14 @@ run_experiment(O1, IPairs1, SVG, G):-
 
   % DEB
   if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)),
-  
+
   % Run the evaluation.
   (
    option(evaluate(false), O1, false), !
   ;
     evaluate_inodes(O1, GA_Hash)
   ),
-  
+
   % Done!
   inode:clear_db.
 

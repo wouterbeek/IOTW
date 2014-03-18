@@ -3,7 +3,7 @@
   [
     iimb_experiment/0,
     iimb_experiment/2 % +Number:between(1,80)
-                      % -SVG_DOM:list
+                      % -SvgDom:list
   ]
 ).
 
@@ -12,26 +12,18 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
 */
 
 :- use_module(ap(ap)).
-:- use_module(ap(ap_methods)).
 :- use_module(ap(ap_stat)).
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
+:- use_module(library(apply)).
+:- use_module(lod(oaei)).
 :- use_module(iotw(iotw)).
-:- use_module(library(aggregate)).
-:- use_module(library(lists)).
-:- use_module(os(archive_ext)).
-:- use_module(os(dir_ext)).
-:- use_module(os(file_ext)).
-:- use_module(os(run_ext)).
-:- use_module(owl(owl_build)).
-:- use_module(owl(owl_mat)).
+:- use_module(rdf(rdf_meta)).
 :- use_module(rdf(rdf_serial)).
-:- use_module(rdf(rdf_serial_conv)).
-:- use_module(standards(oaei)).
 :- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
 
@@ -48,6 +40,7 @@ Runs IOTW experiments on the IIMB alignment data.
 iimb_experiment:-
   ap(
     [process(iimb),project(iotw)],
+    _,
     [
       % Unpack the archive containing the original OAEI2012 data.
       ap_stage([from(input,'IIMB',archive)], extract_archive),
@@ -69,10 +62,10 @@ iimb_experiment:-
     ]
   ).
 
-%! iimb_experiment(+Number:between(1,80), SVG_DOM:list) is det.
+%! iimb_experiment(+Number:between(1,80), SvgDom:list) is det.
 % Calculates the identity hierarchy for a specific IIMB example.
 
-iimb_experiment(N, SVG_DOM):-
+iimb_experiment(N, SvgDom):-
   absolute_file_name(
     iotw(ap/iimb/stage4),
     FromDir,
@@ -80,8 +73,8 @@ iimb_experiment(N, SVG_DOM):-
   ),
   iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
   atomic_list_concat([iimb,N], '_', G),
-  rdf_loads([O_File1,O_File2], G),
-  run_experiment([evaluate(true),granularity(p)], A_Pairs, SVG_DOM, G).
+  maplist(rdf_load([], G), [O_File1,O_File2]),
+  run_experiment([evaluate(true),granularity(p)], A_Pairs, SvgDom, G).
 
 iimb_experiment(FromDir, ToDir, N):-
   iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
@@ -99,9 +92,9 @@ iimb_experiment(FromDir, ToDir, N):-
     [],
     [O_File1,O_File2],
     % Now that all files are properly loaded, we can run the experiment.
-    run_experiment([evaluate(true),granulaity(p)], A_Pairs, SVG_DOM),
+    run_experiment([evaluate(true),granulaity(p)], A_Pairs, SvgDom),
     [format(turtle)],
-    ToFileOWL,
+    ToFileOWL
   ),
   file_type_alternative(ToFileOWL, svg, ToFileSVG),
 
@@ -112,7 +105,7 @@ iimb_experiment(FromDir, ToDir, N):-
   access_file(ToFileSVG, write),
 
   % Write the SVG DOM to file.
-  xml_dom_to_file([dtd(svg)], SVG_DOM, ToFileSVG),
+  xml_dom_to_file([dtd(svg)], SvgDom, ToFileSVG),
 
   % STATS
   ap_stage_tick.

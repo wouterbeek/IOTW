@@ -43,7 +43,7 @@ evaluate_inodes(O1, Perc1, DeltaPerc, GA_Hash, OutStream):-
 evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   % Create the reduced identity hierarchy.
   once(ihier(GA_Hash1, G, ISets1, _P_Assoc1, _, _)),
-  random_subset(ISets1, Perc, ISets2),
+  random_subset(ISets1, ISets2),
   % Can we find these back?
   ord_subtract(ISets1, ISets2, ISets3),
   assert_inodes(O1, G, ISets2, GA_Hash2),
@@ -66,7 +66,7 @@ evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   maplist(divide, [L1,L2], [H1,H2], [Q1,Q2]),
 
   % Can the extracted alignments be found?
-  ord_sets_to_pairs(ISets3, IPairs3),
+  ordsets_to_pairs(ISets3, IPairs3),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),

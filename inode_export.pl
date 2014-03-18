@@ -73,7 +73,7 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   ->
     phrase(set(rdf_term_name, Shared), Codes)
   ;
-    phrase(set(rdf_term_pair, Shared), Codes)
+    phrase(set(pair(ascii, rdf_term_name), Shared), Codes)
   ),
   atom_codes(SharedLabel, Codes),
 
@@ -88,8 +88,6 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   ),
 
   V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
-rdf_term_pair([X,Y]) -->
-  pair(html, rdf_term_name, X, Y).
 
 calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
