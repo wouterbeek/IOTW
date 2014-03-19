@@ -132,7 +132,7 @@ iotw_table(GAK_Hash) -->
           rdf(S2, P2, O2, G),
           L2
         ),
-        append([[['Subject','Predicate','Object']],L1,L2], L)
+        append(L1, L2, L)
       ),
       Triples
     )
@@ -144,9 +144,9 @@ iotw_table(GAK_Hash) -->
 
 generate_triples([S1-S2-Rows|Triples]) -->
   html_table(
-    [header_row(true),indexed(true)],
+    [header_row(spo),indexed(true)],
     html([
-      p('Overview of non-identity pair '),
+      'Overview of non-identity pair ',
       \html_pair(rdf_term_html, S1,S2)
     ]),
     rdf_term_html,
