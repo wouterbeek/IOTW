@@ -1,7 +1,10 @@
 % The load file for the Identity on the Web (IOTW) project.
 
-:- multifile(user:project_name/1).
-user:project_name('IOTW').
+:- multifile(user:project/2).
+user:project(
+  'IOTW',
+  'Identity on the Web. Researching the owl:sameAs relation.'
+).
 
 :- set_prolog_stack(global, limit(2*10**9)).
 
