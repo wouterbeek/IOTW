@@ -4,12 +4,12 @@
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
 */
 
 :- use_module(dcg(dcg_collection)).
 :- use_module(generics(db_ext)).
-:- use_module(generics(uri_ext)).
+:- use_module(generics(uri_query)).
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
 :- use_module(iotw(inode)).
@@ -31,8 +31,9 @@
 :- web_module_add('IOTW', iotw).
 
 % /js
-:- db_add_novel(http:location(js, root(js), [])).
-:- db_add_novel(user:file_search_path(js, iotw(js))).
+:- multifile(http:location/3).
+http:location(js, root(js), []).
+:- user:file_search_path(js, iotw(js)).
 :- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 :- html_resource(js('iotw.js'), []).
 
@@ -42,17 +43,15 @@
 
 % Callback HTTP handler reaction on a click action on an identity node.
 iotw(Request):-
-  memberchk(search(Search), Request),
-  memberchk(inode=GAK_Hash, Search), !,
+  request_query_read(Request, inode, GakHash), !,
   reply_html_page(
     app_style,
     \iotw_head,
-    \iotw_body(inode(GAK_Hash))
+    \iotw_body(inode(GakHash))
   ).
 % Show IIMB SVG graphic.
 iotw(Request):-
-  memberchk(search(Search), Request),
-  memberchk(iimb=N, Search), !,
+  request_query_read(Request, iimb, N), !,
   reply_html_page(app_style, \iotw_head, \iotw_body(iimb(N))).
 % Normal Web page.
 iotw(_Request):-
@@ -75,11 +74,11 @@ iotw_body(Content) -->
 
 iotw_content(Var) -->
   {var(Var)}, !.
-iotw_content(inode(GAK_Hash)) --> !,
+iotw_content(inode(GakHash)) --> !,
   {iimb_current(N)},
   html([
     \iotw_content(iimb(N)),
-    \iotw_table(GAK_Hash)
+    \iotw_table(GakHash)
   ]).
 iotw_content(iimb(N)) --> !,
   {
@@ -94,12 +93,12 @@ iotw_head -->
     title('IOTW')
   ]).
 
-iotw_table(GAK_Hash) -->
+iotw_table(GakHash) -->
   {
     once(
       inode(
         _Mode,
-        GAK_Hash,
+        GakHash,
         IHierHash,
         SharedPs,
         _Approx,

@@ -64,13 +64,14 @@ Possible extensions of the alignment pairs:
   2. Non-identity pairs in proper supersets of the lower approximation.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/12
+@version 2013/05, 2013/08-2013/12, 2014/03
 */
 
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
 :- use_module(generics(pair_ext)).
+:- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
@@ -476,8 +477,8 @@ rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
 rdf_shared(_G, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 
 shared_predicates_to_pairs(G, [P1|Ps], Pairs):-
-  setoff(
-    X-Y,
+  aggregate_all(
+    set(X-Y),
     (
       rdf(X, P1, O1, G),
       rdf(Y, P1, O1, G),

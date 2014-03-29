@@ -13,7 +13,7 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
 */
 
 :- use_module(dcg(dcg_collection)).
@@ -21,6 +21,7 @@ by the predicates they share.
 :- use_module(generics(meta_ext)).
 :- use_module(gv(gv_file)).
 :- use_module(iotw(inode)).
+:- use_module(library(aggregate)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
@@ -158,8 +159,8 @@ export_identity_nodes_(O, IHierHash, GIF):-
   % The ranks are the cardinalities of the sets of shared predicates.
   % Ranks are used to align the partitioning subsets is a style similar
   % to a Hasse Diagram.
-  setoff(
-    RankNumber,
+  aggregate_all(
+    set(RankNumber),
     (
       inode(Mode_, _, IHierHash, SharedPs, _, _, _, _, _),
       length(SharedPs, RankNumber)

@@ -34,8 +34,8 @@ Runs IOTW experiments on the anatomy alignment data.
 :- xml_register_namespace(rdfs, 'http://www.w3.org/2000/01/rdf-schema#').
 :- xml_register_namespace(xsd, 'http://www.w3.org/2001/XMLSchema#').
 
-:- db_add_novel(user:file_search_path(anatomy, oaei2012('Anatomy'))).
-:- db_add_novel(user:file_search_path(raw_results, anatomy('Raw results'))).
+user:file_search_path(anatomy, oaei2012('Anatomy')).
+user:file_search_path(raw_results, anatomy('Raw results')).
 
 
 
