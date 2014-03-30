@@ -12,6 +12,7 @@
 :- use_module(generics(uri_query)).
 :- use_module(html(html)). % Requires the DTD file location for HTML.
 :- use_module(html(html_table)).
+:- use_module(html(html_tuple)).
 :- use_module(iotw(inode)).
 :- use_module(iotw_exp(iotw_iimb)).
 :- use_module(library(http/html_head)).
