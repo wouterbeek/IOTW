@@ -21,6 +21,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(generics(db_ext)).
 :- use_module(library(apply)).
 :- use_module(lod(oaei)).
+:- yse_module(os(safe_file)).
 :- use_module(iotw(iotw)).
 :- use_module(rdf(rdf_meta)).
 :- use_module(rdf(rdf_serial)).
