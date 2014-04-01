@@ -24,7 +24,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- yse_module(os(safe_file)).
 :- use_module(iotw(iotw)).
 :- use_module(rdf(rdf_meta)).
-:- use_module(rdf(rdf_serial)).
+:- use_module(rdf_file(rdf_serial)).
 :- use_module(xml(xml_dom)).
 :- use_module(xml(xml_namespace)).
 
