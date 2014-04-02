@@ -4,7 +4,7 @@
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03-2014/04
 */
 
 :- use_module(dcg(dcg_collection)).
@@ -24,7 +24,7 @@
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(rdf(rdf_name)). % DCG-meta.
-:- use_module(rdf_web(rdf_term_html)). % DCG-meta.
+:- use_module(rdf_web(rdf_html_table)).
 :- use_module(server(web_modules)).
 :- use_module(xml(xml_dom)).
 
@@ -143,13 +143,14 @@ iotw_table(GakHash) -->
   ]).
 
 generate_triples([S1-S2-Rows|Triples]) -->
-  html_table(
-    [header_row(spo),indexed(true)],
+  {http_location_by_id(root(iotw), Location)},
+  rdf_html_table(
+    [header_row(spo),indexed(true),location(Location)],
     html([
       'Overview of non-identity pair ',
-      \html_pair(rdf_term_html, S1,S2)
+      \html_pair(rdf_term_html(Location), S1, S2),
+      '.'
     ]),
-    rdf_term_html,
     Rows
   ),
   generate_triples(Triples).
