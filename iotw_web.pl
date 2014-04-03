@@ -143,12 +143,11 @@ iotw_table(GakHash) -->
   ]).
 
 generate_triples([S1-S2-Rows|Triples]) -->
-  {http_location_by_id(root(iotw), Location)},
   rdf_html_table(
-    [header_row(spo),indexed(true),location(Location)],
+    [header_row(spo),indexed(true),location(iotw)],
     html([
       'Overview of non-identity pair ',
-      \html_pair(rdf_term_html(Location), S1, S2),
+      \html_pair(rdf_term_html(iotw, S1, S2),
       '.'
     ]),
     Rows
