@@ -29,7 +29,7 @@
 :- use_module(xml(xml_dom)).
 
 :- http_handler(root(iotw), iotw, []).
-:- web_module_add('IOTW', iotw).
+user:web_module('IOTW', iotw).
 
 % /js
 :- multifile(http:location/3).
