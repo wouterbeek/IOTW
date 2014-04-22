@@ -74,7 +74,7 @@ iimb_experiment(N, SvgDom):-
   ),
   iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
   atomic_list_concat([iimb,N], '_', G),
-  maplist(rdf_load([], G), [O_File1,O_File2]),
+  maplist(rdf_load_any([graph(G)]), [O_File1,O_File2]),
   run_experiment([evaluate(true),granularity(p)], A_Pairs, SvgDom, G).
 
 iimb_experiment(FromDir, ToDir, N):-
