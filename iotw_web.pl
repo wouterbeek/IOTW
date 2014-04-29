@@ -73,8 +73,7 @@ iotw_body(Content) -->
   },
   html([\iotw_content(Content),div(id=index,ol([],HTML_DOM))]).
 
-iotw_content(Var) -->
-  {var(Var)}, !.
+iotw_content(Var) --> {var(Var)}, !, [].
 iotw_content(inode(GakHash)) --> !,
   {iimb_current(N)},
   html([
