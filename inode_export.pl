@@ -26,7 +26,7 @@ by the predicates they share.
 :- use_module(library(lists)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(os(datetime_ext)).
-:- use_module(os(run_ext)). % DEB
+:- use_module(os(pdf)).
 :- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
 
@@ -137,8 +137,8 @@ export_inodes(O1, IHierHash, SVG2):-
       PDF_File,
       [access(write),file_type(pdf)]
     ),
-    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File),
-    open_pdf(PDF_File)
+    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, File),
+    open_pdf(File)
   ;
     true
   ).
