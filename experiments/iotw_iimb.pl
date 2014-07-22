@@ -164,6 +164,7 @@ iimb_experiment_from_files(
     ReferenceAlignmentsFile,
     [access(read),file_type(turtle),relative_to(SubDir)]
   ),
-  oaei_file_to_alignments(ReferenceAlignmentsFile, ReferenceAlignmentPairs),
-  pairs_to_sets(ReferenceAlignmentPairs, ReferenceAlignmentSets).
+  oaei_file_to_alignments(ReferenceAlignmentsFile, ReferenceAlignmentPairs1),
+  exclude(reflexive_pair, ReferenceAlignmentPairs1, ReferenceAlignmentPairs2),
+  pairs_to_sets(ReferenceAlignmentPairs2, ReferenceAlignmentSets).
 

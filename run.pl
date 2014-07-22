@@ -55,17 +55,5 @@ rdf_tabular(Request):-
 
 :- dynamic(user:web_module/2).
 :- multifile(user:web_module/2).
-
-
-% DataHives: Agents.
-
-:- use_module(dh_web(dh_web_agent)).
-
-user:web_module('DH Agent', dh_web_agent).
-
-:- http_handler(dh_web(agent), dh_web_agent, []).
-
-dh_web_agent(Request):-
-  dh_web_agent(Request, app_style).
 */
 

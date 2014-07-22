@@ -13,3 +13,6 @@
 :- debug(iotw).
 :- debug(oaei).
 
+:- use_module(iotw(experiments/iotw_iimb)).
+:- gtrace, iimb_experiment.
+

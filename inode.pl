@@ -80,7 +80,6 @@ Possible extensions of the alignment pairs:
 :- use_module(generics(assoc_ext)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(pair_ext)).
-:- use_module(logic(equiv)).
 
 :- use_module(plRdf_term(rdf_term)). % Used in meta-options.
 

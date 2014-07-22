@@ -10,7 +10,7 @@
 
 /** <module> IOTW
 
-IOTW experiments.
+Predicates for running IOTW experiments.
 
 @author Wouter Beek
 @version 2013/05, 2013/08-2013/12, 2014/07
@@ -24,7 +24,6 @@ IOTW experiments.
 
 :- use_module(generics(deb_ext)).
 :- use_module(generics(pair_ext)).
-:- use_module(logic(equiv)).
 :- use_module(xsd(xsd_clean)).
 
 :- use_module(iotw(inode)).
@@ -50,7 +49,16 @@ IOTW experiments.
 % ### Arguments
 %
 % @arg Options A list of name-value pairs.
-% @arg IdentitySets ...
+% @arg IdentitySets An ordered set of ordered sets of resources.
+%      The resources within the same set are identical to each other.
+%      When calling this predicates, it is wise to exclude
+%      identity sets that are singleton sets.
+%      These correspond to reflexive identity pairs,
+%      so filtering for reflexive pairs and then converting pairs to sets
+%      also works.
+%      The reason for excluding singleton identity sets is that
+%      the corresponding inode would contain all the properties
+%      of a single resource.
 % @arg SVG The DOM of an ihierarchy.
 % @arg Graph The atomic name of an RDF graph.
 %
@@ -65,19 +73,6 @@ IOTW experiments.
 %     shared predicates, or on the level of shared predicate-object pairs.
 
 run_experiment(Graph, ISets, Svg, Options):-
-/* @tbd document
-  % Make sure there are no reflexive pairs.
-  % A reflexive pair or singleton iset would probably result in
-  % an inode that is particular to a single resource,
-  % since something shares all of its properties with itself.
-  exclude(is_reflexive_pair, IPairs1, IPairs2),
-
-  % Retrieve all alignment sets.
-  % Notice that there are no singleton sets,
-  % since the identity pairs have been filtered for reflexivity.
-  pairs_to_sets(IPairs2, ISets),
-*/
-
   % DEB
   if_debug(iotw, begin_experiment(ISets, NumberOfIPairs)),
 
@@ -97,7 +92,9 @@ run_experiment(Graph, ISets, Svg, Options):-
 
   % Run the evaluation.
   (
-    option(evaluate(false), Options, false), !
+    option(evaluate(false), Options, false)
+  ->
+    true
   ;
     evaluate_inodes(IHierHash, Options)
   ),
@@ -105,15 +102,28 @@ run_experiment(Graph, ISets, Svg, Options):-
   % Done!
   clear_ihiers.
 
+
+
+% Debug predicates.
+
+%! begin_experiment(
+%!   +ISets:ordset(ordset(iri)),
+%!   -NumberOfIPairs:integer
+%! ) is det.
+
 begin_experiment(ISets, NumberOfIPairs):-
   % Print the number of identity sets.
   length(ISets, NumberOfISets),
   debug(iotw, 'There are ~:d identity sets.', [NumberOfISets]),
 
-  % Print the number of identity pairs.
-  % Note that not all identity pairs may have been explicit
+  % Print the number of identity pairs
+  % that is expressed by the given collection of identity sets.
+  %
+  % Notice that not all identity pairs may have been explicit
   % in the original collection of pairs.
-  number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  % I.e., in the following conversions, pairs1 and pairs2
+  % need not be the same: pairs1 -> sets -> pairs2
+  number_of_equivalence_pairs(ISets, NumberOfIPairs, [reflexive(false)]),
   debug(iotw, 'There are ~:d identity pairs.', [NumberOfIPairs]),
 
   % Print the number of resources.
@@ -139,6 +149,9 @@ begin_experiment(ISets, NumberOfIPairs):-
   ),
   debug(iotw, 'Number of non-pair identity sets: ~:d', [NumberOfNonpairISets]).
 
+
+%! end_experiment(+IHierHash:atom, +NumberOfAllIPairs:integer) is det.
+
 end_experiment(IHierHash, NumberOfAllIPairs1):-
   aggregate_all(
     sum(NumberOfIPairs),
@@ -146,10 +159,9 @@ end_experiment(IHierHash, NumberOfAllIPairs1):-
     NumberOfAllIPairs2
   ),
   (
-    NumberOfAllIPairs1 =:= NumberOfAllIPairs1
+    NumberOfAllIPairs1 =:= NumberOfAllIPairs2
   ->
     true
-    %debug(iotw, 'The number of ipairs matches.', [])
   ;
     debug(
       iotw,
@@ -157,6 +169,4 @@ end_experiment(IHierHash, NumberOfAllIPairs1):-
       [NumberOfAllIPairs1,NumberOfAllIPairs2]
     )
   ).
-
-is_reflexive_pair(X-X).
 
