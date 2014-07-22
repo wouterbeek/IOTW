@@ -123,7 +123,11 @@ begin_experiment(ISets, NumberOfIPairs):-
   % in the original collection of pairs.
   % I.e., in the following conversions, pairs1 and pairs2
   % need not be the same: pairs1 -> sets -> pairs2
-  number_of_equivalence_pairs(ISets, NumberOfIPairs, [reflexive(false)]),
+  pair_ext:number_of_equivalence_pairs(
+    ISets,
+    NumberOfIPairs,
+    [reflexive(false)]
+  ),
   debug(iotw, 'There are ~:d identity pairs.', [NumberOfIPairs]),
 
   % Print the number of resources.

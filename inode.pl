@@ -18,7 +18,7 @@
             % ?Shared:ordset(or([iri,pair(iri)]))
             % ?Approximation:oneof([higher,lower,none])
             % ?NumberOfIdentityPairs:nonneg
-            % ?IdentityPairs:orset(pair(iri))
+            % ?IdentitySets:orset(ordset(iri))
             % ?NumberOfPairs:nonneg
             % ?Pairs:orset(pair(iri))
   ]
@@ -101,7 +101,7 @@ Possible extensions of the alignment pairs:
 %!   ?SharedPredicates:ordset(or([iri,pair(iri)])),
 %!   ?Approximation:oneof([higher,lower,none]),
 %!   ?NumberOfIdentityPairs:nonneg,
-%!   ?IdentityPairs:ordset(pair(iri)),
+%!   ?IdentitySets:ordset(ordset(iri)),
 %!   ?NumberOfPairs:nonneg,
 %!   ?Pairs:ordset(pair(iri))
 %! ) is nondet.
@@ -162,7 +162,11 @@ create_ihier(Graph, ISets, IHierHash, Options):-
   % an identity set ${X,Y,Z}$ representing
   % 6 symmetric and transitive pairs.
   % We leave out the 3 reflexive pairs.
-  number_of_equivalence_pairs(ISets, NumberOfAllIPairs, [reflexive(false)]),
+  pair_ext:number_of_equivalence_pairs(
+    ISets,
+    NumberOfAllIPairs,
+    [reflexive(false)]
+  ),
 
   % Make sure the granularity mode is set.
   option(granularity(Mode), Options, p),
@@ -253,7 +257,9 @@ identity_sets_to_assocs(
   % Otherwise a new association list is created.
   (
     % Get the nested assoc.
-    get_assoc(SharedPs, PPO_Assoc1, PO_Assoc1), !
+    get_assoc(SharedPs, PPO_Assoc1, PO_Assoc1)
+  ->
+    true
   ;
     empty_assoc(PO_Assoc1)
   ),
@@ -289,7 +295,9 @@ identity_sets_to_assocs(
 create_inode(Mode, IHierHash, Graph, P_Assoc, PPO_Assoc, SharedPs):-
   (
     % Skip the assertion of isubnodes.
-    Mode == p, !
+    Mode == p
+  ->
+    true
   ;
     % We need to identify the isubnodes as belonging to the proper inode.
     variant_sha1(IHierHash-SharedPs, INodeHash),
@@ -324,7 +332,11 @@ create_inode(Mode, IHierHash, Graph, P_Assoc, PPO_Assoc, SharedPs):-
 assert_inode_(Mode, Graph, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
 
-  number_of_equivalence_pairs(ISets, NumberOfIPairs, [reflexive(false)]),
+  pair_ext:number_of_equivalence_pairs(
+    ISets,
+    NumberOfIPairs,
+    [reflexive(false)]
+  ),
 
 /*
   % Check whether this identity node belongs to the lower or to the
@@ -360,8 +372,6 @@ assert_inode_(Mode, Graph, Hash1, Shared, ISets):-
   (
     Approx == none, !
   ;
-    % @tbd Store identity sets?
-    sets_to_pairs(ISets, IPairs),
     % -- say it --
     assert(
       inode(
@@ -371,7 +381,7 @@ assert_inode_(Mode, Graph, Hash1, Shared, ISets):-
         Shared,
         Approx,
         NumberOfIPairs,
-        IPairs,
+        ISets,
         NumberOfPairs,
         Pairs
       )
@@ -516,7 +526,7 @@ rdf_shared(_Graph, _Mode, _Resources, SolPs, SolPs, SolPOs, SolPOs).
 %!   +Graph:atom,
 %!   +Predicates:list(iri),
 %!   -Pairs:list(pair(or([bnode,iri])))
-%! ) is det,
+%! ) is det.
 
 shared_predicates_to_pairs(Graph, [P1|Ps], Pairs):-
   aggregate_all(

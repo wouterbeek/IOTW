@@ -14,5 +14,6 @@
 :- debug(oaei).
 
 :- use_module(iotw(experiments/iotw_iimb)).
-:- gtrace, iimb_experiment.
+:- iimb_experiment(N, Svg),
+   maplist(writeln, [N,Svg]).
 

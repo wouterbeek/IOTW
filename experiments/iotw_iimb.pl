@@ -1,8 +1,7 @@
 :- module(
   iotw_iimb,
   [
-    iimb_experiment/0,
-    iimb_experiment/2 % +Number:between(1,80)
+    iimb_experiment/2 % ?N:between(1,80)
                       % -SvgDom:list
   ]
 ).
@@ -20,10 +19,14 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
+:- use_module(generics(pair_ext)).
+:- use_module(os(archive_ext)).
+:- use_module(owl(owl_mat)).
 :- use_module(xml(xml_dom)).
 
 :- use_module(plRdf(oaei)).
 :- use_module(plRdf(rdf_meta)).
+:- use_module(plRdf_ser(rdf_convert)).
 :- use_module(plRdf_ser(rdf_serial)).
 
 :- use_module(iotw(iotw)).
@@ -40,26 +43,30 @@ Runs IOTW experiments on the IIMB alignment data.
 
 
 
-%! iimb_experiment is det.
+%! iimb_experiment(+N:between(0,80), -Svg:dom) is det.
+%! iimb_experiment(-N:between(0,80), -Svg:dom) is multi.
 % Calculates the identity hierarchy for every IIMB example (80 items).
 
-iimb_experiment:-
+iimb_experiment(N, Svg):-
+/*
+% @tbd Extraction throws an exception for subdirectory 76.
   % Unpack the archive containing the original OAEI2012 IIMB data.
   absolute_file_name(
     data('IIMB'),
     File,
-    [access(read),file_extensions(['tar.gz'])]
+    [access(read),extensions(['tar.gz'])]
   ),
   archive_extract(File, Dir, _Filters, _EntryProperties),
+*/
+gtrace,
+  absolute_file_name(data('IIMB'), Dir, [access(read),file_type(directory)]),
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-  owl_materialize,
+  owl_materialize(Dir),
 
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-  
-  forall(
-    between(1, 80, N),
-    iimb_experiment(Dir, N, Svg)
-  ).
+
+  between(1, 80, N),
+  iimb_experiment(Dir, N, Svg).
 
 %! iimb_experiment(+Directory:atom, +Number:between(1,80), Svg:dom) is det.
 % Calculates the identity hierarchy for a specific IIMB example.
@@ -165,6 +172,14 @@ iimb_experiment_from_files(
     [access(read),file_type(turtle),relative_to(SubDir)]
   ),
   oaei_file_to_alignments(ReferenceAlignmentsFile, ReferenceAlignmentPairs1),
-  exclude(reflexive_pair, ReferenceAlignmentPairs1, ReferenceAlignmentPairs2),
-  pairs_to_sets(ReferenceAlignmentPairs2, ReferenceAlignmentSets).
+  exclude(
+    pair_ext:reflexive_pair,
+    ReferenceAlignmentPairs1,
+    ReferenceAlignmentPairs2
+  ),
+  pair_ext:pairs_to_sets(
+    ReferenceAlignmentPairs2,
+    ReferenceAlignmentSets,
+    [reflexive(false),symmetric(false)]
+  ).
 

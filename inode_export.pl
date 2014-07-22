@@ -145,7 +145,7 @@ export_ihier_as_svg(IHierHash, Svg2, Options):-
 
   % DEB: Aslo export as PDF (in a persistent file).
   (
-    option(deb_pdf(true), O1, false)
+    option(deb_pdf(true), Options, false)
   ->
     current_date_time(DateTime),
     absolute_file_name(data(DateTime), File, [access(write),file_type(pdf)]),

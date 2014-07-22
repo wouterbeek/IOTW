@@ -81,7 +81,7 @@ evaluate_inodes(Perc, GA_Hash1, OutStream, Options):-
   maplist(divide, [L1,L2], [H1,H2], [Q1,Q2]),
 
   % Can the extracted alignments be found?
-  sets_to_pairs(ISets3, IPairs3),
+  pair_ext:sets_to_pairs(ISets3, IPairs3, [reflexive(false),symmetric(false)]),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
