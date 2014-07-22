@@ -1,9 +1,12 @@
 :- module(
   inode_export,
   [
-    export_inodes/3 % +Options:list(nvpair)
-                    % +IdentityHierarchyHash:atom
-                    % -SVG:dom
+    export_ihier_as_gif/3, % +IdentityHierarchyHash:atom
+                           % -Gif:compound
+                           % +Options:list(nvpair)
+    export_ihier_as_svg/3 % +IdentityHierarchyHash:atom
+                          % -SVG:dom
+                          % +Options:list(nvpair)
   ]
 ).
 
@@ -13,22 +16,36 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03, 2014/07
 */
+
+:- use_module(library(aggregate)).
+:- use_module(library(debug)).
+:- use_module(library(lists)).
+:- use_module(library(option)).
+:- use_module(library(predicate_options)). % Declarations.
+:- use_module(library(semweb/rdf_db)).
 
 :- use_module(dcg(dcg_collection)).
 :- use_module(generics(list_ext)).
 :- use_module(generics(meta_ext)).
-:- use_module(gv(gv_file)).
-:- use_module(iotw(inode)).
-:- use_module(library(aggregate)).
-:- use_module(library(debug)).
-:- use_module(library(lists)).
-:- use_module(library(semweb/rdf_db)).
 :- use_module(os(datetime_ext)).
 :- use_module(os(pdf)).
-:- use_module(rdf(rdf_name)).
 :- use_module(xml(xml_dom)).
+
+:- use_module(plGraphViz(gv_file)).
+
+:- use_module(plRdf(rdf_name)).
+
+:- use_module(iotw(inode)).
+
+:- predicate_options(export_ihier_as_svg/3, 3, [
+     pass_to(export_ihier_as_gif/3, 3)
+   ]).
+:- predicate_options(export_ihier_as_gif/3, 3, [
+     evaluate(+boolean),
+     granularity(+oneof([p,po]))
+   ]).
 
 
 
@@ -110,10 +127,10 @@ calculate_quality(IHierHash, Quality):-
     Quality = LowerCardinality / HigherCardinality
   ).
 
-%! export_inodes(
-%!   +Options:list(nvpair),
+%! export_ihier_as_svg(
 %!   +IdentityHierarchyHash:atom,
-%!   -SVG:dom
+%!   -SVG:dom,
+%!   +Options:list(nvpair)
 %! ) is det.
 % Returns the SVG DOM representation of the hierarchy of predicate (sub)sets
 % annotated with the number of resource pairs that share those and only those
@@ -121,37 +138,34 @@ calculate_quality(IHierHash, Quality):-
 %
 % @tbd Add callback function injection.
 
-export_inodes(O1, IHierHash, SVG2):-
-  export_identity_nodes_(O1, IHierHash, GIF),
-  graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, PDF_File),
-  graph_to_svg_dom([method(dot)], GIF, SVG1),
-  xml_inject_dom_with_attribute(SVG1, node, [onclick='function()'], SVG2),
+export_ihier_as_svg(IHierHash, Svg2, Options):-
+  export_ihier_as_gif(IHierHash, Gif, Options),
+  gif_to_svg_dom(Gif, Svg1, [method(dot)]),
+  xml_inject_dom_with_attribute(Svg1, node, [onclick='function()'], Svg2),
 
   % DEB: Aslo export as PDF (in a persistent file).
   (
     option(deb_pdf(true), O1, false)
   ->
-    current_date_time(DT),
-    absolute_file_name(
-      personal(DT),
-      PDF_File,
-      [access(write),file_type(pdf)]
-    ),
-    graph_to_gv_file([method(dot),to_file_type(pdf)], GIF, File),
+    current_date_time(DateTime),
+    absolute_file_name(data(DateTime), File, [access(write),file_type(pdf)]),
+    gif_to_gv_file(Gif, File, [method(dot),to_file_type(pdf)]),
     open_pdf(File)
   ;
     true
   ).
 
-%! export_identity_nodes_(
-%!   +Options:list(nvpair),
+%! export_ihier_as_gif(
 %!   +IdentityHierarchyHash:atom,
-%!   -GIF:compound
+%!   -Gif:compound,
+%!   +Options:list(nvpair)
 %! ) is det.
 
-export_identity_nodes_(O, IHierHash, GIF):-
+export_ihier_as_gif(IHierHash, Gif, Options):-
   % Mode `p` constrains the nodes that we find edges for.
-  option(granularity(Mode), O, p),
+  option(granularity(Mode), Options, p),
+  % @tbd So... Mode_ should be var in case Mode=po,
+  %      thereby matching both p and po inodes?
   (Mode == p -> Mode_ = p ; true),
 
   % Vertices for `po`-nodes.
@@ -168,6 +182,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
     RankNumbers
   ),
 
+  % Construct the vertice terms per rank.
   findall(
     rank(vertex(RankId,RankId,RankAttrs),P_V_Terms),
     (
@@ -175,9 +190,10 @@ export_identity_nodes_(O, IHierHash, GIF):-
       member(RankNumber, RankNumbers),
       format(atom(RankId), 'r~w', [RankNumber]),
       atom_number(RankLabel, RankNumber),
-      RankAttrs = [label(RankLabel), shape(plaintext)],
+      RankAttrs = [label(RankLabel),shape(plaintext)],
 
-      % Consider only those sets of shared predicates that have rank cardinality.
+      % Consider only those sets of shared predicates
+      % whose cardinality is the given rank.
       length(SharedPs, RankNumber),
       findall(
         P_V_Term,
@@ -255,7 +271,7 @@ export_identity_nodes_(O, IHierHash, GIF):-
     ],
 
   % The graph compound term.
-  GIF = graph(PO_V_Terms, Ranks, Es, [graph_name(G)|G_Attrs]).
+  Gif = graph(PO_V_Terms, Ranks, Es, [graph_name(G)|G_Attrs]).
 
 number_of_parent_identity_pairs(p, ParentHash, NumberOfParentIdPairs):- !,
   ihier(ParentHash, _, _, _, _, NumberOfParentIdPairs).

@@ -12,26 +12,31 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03, 2014/07
 */
 
-:- use_module(ap(ap)).
-:- use_module(ap(ap_stat)).
+:- use_module(library(apply)).
+:- use_module(library(semweb/rdf_db)).
+
 :- use_module(generics(atom_ext)).
 :- use_module(generics(db_ext)).
-:- use_module(library(apply)).
-:- use_module(lod(oaei)).
-:- yse_module(os(safe_file)).
-:- use_module(iotw(iotw)).
-:- use_module(rdf(rdf_meta)).
-:- use_module(rdf_file(rdf_serial)).
 :- use_module(xml(xml_dom)).
-:- use_module(xml(xml_namespace)).
 
-:- xml_register_namespace('IIMB', 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
+:- use_module(plRdf(oaei)).
+:- use_module(plRdf(rdf_meta)).
+:- use_module(plRdf_ser(rdf_serial)).
+
+:- use_module(iotw(iotw)).
+
+:- rdf_register_prefix(
+  'IIMB',
+  'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
+).
 
 % DTD used for storing SVG DOM to files.
-user:file_search_path(dtd, svg(.)).
+:- dynamic(user:file_search_path/2).
+:- multifile(user:file_search_path/2).
+   user:file_search_path(dtd, svg(.)).
 
 
 
@@ -39,46 +44,51 @@ user:file_search_path(dtd, svg(.)).
 % Calculates the identity hierarchy for every IIMB example (80 items).
 
 iimb_experiment:-
-  ap(
-    [process(iimb),project(iotw)],
-    _,
-    [
-      % Unpack the archive containing the original OAEI2012 data.
-      ap_stage([from(input,'IIMB',archive)], extract_archive),
+  % Unpack the archive containing the original OAEI2012 IIMB data.
+  absolute_file_name(
+    data('IIMB'),
+    File,
+    [access(read),file_extensions(['tar.gz'])]
+  ),
+  archive_extract(File, Dir, _Filters, _EntryProperties),
+  rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
+  owl_materialize,
 
-      % Make sure all RDF data is stored in the Turtle serialization format.
-      ap_stage([], ap_rdf_convert_directory),
-
-      % A Java Maven project does the OWL materialization (using Jena).
-      ap_stage([], owl_materialize),
-
-      % Although this step is not strictly needed,
-      % it does allow the materialized results to be easily
-      % compared on a per-file level
-      % (e.g. the comment counting the number of serialized triples).
-      ap_stage([], ap_rdf_convert_directory),
-
-      % Run the IOTW experiment.
-      ap_stage([between(1,80),to(output)], iimb_experiment)
-    ]
+  rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
+  
+  forall(
+    between(1, 80, N),
+    iimb_experiment(Dir, N, Svg)
   ).
 
-%! iimb_experiment(+Number:between(1,80), SvgDom:list) is det.
+%! iimb_experiment(+Directory:atom, +Number:between(1,80), Svg:dom) is det.
 % Calculates the identity hierarchy for a specific IIMB example.
 
-iimb_experiment(N, SvgDom):-
-  absolute_file_name(
-    iotw(ap/iimb/stage4),
-    FromDir,
-    [access(read),file_type(directory)]
+iimb_experiment(Dir, N, Svg):-
+  iimb_experiment_from_files(
+    Dir,
+    N,
+    BaseOntologyFile,
+    AlignedOntologyFile,
+    ReferenceAlignmentSets
   ),
-  iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
-  atomic_list_concat([iimb,N], '_', G),
-  rdf_load_any([graph(G)], [O_File1,O_File2]),
-  run_experiment([evaluate(true),granularity(p)], A_Pairs, SvgDom, G).
+  atomic_list_concat([iimb,N], '_', Graph),
+  rdf_load_any([graph(Graph)], [BaseOntologyFile,AlignedOntologyFile]),
+  run_experiment(
+    Graph,
+    ReferenceAlignmentSets,
+    Svg,
+    [evaluate(true),granularity(p)]
+  ).
 
 iimb_experiment(FromDir, ToDir, N):-
-  iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs),
+  iimb_experiment_from_files(
+    FromDir,
+    N,
+    BaseOntologyFile,
+    AlignedOntologyFile,
+    ReferenceAlignments
+  ),
 
   % To file.
   atomic_list_concat([iimb,N], '_', ToFileName),
@@ -91,9 +101,9 @@ iimb_experiment(FromDir, ToDir, N):-
   % Execute the goal on the two ontologies.
   rdf_setup_call_cleanup(
     [],
-    [O_File1,O_File2],
+    [BaseOntologyFile,AlignedOntologyFile],
     % Now that all files are properly loaded, we can run the experiment.
-    run_experiment([evaluate(true),granulaity(p)], A_Pairs, SvgDom),
+    run_experiment(ReferenceAlignments, SvgDom, [evaluate(true),granulaity(p)]),
     [format(turtle)],
     ToFileOWL
   ),
@@ -111,25 +121,39 @@ iimb_experiment(FromDir, ToDir, N):-
   % STATS
   ap_stage_tick.
 
-iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs):-
+%! iimb_experiment_from_files(
+%!   +Directory:atom,
+%!   +N:between(1,80),
+%!   -BaseOntologyFile:atom,
+%!   -AlignedOntologyFile:atom,
+%!   -ReferenceAlignmentSets:ordset(ordset(iri))
+%! ) is det.
+
+iimb_experiment_from_files(
+  Dir,
+  N,
+  BaseOntologyFile,
+  AlignedOntologyFile,
+  ReferenceAlignmentSets
+):-
   format_integer(N, 3, SubDirName),
   absolute_file_name(
     SubDirName,
     SubDir,
-    [access(read),file_type(directory),relative_to(FromDir)]
+    [access(read),file_type(directory),relative_to(Dir)]
   ),
 
   % The base ontology.
   absolute_file_name(
     onto,
-    O_File1,
-    [access(read),file_type(turtle),relative_to(FromDir)]
+    BaseOntologyFile,
+    [access(read),file_type(turtle),relative_to(Dir)]
   ),
 
   % The aligned ontology.
   absolute_file_name(
     onto,
-    O_File2,
+    AlignedOntologyFile,
     [access(read),file_type(turtle),relative_to(SubDir)]
   ),
 
@@ -137,8 +161,9 @@ iimb_experiment_from_files(FromDir, N, O_File1, O_File2, A_Pairs):-
   % (between the base ontology and the aligned ontology).
   absolute_file_name(
     refalign,
-    A_File,
+    ReferenceAlignmentsFile,
     [access(read),file_type(turtle),relative_to(SubDir)]
   ),
-  oaei_file_to_alignments(A_File, A_Pairs).
+  oaei_file_to_alignments(ReferenceAlignmentsFile, ReferenceAlignmentPairs),
+  pairs_to_sets(ReferenceAlignmentPairs, ReferenceAlignmentSets).
 

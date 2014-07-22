@@ -1,33 +1,71 @@
-#!/home/wbeek/bin/swipl
+% Standalone startup for Identity on the Web (IOTW).
 
-% The run file for the IOTW project.
+:- use_module(library(http/http_dispatch)).
 
-:- initialization(run_iotw).
+:- if(current_prolog_flag(argv, ['--debug'])).
+  :- ensure_loaded(debug).
+:- else.
+  :- ensure_loaded(load).
+:- endif.
 
-run_iotw:-
-  % Entry point.
-  source_file(run_iotw, ThisFile),
-  file_directory_name(ThisFile, ThisDir),
-  assert(user:file_search_path(project, ThisDir)),
-  
-  % PGC
-  load_pgc(project),
-  
-  % IOTW
-  ensure_loaded(load).
 
-load_pgc(_Project):-
-  user:file_search_path(plc, _Spec), !.
-load_pgc(Project):-
-  Spec =.. [Project,'PGC'],
-  assert(user:file_search_path(plc, Spec)),
-  load_or_debug(plc).
 
-load_or_debug(Project):-
-  predicate_property(user:debug_mode, visible), !,
-  Spec =.. [Project,debug],
-  ensure_loaded(Spec).
-load_or_debug(Project):-
-  Spec =.. [Project,load],
-  ensure_loaded(Spec).
+% plServer
+
+:- use_module(load_project).
+:- load_subproject(iotw, plServer).
+
+:- use_module(plServer(plServer)).
+:- use_module(plServer(app_server)).
+:- use_module(plServer(web_modules)). % Web module registration.
+
+:- start_app_server([]).
+
+
+
+% plTabular
+
+:- use_module(library(http/html_head)).
+
+:- use_module(plTabular(rdf_tabular)).
+
+:- http_handler(root(plTabular), rdf_tabular, []).
+
+:- dynamic(user:web_module/2).
+:- multifile(user:web_module/2).
+   user:web_module('plTabular', rdf_tabular).
+
+rdf_tabular(Request):-
+  rdf_tabular(Request, app_style).
+
+:- html_resource(plTabular, [requires([css('plTabular.css')]),virtual(true)]).
+
+
+
+/*
+% IOTW
+
+:- multifile(http:location/3).
+:- dynamic(http:location/3).
+   http:location(dh_web, root(dh), []).
+
+:- multifile(user:file_search_path/2).
+   user:file_search_path(css, dh_web(css)).
+   user:file_search_path(js, dh_web(js)).
+
+:- dynamic(user:web_module/2).
+:- multifile(user:web_module/2).
+
+
+% DataHives: Agents.
+
+:- use_module(dh_web(dh_web_agent)).
+
+user:web_module('DH Agent', dh_web_agent).
+
+:- http_handler(dh_web(agent), dh_web_agent, []).
+
+dh_web_agent(Request):-
+  dh_web_agent(Request, app_style).
+*/
 

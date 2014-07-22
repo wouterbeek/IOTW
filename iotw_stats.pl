@@ -64,6 +64,7 @@ axis(
 :- use_module(library(csv)).
 :- use_module(library(lists)).
 :- use_module(library(prolog_pack)).
+
 :- catch(use_module(library(real)), _, ignore(pack_install(real))).
 
 :- initialization(iotw_stats).

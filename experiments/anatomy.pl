@@ -4,14 +4,12 @@
   ]
 ).
 
-/** <module> ANATOMY
+/** <module> Anatomy
 
 Runs IOTW experiments on the anatomy alignment data.
 
---
-
 @author Wouter Beek
-@version 2013/05, 2013/08
+@version 2013/05, 2013/08, 2014/07
 */
 
 :- use_module(generics(db_ext)).
@@ -22,20 +20,18 @@ Runs IOTW experiments on the anatomy alignment data.
 :- use_module(rdf(rdf_graph_name)).
 :- use_module(rdf_file(rdf_serial)).
 :- use_module(standards(oaei)).
-:- use_module(xml(xml_namespace)).
 
-:- xml_register_namespace(
-  oboInOwl,
-  'http://www.geneontology.org/formats/oboInOwl#'
-).
-:- xml_register_namespace(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
-:- xml_register_namespace(owl, 'http://www.w3.org/2002/07/owl#').
-:- xml_register_namespace(rdf, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#').
-:- xml_register_namespace(rdfs, 'http://www.w3.org/2000/01/rdf-schema#').
-:- xml_register_namespace(xsd, 'http://www.w3.org/2001/XMLSchema#').
+:- rdf_register_prefix(oboInOwl, 'http://www.geneontology.org/formats/oboInOwl#').
+:- rdf_register_prefix(oboRel, 'http://www.obofoundry.org/ro/ro.owl#').
+:- rdf_register_prefix(owl, 'http://www.w3.org/2002/07/owl#').
+:- rdf_register_prefix(rdf, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#').
+:- rdf_register_prefix(rdfs, 'http://www.w3.org/2000/01/rdf-schema#').
+:- rdf_register_prefix(xsd, 'http://www.w3.org/2001/XMLSchema#').
 
-user:file_search_path(anatomy, oaei2012('Anatomy')).
-user:file_search_path(raw_results, anatomy('Raw results')).
+:- dynamic(user:file_search_path/2).
+:- multifile(user:file_search_path/2).
+   user:file_search_path(anatomy, oaei2012('Anatomy')).
+   user:file_search_path(raw_results, anatomy('Raw results')).
 
 
 
@@ -71,8 +67,8 @@ load_alignment_anatomy:-
     member(AlignmentFile, AlignmentFiles),
     (
       oaei_file_to_alignment_pairs(AlignmentFile, Alignments),
-      assert_inodes(_O, OntologyGraph, Alignments, GA_Hash),
-      export_inodes(O, GA_Hash, _SVG)
+      create_ihier(OntologyGraph, Alignments, GA_Hash, []),
+      export_ihier_as_svg(GA_Hash, _SVG, [])
     )
   ).
 

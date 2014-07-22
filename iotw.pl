@@ -1,10 +1,10 @@
 :- module(
   iotw,
   [
-    run_experiment/4 % +Options:list(nvpair),
-                     % +Graph:atom,
-                     % +IdentityPairs:list(pair(iri))
-                     % -SVG:list
+    run_experiment/4 % +Graph:atom
+                     % +IdentitySets:ordset(ordset(iri))
+                     % -Svg:dom
+                     % +Options:list(nvpair)
   ]
 ).
 
@@ -12,31 +12,49 @@
 
 IOTW experiments.
 
-Recommendation sharing non-monotonic?
-
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/12
+@version 2013/05, 2013/08-2013/12, 2014/07
 */
 
-:- use_module(generics(deb_ext)).
-:- use_module(generics(pair_ext)).
-:- use_module(iotw(inode)).
-:- use_module(iotw(inode_evaluate)).
-:- use_module(iotw(inode_export)).
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(debug)).
+:- use_module(library(option)).
+:- use_module(library(predicate_options)). % Declarations.
+
+:- use_module(generics(deb_ext)).
+:- use_module(generics(pair_ext)).
+:- use_module(logic(equiv)).
 :- use_module(xsd(xsd_clean)).
+
+:- use_module(iotw(inode)).
+:- use_module(iotw(inode_evaluate)).
+:- use_module(iotw(inode_export)).
+
+:- predicate_options(run_experiment/4, 4, [
+     pass_to(create_ihier/4, 4),
+     pass_to(export_ihier_as_svg/3, 3),
+     evaluate(+boolean)
+   ]).
 
 
 
 %! run_experiment(
-%!   +Options:list(nvpair),
-%!   +IdentityPairs:list(pair(iri)),
-%!   -SvgDom:list,
-%!   +Graph:atom
+%!   +Graph:atom,
+%!   +IdentitySets:ordset(ordset(iri)),
+%!   -Svg:dom,
+%!   +Options:list(nvpair)
 %! ) is det.
 % Runs an IOTW experiment.
+%
+% ### Arguments
+%
+% @arg Options A list of name-value pairs.
+% @arg IdentitySets ...
+% @arg SVG The DOM of an ihierarchy.
+% @arg Graph The atomic name of an RDF graph.
+%
+% ### Options
 %
 % The following options are supported:
 %   * =|evaluate(+RunEvaluation:boolean)|=
@@ -45,52 +63,47 @@ Recommendation sharing non-monotonic?
 %   * =|granularity(+LevelOfIdentityPartition:oneof([p,po]))|=
 %     Whether the identity hierarchy is asserted on the level of
 %     shared predicates, or on the level of shared predicate-object pairs.
-%
-% @arg Options A list of name-value pairs.
-% @arg IdentityPairs A list of alignment pairs,
-%        thus excluding (possibly) the reflexive cases.
-% @arg SVG The DOM of an ihierarchy.
-% @arg Graph The atomic name of an RDF graph.
 
-run_experiment(O1, IPairs1, SVG, G):-
+run_experiment(Graph, ISets, Svg, Options):-
+/* @tbd document
   % Make sure there are no reflexive pairs.
-  % In the absence of another pair this would result in
-  % a singleton identity sets.
-  % This could result in many inodes that are
-  % particular to a single resource
-  % (since something shares all its properties with itself).
+  % A reflexive pair or singleton iset would probably result in
+  % an inode that is particular to a single resource,
+  % since something shares all of its properties with itself.
   exclude(is_reflexive_pair, IPairs1, IPairs2),
 
   % Retrieve all alignment sets.
-  % Does not include singleton sets (due to reflexivity).
-  pairs_to_ordsets(IPairs2, ISets),
+  % Notice that there are no singleton sets,
+  % since the identity pairs have been filtered for reflexivity.
+  pairs_to_sets(IPairs2, ISets),
+*/
 
   % DEB
   if_debug(iotw, begin_experiment(ISets, NumberOfIPairs)),
 
   % Make sure that all lexical values that occur in typed literals
   % are canonical values.
-  % This makes it much cheaper to establish the identity of typed literals.
-  xsd_canonize_graph(G),
+  % This makes establishing the identity of typed literals more efficient.
+  xsd_canonize_graph(Graph),
 
   % Returns the RDF graph and alignment pairs hash.
-  assert_inodes(O1, G, ISets, GA_Hash),
+  create_ihier(Graph, ISets, IHierHash, Options),
 
   % Create an SVG representation for the given hash.
-  export_inodes(O1, GA_Hash, SVG),
+  export_ihier_as_svg(IHierHash, Svg, Options),
 
   % DEB
-  if_debug(iotw, end_experiment(GA_Hash, NumberOfIPairs)),
+  if_debug(iotw, end_experiment(IHierHash, NumberOfIPairs)),
 
   % Run the evaluation.
   (
-   option(evaluate(false), O1, false), !
+    option(evaluate(false), Options, false), !
   ;
-    evaluate_inodes(O1, GA_Hash)
+    evaluate_inodes(IHierHash, Options)
   ),
 
   % Done!
-  inode:clear_db.
+  clear_ihiers.
 
 begin_experiment(ISets, NumberOfIPairs):-
   % Print the number of identity sets.
@@ -100,7 +113,7 @@ begin_experiment(ISets, NumberOfIPairs):-
   % Print the number of identity pairs.
   % Note that not all identity pairs may have been explicit
   % in the original collection of pairs.
-  equivalence_sets_to_number_of_equivalence_pairs(ISets, NumberOfIPairs),
+  number_of_equivalence_pairs(ISets, NumberOfIPairs),
   debug(iotw, 'There are ~:d identity pairs.', [NumberOfIPairs]),
 
   % Print the number of resources.
@@ -126,10 +139,10 @@ begin_experiment(ISets, NumberOfIPairs):-
   ),
   debug(iotw, 'Number of non-pair identity sets: ~:d', [NumberOfNonpairISets]).
 
-end_experiment(GA_Hash, NumberOfAllIPairs1):-
+end_experiment(IHierHash, NumberOfAllIPairs1):-
   aggregate_all(
     sum(NumberOfIPairs),
-    inode(_, _, GA_Hash, _, _, NumberOfIPairs, _, _, _),
+    inode(_, _, IHierHash, _, _, NumberOfIPairs, _, _, _),
     NumberOfAllIPairs2
   ),
   (
@@ -145,28 +158,5 @@ end_experiment(GA_Hash, NumberOfAllIPairs1):-
     )
   ).
 
-%! equivalence_sets_to_number_of_equivalence_pairs(
-%!   +EquivalenceSets:list(ordset),
-%!   +NumberOfEquivalencePairs:nonneg
-%! ) is det.
-% Returns the number of equivalence pairs that are encoded in
-% the given collection of equivalence sets.
-%
-% We do not count reflexive cases.
-% We do count symmetric cases.
-%
-% @tbd Should this predicate really be here?
-
-equivalence_sets_to_number_of_equivalence_pairs(EqSets, NumberOfEqPairs):-
-  aggregate_all(
-    sum(NumberOfEqPairs__),
-    (
-      member(EqSet, EqSets),
-      length(EqSet, NumberOfMembers),
-      % No reflexive cases.
-      NumberOfEqPairs__ is NumberOfMembers * (NumberOfMembers - 1)
-    ),
-    NumberOfEqPairs
-  ).
-
 is_reflexive_pair(X-X).
+

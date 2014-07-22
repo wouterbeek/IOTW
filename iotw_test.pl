@@ -13,15 +13,16 @@ Simple tests for the IOTW codebase.
 @version 2013/09, 2013/11-2013/12, 2014/03
 */
 
-:- use_module(iotw(iotw)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_build)).
-:- use_module(rdf_term(rdf_literal)).
-:- use_module(rdfs(rdfs_build)).
-:- use_module(rdfs(rdfs_label_ext)).
-:- use_module(xml(xml_namespace)).
 
-:- xml_register_namespace(ex, 'http://www.example.com/').
+:- use_module(plRdf(rdf_build)).
+:- use_module(plRdf_term(rdf_literal)).
+:- use_module(plRdf(rdfs_build)).
+:- use_module(plRdf(rdfs_label_ext)).
+
+:- use_module(iotw(iotw)).
+
+:- rdf_register_prefix(ex, 'http://www.example.com/').
 
 
 
@@ -52,9 +53,9 @@ test0:-
   rdfs_assert_subproperty(rdf:type, ex:typo, G),
 
   run_experiment(
-    [evaluate(true),granularity(p)],
+    G,
     [Andrea-Wouter,Andrea-Boetje,Amsterdam-Berlin],
     _,
-    G
+    [evaluate(true),granularity(p)]
   ).
 

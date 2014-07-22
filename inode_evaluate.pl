@@ -1,8 +1,8 @@
 :- module(
   inodes_evaluate,
   [
-    evaluate_inodes/2 % +Options:list(nvpair)
-                      % +IdentityHierarchyHash:atom
+    evaluate_inodes/2 % +IdentityHierarchyHash:atom
+                      % +Options:list(nvpair)
   ]
 ).
 
@@ -11,42 +11,57 @@
 Evaluates results from identity experiments.
 
 @author Wouter Beek
-@version 2013/12
+@version 2013/12, 2014/07
 */
 
-:- use_module(generics(pair_ext)).
-:- use_module(generics(set_theory)).
 :- use_module(library(csv)).
 :- use_module(library(debug)).
+:- use_module(library(option)).
 :- use_module(library(ordsets)).
+:- use_module(library(predicate_options)). % Declarations.
+
+:- use_module(generics(pair_ext)).
+:- use_module(logic(set_theory)).
+
+:- use_module(plRdf(rdf_stat)).
+
 :- use_module(iotw(inode)).
-:- use_module(rdf(rdf_stat)).
+
+:- predicate_options(evaluate_inodes/2, 2, [
+     pass_to(evaluate_inodes/5, 5)
+   ]).
+:- predicate_options(evaluate_inodes/5, 5, [
+     pass_to(evaluate_inodes/4, 4)
+   ]).
+:- predicate_options(evaluate_inodes/4, 4, [
+     pass_to(create_ihier/4, 4)
+   ]).
 
 
 
-evaluate_inodes(O1, GA_Hash):-
+evaluate_inodes(IHierHash, Options):-
   DeltaPerc = 0.05,
   absolute_file_name(iotw(stats), File, [access(write)]),
   setup_call_cleanup(
     open(File, append, OutStream),
-    evaluate_inodes(O1, 1.0, DeltaPerc, GA_Hash, OutStream),
+    evaluate_inodes(1.0, DeltaPerc, IHierHash, OutStream, Options),
     close(OutStream)
   ).
 
-evaluate_inodes(_O1, Perc, DeltaPerc, _GA_Hash, _OutStream):-
+evaluate_inodes(Perc, DeltaPerc, _IHierHash, _OutStream, _Options):-
   Perc < DeltaPerc, !.
-evaluate_inodes(O1, Perc1, DeltaPerc, GA_Hash, OutStream):-
-  evaluate_inodes(O1, Perc1, GA_Hash, OutStream),
+evaluate_inodes(Perc1, DeltaPerc, IHierHash, OutStream, Options):-
+  evaluate_inodes(Perc1, IHierHash, OutStream, Options),
   Perc2 is Perc1 - DeltaPerc,
-  evaluate_inodes(O1, Perc2, DeltaPerc, GA_Hash, OutStream).
+  evaluate_inodes(Perc2, DeltaPerc, IHierHash, OutStream, Options).
 
-evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
+evaluate_inodes(Perc, GA_Hash1, OutStream, Options):-
   % Create the reduced identity hierarchy.
-  once(ihier(GA_Hash1, G, ISets1, _P_Assoc1, _, _)),
+  once(ihier(GA_Hash1, Graph, ISets1, _P_Assoc1, _, _)),
   random_subset(ISets1, ISets2),
   % Can we find these back?
   ord_subtract(ISets1, ISets2, ISets3),
-  assert_inodes(O1, G, ISets2, GA_Hash2),
+  create_ihier(Graph, ISets2, GA_Hash2, Options),
 
   % Higher approximation recall.
   assoc_to_higher_pairs(GA_Hash1, H_Approx1),
@@ -66,13 +81,13 @@ evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   maplist(divide, [L1,L2], [H1,H2], [Q1,Q2]),
 
   % Can the extracted alignments be found?
-  ordsets_to_pairs(ISets3, IPairs3),
+  sets_to_pairs(ISets3, IPairs3),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
   
   % Higher cover.
-  count_subjects(_, _, G, NumberOfSubjectTerms),
+  count_subjects(_, _, Graph, NumberOfSubjectTerms),
   % No reflexive cases.
   NumberOfPairs is NumberOfSubjectTerms * (NumberOfSubjectTerms - 1),
   divide(H2, NumberOfPairs, HCover),
@@ -94,18 +109,18 @@ evaluate_inodes(O1, Perc, GA_Hash1, OutStream):-
   ),
   flush_output(OutStream).
 
-assoc_to_higher_pairs(GA_Hash, Pairs):-
-  assoc_to_pairs(GA_Hash, higher, Pairs).
+assoc_to_higher_pairs(IHierHash, Pairs):-
+  assoc_to_pairs(IHierHash, higher, Pairs).
 
-assoc_to_lower_pairs(GA_Hash, Pairs):-
-  assoc_to_pairs(GA_Hash, lower, Pairs).
+assoc_to_lower_pairs(IHierHash, Pairs):-
+  assoc_to_pairs(IHierHash, lower, Pairs).
 
-assoc_to_pairs(GA_Hash, Approx1, Pairs2):-
+assoc_to_pairs(IHierHash, Approx1, Pairs2):-
   findall(
     Pairs1,
     (
       approx(Approx1, Approx2),
-      inode(_, _, GA_Hash, _, Approx2, _, _, _, Pairs1)
+      inode(_, _, IHierHash, _, Approx2, _, _, _, Pairs1)
     ),
     Pairss
   ),
@@ -113,6 +128,10 @@ assoc_to_pairs(GA_Hash, Approx1, Pairs2):-
 
 approx(X, X).
 approx(higher, lower).
+
+
+
+% Helpers
 
 divide(X, Y, 1.0):-
   X =:= Y, !.
@@ -122,3 +141,4 @@ divide(_, Y, 1.0):-
   Y =:= 0.0, !.
 divide(X, Y, Z):-
   Z is X / Y.
+

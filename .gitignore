@@ -3,6 +3,7 @@ lib/
 *#
 *~
 ap/
+data/
 *.cb
 *.cb2
 *.aux

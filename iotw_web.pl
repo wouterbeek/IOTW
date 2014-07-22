@@ -7,14 +7,6 @@
 @version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03-2014/04
 */
 
-:- use_module(dcg(dcg_collection)).
-:- use_module(generics(db_ext)).
-:- use_module(generics(uri_query)).
-:- use_module(html(html)). % Requires the DTD file location for HTML.
-:- use_module(html(html_table)).
-:- use_module(html(html_tuple)).
-:- use_module(iotw(inode)).
-:- use_module(iotw_exp(iotw_iimb)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
@@ -23,18 +15,35 @@
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(rdf(rdf_name)). % DCG-meta.
-:- use_module(rdf_web(rdf_html_table)).
-:- use_module(server(web_modules)).
+
+:- use_module(dcg(dcg_collection)).
+:- use_module(generics(db_ext)).
+:- use_module(generics(uri_query)).
 :- use_module(xml(xml_dom)).
 
+:- use_module(plHtml(html)). % Requires the DTD file location for HTML.
+:- use_module(plHtml(html_table)).
+:- use_module(plHtml(html_tuple)).
+
+:- use_module(plRdf(rdf_name)). % DCG-meta.
+
+:- use_module(plTabular(rdf_html_table)).
+
+:- use_module(iotw(inode)).
+:- use_module(iotw_exp(iotw_iimb)).
+
 :- http_handler(root(iotw), iotw, []).
-user:web_module('IOTW', iotw).
+
+:- dynamic(user:web_module/2).
+:- multifile(user:web_module/2).
+   user:web_module('IOTW', iotw).
 
 % /js
+:- dynamic(http:location/3).
 :- multifile(http:location/3).
-http:location(js, root(js), []).
-:- user:file_search_path(js, iotw(js)).
+   http:location(js, root(js), []).
+
+:- db_add_novel(user:file_search_path(js, iotw(js))).
 :- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 :- html_resource(js('iotw.js'), []).
 
