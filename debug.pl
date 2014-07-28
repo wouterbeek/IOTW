@@ -1,10 +1,10 @@
-% Debug file for the DataHives project.
+% Debug file for the Identity on the Web (IOTW) project.
 
 :- [load].
 
 
 
-% Debug flag.
+% Debug flags.
 :- use_module(library(debug)).
 
 :- debug(assoc_ext).
@@ -12,6 +12,10 @@
 :- debug(inodes_evaluate).
 :- debug(iotw).
 :- debug(oaei).
+
+
+
+% Startup.
 
 :- use_module(iotw(experiments/iotw_iimb)).
 :- iimb_experiment(N, Svg),
