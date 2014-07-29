@@ -1,86 +1,82 @@
-:- module(iotw_web, []).
+:- module(
+  iotw_web,
+  [
+    iotw/2 % +Request:list(nvpair)
+           % +HtmlStype:compound
+  ]
+).
 
 /** <module> IOTW Web
 
 @author Wouter Beek
 @tbd Implement answer to JavaScript callback function.
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03-2014/04
+@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03-2014/04, 2014/07
 */
 
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
-:- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_path)).
-:- use_module(library(http/http_server_files)).
 :- use_module(library(lists)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 
 :- use_module(dcg(dcg_collection)).
 :- use_module(generics(db_ext)).
-:- use_module(generics(uri_query)).
+:- use_module(generics(uri_search)).
 :- use_module(xml(xml_dom)).
 
-:- use_module(plHtml(html)). % Requires the DTD file location for HTML.
-:- use_module(plHtml(html_table)).
-:- use_module(plHtml(html_tuple)).
-
 :- use_module(plRdf(rdf_name)). % DCG-meta.
+
+:- use_module(plHtml(html)).
+:- use_module(plHtml(html_list)).
 
 :- use_module(plTabular(rdf_html_table)).
 
 :- use_module(iotw(inode)).
 :- use_module(iotw_exp(iotw_iimb)).
 
-:- http_handler(root(iotw), iotw, []).
-
-:- dynamic(user:web_module/2).
-:- multifile(user:web_module/2).
-   user:web_module('IOTW', iotw).
-
-% /js
-:- dynamic(http:location/3).
-:- multifile(http:location/3).
-   http:location(js, root(js), []).
-
-:- db_add_novel(user:file_search_path(js, iotw(js))).
-:- http_handler(js(.), serve_files_in_directory(js), [prefix]).
 :- html_resource(js('iotw.js'), []).
 
 :- dynamic(iimb_current/1).
 
 
 
+%! iotw(+Request:list(nvpair), +HtmlStyle:atom) is det.
+
 % Callback HTTP handler reaction on a click action on an identity node.
-iotw(Request):-
-  request_query_read(Request, inode, GakHash), !,
+iotw(Request, HtmlStyle):-
+  request_search_read(Request, inode, GakHash), !,
   reply_html_page(
-    app_style,
+    HtmlStyle,
     \iotw_head,
     \iotw_body(inode(GakHash))
   ).
 % Show IIMB SVG graphic.
-iotw(Request):-
-  request_query_read(Request, iimb, N), !,
-  reply_html_page(app_style, \iotw_head, \iotw_body(iimb(N))).
+iotw(Request, HtmlStyle):-
+  request_search_read(Request, iimb, N1), !,
+  atom_number(N1, N2),
+  reply_html_page(HtmlStyle, \iotw_head, \iotw_body(iimb(N2))).
 % Normal Web page.
-iotw(_Request):-
-  reply_html_page(app_style, \iotw_head, \iotw_body(_)).
+iotw(_, HtmlStyle):-
+  reply_html_page(HtmlStyle, \iotw_head, \iotw_body(_)).
 
 iotw_body(Content) -->
   {
     findall(
-      element(li,[],[element(a,[href=IOTW_URL2],[Name])]),
+      Location2-Label,
       (
         between(1, 80, N),
-        http_absolute_uri(root(iotw), IOTW_URL1),
-        uri_query_add(IOTW_URL1, iimb, N, IOTW_URL2),
-        atomic_list_concat([iimb,N], '_', Name)
+        http_absolute_uri(iotw(home), Location1),
+        uri_search_add(Location1, iimb, N, Location2),
+        atomic_list_concat([iimb,N], '_', Label)
       ),
-      HTML_DOM
+      Pairs
     )
   },
-  html([\iotw_content(Content),div(id=index,ol([],HTML_DOM))]).
+  html([
+    \iotw_content(Content),
+    \html_list(Pairs, html_link, [ordered(false)])
+  ]).
 
 iotw_content(Var) --> {var(Var)}, !, [].
 iotw_content(inode(GakHash)) --> !,
@@ -155,7 +151,7 @@ generate_triples([S1-S2-Rows|Triples]) -->
     [header_row(spo),indexed(true),location(iotw)],
     html([
       'Overview of non-identity pair ',
-      \html_pair(rdf_term_html(iotw, S1, S2),
+      \html_pair(rdf_term_html(iotw, S1, S2)),
       '.'
     ]),
     Rows

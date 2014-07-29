@@ -16,15 +16,16 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(library(apply)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(library(uri)).
 
 :- use_module(generics(atom_ext)).
-:- use_module(generics(db_ext)).
 :- use_module(generics(pair_ext)).
-:- use_module(os(archive_ext)).
-:- use_module(owl(owl_mat)).
+:- use_module(os(file_ext)).
+%%%%:- use_module(owl(owl_mat)).
 :- use_module(xml(xml_dom)).
 
 :- use_module(plRdf(oaei)).
+:- use_module(plRdf(rdf_download)).
 :- use_module(plRdf(rdf_meta)).
 :- use_module(plRdf_ser(rdf_convert)).
 :- use_module(plRdf_ser(rdf_serial)).
@@ -36,7 +37,7 @@ Runs IOTW experiments on the IIMB alignment data.
   'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
 ).
 
-% DTD used for storing SVG DOM to files.
+% Initialize the DTD that is used for storing SVG DOM to file.
 :- dynamic(user:file_search_path/2).
 :- multifile(user:file_search_path/2).
    user:file_search_path(dtd, svg(.)).
@@ -48,23 +49,10 @@ Runs IOTW experiments on the IIMB alignment data.
 % Calculates the identity hierarchy for every IIMB example (80 items).
 
 iimb_experiment(N, Svg):-
-/*
-% @tbd Extraction throws an exception for subdirectory 76.
-  % Unpack the archive containing the original OAEI2012 IIMB data.
-  absolute_file_name(
-    data('IIMB'),
-    File,
-    [access(read),extensions(['tar.gz'])]
-  ),
-  archive_extract(File, Dir, _Filters, _EntryProperties),
-*/
-gtrace,
-  absolute_file_name(data('IIMB'), Dir, [access(read),file_type(directory)]),
+  init_iimb(Dir),
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-  owl_materialize(Dir),
-
+  %%%%owl_materialize(Dir),
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-
   between(1, 80, N),
   iimb_experiment(Dir, N, Svg).
 
@@ -181,5 +169,28 @@ iimb_experiment_from_files(
     ReferenceAlignmentPairs2,
     ReferenceAlignmentSets,
     [reflexive(false),symmetric(false)]
+  ).
+
+%! iimb_url(-Url:url) is det.
+
+iimb_url(Url):-
+  uri_components(
+    Url,
+    uri_components(http,'www.wouterblog.com','/IIMB.tar.gz',_,_)
+  ).
+
+%! init_iimb(-Directory:atom) is det.
+
+init_iimb(Dir):-
+  iimb_url(Url),
+  rdf_download(Url, FromFile, [pairs(Pairs)]),
+  file_directory_name(FromFile, Dir),
+gtrace,
+  forall(
+    member(_-Graph, Pairs),
+    (
+      uri_file_name(Graph, ToFile),
+      rdf_save_any(ToFile, [format(ntriples),graph(Graph)])
+    )
   ).
 

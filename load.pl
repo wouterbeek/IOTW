@@ -7,8 +7,12 @@
      iotw
    ).
 
+
+% Set hardware resources.
 :- set_prolog_stack(global, limit(2*10**9)).
 
+
+% Load submodule projects.
 :- use_module(load_project).
 :- load_project([
     plc-'Prolog-Library-Collection',
@@ -17,4 +21,9 @@
     plGraphViz,
     plTabular
 ]).
+
+
+% Load SWI-Prolog packages.
+:- use_module(pl(pl_package)).
+:- load_pl_package(lambda).
 
