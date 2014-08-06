@@ -87,7 +87,7 @@ iotw_content(inode(GakHash)) --> !,
   ]).
 iotw_content(iimb(N)) --> !,
   {
-    db_replace_novel(iimb_current(N), [r]),
+    db_replace(iimb_current(N), [r]),
     iimb_experiment(N, SvgDom)
   },
   html(div([id=ihier],\xml_dom_as_atom(SvgDom))).

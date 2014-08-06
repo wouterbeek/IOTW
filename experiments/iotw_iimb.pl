@@ -15,18 +15,17 @@ Runs IOTW experiments on the IIMB alignment data.
 */
 
 :- use_module(library(apply)).
+:- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
 
 :- use_module(generics(atom_ext)).
 :- use_module(generics(pair_ext)).
+:- use_module(os(dir_ext)).
 :- use_module(os(file_ext)).
-%%%%:- use_module(owl(owl_mat)).
-:- use_module(xml(xml_dom)).
 
 :- use_module(plRdf(oaei)).
 :- use_module(plRdf(rdf_download)).
-:- use_module(plRdf(rdf_meta)).
 :- use_module(plRdf_ser(rdf_convert)).
 :- use_module(plRdf_ser(rdf_serial)).
 
@@ -51,7 +50,7 @@ Runs IOTW experiments on the IIMB alignment data.
 iimb_experiment(N, Svg):-
   init_iimb(Dir),
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-  %%%%owl_materialize(Dir),
+  % @tbd OWL materialization right here.
   rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
   between(1, 80, N),
   iimb_experiment(Dir, N, Svg).
@@ -75,7 +74,7 @@ iimb_experiment(Dir, N, Svg):-
     Svg,
     [evaluate(true),granularity(p)]
   ).
-
+/*
 iimb_experiment(FromDir, ToDir, N):-
   iimb_experiment_from_files(
     FromDir,
@@ -115,6 +114,7 @@ iimb_experiment(FromDir, ToDir, N):-
 
   % STATS
   ap_stage_tick.
+*/
 
 %! iimb_experiment_from_files(
 %!   +Directory:atom,
@@ -179,18 +179,24 @@ iimb_url(Url):-
     uri_components(http,'www.wouterblog.com','/IIMB.tar.gz',_,_)
   ).
 
-%! init_iimb(-Directory:atom) is det.
+%! init_iimb(-JoinedPairs:list(pair)) is det.
 
-init_iimb(Dir):-
+init_iimb(JoinedPairs):-
   iimb_url(Url),
-  rdf_download(Url, FromFile, [pairs(Pairs)]),
-  file_directory_name(FromFile, Dir),
 gtrace,
-  forall(
-    member(_-Graph, Pairs),
+  rdf_download(Url, FromFile, [pairs(Pairs)]),
+  findall(
+    N-Name,
     (
-      uri_file_name(Graph, ToFile),
-      rdf_save_any(ToFile, [format(ntriples),graph(Graph)])
-    )
-  ).
+      member(Graph-_, Pairs),
+      http_path_correction(Graph, ToFile),
+      relative_file_path(ToFile, FromFile, RelativeFile),
+      file_name(RelativeFile, RelativeDir, Name, rdf),
+      directory_subdirectories(RelativeDir, SubDirs),
+      last(SubDirs, N)
+    ),
+    Pairs
+  ),
+  group_pairs_by_key(Pairs, JoinedPairs),
+  writeln(JoinedPairs).
 
