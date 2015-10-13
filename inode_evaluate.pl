@@ -11,19 +11,13 @@
 Evaluates results from identity experiments.
 
 @author Wouter Beek
-@version 2013/12, 2014/07
+@version 2015/10
 */
 
 :- use_module(library(csv)).
 :- use_module(library(debug)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
-:- use_module(library(predicate_options)). % Declarations.
-
-:- use_module(generics(pair_ext)).
-:- use_module(logic(set_theory)).
-
-:- use_module(plRdf(rdf_stat)).
 
 :- use_module(iotw(inode)).
 
@@ -39,29 +33,52 @@ Evaluates results from identity experiments.
 
 
 
-evaluate_inodes(IHierHash, Options):-
-  DeltaPerc = 0.05,
-  absolute_file_name(iotw(stats), File, [access(write)]),
+
+%! evaluate_inodes(+IHierHash:atom, +Options:list(compound)) is det.
+% Evaluates the given identity hierarcy,
+
+evaluate_inodes(IHierHash, Opts):-
+  absolute_file_name("stats.csv", File, [access(write)]),
   setup_call_cleanup(
-    open(File, append, OutStream),
-    evaluate_inodes(1.0, DeltaPerc, IHierHash, OutStream, Options),
-    close(OutStream)
+    open(File, append, Write),
+    evaluate_inodes(1.0, 0.05, IHierHash, Write, Opts),
+    close(Write)
   ).
 
-evaluate_inodes(Perc, DeltaPerc, _IHierHash, _OutStream, _Options):-
-  Perc < DeltaPerc, !.
-evaluate_inodes(Perc1, DeltaPerc, IHierHash, OutStream, Options):-
-  evaluate_inodes(Perc1, IHierHash, OutStream, Options),
-  Perc2 is Perc1 - DeltaPerc,
-  evaluate_inodes(Perc2, DeltaPerc, IHierHash, OutStream, Options).
 
-evaluate_inodes(Perc, GA_Hash1, OutStream, Options):-
+%! evaluate_nodes(
+%!   +Perc:between(0.0,1.0),
+%!   +DeltaPerc:between(0.0,1.0),
+%!   +IHierHash:atom,
+%!   +Write:stream,
+%!   +Options:list(compound)
+%! ) is det.
+% Evaluates the given identity hierarchy for a sequence of percentages.
+
+evaluate_inodes(Perc, DeltaPerc, _, _, _):-
+  Perc < DeltaPerc, !.
+evaluate_inodes(Perc1, DeltaPerc, IHierHash, Write, Opts):-
+  evaluate_inodes(Perc1, IHierHash, Write, Opts),
+  Perc2 is Perc1 - DeltaPerc,
+  evaluate_inodes(Perc2, DeltaPerc, IHierHash, Write, Opts).
+
+
+%! evaluate_inodes(
+%!   +Perc:between(0.0,1.0),
+%!   +IHierHash:atom,
+%!   +Write:string,
+%!   +Options:list(compound)
+%! ) is det.
+% Evaluates the given identity hierarchy for a specific percentage.
+
+evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   % Create the reduced identity hierarchy.
   once(ihier(GA_Hash1, Graph, ISets1, _P_Assoc1, _, _)),
   random_subset(ISets1, ISets2),
+  
   % Can we find these back?
   ord_subtract(ISets1, ISets2, ISets3),
-  create_ihier(Graph, ISets2, GA_Hash2, Options),
+  create_ihier(G, ISets2, GA_Hash2, Opts),
 
   % Higher approximation recall.
   assoc_to_higher_pairs(GA_Hash1, H_Approx1),
@@ -87,7 +104,7 @@ evaluate_inodes(Perc, GA_Hash1, OutStream, Options):-
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
   
   % Higher cover.
-  count_subjects(_, _, Graph, NumberOfSubjectTerms),
+  count_subjects(_, _, G, NumberOfSubjectTerms),
   % No reflexive cases.
   NumberOfPairs is NumberOfSubjectTerms * (NumberOfSubjectTerms - 1),
   divide(H2, NumberOfPairs, HCover),
@@ -103,11 +120,11 @@ evaluate_inodes(Perc, GA_Hash1, OutStream, Options):-
   debug(inodes_evaluate, 'Quality::\t~6f->~6f', [Q1,Q2]),
   
   csv_write_stream(
-    OutStream,
+    Write,
     [row(Perc,LRecall,HRecall,Q2,HCover,H_IPairs3_Perc,H_IPairs3_Perc_Corrected)],
     []
   ),
-  flush_output(OutStream).
+  flush_output(Write).
 
 assoc_to_higher_pairs(IHierHash, Pairs):-
   assoc_to_pairs(IHierHash, higher, Pairs).

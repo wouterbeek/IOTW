@@ -1,29 +1,12 @@
-% The load file for Identity on the Web (IOTW).
-
-:- multifile(user:project/3).
-   user:project(
-     'IOTW',
-     'Identity on the Web. Researching the owl:sameAs relation.',
-     iotw
-   ).
-
-
-% Set hardware resources.
 :- set_prolog_stack(global, limit(2*10**9)).
 
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_server)).
 
-% Load submodule projects.
-:- use_module(load_project).
-:- load_project([
-    plc-'Prolog-Library-Collection',
-    plHtml,
-    plRdf,
-    plGraphViz,
-    plTabular
-]).
+:- start_server.
 
+:- dynamic(user:file_search_path/2).
+:- multifile(user:file_search_path/2).
 
-% Load SWI-Prolog packages.
-:- use_module(pl(pl_package)).
-:- load_pl_package(lambda).
-
+user:file_search_path(css, resource/css).
+user:file_search_path(js, resource/js).

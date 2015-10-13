@@ -3,10 +3,10 @@
   [
     export_ihier_as_gif/3, % +IdentityHierarchyHash:atom
                            % -Gif:compound
-                           % +Options:list(nvpair)
+                           % +Options:list(compound)
     export_ihier_as_svg/3 % +IdentityHierarchyHash:atom
                           % -SVG:dom
-                          % +Options:list(nvpair)
+                          % +Options:list(compound)
   ]
 ).
 
@@ -16,28 +16,22 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03, 2014/07
+@version 2015/10
 */
 
 :- use_module(library(aggregate)).
+:- use_module(library(dcg/dcg_collection)).
+:- use_module(library(dcg/dcg_phrase)).
 :- use_module(library(debug)).
+:- use_module(library(gv/gv_dom)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
-:- use_module(library(predicate_options)). % Declarations.
+:- use_module(library(os/datetime_file)).
+:- use_module(library(rdf/rdf_print_term)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(library(xml/xml_dom)).
 
-:- use_module(dcg(dcg_collection)).
-:- use_module(generics(list_ext)).
-:- use_module(generics(meta_ext)).
-:- use_module(os(datetime_ext)).
-:- use_module(os(pdf)).
-:- use_module(xml(xml_dom)).
-
-:- use_module(plGraphViz(gv_file)).
-
-:- use_module(plRdf(rdf_name)).
-
-:- use_module(iotw(inode)).
+:- use_module(inode).
 
 :- predicate_options(export_ihier_as_svg/3, 3, [
      pass_to(export_ihier_as_gif/3, 3)
@@ -71,37 +65,25 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
 
   % Vertex color.
-  (
-    Approx == lower
-  ->
-    Color = green
-  ;
-    Approx == higher
-  ->
-    Color = red
-  ),
+  (Approx == lower -> Color = green ; Approx == higher -> Color = red),
 
   % Vertex style.
   (Mode == p -> Style = solid ; Style = dashed),
 
   % The label that describes the shared predicates
   % or the shared predicate-object pairs.
-  (
-    Mode == p
-  ->
-    phrase(set(rdf_term_name, Shared), Codes)
-  ;
-    phrase(set(pair(ascii, rdf_term_name), Shared), Codes)
+  (   Mode == p
+  ->  string_phrase(set(rdf_print_term, Shared), SharedLabel)
+  ;   string_phrase(set(pair(rdf_print_term), Shared), SharedLabel)
   ),
-  atom_codes(SharedLabel, Codes),
 
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
   precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel),
   percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel),
   format(
-    atom(V_Label),
-    '~w\n~w\nidentity~w',
+    string(V_Label),
+    "~w\n~w\nidentity~w",
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
@@ -119,18 +101,15 @@ calculate_quality(IHierHash, Quality):-
   calculate(IHierHash, lower, LowerCardinality),
 
   % Make sure we never divide by zero.
-  (
-    HigherCardinality =:= LowerCardinality
-  ->
-    Quality = 1.0
-  ;
-    Quality = LowerCardinality / HigherCardinality
+  (   HigherCardinality =:= LowerCardinality
+  ->  Quality = 1.0
+  ;   Quality = LowerCardinality / HigherCardinality
   ).
 
 %! export_ihier_as_svg(
 %!   +IdentityHierarchyHash:atom,
 %!   -SVG:dom,
-%!   +Options:list(nvpair)
+%!   +Options:list(compound)
 %! ) is det.
 % Returns the SVG DOM representation of the hierarchy of predicate (sub)sets
 % annotated with the number of resource pairs that share those and only those
@@ -138,32 +117,28 @@ calculate_quality(IHierHash, Quality):-
 %
 % @tbd Add callback function injection.
 
-export_ihier_as_svg(IHierHash, Svg2, Options):-
-  export_ihier_as_gif(IHierHash, Gif, Options),
-  gif_to_svg_dom(Gif, Svg1, [method(dot)]),
-  xml_inject_dom_with_attribute(Svg1, node, [onclick='function()'], Svg2),
+export_ihier_as_svg(IHierHash, Dom, Opts):-
+  export_ihier_as_gif(IHierHash, ExportG, Opts),
+  gv_dom(ExportG, Dom0, Opts),
+  xml_inject_dom_with_attribute(Dom0, node, [onclick='function()'], Dom),
 
   % DEB: Aslo export as PDF (in a persistent file).
-  (
-    option(deb_pdf(true), Options, false)
-  ->
-    current_date_time(DateTime),
-    absolute_file_name(data(DateTime), File, [access(write),file_type(pdf)]),
-    gif_to_gv_file(Gif, File, [method(dot),to_file_type(pdf)]),
-    open_pdf(File)
-  ;
-    true
+  (   option(deb_pdf(true), Opts, false)
+  ->  create_datetime_file(File),
+      gv_export(ExportG, File, [method(dot),output(pdf)]),
+      open_pdf(File)
+  ;   true
   ).
 
 %! export_ihier_as_gif(
 %!   +IdentityHierarchyHash:atom,
 %!   -Gif:compound,
-%!   +Options:list(nvpair)
+%!   +Options:list(compound)
 %! ) is det.
 
-export_ihier_as_gif(IHierHash, Gif, Options):-
+export_ihier_as_gif(IHierHash, Gif, Opts):-
   % Mode `p` constrains the nodes that we find edges for.
-  option(granularity(Mode), Options, p),
+  option(granularity(Mode), Opts, p),
   % @tbd So... Mode_ should be var in case Mode=po,
   %      thereby matching both p and po inodes?
   (Mode == p -> Mode_ = p ; true),
@@ -342,4 +317,3 @@ quality_label(IHierHash, Q_Label):-
   calculate_quality(IHierHash, Q),
   format(atom(Q_Label), '\tQuality:~2f', [Q]).
 quality_label(_IHierHash, '').
-
