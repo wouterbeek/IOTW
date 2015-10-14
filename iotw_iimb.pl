@@ -2,7 +2,7 @@
   iotw_iimb,
   [
     iimb_experiment/2 % ?N:between(1,80)
-                      % -SvgDom:list
+                      % -Dom:list(compound)
   ]
 ).
 
@@ -11,35 +11,21 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2013/05, 2013/08-2013/09, 2013/11-2014/01, 2014/03, 2014/07
+@version 2015/10
 */
 
 :- use_module(library(apply)).
+:- use_module(library(filesex)).
 :- use_module(library(pairs)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(uri)).
-
-:- use_module(generics(atom_ext)).
-:- use_module(generics(pair_ext)).
-:- use_module(os(dir_ext)).
-:- use_module(os(file_ext)).
-
-:- use_module(plRdf(oaei)).
-:- use_module(plRdf(rdf_download)).
-:- use_module(plRdf_ser(rdf_convert)).
-:- use_module(plRdf_ser(rdf_serial)).
-
-:- use_module(iotw(iotw)).
 
 :- rdf_register_prefix(
   'IIMB',
   'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
 ).
 
-% Initialize the DTD that is used for storing SVG DOM to file.
-:- dynamic(user:file_search_path/2).
-:- multifile(user:file_search_path/2).
-   user:file_search_path(dtd, svg(.)).
+
 
 
 
@@ -171,18 +157,13 @@ iimb_experiment_from_files(
     [reflexive(false),symmetric(false)]
   ).
 
-%! iimb_url(-Url:url) is det.
 
-iimb_url(Url):-
-  uri_components(
-    Url,
-    uri_components(http,'www.wouterblog.com','/IIMB.tar.gz',_,_)
-  ).
 
 %! init_iimb(-JoinedPairs:list(pair)) is det.
 
 init_iimb(JoinedPairs):-
-  iimb_url(Url),
+  current_prolog_flag(argv, Path),
+  directory_file_path(_, 'IIMB.tar.gz', Path), !,
 gtrace,
   rdf_download(Url, FromFile, [pairs(Pairs)]),
   findall(
@@ -199,4 +180,3 @@ gtrace,
   ),
   group_pairs_by_key(Pairs, JoinedPairs),
   writeln(JoinedPairs).
-

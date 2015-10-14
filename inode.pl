@@ -7,7 +7,7 @@
                     % -IdentityHierarchyHash:atom
                     % +Options:list(compound)
     ihier/6, % ?IdentityHierarchyHash:atom
-             % ?RDF_Graph:atom
+             % ?Graph:atom
              % ?IdentitySets:list(ordset(iri))
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
@@ -27,16 +27,15 @@
 /** <module> Identity nodes
 
 We use the following example:
-~~~
-<ex:Andrea,    rdf:type, foaf:Person   >
-<ex:Wouter,    rdf:type, foaf:Person   >
-<ex:Amsterdam, rdf:type, ex:Capital    >
-<ex:Amsterdam, rdf:type, ex:City       >
-<ex:Amsterdam, rdf:type, ex:GeoLocation>
-<ex:Berlin   , rdf:type, ex:Capital    >
-<ex:Berlin   , rdf:type, ex:City       >
-<ex:Berlin   , rdf:type, ex:GeoLocation>
-~~~
+
+〈ex:Andrea,    rdf:type, foaf:Person   〉
+〈ex:Wouter,    rdf:type, foaf:Person   〉
+〈ex:Amsterdam, rdf:type, ex:Capital    〉
+〈ex:Amsterdam, rdf:type, ex:City       〉
+〈ex:Amsterdam, rdf:type, ex:GeoLocation〉
+〈ex:Berlin   , rdf:type, ex:Capital    〉
+〈ex:Berlin   , rdf:type, ex:City       〉
+〈ex:Berlin   , rdf:type, ex:GeoLocation〉
 
 Shared predicates are stored in an association list, called `P_Assoc`,
 which maps sets of predicate terms to sets of resources that share those
@@ -44,7 +43,7 @@ predicates for identical object terms.
 
 For the example given above:
 ~~~
-{<{rdf:type}, {{ex:Andrea,ex:Wouter}, {ex:Amsterdam, ex:Berline}}>}
+{〈{rdf:type}, {{ex:Andrea,ex:Wouter}, {ex:Amsterdam, ex:Berline}}〉}
 ~~~
 
 Shared predicate-object pairs are stored in an association list,
@@ -53,9 +52,9 @@ sets of object terms to resources.
 
 For the example above:
 ~~~
-{<{rdf:type},
-  {<{foaf:Person}, {ex:Andrea,ex:Wouter}>,
-   <{ex:Capital,ex:City,ex:GeoLocation}, {ex:Amsterdam,ex:Berlin}>}>}
+{〈{rdf:type},
+  {〈{foaf:Person}, {ex:Andrea,ex:Wouter}〉,
+   〈{ex:Capital,ex:City,ex:GeoLocation}, {ex:Amsterdam,ex:Berlin}〉}〉}
 ~~~
 
 ## Extending the identity relation
@@ -70,6 +69,7 @@ Possible extensions of the alignment pairs:
 
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
+:- use_module(library(assoc)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
@@ -143,7 +143,7 @@ Possible extensions of the alignment pairs:
 create_ihier(G, ISets, IHierHash, Opts):-
   var(IHierHash), !,
   % We can identify this combination of
-  % an RDF graph and a collection of identity sets
+  % a graph and a collection of identity sets
   % later by using a hash.
   variant_sha1(G-ISets, IHierHash),
   create_ihier(G, ISets, IHierHash, Opts).
@@ -158,11 +158,7 @@ create_ihier(Graph, ISets, IHierHash, Opts):-
   % For example, for every 2 pairs 〈x,y〉 and 〈y,z〉 we have
   % an identity set {x,y,z} representing 6 symmetric and transitive
   % pairs.  (We leave out the 3 reflexive pairs.)
-  number_of_equivalence_pairs(
-    ISets,
-    NumberOfAllIPairs,
-    [reflexive(false)]
-  ),
+  number_of_equivalence_pairs(ISets, NumberOfAllIPairs),
 
   % Make sure the granularity mode is set.
   option(granularity(Mode), Opts, p),
@@ -175,16 +171,7 @@ create_ihier(Graph, ISets, IHierHash, Opts):-
   assoc_to_keys(P_Assoc, SharedPs),
   maplist(create_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
 
-  assert(
-    ihier(
-      IHierHash,
-      G,
-      ISets,
-      P_Assoc,
-      PPO_Assoc,
-      NumberOfAllIPairs
-    )
-  ).
+  assert(ihier(IHierHash, G, ISets, P_Assoc, PPO_Assoc, NumberOfAllIPairs)).
 
 
 %! identity_sets_to_assocs(
@@ -372,6 +359,8 @@ assert_inode0(Mode, G, Hash1, Shared, ISets):-
       )
   ).
 
+
+
 check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
   % Two resources at least share the first, i.e. least probable, property.
   rdf(X, P1, O1, G),
@@ -463,37 +452,35 @@ clear_ihiers:-
 %
 % Moves from sets of resources to the shared properties of those resources.
 
-rdf_shared(G, Mode, Set, SolPs, SolPOs):-
-  rdf_shared(G, Mode, Set, [], SolPs, [], SolPOs).
+rdf_shared(G, Mode, Set, Ps, POs):-
+  rdf_shared(G, Mode, Set, [], Ps, [], POs).
 
-rdf_shared(G, Mode, [Res1|Resources], OldPs, SolPs, OldPOs, SolPOs):-
+rdf_shared(G, Mode, [S1|Ss], Ps1, Ps, POs1, POs):-
   % We assume a fully materialized graph.
-  rdf(Res1, P, O, G),
+  rdf(S1, P, O, G),
 
   % Depending on the granularity mode
   % (i.e., predicate-object pairs or only predicates),
   % we enforce a different restriction on existing results.
-  (   Mode == p
-  ->  \+ memberchk(P, OldPs)
-  ;   \+ memberchk(P-O, OldPOs)
-  ),
+  (Mode == p -> \+ memberchk(P, Ps1) ; \+ memberchk(P-O, POs1)),
 
   % All resources in the identity set must share the same
   % predicate-object pair (regardless of mode).
   % Here we assume that the typed literals are represented
   % with their canonical lexical form.
-  forall(member(Res2, Resources), rdf(Res2, P, O, G)),
+  forall(member(S2, Ss), rdf(S2, P, O, G)),
 
   % Add a shared predicate term.
-  ord_add_element(OldPs, P, NewPs),
+  ord_add_element(Ps1, P, Ps2),
 
   % Mode-dependent inclusion of predicate-object term pairs.
-  (Mode = p -> NewPOs = OldPOs ; ord_add_element(OldPOs, P-O, NewPOs)),
+  (Mode == p -> POs2 = POs1 ; ord_add_element(POs1, P-O, POs2)),
 
   % Look for additional shared predicate terms or predicate-object term pairs.
-  rdf_shared(G, Mode, [Res1|Resources], NewPs, SolPs, NewPOs, SolPOs).
+  rdf_shared(G, Mode, [S1|Ss], Ps2, Ps, POs2, POs).
 % No shared p or po could be found anymore.
-rdf_shared(_, _, _, SolPs, SolPs, SolPOs, SolPOs).
+rdf_shared(_, _, _, Ps, Ps, POs, POs).
+
 
 
 %! shared_predicates_to_pairs(
