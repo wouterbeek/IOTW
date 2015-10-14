@@ -21,9 +21,9 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(library(uri)).
 
 :- rdf_register_prefix(
-  'IIMB',
-  'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
-).
+     'IIMB',
+     'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
+   ).
 
 
 
@@ -35,9 +35,6 @@ Runs IOTW experiments on the IIMB alignment data.
 
 iimb_experiment(N, Svg):-
   init_iimb(Dir),
-  rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
-  % @tbd OWL materialization right here.
-  rdf_convert_directory(Dir, ntriples, _, [overwrite(true)]),
   between(1, 80, N),
   iimb_experiment(Dir, N, Svg).
 
