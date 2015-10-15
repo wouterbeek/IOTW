@@ -2,7 +2,7 @@
   iotw_iimb,
   [
     iimb_experiment/2 % ?N:between(1,80)
-                      % -Dom:list(compound)
+                      % -Svg:list(compound)
   ]
 ).
 
@@ -15,10 +15,13 @@ Runs IOTW experiments on the IIMB alignment data.
 */
 
 :- use_module(library(apply)).
-:- use_module(library(filesex)).
+:- use_module(library(archive_ext)).
+:- use_module(library(atom_ext)).
+:- use_module(library(lambda)).
+:- use_module(library(os/archive_ext)).
 :- use_module(library(pairs)).
+:- use_module(library(rdf/rdf_load)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(library(uri)).
 
 :- rdf_register_prefix(
      'IIMB',
@@ -29,151 +32,32 @@ Runs IOTW experiments on the IIMB alignment data.
 
 
 
-%! iimb_experiment(+N:between(0,80), -Svg:dom) is det.
-%! iimb_experiment(-N:between(0,80), -Svg:dom) is multi.
+%! iimb_experiment(+N:between(0,80), -Svg:list(compound)) is det.
+%! iimb_experiment(-N:between(0,80), -Svg:list(compound)) is multi.
 % Calculates the identity hierarchy for every IIMB example (80 items).
 
 iimb_experiment(N, Svg):-
-  init_iimb(Dir),
+  current_prolog_flag(argv, [Dir|_]),
+  absolute_file_name('IIMB.tar.gz', File, [access(read),relative_to(Dir)]),
+  
+  call_archive_entry(File, 'onto.owl', \Read^rdf_load_file(Read, [graph(base)])),
+  
   between(1, 80, N),
-  iimb_experiment(Dir, N, Svg).
+  format_integer(N, 3, NNN),
 
-%! iimb_experiment(+Directory:atom, +Number:between(1,80), Svg:dom) is det.
-% Calculates the identity hierarchy for a specific IIMB example.
+  atomic_concat(NNN, '/onto.owl', OntoEntry),
+  call_archive_entry(File, OntoEntry, \Read^rdf_load_file(Read, [graph(onto)])),
+  
+  atomic_concat(NNN, '/refalign.rdf', RefEntry),
+  call_archive_entry(File, RefEntry, \Read^oaei_load_rdf(Read, RefAs0)),
 
-iimb_experiment(Dir, N, Svg):-
-  iimb_experiment_from_files(
-    Dir,
-    N,
-    BaseOntologyFile,
-    AlignedOntologyFile,
-    ReferenceAlignmentSets
-  ),
-  atomic_list_concat([iimb,N], '_', Graph),
-  rdf_load_any([graph(Graph)], [BaseOntologyFile,AlignedOntologyFile]),
-  run_experiment(
-    Graph,
-    ReferenceAlignmentSets,
-    Svg,
-    [evaluate(true),granularity(p)]
-  ).
-/*
-iimb_experiment(FromDir, ToDir, N):-
-  iimb_experiment_from_files(
-    FromDir,
-    N,
-    BaseOntologyFile,
-    AlignedOntologyFile,
-    ReferenceAlignments
-  ),
+  exclude(reflexive_pair, RefAs0, RefAs),
+  pairs_to_sets(RefAs, RefASets),
+[reflexive(false),symmetric(false)]
 
-  % To file.
-  atomic_list_concat([iimb,N], '_', ToFileName),
-  absolute_file_name(
-    ToFileName,
-    ToFileOWL,
-    [access(write),file_type(turtle),relative_to(ToDir)]
-  ),
+  iimb_experiment(NNN, base, onto, RefAs, Svg).
 
-  % Execute the goal on the two ontologies.
-  rdf_setup_call_cleanup(
-    [],
-    [BaseOntologyFile,AlignedOntologyFile],
-    % Now that all files are properly loaded, we can run the experiment.
-    run_experiment(ReferenceAlignments, SvgDom, [evaluate(true),granulaity(p)]),
-    [format(turtle)],
-    ToFileOWL
-  ),
-  file_type_alternative(ToFileOWL, svg, ToFileSVG),
-
-  % Remove the file if it already exists.
-  safe_delete_file(ToFileSVG),
-
-  % Make sure there is write access.
-  access_file(ToFileSVG, write),
-
-  % Write the SVG DOM to file.
-  xml_dom_to_file([dtd(svg)], SvgDom, ToFileSVG),
-
-  % STATS
-  ap_stage_tick.
-*/
-
-%! iimb_experiment_from_files(
-%!   +Directory:atom,
-%!   +N:between(1,80),
-%!   -BaseOntologyFile:atom,
-%!   -AlignedOntologyFile:atom,
-%!   -ReferenceAlignmentSets:ordset(ordset(iri))
-%! ) is det.
-
-iimb_experiment_from_files(
-  Dir,
-  N,
-  BaseOntologyFile,
-  AlignedOntologyFile,
-  ReferenceAlignmentSets
-):-
-  format_integer(N, 3, SubDirName),
-  absolute_file_name(
-    SubDirName,
-    SubDir,
-    [access(read),file_type(directory),relative_to(Dir)]
-  ),
-
-  % The base ontology.
-  absolute_file_name(
-    onto,
-    BaseOntologyFile,
-    [access(read),file_type(turtle),relative_to(Dir)]
-  ),
-
-  % The aligned ontology.
-  absolute_file_name(
-    onto,
-    AlignedOntologyFile,
-    [access(read),file_type(turtle),relative_to(SubDir)]
-  ),
-
-  % The reference alignments
-  % (between the base ontology and the aligned ontology).
-  absolute_file_name(
-    refalign,
-    ReferenceAlignmentsFile,
-    [access(read),file_type(turtle),relative_to(SubDir)]
-  ),
-  oaei_file_to_alignments(ReferenceAlignmentsFile, ReferenceAlignmentPairs1),
-  exclude(
-    pair_ext:reflexive_pair,
-    ReferenceAlignmentPairs1,
-    ReferenceAlignmentPairs2
-  ),
-  pair_ext:pairs_to_sets(
-    ReferenceAlignmentPairs2,
-    ReferenceAlignmentSets,
-    [reflexive(false),symmetric(false)]
-  ).
-
-
-
-%! init_iimb(-JoinedPairs:list(pair)) is det.
-
-init_iimb(JoinedPairs):-
-  current_prolog_flag(argv, Path),
-  directory_file_path(_, 'IIMB.tar.gz', Path), !,
-gtrace,
-  rdf_download(Url, FromFile, [pairs(Pairs)]),
-  findall(
-    N-Name,
-    (
-      member(Graph-_, Pairs),
-      http_path_correction(Graph, ToFile),
-      relative_file_path(ToFile, FromFile, RelativeFile),
-      file_name(RelativeFile, RelativeDir, Name, rdf),
-      directory_subdirectories(RelativeDir, SubDirs),
-      last(SubDirs, N)
-    ),
-    Pairs
-  ),
-  group_pairs_by_key(Pairs, JoinedPairs),
-  writeln(JoinedPairs).
+iimb_experiment(NNN, BaseB, OntoG, RefAs, Svg):-
+  file_name_extension(NNN, svg, Out),
+  access_file(Out, write),
+  xml_write(Svg, Out, [dtd(svg)]).
