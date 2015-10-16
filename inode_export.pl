@@ -24,6 +24,7 @@ by the predicates they share.
 :- use_module(library(dcg/dcg_phrase)).
 :- use_module(library(debug)).
 :- use_module(library(gv/gv_dom)).
+:- use_module(library(gv/gv_file)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
 :- use_module(library(os/datetime_file)).
@@ -34,6 +35,7 @@ by the predicates they share.
 :- use_module(library(xml/xml_dom)).
 
 :- use_module(inode).
+:- use_module(iotw_generics).
 
 :- predicate_options(export_ihier_as_svg/3, 3, [
      pass_to(export_ihier_as_gif/3, 3)
@@ -45,11 +47,13 @@ by the predicates they share.
 
 
 
+
+
 %! build_vertex(+IdentityNodeHash:atom, -VertexTerm:compound) is det.
 % Exports a single identity node representing a set of predicates
 % and the pairs of resources that share those predicates.
 
-build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
+build_vertex(NodeHash, vertex(NodeHash,NodeHash,VAttrs)):-
   % Retrieve the inode based on the given hash.
   inode(
     Mode,
@@ -67,10 +71,10 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
 
   % Vertex color.
-  (Approx == lower -> Color = green ; Approx == higher -> Color = red),
+  (Approx == lower -> VColor = green ; Approx == higher -> VColor = red),
 
   % Vertex style.
-  (Mode == p -> Style = solid ; Style = dashed),
+  (Mode == p -> VStyle = solid ; VStyle = dashed),
 
   % The label that describes the shared predicates
   % or the shared predicate-object pairs.
@@ -84,12 +88,12 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,V_Attrs)):-
   precision_label(NumberOfIdPairs, NumberOfPairs, PrecisionLabel),
   percentage_label(NumberOfIdPairs, NumberOfParentIdPairs, PercentageLabel),
   format(
-    string(V_Label),
+    string(VLabel),
     "~w\n~w\nidentity~w",
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
-  V_Attrs = [color(Color),label(V_Label),shape(rectangle),style(Style)].
+  VAttrs = [color(VColor),label(VLabel),shape(rectangle),style(VStyle)].
 
 calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
@@ -199,7 +203,7 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
 
   % Edges between the identity nodes of the _same_ mode.
   findall(
-    edge(FromHash,ToHash,E_Attrs),
+    edge(FromHash,ToHash,EAttrs),
     (
       % Find two nodes that are either directly or indirectly related.
       inode(Mode0, FromHash, ParentHash, FromShared, _, _, _, _, _),
@@ -276,7 +280,7 @@ number_of_parent_identity_pairs(po, Hash, NumberOfPairs):-
 % identity relation that is covered by a specific node.
 
 percentage_label(ChildPairs, ParentPairs, Label):-
-  Per is ChildPairs / ParentPairs,
+  Perc is ChildPairs / ParentPairs,
   format(string(Label), "[~D/~D=~2f]", [ChildPairs,ParentPairs,Perc]).
 
 

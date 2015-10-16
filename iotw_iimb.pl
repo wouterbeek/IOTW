@@ -24,6 +24,8 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(set/equiv)).
 
+:- use_module(iotw_experiment).
+
 :- rdf_register_prefix(
      'IIMB',
      'http://oaei.ontologymatching.org/2012/IIMBTBOX/'
@@ -47,7 +49,8 @@ iimb_experiment(N, Svg):-
   format_integer(N, 3, NNN),
 
   atomic_concat(NNN, '/onto.owl', OntoEntry),
-  call_archive_entry(File, OntoEntry, \Read^rdf_load_file(Read, [graph(onto)])),
+  atomic_concat(onto_, NNN, G),
+  call_archive_entry(File, OntoEntry, \Read^rdf_load_file(Read, [graph(G)])),
   
   atomic_concat(NNN, '/refalign.rdf', RefEntry),
   call_archive_entry(File, RefEntry, \Read^oaei_load_rdf(Read, RefAs0)),
@@ -55,9 +58,8 @@ iimb_experiment(N, Svg):-
   exclude(is_reflexive_pair, RefAs0, RefAs),
   equiv_pairs_to_sets(RefAs, RefASets),
 
-  iimb_experiment(NNN, base, onto, RefASets, Svg).
-
-iimb_experiment(NNN, BaseB, OntoG, RefASets, Svg):-
+  iotw_experiment(G, RefASets, Svg, [evaluate(true),granularity(p)]),
+  
   file_name_extension(NNN, svg, Out),
   access_file(Out, write),
   xml_write(Svg, Out, [dtd(svg)]).

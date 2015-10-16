@@ -69,14 +69,14 @@ Possible extensions of the alignment pairs:
 
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
-:- use_module(library(assoc)).
+:- use_module(library(assoc_ext)).
 :- use_module(library(debug)).
-:- use_module(library(lists)).
+:- use_module(library(list_ext)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
 :- use_module(library(semweb/rdf_db)).
 
-:- use_module(iotw_help).
+:- use_module(iotw_generics).
 
 %! ihier(
 %!   ?IdentityHierarchyHash:atom,
@@ -104,7 +104,7 @@ Possible extensions of the alignment pairs:
 :- dynamic(inode/9).
 
 :- predicate_options(create_ihier/4, 4, [
-     granularity(+boolean)
+     granularity(+oneof([higher,lower,none]))
    ]).
 
 
@@ -148,10 +148,10 @@ create_ihier(G, ISets, IHierHash, Opts):-
   variant_sha1(G-ISets, IHierHash),
   create_ihier(G, ISets, IHierHash, Opts).
 % The identity hierarchy with the given hash already exists.
-create_ihier(_Graph, _ISets, IHierHash, _):-
+create_ihier(_, _, IHierHash, _):-
   ihier(IHierHash, _, _, _, _, _), !.
 % The identity hierarchy with the given hash must be constructed.
-create_ihier(Graph, ISets, IHierHash, Opts):-
+create_ihier(G, ISets, IHierHash, Opts):-
   % We need to establish the number of identity pairs based on
   % the collection of identity sets.
   %

@@ -1,5 +1,5 @@
 :- module(
-  iotw_help,
+  iotw_generics,
   [
     number_of_equivalence_pairs/2 % +EquivalenceSets:list(ordset)
                                   % -NumberOfPairs:nonneg

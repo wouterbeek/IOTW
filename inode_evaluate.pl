@@ -16,10 +16,11 @@ Evaluates results from identity experiments.
 
 :- use_module(library(csv)).
 :- use_module(library(debug)).
+:- use_module(library(lod/lod_stats)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
 
-:- use_module(iotw(inode)).
+:- use_module(inode).
 
 :- predicate_options(evaluate_inodes/2, 2, [
      pass_to(evaluate_inodes/5, 5)
@@ -73,7 +74,7 @@ evaluate_inodes(Perc1, DeltaPerc, IHierHash, Write, Opts):-
 
 evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   % Create the reduced identity hierarchy.
-  once(ihier(GA_Hash1, Graph, ISets1, _P_Assoc1, _, _)),
+  once(ihier(GA_Hash1, G, ISets1, _P_Assoc1, _, _)),
   random_subset(ISets1, ISets2),
   
   % Can we find these back?
@@ -104,7 +105,7 @@ evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
   
   % Higher cover.
-  count_subjects(_, _, G, NumberOfSubjectTerms),
+  rdf_number_of_subjects(_, _, G, NumberOfSubjectTerms),
   % No reflexive cases.
   NumberOfPairs is NumberOfSubjectTerms * (NumberOfSubjectTerms - 1),
   divide(H2, NumberOfPairs, HCover),
@@ -158,4 +159,3 @@ divide(_, Y, 1.0):-
   Y =:= 0.0, !.
 divide(X, Y, Z):-
   Z is X / Y.
-

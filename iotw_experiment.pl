@@ -20,13 +20,18 @@
 :- use_module(library(option)).
 :- use_module(library(rdf/rdf_update)).
 
-:- use_module(iotw_help).
+:- use_module(inode).
+:- use_module(inode_evaluate).
+:- use_module(inode_export).
+:- use_module(iotw_generics).
 
 :- predicate_options(run_experiment/4, 4, [
+     evaluate(+boolean),
      pass_to(create_ihier/4, 4),
-     pass_to(export_ihier_as_svg/3, 3),
-     evaluate(+boolean)
+     pass_to(export_ihier_as_svg/3, 3)
    ]).
+
+
 
 
 
@@ -112,11 +117,7 @@ begin_experiment(ISets, NumberOfIPairs):-
   % in the original collection of pairs.
   % I.e., in the following conversions, pairs1 and pairs2
   % need not be the same: pairs1 -> sets -> pairs2
-  number_of_equivalence_pairs(
-    ISets,
-    NumberOfIPairs,
-    [reflexive(false)]
-  ),
+  number_of_equivalence_pairs(ISets, NumberOfIPairs),
   debug(iotw, "There are ~D identity pairs.", [NumberOfIPairs]),
 
   % Print the number of resources.
