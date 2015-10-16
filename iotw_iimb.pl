@@ -15,13 +15,14 @@ Runs IOTW experiments on the IIMB alignment data.
 */
 
 :- use_module(library(apply)).
-:- use_module(library(archive_ext)).
 :- use_module(library(atom_ext)).
 :- use_module(library(lambda)).
+:- use_module(library(oaei/oaei_file)).
 :- use_module(library(os/archive_ext)).
-:- use_module(library(pairs)).
+:- use_module(library(pair_ext)).
 :- use_module(library(rdf/rdf_load)).
 :- use_module(library(semweb/rdf_db)).
+:- use_module(library(set/equiv)).
 
 :- rdf_register_prefix(
      'IIMB',
@@ -51,13 +52,12 @@ iimb_experiment(N, Svg):-
   atomic_concat(NNN, '/refalign.rdf', RefEntry),
   call_archive_entry(File, RefEntry, \Read^oaei_load_rdf(Read, RefAs0)),
 
-  exclude(reflexive_pair, RefAs0, RefAs),
-  pairs_to_sets(RefAs, RefASets),
-[reflexive(false),symmetric(false)]
+  exclude(is_reflexive_pair, RefAs0, RefAs),
+  equiv_pairs_to_sets(RefAs, RefASets),
 
-  iimb_experiment(NNN, base, onto, RefAs, Svg).
+  iimb_experiment(NNN, base, onto, RefASets, Svg).
 
-iimb_experiment(NNN, BaseB, OntoG, RefAs, Svg):-
+iimb_experiment(NNN, BaseB, OntoG, RefASets, Svg):-
   file_name_extension(NNN, svg, Out),
   access_file(Out, write),
   xml_write(Svg, Out, [dtd(svg)]).
