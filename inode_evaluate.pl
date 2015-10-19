@@ -19,6 +19,8 @@ Evaluates results from identity experiments.
 :- use_module(library(lod/lod_stats)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
+:- use_module(library(random)).
+:- use_module(library(set/equiv)).
 
 :- use_module(inode).
 
@@ -75,10 +77,8 @@ evaluate_inodes(Perc1, DeltaPerc, IHierHash, Write, Opts):-
 evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   % Create the reduced identity hierarchy.
   once(ihier(GA_Hash1, G, ISets1, _P_Assoc1, _, _)),
-  random_subset(ISets1, ISets2),
+  random_subset(ISets1, perc(10), ISets2, ISets3),
   
-  % Can we find these back?
-  ord_subtract(ISets1, ISets2, ISets3),
   create_ihier(G, ISets2, GA_Hash2, Opts),
 
   % Higher approximation recall.
@@ -99,7 +99,7 @@ evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   maplist(divide, [L1,L2], [H1,H2], [Q1,Q2]),
 
   % Can the extracted alignments be found?
-  pair_ext:sets_to_pairs(ISets3, IPairs3, [reflexive(false),symmetric(false)]),
+  equiv_pairs_partition(IPairs3, ISets3),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   divide(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),
@@ -149,7 +149,9 @@ approx(higher, lower).
 
 
 
-% Helpers
+
+
+% HELPERS %
 
 divide(X, Y, 1.0):-
   X =:= Y, !.
@@ -159,3 +161,23 @@ divide(_, Y, 1.0):-
   Y =:= 0.0, !.
 divide(X, Y, Z):-
   Z is X / Y.
+
+
+
+%! random_subset(
+%!   +Set:ordset,
+%!   +Length:nonneg,
+%!   -Subset:ordset,
+%!   -Rest:ordset
+%! ) is det.
+
+random_subset(X, M, Y0, Z0):-
+  length(X, N),
+  (M =< N // 2 -> Y = Y0, Z = Z0 ; Y = Z0, Z = Y0),
+  random_subset(X, M, M, Y, Z).
+
+random_subset(Z, M, M, [], Z):- !.
+random_subset(X1, M1, N, [H|Y], Z):-
+  random_select(H, X1, X2),
+  succ(M2, M1),
+  random_subset(X2, M2, N, Y, Z).

@@ -56,7 +56,7 @@ iimb_experiment(N, Svg):-
   call_archive_entry(File, RefEntry, \Read^oaei_load_rdf(Read, RefAs0)),
 
   exclude(is_reflexive_pair, RefAs0, RefAs),
-  equiv_pairs_to_sets(RefAs, RefASets),
+  equiv_pairs_partition(RefAs, RefASets),
 
   iotw_experiment(G, RefASets, Svg, [evaluate(true),granularity(p)]),
   
