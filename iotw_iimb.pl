@@ -23,6 +23,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(library(rdf/rdf_load)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(set/equiv)).
+:- use_module(library(uri/uri_ext)).
 
 :- use_module(iotw_experiment).
 
@@ -42,19 +43,35 @@ Runs IOTW experiments on the IIMB alignment data.
 iimb_experiment(N, Svg):-
   current_prolog_flag(argv, [Dir|_]),
   absolute_file_name('IIMB.tar.gz', File, [access(read),relative_to(Dir)]),
-  
-  call_archive_entry(File, 'onto.owl', \Read^rdf_load_file(Read, [graph(base)])),
+  uri_file_name(BaseIri0, File),
+
+  uri_add_query(BaseIri0, entry('onto.owl'), BaseIri1),
+  call_archive_entry(
+    File,
+    'onto.owl',
+    \Read^rdf_load_file(Read, [base_iri(BaseIri1),graph(base)])
+  ),
   
   between(1, 80, N),
   format_integer(N, 3, NNN),
 
   atomic_concat(NNN, '/onto.owl', OntoEntry),
   atomic_concat(onto_, NNN, G),
-  call_archive_entry(File, OntoEntry, \Read^rdf_load_file(Read, [graph(G)])),
+  uri_add_query(BaseIri0, entry(OntoEntry), BaseIri2),
+  call_archive_entry(
+    File,
+    OntoEntry,
+    \Read^rdf_load_file(Read, [base_iri(BaseIri2),graph(G)])
+  ),
   
   atomic_concat(NNN, '/refalign.rdf', RefEntry),
-  call_archive_entry(File, RefEntry, \Read^oaei_load_rdf(Read, RefAs0)),
-
+  uri_add_query(BaseIri0, entry(RefEntry), BaseIri3),
+  call_archive_entry(
+    File,
+    RefEntry,
+    \Read^oaei_load_rdf(Read, RefAs0, [base_iri(BaseIri3)])
+  ),
+gtrace,
   exclude(is_reflexive_pair, RefAs0, RefAs),
   equiv_pairs_partition(RefAs, RefASets),
 
