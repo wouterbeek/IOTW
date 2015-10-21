@@ -68,7 +68,7 @@ load_alignment_anatomy:-
     (
       oaei_file_to_alignment_pairs(AlignmentFile, Alignments),
       create_ihier(OntologyGraph, Alignments, GA_Hash, []),
-      export_ihier_as_svg(GA_Hash, _SVG, [])
+      export_ihier(GA_Hash, _, [])
     )
   ).
 

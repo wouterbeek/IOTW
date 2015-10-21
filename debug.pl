@@ -6,8 +6,6 @@
 :- debug(iotw).
 :- debug(oaei).
 
-:- [load].
-
 :- use_module(library(apply)).
 
 :- use_module(iotw_iimb).

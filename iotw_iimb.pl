@@ -2,7 +2,7 @@
   iotw_iimb,
   [
     iimb_experiment/2 % ?N:between(1,80)
-                      % -Svg:list(compound)
+                      % -Dom:list(compound)
   ]
 ).
 
@@ -33,17 +33,17 @@ Runs IOTW experiments on the IIMB alignment data.
 
 
 
-%! iimb_experiment(+N:between(0,80), -Svg:list(compound)) is det.
-%! iimb_experiment(-N:between(0,80), -Svg:list(compound)) is multi.
+%! iimb_experiment(+N:between(0,80), -Dom:list(compound)) is det.
+%! iimb_experiment(-N:between(0,80), -Dom:list(compound)) is multi.
 % Calculates the identity hierarchy for every IIMB example (80 items).
 
-iimb_experiment(N, Svg):-
+iimb_experiment(N, Dom):-
   % Data.
   current_prolog_flag(argv, [Dir|_]),
   absolute_file_name('IIMB.tar.gz', File, [access(read),relative_to(Dir)]),
 
   % Base ontology.
-  rdf_load_file(File, [archive_entry('onto.owl'),graph(base)]),
+  once(rdf_load_file(File, [archive_entry('onto.owl'),graph(base)])),
 
   % NONDET.
   between(1, 80, N),
@@ -52,18 +52,13 @@ iimb_experiment(N, Svg):-
   % Aligned ontology.
   atomic_concat(NNN, '/onto.owl', OntoEntry),
   atomic_concat(onto_, NNN, G),
-  rdf_load_file(File, [archive_entry(OntoEntry),graph(G)]),
+  once(rdf_load_file(File, [archive_entry(OntoEntry),graph(G)])),
 
   % Reference alignment.
   atomic_concat(NNN, '/refalign.rdf', RefEntry),
-  oaei_load_rdf(File, RefAs0, [archive_entry(RefEntry)]),
+  once(oaei_load_rdf(File, RefAs0, [archive_entry(RefEntry)])),
   exclude(is_reflexive_pair, RefAs0, RefAs),
   equiv_pairs_partition(RefAs, RefASets),
 
   % Experiment.
-  iotw_experiment(G, RefASets, Svg, [evaluate(true),granularity(p)]),
-
-  % Export.
-  file_name_extension(NNN, svg, Out),
-  access_file(Out, write),
-  xml_write(Svg, Out, [dtd(svg)]).
+  iotw_experiment(G, RefASets, Dom, [evaluate(true),granularity(p),pdf(true)]).

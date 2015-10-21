@@ -1,12 +1,9 @@
 :- module(
   inode_export,
   [
-    export_ihier_as_gif/3, % +IdentityHierarchyHash:atom
-                           % -Gif:compound
-                           % +Options:list(compound)
-    export_ihier_as_svg/3 % +IdentityHierarchyHash:atom
-                          % -SVG:dom
-                          % +Options:list(compound)
+    export_ihier/3 % +IdentityHierarchyHash:atom
+                   % -Dom:list(compound)
+                   % +Options:list(compound)
   ]
 ).
 
@@ -37,11 +34,13 @@ by the predicates they share.
 :- use_module(inode).
 :- use_module(iotw_generics).
 
-:- predicate_options(export_ihier_as_svg/3, 3, [
-     pass_to(export_ihier_as_gif/3, 3)
+:- predicate_options(export_ihier/3, 3, [
+     pdf(+boolean),
+     pass_to(export_ihier_graph/3, 3),
+     pass_to(gv_dom/3, 3),
+     pass_to(gv_export/3, 3)
    ]).
-:- predicate_options(export_ihier_as_gif/3, 3, [
-     evaluate(+boolean),
+:- predicate_options(export_ihier_graph/3, 3, [
      granularity(+oneof([p,po]))
    ]).
 
@@ -53,7 +52,7 @@ by the predicates they share.
 % Exports a single identity node representing a set of predicates
 % and the pairs of resources that share those predicates.
 
-build_vertex(NodeHash, vertex(NodeHash,NodeHash,VAttrs)):-
+build_vertex(NodeHash, vertex(NodeId,VAttrs)):-
   % Retrieve the inode based on the given hash.
   inode(
     Mode,
@@ -67,6 +66,9 @@ build_vertex(NodeHash, vertex(NodeHash,NodeHash,VAttrs)):-
     _
   ),
 
+  % GraphViz node ID's are not allowed to start with a digit.
+  hash_id(NodeHash, NodeId),
+  
   % Retrieve the number of identity pairs in the parent entity.
   number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
 
@@ -112,7 +114,7 @@ calculate_quality(IHierHash, Quality):-
   ;   Quality = LowerCardinality / HigherCardinality
   ).
 
-%! export_ihier_as_svg(
+%! export_ihier(
 %!   +IdentityHierarchyHash:atom,
 %!   -SVG:dom,
 %!   +Options:list(compound)
@@ -121,28 +123,30 @@ calculate_quality(IHierHash, Quality):-
 % annotated with the number of resource pairs that share those and only those
 % predicates.
 %
-% @tbd Add callback function injection.
+% Options:
+%   * pdf(+boolean)
+%     Whether or not a PDF file of the export is created.
+%     Default is `false`.
 
-export_ihier_as_svg(IHierHash, Dom, Opts):-
-  export_ihier_as_gif(IHierHash, ExportG, Opts),
-  gv_dom(ExportG, Dom0, Opts),
-  xml_inject_dom_with_attribute(Dom0, node, [onclick='function()'], Dom),
-
-  % DEB: Aslo export as PDF (in a persistent file).
-  (   option(deb_pdf(true), Opts, false)
+export_ihier(IHierHash, Dom, Opts):-
+  export_ihier_graph(IHierHash, ExportG, Opts),
+  gv_dom(ExportG, Dom, Opts),
+  
+  (   option(pdf(true), Opts, false)
   ->  create_datetime_file(File),
-      gv_export(ExportG, File, [method(dot),output(pdf)]),
+      merge_options([method(dot),output(pdf)], Opts, PdfOpts),
+      gv_export(ExportG, File, PdfOpts),
       open_pdf(File)
   ;   true
   ).
 
-%! export_ihier_as_gif(
+%! export_ihier_graph(
 %!   +IdentityHierarchyHash:atom,
 %!   -Gif:compound,
 %!   +Options:list(compound)
 %! ) is det.
 
-export_ihier_as_gif(IHierHash, Gif, Opts):-
+export_ihier_graph(IHierHash, Gif, Opts):-
   % Mode `p' constrains the nodes that we find edges for.
   option(granularity(Mode), Opts, p),
   % @tbd So... Mode0 should be var in case Mode=po,
@@ -165,7 +169,7 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
 
   % Construct the vertice terms per rank.
   findall(
-    rank(vertex(RankId,RankId,RankAttrs),P_V_Terms),
+    rank(vertex(RankId,RankAttrs),P_VTerms),
     (
       % We do this for every rank.
       member(RankNumber, RankNumbers),
@@ -177,12 +181,12 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
       % whose cardinality is the given rank.
       length(SharedPs, RankNumber),
       findall(
-        P_V_Term,
+        P_VTerm,
         (
           inode(p, INodeHash, IHierHash, SharedPs, _, _, _, _, _),
-          build_vertex(INodeHash, P_V_Term)
+          build_vertex(INodeHash, P_VTerm)
         ),
-        P_V_Terms
+        P_VTerms
       )
     ),
     Ranks
@@ -190,20 +194,20 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
 
   % Vertices for `po`-nodes.
   findall(
-    PO_V_Term,
+    PO_VTerm,
     (
       % No vertices for `po` nodes are created in `p`-mode.
       Mode \== p,
       inode(p, INodeHash, IHierHash, _, _, _, _, _, _),
       inode(po, ISubnodeHash, INodeHash, _, _, _, _, _, _),
-      build_vertex(ISubnodeHash, PO_V_Term)
+      build_vertex(ISubnodeHash, PO_VTerm)
     ),
-    PO_V_Terms
+    PO_VTerms
   ),
 
   % Edges between the identity nodes of the _same_ mode.
   findall(
-    edge(FromHash,ToHash,EAttrs),
+    edge(FromId,ToId,EAttrs),
     (
       % Find two nodes that are either directly or indirectly related.
       inode(Mode0, FromHash, ParentHash, FromShared, _, _, _, _, _),
@@ -218,6 +222,8 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
         strict_subset(MiddleShared, ToShared)
       )),
 
+      maplist(hash_id, [FromHash,ToHash], [FromId,ToId]),
+      
       % Base the edge style on the identity nodes mode.
       (Mode0 == p -> Style = solid ; Style = dotted),
 
@@ -228,10 +234,11 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
   ),
   % Edges between the identity nodes of the _different_ modes.
   findall(
-    edge(SubnodeHash,NodeHash,EAtts),
+    edge(SubnodeId,NodeId,EAtts),
     (
       inode(p, NodeHash, _, _, _, _, _, _, _),
       inode(po, SubnodeHash, NodeHash, _, _, _, _, _, _),
+      maplist(hash_id, [SubnodeHash,NodeHash], [SubnodeId,NodeId]),
       EAtts = [color(black),style(dashed)]
     ),
     Es2
@@ -252,7 +259,7 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
     ],
 
   % The graph compound term.
-  Gif = graph(PO_V_Terms, Ranks, Es, [graph_name(G)|GAttrs]).
+  Gif = graph(PO_VTerms, Ranks, Es, GAttrs).
 
 
 
@@ -265,7 +272,7 @@ export_ihier_as_gif(IHierHash, Gif, Opts):-
 % How to perform the lookup depends on the mode (`p' or `po').
 
 number_of_parent_identity_pairs(p, Hash, NumberOfPairs):- !,
-  ihier(Hash, _, _, _, _, NumberOfPairs).
+  ihier(_, Hash, _, _, _, NumberOfPairs).
 number_of_parent_identity_pairs(po, Hash, NumberOfPairs):-
   inode(p, Hash, _, _, _, NumberOfPairs, _, _, _).
 
@@ -341,3 +348,10 @@ quality_label(IHierHash, Label):-
   calculate_quality(IHierHash, Q),
   format(string(Label), "\tQuality:~2f", [Q]).
 quality_label(_, "").
+
+
+
+%! hash_id(+Hash:atom, -Id:atom) is det.
+
+hash_id(Hash, Id):-
+  atom_concat(n, Hash, Id).

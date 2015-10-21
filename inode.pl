@@ -6,8 +6,8 @@
                     % +IdentitySets:list(ordset(iri))
                     % -IdentityHierarchyHash:atom
                     % +Options:list(compound)
-    ihier/6, % ?IdentityHierarchyHash:atom
-             % ?Graph:atom
+    ihier/6, % ?Graph:atom
+             % ?IdentityHierarchyHash:atom
              % ?IdentitySets:list(ordset(iri))
              % ?GroupedBySharedPredicates:assoc
              % ?GroupedBySharedPredicateObjectPairs:assoc
@@ -70,17 +70,18 @@ Possible extensions of the alignment pairs:
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(assoc_ext)).
-:- use_module(library(debug)).
+:- use_module(library(debug_ext)).
 :- use_module(library(list_ext)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
+:- use_module(library(rdf/rdf_print)).
 :- use_module(library(semweb/rdf_db)).
 
 :- use_module(iotw_generics).
 
 %! ihier(
-%!   ?IdentityHierarchyHash:atom,
 %!   ?Graph:atom,
+%!   ?IdentityHierarchyHash:atom,
 %!   ?IdentitySets:list(ordset(iri)),
 %!   ?GroupedBySharedPredicates:assoc,
 %!   ?GroupedBySharedPredicateObjectPairs:assoc,
@@ -122,7 +123,6 @@ Possible extensions of the alignment pairs:
 %
 % ### Arguments
 %
-% @arg Graph The atomic name of an RDF graph.
 % @arg IdentitySets A collections of equivalence sets that represent
 %      a given identity relation.
 % @arg IdentityHierarchyHash The atomic hash of the
@@ -149,7 +149,7 @@ create_ihier(G, ISets, IHierHash, Opts):-
   create_ihier(G, ISets, IHierHash, Opts).
 % The identity hierarchy with the given hash already exists.
 create_ihier(_, _, IHierHash, _):-
-  ihier(IHierHash, _, _, _, _, _), !.
+  ihier(_, IHierHash, _, _, _, _), !.
 % The identity hierarchy with the given hash must be constructed.
 create_ihier(G, ISets, IHierHash, Opts):-
   % We need to establish the number of identity pairs based on
@@ -164,19 +164,18 @@ create_ihier(G, ISets, IHierHash, Opts):-
   option(granularity(Mode), Opts, p),
 
   % Assert the identity hierarchy based on the given identity sets.
-  identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc),
+  identity_sets_to_assocs(Mode, ISets, P_Assoc, PPO_Assoc),
 
   % For every set of shared properties, we assert
   % an inode in the ihierarchy.
   assoc_to_keys(P_Assoc, SharedPs),
-  maplist(create_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc), SharedPs),
+  maplist(create_inode(Mode, IHierHash, P_Assoc, PPO_Assoc), SharedPs),
 
-  assert(ihier(IHierHash, G, ISets, P_Assoc, PPO_Assoc, NumberOfAllIPairs)).
+  assert(ihier(G, IHierHash, ISets, P_Assoc, PPO_Assoc, NumberOfAllIPairs)).
 
 
 %! identity_sets_to_assocs(
 %!   +Mode:oneof([p,po]),
-%!   +Graph:atom,
 %!   +IdentitySets:list(ordset(iri)),
 %!   -GroupedBySharedPredicates:assoc,
 %!   -GroupedBySharedPredicateObjectPairs:assoc
@@ -184,12 +183,11 @@ create_ihier(G, ISets, IHierHash, Opts):-
 % @see Wrapper around identity_sets_to_assocs/7,
 %      adding empty association lists to store the `p` and `po` data in.
 
-identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc):-
+identity_sets_to_assocs(Mode, ISets, P_Assoc, PPO_Assoc):-
   empty_assoc(EmptyP_Assoc),
   empty_assoc(EmptyPPO_Assoc),
   identity_sets_to_assocs(
     Mode,
-    G,
     ISets,
     EmptyP_Assoc,
     P_Assoc,
@@ -200,7 +198,6 @@ identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc):-
 
 %! identity_sets_to_assocs(
 %!   +Mode:oneof([p,po]),
-%!   +Graph:atom,
 %!   +IdentitySets:list(ordset(iri)),
 %!   +OldGroupedBySharedPredicates:assoc,
 %!   -NewGroupedBySharedPredicates:assoc,
@@ -211,7 +208,6 @@ identity_sets_to_assocs(Mode, G, ISets, P_Assoc, PPO_Assoc):-
 % No more identity sets. We are done!
 identity_sets_to_assocs(
   _,
-  _,
   [],
   SolP_Assoc,
   SolP_Assoc,
@@ -221,7 +217,6 @@ identity_sets_to_assocs(
 % For the next identity set ...
 identity_sets_to_assocs(
   Mode,
-  G,
   [ISet|ISets],
   P_Assoc1,
   P_Assoc3,
@@ -229,7 +224,7 @@ identity_sets_to_assocs(
   PPO_Assoc3
 ):-
   % Take the properties that the resources in the identity set share.
-  rdf_shared(G, Mode, ISet, SharedPs, SharedPOs),
+  rdf_shared(Mode, ISet, SharedPs, SharedPOs),
 
   % Add the identity set as a value for the shared properties key.
   put_assoc_ord_member(SharedPs, P_Assoc1, ISet, P_Assoc2),
@@ -255,7 +250,6 @@ identity_sets_to_assocs(
 
   identity_sets_to_assocs(
     Mode,
-    G,
     ISets,
     P_Assoc2,
     P_Assoc3,
@@ -267,7 +261,6 @@ identity_sets_to_assocs(
 %! create_inode(
 %!   +Mode:oneof([p,po]),
 %!   +IdentityHierarchyHash:atom,
-%!   +Graph:atom,
 %!   +GroupedBySharedPredicates:assoc,
 %!   +GroupedBySharedPredicateObjectPairs:assoc,
 %!   +SharedPreds:ordset
@@ -275,7 +268,7 @@ identity_sets_to_assocs(
 % The association lists record all sets of shared predicates
 % and all sets of shared predicate-object pairs.
 
-create_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
+create_inode(Mode, IHierHash, P_Assoc, PPO_Assoc, SharedPs):-
   (   % Skip the assertion of isubnodes.
       Mode == p
   ->  true
@@ -290,16 +283,15 @@ create_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
       assoc_to_list(PO_Assoc, Pairs),
       forall(
         member(SharedPOs-ISets1, Pairs),
-        assert_inode0(po, G, INodeHash, SharedPOs, ISets1)
+        assert_inode0(po, INodeHash, SharedPOs, ISets1)
       )
   ),
   get_assoc(SharedPs, P_Assoc, ISets2),
-  assert_inode0(p, G, IHierHash, SharedPs, ISets2).
+  assert_inode0(p, IHierHash, SharedPs, ISets2).
 
 
 %! assert_inode0(
 %!   +Mode:oneof([p,po]),
-%!   +Graph:atom,
 %!   +Hash:atom,
 %!   +Shared:ordset,
 %!   +ISets:list(ordset(iri))
@@ -310,7 +302,7 @@ create_inode(Mode, IHierHash, G, P_Assoc, PPO_Assoc, SharedPs):-
 % @tbd For alpha lower = 0.0 and alpha higher = 1.0 we can use
 %      the check_shares_... predicates for efficiency.
 
-assert_inode0(Mode, G, Hash1, Shared, ISets):-
+assert_inode0(Mode, Hash1, Shared, ISets):-
   variant_sha1(Hash1-Shared, Hash2),
 
   number_of_equivalence_pairs(ISets, NumberOfIPairs),
@@ -321,15 +313,15 @@ assert_inode0(Mode, G, Hash1, Shared, ISets):-
   % It belongs to the higher approximation if there is
   % at least one member that shares the given properties but does not
   % belong to the identity relation.
-  check_shares(Mode, Graph, Shared, ISets)
+  check_shares(Mode, Shared, ISets)
 */
-  
+
   % Here we search the RDF graph for the number of subject term pairs
   % that share the given predicate or predicate-object pairs.
   % Only some of those pairs will be identity pairs.
-  shared_predicates_to_pairs(G, Shared, Pairs),
+  shared_predicates_to_pairs(Shared, Pairs),
   length(Pairs, NumberOfPairs),
-  
+
   IPerc is NumberOfIPairs / NumberOfPairs,
   debug(inode, "IPerc: ~2f", [IPerc]),
   (   % Alpha lower
@@ -361,10 +353,10 @@ assert_inode0(Mode, G, Hash1, Shared, ISets):-
 
 
 
-check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
+check_shares_predicate_object_pairs([P1-O1|POs], ISets):-
   % Two resources at least share the first, i.e. least probable, property.
-  rdf(X, P1, O1, G),
-  rdf(Y, P1, O1, G),
+  rdf(X, P1, O1),
+  rdf(Y, P1, O1),
 
   % We discarding symmetric results.
   X @< Y,
@@ -379,13 +371,12 @@ check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
   forall(
     member(P2-O2, POs),
     (
-      rdf(X, P2, O2, G),
-      rdf(Y, P2, O2, G)
+      rdf(X, P2, O2),
+      rdf(Y, P2, O2)
     )
   ), !.
 
 %! check_shares_predicates(
-%!   +Graph:atom,
 %!   +SharedPredicates:ordset(iri),
 %!   +IdentitySets:list(ordset(iri))
 %! ) is det.
@@ -395,7 +386,7 @@ check_shares_predicate_object_pairs(G, [P1-O1|POs], ISets):-
 % @arg IdentitySets Only the identity sets formed by resources
 %        that share the given predicates.
 
-check_shares_predicates(G, SharedPs, ISets):-
+check_shares_predicates(SharedPs, ISets):-
   % We first order the predicates by probable occurrence.
   findall(
     Prob-Pred,
@@ -411,8 +402,8 @@ check_shares_predicates(G, SharedPs, ISets):-
   pairs_values(Pairs2, [P1|Ps]),
 
   % Two resources at least share the first, i.e. least probable, property.
-  rdf(X, P1, O1, G),
-  rdf(Y, P1, O1, G),
+  rdf(X, P1, O1),
+  rdf(Y, P1, O1),
 
   % We discard symmetric results.
   X @< Y,
@@ -427,8 +418,8 @@ check_shares_predicates(G, SharedPs, ISets):-
   forall(
     member(P2, Ps),
     (
-      rdf(X, P2, O2, G),
-      rdf(Y, P2, O2, G)
+      rdf(X, P2, O2),
+      rdf(Y, P2, O2)
     )
   ), !.
 
@@ -442,7 +433,6 @@ clear_ihiers:-
 
 
 %! rdf_shared(
-%!   +Graph:atom,
 %!   +Mode:oneof([p,po]),
 %!   +Resources:ordset(iri),
 %!   -SharedPredicates:ordset(iri),
@@ -452,12 +442,14 @@ clear_ihiers:-
 %
 % Moves from sets of resources to the shared properties of those resources.
 
-rdf_shared(G, Mode, Set, Ps, POs):-
-  rdf_shared(G, Mode, Set, [], Ps, [], POs).
+rdf_shared(Mode, Set, Ps, POs):-
+  rdf_shared(Mode, Set, [], Ps, [], POs).
 
-rdf_shared(G, Mode, [S1|Ss], Ps1, Ps, POs1, POs):-
+rdf_shared(Mode, [S1|Ss], Ps1, Ps, POs1, POs):-
+  if_debug(inode, rdf_print_describe(S1, _, [])),
+
   % We assume a fully materialized graph.
-  rdf(S1, P, O, G),
+  rdf(S1, P, O),
 
   % Depending on the granularity mode
   % (i.e., predicate-object pairs or only predicates),
@@ -468,53 +460,52 @@ rdf_shared(G, Mode, [S1|Ss], Ps1, Ps, POs1, POs):-
   % predicate-object pair (regardless of mode).
   % Here we assume that the typed literals are represented
   % with their canonical lexical form.
-  forall(member(S2, Ss), rdf(S2, P, O, G)),
+  forall(member(S2, Ss), rdf(S2, P, O)),
 
   % Add a shared predicate term.
   ord_add_element(Ps1, P, Ps2),
 
   % Mode-dependent inclusion of predicate-object term pairs.
-  (Mode == p -> POs2 = POs1 ; ord_add_element(POs1, P-O, POs2)),
+  (Mode == p -> POs2 = POs1 ; ord_add_element(POs1, P-O, POs2)), !,
 
   % Look for additional shared predicate terms or predicate-object term pairs.
-  rdf_shared(G, Mode, [S1|Ss], Ps2, Ps, POs2, POs).
+  rdf_shared(Mode, [S1|Ss], Ps2, Ps, POs2, POs).
 % No shared p or po could be found anymore.
-rdf_shared(_, _, _, Ps, Ps, POs, POs).
+rdf_shared(_, _, Ps, Ps, POs, POs).
 
 
 
 %! shared_predicates_to_pairs(
-%!   +Graph:atom,
 %!   +Predicates:list(iri),
 %!   -Pairs:list(pair(or([bnode,iri])))
 %! ) is det.
 
-shared_predicates_to_pairs(G, [P1|Ps], Pairs):-
+shared_predicates_to_pairs([P1|Ps], Pairs):-
   aggregate_all(
     set(X-Y),
     (
       % We are looking for subject terms that share the same predicates...
-      rdf(X, P1, O1, G),
-      rdf(Y, P1, O1, G),
-      
+      rdf(X, P1, O1),
+      rdf(Y, P1, O1),
+
       % Efficiency?
       %X @< Y,
-      
+
       % All predicates are shared.
       forall(
         member(P2, Ps),
         (
-          rdf(X, P2, O2, G),
-          rdf(Y, P2, O2, G)
+          rdf(X, P2, O2),
+          rdf(Y, P2, O2)
         )
       )
-      
+
       /*
       This is wrong, e.g., it could exclude identity pairs.
       % There is no predicate that is not shared.
       \+ ((
-        rdf(X, Pn, On, Graph),
-        rdf(Y, Pn, On, Graph),
+        rdf(X, Pn, On),
+        rdf(Y, Pn, On),
         \+ member(Pn, [P1|Ps])
       ))
       */

@@ -113,7 +113,7 @@ iotw_table(GakHash) -->
         Pairs
       )
     ),
-    once(ihier(IHierHash, G, _, _, _, _)),
+    once(ihier(G, IHierHash, _, _, _, _)),
     phrase(set(rdf_term_name, SharedPs), Codes),
     atom_codes(SharedLabel, Codes),
     format(
