@@ -247,6 +247,7 @@ export_ihier_graph(IHierHash, Gif, Opts):-
 
   % Graph attributes.
   quality_label(IHierHash, QLabel),
+  ihier(G, IHierHash, _, _, _, _),
   rdf_statistics(triples_by_graph(G,Ts)),
   format(string(GLabel), "Graph:~w\tTriples:~:d~w", [G,Ts,QLabel]),
   GAttrs =
