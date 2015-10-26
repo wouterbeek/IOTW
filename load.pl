@@ -17,5 +17,4 @@ init_iotw:-
 
 :- use_module(iotw(iotw_iimb)).
 
-:- iimb_experiment(N, Svg),
-   maplist(writeln, [N,Svg]).
+:- iimb_experiment(1, _).
