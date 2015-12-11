@@ -1,6 +1,5 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_server)).
-:- use_module(library(profile/profile_rdf)).
 
 :- dynamic(user:file_search_path/2).
 :- multifile(user:file_search_path/2).

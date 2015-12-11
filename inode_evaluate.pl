@@ -108,7 +108,7 @@ evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
   float_div_zero(H2, NumberOfPairs, HCover),
 
   % Can the extracted alignments be found?
-  equiv_pairs_partition(IPairs3, ISets3),
+  equiv_partition(IPairs3, ISets3),
   ord_intersection(IPairs3, H_Approx2, H_IPairs3),
   maplist(length, [IPairs3,H_IPairs3], [IPairs3_Length,H_IPairs3_Length]),
   float_div_zero(H_IPairs3_Length, IPairs3_Length, H_IPairs3_Perc),

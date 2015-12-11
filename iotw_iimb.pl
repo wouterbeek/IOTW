@@ -11,7 +11,7 @@
 Runs IOTW experiments on the IIMB alignment data.
 
 @author Wouter Beek
-@version 2015/10
+@version 2015/10, 2015/12
 */
 
 :- use_module(library(apply)).
@@ -19,7 +19,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(library(oaei/oaei_file)).
 :- use_module(library(pair_ext)).
 :- use_module(library(rdf/rdf_load)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(rdf/rdf_prefix)).
 :- use_module(library(set/equiv)).
 
 :- use_module(iotw_experiment).
@@ -43,7 +43,7 @@ iimb_experiment(N, Dom):-
   absolute_file_name('IIMB.tar.gz', File, [access(read),relative_to(Dir)]),
 
   % Base ontology.
-  once(rdf_load_file(File, [archive_entry('onto.owl'),graph(base)])),
+  rdf_load_file(File, [archive_entry('onto.owl'),graph(base)]),
 
   % NONDET.
   between(1, 80, N),
@@ -52,13 +52,13 @@ iimb_experiment(N, Dom):-
   % Aligned ontology.
   atomic_concat(NNN, '/onto.owl', OntoEntry),
   atomic_concat(onto_, NNN, G),
-  once(rdf_load_file(File, [archive_entry(OntoEntry),graph(G)])),
+  rdf_load_file(File, [archive_entry(OntoEntry),graph(G)]),
 
   % Reference alignment.
   atomic_concat(NNN, '/refalign.rdf', RefEntry),
-  once(oaei_load_rdf(File, RefAs0, [archive_entry(RefEntry)])),
-  exclude(is_reflexive_pair, RefAs0, RefAs),
-  equiv_pairs_partition(RefAs, RefASets),
+  oaei_load_rdf(File, APairs, [archive_entry(RefEntry)]),
+  equiv(APairs, ARel),
+  equiv_partition(ARel, ASets),
 
   % Experiment.
-  iotw_experiment(G, RefASets, Dom, [evaluate(true),granularity(p),pdf(true)]).
+  iotw_experiment(G, ASets, Dom, [evaluate(true),granularity(p),pdf(true)]).
