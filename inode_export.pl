@@ -13,7 +13,7 @@ Exports the results of classifying alignment resource pairs
 by the predicates they share.
 
 @author Wouter Beek
-@version 2015/10
+@version 2015/10, 2015/12
 */
 
 :- use_module(library(aggregate)).
@@ -27,12 +27,12 @@ by the predicates they share.
 :- use_module(library(os/datetime_file)).
 :- use_module(library(os/pdf)).
 :- use_module(library(rdf/rdf_print_term)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(rdf/rdf_stats)).
 :- use_module(library(set/set_ext)).
 :- use_module(library(xml/xml_dom)).
 
-:- use_module(inode).
-:- use_module(iotw_generics).
+:- use_module(iotw(inode)).
+:- use_module(iotw(iotw_generics)).
 
 :- predicate_options(export_ihier/3, 3, [
      pdf(+boolean),
@@ -248,8 +248,8 @@ export_ihier_graph(IHierHash, Gif, Opts):-
   % Graph attributes.
   quality_label(IHierHash, QLabel),
   ihier(G, IHierHash, _, _, _, _),
-  rdf_statistics(triples_by_graph(G,Ts)),
-  format(string(GLabel), "Graph:~w\tTriples:~:d~w", [G,Ts,QLabel]),
+  rdf_number_of_triples(G, N),
+  format(string(GLabel), "Graph:~w\tTriples:~:d~w", [G,N,QLabel]),
   GAttrs =
     [
       colorscheme(svg),

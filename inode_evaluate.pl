@@ -11,17 +11,17 @@
 Evaluates results from identity experiments.
 
 @author Wouter Beek
-@version 2015/10
+@version 2015/10, 2015/12
 */
 
 :- use_module(library(apply)).
 :- use_module(library(csv)).
 :- use_module(library(debug)).
-:- use_module(library(lod/lod_stats)).
 :- use_module(library(math/math_ext)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
 :- use_module(library(random)).
+:- use_module(library(rdf/rdf_stats)).
 :- use_module(library(set/equiv)).
 
 :- use_module(inode).

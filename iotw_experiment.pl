@@ -11,7 +11,7 @@
 /** <module> IOTW Experiments
 
 @author Wouter Beek
-@version 2015/10
+@version 2015/10, 2015/12
 */
 
 :- use_module(library(aggregate)).
@@ -23,10 +23,10 @@
 :- use_module(library(rdf/rdf_print)).
 :- use_module(library(rdf/rdf_update)).
 
-:- use_module(inode).
-:- use_module(inode_evaluate).
-:- use_module(inode_export).
-:- use_module(iotw_generics).
+:- use_module(iotw(inode)).
+:- use_module(iotw(inode_evaluate)).
+:- use_module(iotw(inode_export)).
+:- use_module(iotw(iotw_generics)).
 
 :- predicate_options(run_experiment/4, 4, [
      evaluate(+boolean),

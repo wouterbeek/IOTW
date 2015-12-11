@@ -10,19 +10,14 @@
 Simple tests for the IOTW codebase.
 
 @author Wouter Beek
-@version 2013/09, 2013/11-2013/12, 2014/03
+@version 2015/12
 */
 
-:- use_module(library(semweb/rdf_db)).
-
-:- use_module(plRdf(rdf_build)).
-:- use_module(plRdf_term(rdf_literal)).
-:- use_module(plRdf(rdfs_build)).
-:- use_module(plRdf(rdfs_label_ext)).
+:- use_module(library(rdf/rdf_build)).
+:- use_module(library(rdf/rdf_prefix)).
+:- use_module(library(rdfs/rdfs_build)).
 
 :- use_module(iotw(iotw)).
-
-:- rdf_register_prefix(ex, 'http://www.example.com/').
 
 
 
@@ -58,4 +53,3 @@ test0:-
     _,
     [evaluate(true),granularity(p)]
   ).
-

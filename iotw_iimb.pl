@@ -22,7 +22,7 @@ Runs IOTW experiments on the IIMB alignment data.
 :- use_module(library(rdf/rdf_prefix)).
 :- use_module(library(set/equiv)).
 
-:- use_module(iotw_experiment).
+:- use_module(iotw(iotw_experiment)).
 
 :- rdf_register_prefix(
      'IIMB',

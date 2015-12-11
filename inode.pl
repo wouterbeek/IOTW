@@ -74,10 +74,11 @@ Possible extensions of the alignment pairs:
 :- use_module(library(list_ext)).
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
+:- use_module(library(rdf/rdf_database)).
 :- use_module(library(rdf/rdf_print)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(rdf/rdf_read)).
 
-:- use_module(iotw_generics).
+:- use_module(iotw(iotw_generics)).
 
 %! ihier(
 %!   ?Graph:atom,
