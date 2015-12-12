@@ -1,12 +1,10 @@
 :- module(
   eswc,
   [
-    align_pair/2, % ?Number:between(1,80)
-                  % -Pair:pair
     calc_fca/1, % ?Number:between(1,80)
     load_base/0,
     load_onto/1, % ?Number:between(1,80)
-    print_align/1 % +Pair:pair
+    print_align/1 % ?Number:between(1,80)
   ]
 ).
 
@@ -19,10 +17,15 @@
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(atom_ext)).
+:- use_module(library(dcg/dcg_collection)).
+:- use_module(library(dcg/dcg_phrase)).
+:- use_module(library(dcg/dcg_pl)).
 :- use_module(library(fca/fca_viz)).
 :- use_module(library(http/http_server)).
-:- use_module(library(lists)).
+:- use_module(library(list_ext)).
+:- use_module(library(math/math_ext)).
 :- use_module(library(oaei/oaei_file)).
+:- use_module(library(ordsets)).
 :- use_module(library(os/external_program)).
 :- use_module(library(os/pdf)).
 :- use_module(library(pair_ext)).
@@ -48,37 +51,18 @@ init:- list_external_programs, start_server.
 
 
 
-align_pair(N, Pair):-
-  align0(N, Pairs),
-  member(Pair, Pairs).
-
-align_rel(N, Rel):-
-  align0(N, Pairs),
-  equiv(Pairs, Rel).
-
-align0(N, Pairs):-
-  data_file(File),
-  data_number(N, NNN),
-  atomic_concat(NNN, '/refalign.rdf', RefEntry),
-  oaei_load_rdf(File, Pairs, [archive_entry(RefEntry)]).
-
-
-
 calc_fca(N):-
   load_base,
   load_onto(N),
-  align_rel(N, Rel),
+  align_pairs(N, Pairs),
   fca_viz(
-    context(relation:relation_pair(Rel),rdf_term:rdf_predicate,eswc:rdf_shared),
+    context(eswc:member0(Pairs),rdf_term:rdf_predicate,eswc:rdf_shared),
     File,
-    [
-      attribute_label(rdf_print_term:rdf_print_term),
-      concept_label(both),
-      graph_label("ESWC Experiment"),
-      object_label(rdf_print_term:rdf_print_term)
-    ]
+    [concept_label(eswc:concept_label(Pairs)),graph_label("ESWC Experiment")]
   ),
   open_pdf(File).
+concept_label(Pairs, Concept, Lbl):- string_phrase(concept_label(Pairs, Concept), Lbl).
+member0(L, X):- member(X, L).
 
 
 
@@ -98,7 +82,10 @@ load_onto(N):-
 
 
 
-print_align(X-Y):-
+print_align(N):-
+  load_base,
+  load_onto(N),
+  align_pair(N, X-Y),
   rdf_compare(X, Y).
 
 
@@ -106,6 +93,28 @@ print_align(X-Y):-
 
 
 % HELPERS %
+
+align_pair(N, Pair):-
+  align_pairs(N, Pairs),
+  member(Pair, Pairs).
+
+
+align_pairs(N, Pairs):-
+  data_file(File),
+  data_number(N, NNN),
+  atomic_concat(NNN, '/refalign.rdf', RefEntry),
+  oaei_load_rdf(File, Pairs, [archive_entry(RefEntry)]).
+
+
+attribute_label(As) -->
+  set(rdf_print_term, As).
+
+
+concept_label(Pairs, concept(Os,As)) -->
+  object_label(Pairs, Os),
+  " ",
+  attribute_label(As).
+
 
 data_file(File):-
   current_prolog_flag(argv, [Dir|_]),
@@ -115,6 +124,24 @@ data_file(File):-
 data_number(N, NNN):-
   between(1, 80, N),
   format_integer(N, 3, NNN).
+
+
+object_label(Pairs, Os) -->
+  {
+    length(Os, N),
+    ord_intersection(Pairs, Os, Int),
+    length(Int, M)
+  },
+  pl_term(M),
+  "/",
+  pl_term(N),
+  " ",
+  percentage(M, N).
+
+
+percentage(M, N) -->
+  {float_div_zero(M, N, X), Perc is floor(X * 100)},
+  pl_term(Perc).
 
 
 rdf_shared(X-Y, P):- maplist(nonvar, [X,Y,P]), !, rdf_shared(X, Y, P), !.
