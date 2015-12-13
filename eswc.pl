@@ -44,8 +44,7 @@
 :- rdf_register_prefix(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 :- rdf_register_prefix(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
 
-:- initialization(init).
-init:- list_external_programs, start_server.
+:- initialization((list_external_programs, start_server)).
 
 
 
@@ -61,7 +60,6 @@ calc_fca(N):-
     [concept_label(eswc:concept_label(Pairs)),graph_label("ESWC Experiment")]
   ),
   open_pdf(File).
-concept_label(Pairs, Concept, Lbl):- string_phrase(concept_label(Pairs, Concept), Lbl).
 member0(L, X):- member(X, L).
 
 
@@ -141,7 +139,7 @@ object_label(Pairs, Os) -->
 
 percentage(M, N) -->
   {float_div_zero(M, N, X), Perc is floor(X * 100)},
-  pl_term(Perc).
+  pl_term(Perc), "\%".
 
 
 rdf_shared(X-Y, P):- maplist(nonvar, [X,Y,P]), !, rdf_shared(X, Y, P), !.
