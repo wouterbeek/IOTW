@@ -28,6 +28,7 @@
 :- use_module(library(ordsets)).
 :- use_module(library(os/external_program)).
 :- use_module(library(os/pdf)).
+:- use_module(library(owl/owl_build)).
 :- use_module(library(pair_ext)).
 :- use_module(library(rdf/rdf_compare)).
 :- use_module(library(rdf/rdf_graph)).
@@ -59,29 +60,41 @@ user:file_search_path(data, iotw(data)).
 
 
 calc_fca(N):-
-  load_base,
-  load_onto(N, G),
+  load_base(G1),
+  load_onto(N, G2),
   align_pairs(N, Pairs),
-  length(Pairs, Q), writeln(Q),
+  maplist(owl_assert_identity, Pairs),
   atom_number(A, N),
   absolute_file_name(data, Dir, [access(read),file_type(directory)]),
   absolute_file_name(A, File, [access(write),extensions([pdf]),relative_to(Dir)]),
   fca_viz(
-    context(eswc:member0(Pairs),rdf_term:rdf_predicate,eswc:rdf_shared),
+    context(
+      eswc:member0(Pairs),
+      rdf_term:rdf_predicate,
+      eswc:rdf_shared_predicate(G1,G2)
+    ),
     File,
     [concept_label(eswc:concept_label(Pairs)),graph_label("ESWC Experiment")]
   ),
-  %open_pdf(File),
-  rdf_unload_graph(G).
+  open_pdf(File),
+  rdf_unload_graphs.
 member0(L, X):- member(X, L).
 
 
 
 load_base:-
+  load_base(_).
+
+
+load_base(G):-
   data_file(File),
   rdf_expand_ct(ex:base, G),
   rdf_load_file(File, [archive_entry('onto.owl'),graph(G)]).
 
+
+
+load_onto(N):-
+  load_onto(N, _).
 
 
 load_onto(N, G):-
@@ -97,7 +110,7 @@ print_align(N):-
   load_base,
   load_onto(N),
   align_pair(N, X-Y),
-  rdf_compare(X, Y).
+  rdf_print_compare(X, Y).
 
 
 
@@ -155,6 +168,8 @@ percentage(M, N) -->
   pl_term(Perc), "%".
 
 
-rdf_shared(X-Y, P):- maplist(nonvar, [X,Y,P]), !, rdf_shared(X, Y, P), !.
-rdf_shared(X-Y, P):- rdf_shared(X, Y, P).
-rdf_shared(X, Y, P):- rdf(X, P, Z), rdf(Y, P, Z).
+rdf_shared_predicate(GX, GY, X-Y, P):-
+  maplist(nonvar, [X,Y,P]), !,
+  once(rdf_shared_predicate(X, GX, Y, GY, P)).
+rdf_shared_predicate(GX, GY, X-Y, P):-
+  rdf_shared_predicate(X, GX, Y, GY, P).
