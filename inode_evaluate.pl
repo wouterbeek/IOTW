@@ -1,8 +1,7 @@
 :- module(
   inodes_evaluate,
   [
-    evaluate_inodes/2 % +IdentityHierarchyHash:atom
-                      % +Options:list(compound)
+    evaluate_inodes/1 % +IdentityHierarchyHash:atom
   ]
 ).
 
@@ -24,30 +23,20 @@ Evaluates results from identity experiments.
 :- use_module(library(rdf/rdf_stats)).
 :- use_module(library(set/equiv)).
 
-:- use_module(inode).
-
-:- predicate_options(evaluate_inodes/2, 2, [
-     pass_to(evaluate_inodes/5, 5)
-   ]).
-:- predicate_options(evaluate_inodes/5, 5, [
-     pass_to(evaluate_inodes/4, 4)
-   ]).
-:- predicate_options(evaluate_inodes/4, 4, [
-     pass_to(create_ihier/4, 4)
-   ]).
+:- use_module(iotw(inode)).
 
 
 
 
 
-%! evaluate_inodes(+IHierHash:atom, +Options:list(compound)) is det.
+%! evaluate_inodes(+IHierHash:atom) is det.
 % Evaluates the given identity hierarcy,
 
-evaluate_inodes(IHierHash, Opts):-
+evaluate_inodes(IHierHash):-
   absolute_file_name("stats.csv", File, [access(write)]),
   setup_call_cleanup(
     open(File, append, Write),
-    evaluate_inodes(1.0, 0.05, IHierHash, Write, Opts),
+    evaluate_inodes(1.0, 0.05, IHierHash, Write),
     close(Write)
   ).
 
@@ -56,33 +45,31 @@ evaluate_inodes(IHierHash, Opts):-
 %!   +Perc:between(0.0,1.0),
 %!   +DeltaPerc:between(0.0,1.0),
 %!   +IHierHash:atom,
-%!   +Write:stream,
-%!   +Options:list(compound)
+%!   +Write:stream
 %! ) is det.
 % Evaluates the given identity hierarchy for a sequence of percentages.
 
-evaluate_inodes(Perc, DeltaPerc, _, _, _):-
+evaluate_inodes(Perc, DeltaPerc, _, _):-
   Perc < DeltaPerc, !.
-evaluate_inodes(Perc1, DeltaPerc, IHierHash, Write, Opts):-
-  evaluate_inodes(Perc1, IHierHash, Write, Opts),
+evaluate_inodes(Perc1, DeltaPerc, IHierHash, Write):-
+  evaluate_inodes(Perc1, IHierHash, Write),
   Perc2 is Perc1 - DeltaPerc,
-  evaluate_inodes(Perc2, DeltaPerc, IHierHash, Write, Opts).
+  evaluate_inodes(Perc2, DeltaPerc, IHierHash, Write).
 
 
 %! evaluate_inodes(
 %!   +Perc:between(0.0,1.0),
 %!   +IHierHash:atom,
-%!   +Write:string,
-%!   +Options:list(compound)
+%!   +Write:string
 %! ) is det.
 % Evaluates the given identity hierarchy for a specific percentage.
 
-evaluate_inodes(Perc, GA_Hash1, Write, Opts):-
+evaluate_inodes(Perc, GA_Hash1, Write):-
   % Create the reduced identity hierarchy.
-  once(ihier(G, GA_Hash1, ISets1, _P_Assoc1, _, _)),
+  once(ihier(G, GA_Hash1, ISets1, _, _)),
   random_subset_perc(ISets1, 0.1, ISets2, ISets3),
 
-  create_ihier(G, ISets2, GA_Hash2, Opts),
+  create_ihier(G, ISets2, GA_Hash2),
 
   % Higher approximation recall.
   assoc_to_higher_pairs(GA_Hash1, H_Approx1),
@@ -141,7 +128,7 @@ assoc_to_pairs(IHierHash, Approx1, Pairs2):-
     Pairs1,
     (
       approx(Approx1, Approx2),
-      inode(_, _, IHierHash, _, Approx2, _, _, _, Pairs1)
+      inode(_, IHierHash, _, Approx2, _, _, _, Pairs1)
     ),
     Pairss
   ),

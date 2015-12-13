@@ -80,7 +80,7 @@ iotw_experiment(G, ISets, Dom, Opts):-
   %%%%rdf_canonize_graph(G),
 
   % Returns the RDF graph and alignment pairs hash.
-  create_ihier(G, ISets, IHierHash, Opts),
+  create_ihier(G, ISets, IHierHash),
 
   % Create an SVG representation for the given hash.
   export_ihier(IHierHash, Dom, Opts),
@@ -90,7 +90,7 @@ iotw_experiment(G, ISets, Dom, Opts):-
   % Run the evaluation.
   (   option(evaluate(false), Opts, false)
   ->  true
-  ;   evaluate_inodes(IHierHash, Opts)
+  ;   evaluate_inodes(IHierHash)
   ),
 
   % Done!
@@ -140,7 +140,7 @@ begin_experiment(ISets, NumberOfIPairs):-
 end_experiment(IHierHash, NumberOfAllIPairs1):-
   aggregate_all(
     sum(NumberOfIPairs),
-    inode(_, _, IHierHash, _, _, NumberOfIPairs, _, _, _),
+    inode(_, IHierHash, _, _, NumberOfIPairs, _, _, _),
     NumberOfAllIPairs2
   ),
   (   NumberOfAllIPairs1 =:= NumberOfAllIPairs2

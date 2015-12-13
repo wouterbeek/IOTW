@@ -15,6 +15,3 @@ init_iotw:-
 :- init_iotw.
 
 :- use_module(iotw(iotw_iimb)).
-:- use_module(iotw(iotw_web)).
-
-:- iimb_experiment(1, _).

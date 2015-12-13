@@ -30,6 +30,7 @@
 :- use_module(library(os/pdf)).
 :- use_module(library(pair_ext)).
 :- use_module(library(rdf/rdf_compare)).
+:- use_module(library(rdf/rdf_graph)).
 :- use_module(library(rdf/rdf_load)).
 :- use_module(library(rdf/rdf_prefix)).
 :- use_module(library(rdf/rdf_print_term)).
@@ -44,6 +45,13 @@
 :- rdf_register_prefix(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
 :- rdf_register_prefix(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
 
+:- dynamic user:file_search_path/2.
+:- multifile user:file_search_path/2.
+
+user:file_search_path(data, iotw(data)).
+
+:- set_prolog_stack(global, limit(3*10**9)).
+
 :- initialization((list_external_programs, start_server)).
 
 
@@ -52,14 +60,19 @@
 
 calc_fca(N):-
   load_base,
-  load_onto(N),
+  load_onto(N, G),
   align_pairs(N, Pairs),
+  length(Pairs, Q), writeln(Q),
+  atom_number(A, N),
+  absolute_file_name(data, Dir, [access(read),file_type(directory)]),
+  absolute_file_name(A, File, [access(write),extensions([pdf]),relative_to(Dir)]),
   fca_viz(
     context(eswc:member0(Pairs),rdf_term:rdf_predicate,eswc:rdf_shared),
     File,
     [concept_label(eswc:concept_label(Pairs)),graph_label("ESWC Experiment")]
   ),
-  open_pdf(File).
+  %open_pdf(File),
+  rdf_unload_graph(G).
 member0(L, X):- member(X, L).
 
 
@@ -71,7 +84,7 @@ load_base:-
 
 
 
-load_onto(N):-
+load_onto(N, G):-
   data_file(File),
   data_number(N, NNN),
   atomic_concat(NNN, '/onto.owl', OntoEntry),
@@ -139,7 +152,7 @@ object_label(Pairs, Os) -->
 
 percentage(M, N) -->
   {float_div_zero(M, N, X), Perc is floor(X * 100)},
-  pl_term(Perc), "\%".
+  pl_term(Perc), "%".
 
 
 rdf_shared(X-Y, P):- maplist(nonvar, [X,Y,P]), !, rdf_shared(X, Y, P), !.

@@ -6,7 +6,7 @@
 @version 2015/12
 */
 
-:- use_module(library(html/content/html_collection)).
+:- use_module(library(html/content/html_collection), except([html_list//1,html_list//2])).
 :- use_module(library(html/element/html_link)). % Meta-predicate.
 :- use_module(library(html/element/html_list)).
 :- use_module(library(http/html_head)).
@@ -118,14 +118,9 @@ iotw_table(Hash) -->
 
 generate_triples([S1-S2-Rows|Ts]) -->
   rdf_html_table(
-    html([
-      
-      '.'
-    ]),
     Rows,
     [
-      caption(html(['Overview of non-identity pair '])),
-      cell(),
+      caption(html(['Overview of non-identity pair ',\pair(S1,S2),'.'])),
       header_spec(spo),
       indexed(true),
       location(iotw)

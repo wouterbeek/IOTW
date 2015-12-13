@@ -36,12 +36,8 @@ by the predicates they share.
 
 :- predicate_options(export_ihier/3, 3, [
      pdf(+boolean),
-     pass_to(export_ihier_graph/3, 3),
      pass_to(gv_dom/3, 3),
      pass_to(gv_export/3, 3)
-   ]).
-:- predicate_options(export_ihier_graph/3, 3, [
-     granularity(+oneof([p,po]))
    ]).
 
 
@@ -55,7 +51,6 @@ by the predicates they share.
 build_vertex(NodeHash, vertex(NodeId,VAttrs)):-
   % Retrieve the inode based on the given hash.
   inode(
-    Mode,
     NodeHash,
     ParentHash,
     Shared,
@@ -70,20 +65,14 @@ build_vertex(NodeHash, vertex(NodeId,VAttrs)):-
   hash_id(NodeHash, NodeId),
   
   % Retrieve the number of identity pairs in the parent entity.
-  number_of_parent_identity_pairs(Mode, ParentHash, NumberOfParentIdPairs),
+  number_of_parent_identity_pairs(ParentHash, NumberOfParentIdPairs),
 
   % Vertex color.
   (Approx == lower -> VColor = green ; Approx == higher -> VColor = red),
 
-  % Vertex style.
-  (Mode == p -> VStyle = solid ; VStyle = dashed),
-
   % The label that describes the shared predicates
   % or the shared predicate-object pairs.
-  (   Mode == p
-  ->  string_phrase(set(rdf_print_term, Shared), SharedLabel)
-  ;   string_phrase(set(pair(rdf_print_term), Shared), SharedLabel)
-  ),
+  string_phrase(set(rdf_print_term, Shared), SharedLabel),
 
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.
@@ -95,12 +84,12 @@ build_vertex(NodeHash, vertex(NodeId,VAttrs)):-
     [SharedLabel,PrecisionLabel,PercentageLabel]
   ),
 
-  VAttrs = [color(VColor),label(VLabel),shape(rectangle),style(VStyle)].
+  VAttrs = [color(VColor),label(VLabel),shape(rectangle),style(solid)].
 
 calculate(IHierHash, Approx, NumberOfPairs):-
   aggregate_all(
     sum(NumberOfPairs_),
-    inode(_, _, IHierHash, _, Approx, _, _, NumberOfPairs_, _),
+    inode(_, IHierHash, _, Approx, _, _, NumberOfPairs_, _),
     NumberOfPairs
   ).
 
@@ -129,7 +118,7 @@ calculate_quality(IHierHash, Quality):-
 %     Default is `false`.
 
 export_ihier(IHierHash, Dom, Opts):-
-  export_ihier_graph(IHierHash, ExportG, Opts),
+  export_ihier_graph(IHierHash, ExportG),
   gv_dom(ExportG, Dom, Opts),
   
   (   option(pdf(true), Opts, false)
@@ -140,20 +129,9 @@ export_ihier(IHierHash, Dom, Opts):-
   ;   true
   ).
 
-%! export_ihier_graph(
-%!   +IdentityHierarchyHash:atom,
-%!   -Gif:compound,
-%!   +Options:list(compound)
-%! ) is det.
+%! export_ihier_graph(+IdentityHierarchyHash:atom, -Gif:compound) is det.
 
-export_ihier_graph(IHierHash, Gif, Opts):-
-  % Mode `p' constrains the nodes that we find edges for.
-  option(granularity(Mode), Opts, p),
-  % @tbd So... Mode0 should be var in case Mode=po,
-  %      thereby matching both p and po inodes?
-  (Mode == p -> Mode0 = p ; true),
-
-  % Vertices for `po`-nodes.
+export_ihier_graph(IHierHash, Gif):-
   % First extract the ranks that occur in the hierarchy.
   % The ranks are the cardinalities of the sets of shared predicates.
   % Ranks are used to align the partitioning subsets is a style similar
@@ -161,7 +139,7 @@ export_ihier_graph(IHierHash, Gif, Opts):-
   aggregate_all(
     set(RankNumber),
     (
-      inode(Mode0, _, IHierHash, SharedPs, _, _, _, _, _),
+      inode(_, IHierHash, SharedPs, _, _, _, _, _),
       length(SharedPs, RankNumber)
     ),
     RankNumbers
@@ -169,7 +147,7 @@ export_ihier_graph(IHierHash, Gif, Opts):-
 
   % Construct the vertice terms per rank.
   findall(
-    rank(vertex(RankId,RankAttrs),P_VTerms),
+    vertex(RankId,RankAttrs)-VTerms,
     (
       % We do this for every rank.
       member(RankNumber, RankNumbers),
@@ -181,54 +159,35 @@ export_ihier_graph(IHierHash, Gif, Opts):-
       % whose cardinality is the given rank.
       length(SharedPs, RankNumber),
       findall(
-        P_VTerm,
+        VTerm,
         (
-          inode(p, INodeHash, IHierHash, SharedPs, _, _, _, _, _),
-          build_vertex(INodeHash, P_VTerm)
+          inode(INodeHash, IHierHash, SharedPs, _, _, _, _, _),
+          build_vertex(INodeHash, VTerm)
         ),
-        P_VTerms
+        VTerms
       )
     ),
     Ranks
   ),
 
-  % Vertices for `po`-nodes.
-  findall(
-    PO_VTerm,
-    (
-      % No vertices for `po` nodes are created in `p`-mode.
-      Mode \== p,
-      inode(p, INodeHash, IHierHash, _, _, _, _, _, _),
-      inode(po, ISubnodeHash, INodeHash, _, _, _, _, _, _),
-      build_vertex(ISubnodeHash, PO_VTerm)
-    ),
-    PO_VTerms
-  ),
-
-  % Edges between the identity nodes of the _same_ mode.
+  % Edges between the identity nodes.
   findall(
     edge(FromId,ToId,EAttrs),
     (
       % Find two nodes that are either directly or indirectly related.
-      inode(Mode0, FromHash, ParentHash, FromShared, _, _, _, _, _),
-      inode(Mode0, ToHash, ParentHash, ToShared, _, _, _, _, _),
+      inode(FromHash, ParentHash, FromShared, _, _, _, _, _),
+      inode(ToHash, ParentHash, ToShared, _, _, _, _, _),
       strict_subset(FromShared, ToShared),
 
       % There must be no node in between:
       % We only display edges between _directly_ related vertices.
       \+ ((
-        inode(Mode0, _, ParentHash, MiddleShared, _, _, _, _, _),
+        inode(_, ParentHash, MiddleShared, _, _, _, _, _),
         strict_subset(FromShared, MiddleShared),
         strict_subset(MiddleShared, ToShared)
       )),
-
       maplist(hash_id, [FromHash,ToHash], [FromId,ToId]),
-      
-      % Base the edge style on the identity nodes mode.
-      (Mode0 == p -> Style = solid ; Style = dotted),
-
-      % Edge attributes.
-      EAttrs = [color(black),style(Style)]
+      EAttrs = [color(black),style(solid)]
     ),
     Es1
   ),
@@ -236,8 +195,8 @@ export_ihier_graph(IHierHash, Gif, Opts):-
   findall(
     edge(SubnodeId,NodeId,EAtts),
     (
-      inode(p, NodeHash, _, _, _, _, _, _, _),
-      inode(po, SubnodeHash, NodeHash, _, _, _, _, _, _),
+      inode(NodeHash, _, _, _, _, _, _, _),
+      inode(SubnodeHash, NodeHash, _, _, _, _, _, _),
       maplist(hash_id, [SubnodeHash,NodeHash], [SubnodeId,NodeId]),
       EAtts = [color(black),style(dashed)]
     ),
@@ -247,7 +206,7 @@ export_ihier_graph(IHierHash, Gif, Opts):-
 
   % Graph attributes.
   quality_label(IHierHash, QLabel),
-  ihier(G, IHierHash, _, _, _, _),
+  ihier(G, IHierHash, _, _, _),
   rdf_number_of_triples(G, N),
   format(string(GLabel), "Graph:~w\tTriples:~:d~w", [G,N,QLabel]),
   GAttrs =
@@ -260,22 +219,16 @@ export_ihier_graph(IHierHash, Gif, Opts):-
     ],
 
   % The graph compound term.
-  Gif = graph(PO_VTerms, Ranks, Es, GAttrs).
+  Gif = graph(VTerms, Ranks, Es, GAttrs).
 
 
 
-%! number_of_parent_identity_pairs(
-%!   +Mode:oneof([p,po]),
-%!   +Hash:atom,
-%!   -NumberOfPairs:nonneg
-%! ) is det.
+%! number_of_parent_identity_pairs(+Hash:atom, -NumberOfPairs:nonneg) is det.
 % Returns the number of pairs for the given hash.
 % How to perform the lookup depends on the mode (`p' or `po').
 
-number_of_parent_identity_pairs(p, Hash, NumberOfPairs):- !,
-  ihier(_, Hash, _, _, _, NumberOfPairs).
-number_of_parent_identity_pairs(po, Hash, NumberOfPairs):-
-  inode(p, Hash, _, _, _, NumberOfPairs, _, _, _).
+number_of_parent_identity_pairs(Hash, NumberOfPairs):- !,
+  ihier(Hash, _, _, _, NumberOfPairs).
 
 
 
@@ -299,7 +252,7 @@ percentage_label(ChildPairs, ParentPairs, Label):-
 
 can_calculate(IHierHash, Approx):-
   forall(
-    inode(_, _, IHierHash, _, Approx, _, _, NumberOfPairs, _),
+    inode(_, IHierHash, _, Approx, _, _, NumberOfPairs, _),
     nonvar(NumberOfPairs)
   ).
 
