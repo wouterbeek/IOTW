@@ -77,7 +77,8 @@ calc_fca(N):-
     [concept_label(eswc:concept_label(Pairs)),graph_label("ESWC Experiment")]
   ),
   open_pdf(File),
-  rdf_unload_graphs.
+  %rdf_unload_graphs,
+  true.
 member0(L, X):- member(X, L).
 
 
