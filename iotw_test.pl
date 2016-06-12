@@ -13,7 +13,7 @@ Simple tests for the IOTW codebase.
 @version 2015/12
 */
 
-:- use_module(library(rdf/rdf_build)).
+:- use_module(library(rdf/rdf_ext)).
 :- use_module(library(rdf/rdf_prefix)).
 :- use_module(library(rdfs/rdfs_build)).
 
