@@ -26,10 +26,10 @@ by the predicates they share.
 :- use_module(library(option)).
 :- use_module(library(os/datetime_file)).
 :- use_module(library(os/pdf)).
-:- use_module(library(rdf/rdf_print_term)).
-:- use_module(library(rdf/rdf_stats)).
 :- use_module(library(set/set_ext)).
 :- use_module(library(xml/xml_dom)).
+:- use_module(library(z/z_print)).
+:- use_module(library(z/z_stat)).
 
 :- use_module(iotw(inode)).
 :- use_module(iotw(iotw_generics)).
@@ -72,7 +72,7 @@ build_vertex(NodeHash, vertex(NodeId,VAttrs)):-
 
   % The label that describes the shared predicates
   % or the shared predicate-object pairs.
-  string_phrase(set(rdf_print_term, Shared), SharedLabel),
+  string_phrase(set(z_print_term, Shared), SharedLabel),
 
   % Compose the label that describes this node.
   % Notice that the recall is not displayed, since it is always `1.0`.

@@ -34,13 +34,13 @@
 :- use_module(library(rdf/rdf_graph)).
 :- use_module(library(rdf/rdf_load)).
 :- use_module(library(rdf/rdf_prefix)).
-:- use_module(library(rdf/rdf_print_term)).
 :- use_module(library(rdf/rdf_read)).
 :- use_module(library(rdf/rdf_term)).
 :- use_module(library(set/equiv)).
 :- use_module(library(set/relation)).
 :- use_module(library(solution_sequences)).
 :- use_module(library(tab/tab)).
+:- use_module(library(z/z_print)).
 
 :- rdf_register_prefix(iimba, 'http://oaei.ontologymatching.org/2012/IIMBDATA/').
 :- rdf_register_prefix(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
@@ -132,7 +132,7 @@ align_pairs(N, Pairs):-
 
 
 attribute_label(As) -->
-  set(rdf_print_term, As).
+  set(z_print_term, As).
 
 
 concept_label(Pairs, concept(Os,As)) -->

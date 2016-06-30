@@ -29,11 +29,11 @@
 
 % Callback HTTP handler reaction on a click action on an identity node.
 iotw(Req):-
-  http_search(Req, inode, Hash), !,
+  http_query(Req, inode, Hash), !,
   reply_html_page(tab, \iotw_head, \iotw_body(inode(Hash))).
 % Show IIMB SVG graphic.
 iotw(Req):-
-  http_search(Req, iimb, N0), !,
+  http_query(Req, iimb, N0), !,
   atom_number(N0, N),
   reply_html_page(tab, \iotw_head, \iotw_body(iimb(N))).
 % Normal Web page.
@@ -91,7 +91,7 @@ iotw_table(Hash) -->
       )
     ),
     once(ihier(G, IHierHash, _, _, _, _)),
-    phrase(set(rdf_term_name, SharedPs), Codes),
+    phrase(set(dcg_print_term, SharedPs), Codes),
     atom_codes(SharedLabel, Codes),
     format(
       atom(Description),

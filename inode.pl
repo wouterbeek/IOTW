@@ -62,13 +62,14 @@ Possible extensions of the alignment pairs:
 :- use_module(library(ordsets)).
 :- use_module(library(rdf/rdf_database)).
 :- use_module(library(rdf/rdf_prefix)).
-:- use_module(library(rdf/rdf_print)).
 :- use_module(library(rdf/rdf_read)).
+:- use_module(library(z/z_print)).
 
 :- use_module(iotw(iotw_generics)).
 
-:- rdf_meta(create_ihier(r,+,-)).
-:- rdf_meta(ihier(r,?,?,?,?)).
+:- rdf_meta
+   create_ihier(r, +, -),
+   ihier(r, ?, ?, ?, ?).
 
 %! ihier(
 %!   ?Graph:rdf_graph,
@@ -300,7 +301,7 @@ rdf_shared(Set, Ps):-
   rdf_shared(Set, [], Ps).
 
 rdf_shared([S1|Ss], Ps1, Ps):-
-  if_debug(inode, rdf_print_describe(S1, _, [])),
+  if_debug(inode, z_print_describe(S1, _, [])),
 
   % We assume a fully materialized graph.
   rdf(S1, P, O),
