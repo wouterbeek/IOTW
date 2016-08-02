@@ -17,7 +17,7 @@
 :- use_module(library(semweb/rdf_library)).
 :- use_module(library(semweb/rdf_turtle)).
 :- use_module(library(xpath)).
-:- use_module(os(dir_ext)).
+:- use_module(os(directory_ext)).
 :- use_module(rdf(rdf_deb)). % Registered as a Web module.
 :- use_module(server(web_console)).
 :- use_module(vocabularies(void)).

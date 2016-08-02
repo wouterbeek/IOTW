@@ -6,9 +6,7 @@
 @version 2015/12
 */
 
-:- use_module(library(html/content/html_collection), except([html_list//1,html_list//2])).
 :- use_module(library(html/element/html_link)). % Meta-predicate.
-:- use_module(library(html/element/html_list)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_dispatch)).
@@ -55,7 +53,7 @@ iotw_body(Content) -->
   },
   html([
     \iotw_content(Content),
-    \html_list(Pairs, [item_writer(html_link),ordered(false)])
+    \html_unordered_list(html_link, Pairs)
   ]).
 
 
@@ -91,7 +89,7 @@ iotw_table(Hash) -->
       )
     ),
     once(ihier(G, IHierHash, _, _, _, _)),
-    phrase(set(dcg_print_term, SharedPs), Codes),
+    phrase(set(dcg_q_print_term, SharedPs), Codes),
     atom_codes(SharedLabel, Codes),
     format(
       atom(Description),

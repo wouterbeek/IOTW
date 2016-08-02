@@ -17,8 +17,7 @@
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 :- use_module(library(atom_ext)).
-:- use_module(library(dcg/dcg_collection)).
-:- use_module(library(dcg/dcg_phrase)).
+:- use_module(library(dcg/dcg_ext)).
 :- use_module(library(dcg/dcg_pl)).
 :- use_module(library(fca/fca_viz)).
 :- use_module(library(http/http_server)).
@@ -30,6 +29,7 @@
 :- use_module(library(os/pdf)).
 :- use_module(library(owl/owl_build)).
 :- use_module(library(pair_ext)).
+:- use_module(library(q/q_print)).
 :- use_module(library(rdf/rdf_compare)).
 :- use_module(library(rdf/rdf_graph)).
 :- use_module(library(rdf/rdf_load)).
@@ -40,11 +40,10 @@
 :- use_module(library(set/relation)).
 :- use_module(library(solution_sequences)).
 :- use_module(library(tab/tab)).
-:- use_module(library(z/z_print)).
 
-:- rdf_register_prefix(iimba, 'http://oaei.ontologymatching.org/2012/IIMBDATA/').
-:- rdf_register_prefix(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
-:- rdf_register_prefix(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
+:- qb_alias(iimba, 'http://oaei.ontologymatching.org/2012/IIMBDATA/').
+:- qb_alias(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
+:- qb_alias(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
 
 :- dynamic user:file_search_path/2.
 :- multifile user:file_search_path/2.
@@ -132,7 +131,7 @@ align_pairs(N, Pairs):-
 
 
 attribute_label(As) -->
-  set(z_print_term, As).
+  set(q_print_term, As).
 
 
 concept_label(Pairs, concept(Os,As)) -->

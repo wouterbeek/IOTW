@@ -13,39 +13,39 @@ Simple tests for the IOTW codebase.
 @version 2015/12
 */
 
-:- use_module(library(rdf/rdf_ext)).
-:- use_module(library(rdf/rdf_prefix)).
-:- use_module(library(rdfs/rdfs_build)).
+:- use_module(library(q/qb)).
+:- use_module(library(semweb/rdf11)).
 
 :- use_module(iotw(iotw)).
 
 
 
 test0:-
-  G = iotw_test,
+  M = rdf
+  rdf_equal(ex:iotw_test, G),
   rdf_global_id(ex:'Amsterdam', Amsterdam),
   rdf_global_id(ex:'Andrea', Andrea),
   rdf_global_id(ex:'Berlin', Berlin),
   rdf_global_id(ex:'Boetje', Boetje),
   rdf_global_id(ex:'Wouter', Wouter),
 
-  rdf_assert_individual(Andrea, ex:'Person', G),
-  rdfs_assert_label(Andrea, 'Andrea', G),
-  rdf_assert_individual(Wouter, ex:'Person', G),
-  rdfs_assert_label(Wouter, 'Wouter', G),
-  rdf_assert_individual(Boetje, ex:'Person', G),
-  rdfs_assert_label(Boetje, 'Boetje', G),
+  qb_individual(M, Andrea, ex:'Person', G),
+  qb_label(M, Andrea, 'Andrea', G),
+  qb_individual(M, Wouter, ex:'Person', G),
+  qb_label(M, Wouter, 'Wouter', G),
+  qb_individual(M, Boetje, ex:'Person', G),
+  qb_label(M, Boetje, 'Boetje', G),
 
-  rdf_assert_individual(Amsterdam, ex:'Capital', G),
-  rdf_assert_individual(Amsterdam, ex:'City', G),
-  rdf_assert_individual(Amsterdam, ex:'GeoLocation', G),
-  rdfs_assert_label(Amsterdam, 'Amsterdam', G),
-  rdf_assert_individual(Berlin, ex:'Capital', G),
-  rdf_assert_individual(Berlin, ex:'City', G),
-  rdf_assert_individual(Berlin, ex:'GeoLocation', G),
-  rdfs_assert_label(Berlin, 'Berlin', G),
+  qb_individual(M, Amsterdam, ex:'Capital', G),
+  qb_individual(M, Amsterdam, ex:'City', G),
+  qb_individual(M, Amsterdam, ex:'GeoLocation', G),
+  qb_label(M, Amsterdam, 'Amsterdam', G),
+  qb_individual(M, Berlin, ex:'Capital', G),
+  qb_individual(M, Berlin, ex:'City', G),
+  qb_individual(M, Berlin, ex:'GeoLocation', G),
+  qb_label(M, Berlin, 'Berlin', G),
   
-  rdfs_assert_subproperty(rdf:type, ex:typo, G),
+  qb_subproperty(M, rdf:type, ex:typo, G),
 
   run_experiment(
     G,

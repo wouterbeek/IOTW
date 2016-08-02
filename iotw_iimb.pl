@@ -24,9 +24,9 @@ Runs IOTW experiments on the IIMB alignment data.
 
 :- use_module(iotw(iotw_experiment)).
 
-:- rdf_register_prefix(iimba, 'http://oaei.ontologymatching.org/2012/IIMBDATA/').
-:- rdf_register_prefix(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
-:- rdf_register_prefix(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
+:- qb_alias(iimba, 'http://oaei.ontologymatching.org/2012/IIMBDATA/').
+:- qb_alias(iimbt, 'http://oaei.ontologymatching.org/2012/IIMBTBOX/').
+:- qb_alias(iimbx, 'http://www.instancematching.org/IIMB2012/ADDONS#').
 
 
 

@@ -20,19 +20,12 @@
 :- use_module(library(lambda)).
 :- use_module(library(lists)).
 :- use_module(library(option)).
-:- use_module(library(rdf/rdf_print)).
-:- use_module(library(rdf/rdf_update)).
+:- use_module(library(q/qu)).
 
 :- use_module(iotw(inode)).
 :- use_module(iotw(inode_evaluate)).
 :- use_module(iotw(inode_export)).
 :- use_module(iotw(iotw_generics)).
-
-:- predicate_options(run_experiment/4, 4, [
-     evaluate(+boolean),
-     pass_to(create_ihier/4, 4),
-     pass_to(export_ihier/3, 3)
-   ]).
 
 
 

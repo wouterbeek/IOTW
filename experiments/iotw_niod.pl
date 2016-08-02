@@ -18,7 +18,7 @@
 :- use_module(library(semweb/rdf_library)).
 :- use_module(library(semweb/rdf_turtle)).
 :- use_module(library(xpath)).
-:- use_module(os(dir_ext)).
+:- use_module(os(directory_ext)).
 :- use_module(void(void_file)).
 :- use_module(xml(xml_namespace)).
 
